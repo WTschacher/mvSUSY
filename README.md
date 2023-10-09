@@ -14,7 +14,7 @@ Installation
 #install.packages("mvSUSY") ## not yet on CRAN
 
 ## development version
-install.packages("mvSUSY", repos="https://wtschacher.github.io/mvSUSY/")
+install.packages("mvSUSY", repos=c("https://wtschacher.github.io/mvSUSY/","https://cloud.r-project.org"))
 ```
 
 Usage
