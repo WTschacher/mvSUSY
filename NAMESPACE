@@ -1,0 +1,7 @@
+importFrom(stats, cov, cor, na.omit, t.test, wilcox.test, sd)
+importFrom(RcppAlgos, permuteSample)
+importFrom(data.table, as.data.table, dcast, ":=")
+export(mvsusy)
+S3method(plot, mvsusy)
+S3method(print, mvsusy)
+S3method(as.data.frame, mvsusy)
