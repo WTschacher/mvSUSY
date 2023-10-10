@@ -13,8 +13,8 @@ Installation
 ```r
 #install.packages("mvSUSY") ## not yet on CRAN
 
-## development version
-install.packages("mvSUSY", repos=c("https://wtschacher.github.io/mvSUSY/","https://cloud.r-project.org"))
+## development version ## not yet on GH pages
+#install.packages("mvSUSY", repos=c("https://wtschacher.github.io/mvSUSY/","https://cloud.r-project.org"))
 ```
 
 Usage
