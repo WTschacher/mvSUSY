@@ -5,15 +5,13 @@
   Multivariate Surrogate Synchrony estimates the synchrony within datasets that contain more than two time series. Multivariate SUSY was adapted and extended from SUCO and SUSY with respect to implementing the surrogate controls.
 }
 \usage{
-mvsusy(x, segment, Hz, method=c("lambda_max","omega"),
-  transposition=FALSE, max_pseudo=1000, seed=1)
+mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1)
 }
 \arguments{
   \item{x}{ A data.frame of numeric columns. }
   \item{segment}{ Integer, size in seconds. Must not be smaller than \code{2 * maxlag}, must not be larger than half the the time series (\code{nrow(x)/2}). }
   \item{Hz}{ Integer, frames per second (sampling rate). }
   \item{method}{ Character, either \code{"lambda_max"} or \code{"omega"}. }
-  \item{transposition}{ Logical, default \code{FALSE}. }
   \item{max_pseudo}{ Numeric, maximum number of permutations. }
   \item{seed}{ Numeric, random seed used to generate permutations. }
 }
