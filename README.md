@@ -31,15 +31,25 @@ data = read.csv(file.choose(), header=TRUE, sep=" ", na.strings=".")
 ## mockup random data if needed
 #data = as.data.frame(replicate(5, sample(10, 500, TRUE)))
 
-## compute mvSUSY
+## compute mvSUSY using 'lambda_max' method
 res = mvsusy(data, segment=10, Hz=10, max_pseudo=100)
 res
+
+## plot
+plot(res, type="eigenvalue")
+plot(res, type="density")
+plot(res, type="free scale")
+plot(res, type="segment-wise")
+plot(res, type="time series")
+
+## compute mvSUSY using 'omega' method
 res = mvsusy(data, segment=10, Hz=10, max_pseudo=100, method="omega")
 res
 
-
-## plot
-#plot(res)
+plot(res, type="density")
+plot(res, type="free scale")
+plot(res, type="segment-wise")
+plot(res, type="time series")
 
 ## export to flat file via data.frame and write.csv
 df = as.data.frame(res)

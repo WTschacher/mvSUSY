@@ -23,16 +23,18 @@ mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1)
 }
 \seealso{\code{\link{plot.mvsusy}}, \code{\link{as.data.frame.mvsusy}}, \code{\link{print.mvsusy}}}
 \examples{
+set.seed(1)
 data = as.data.frame(replicate(5, sample(10, 500, TRUE)))
 
-## compute mvSUSY
+## compute mvSUSY (lambda_max method)
 res = mvsusy(data, segment=10, Hz=10, max_pseudo=100)
 res
+plot(res, type="eigenvalue")
+
+## omega method
 res = mvsusy(data, segment=10, Hz=10, max_pseudo=100, method="omega")
 res
-
-## plot
-#plot(res)
+plot(res, type="density")
 
 ## export to flat file via data.frame and write.csv
 df = as.data.frame(res)
