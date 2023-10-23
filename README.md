@@ -56,4 +56,4 @@ df = as.data.frame(res)
 df
 ```
 
-[`mvsusy` function manual](https://wtschacher.github.io/mvSUSY/reference/mvsusy.html)
+[`mvsusy` function manual](https://wtschacher.github.io/mvSUSY/library/mvSUSY/html/mvsusy.html)
