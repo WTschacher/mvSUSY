@@ -22,6 +22,7 @@ mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1)
   Object of class \code{mvsusy} is returned.
 }
 \seealso{\code{\link{plot.mvsusy}}, \code{\link{as.data.frame.mvsusy}}, \code{\link{print.mvsusy}}}
+\references{\href{https://www.mdpi.com/1099-4300/23/11/1385}{"Beyond Dyadic Coupling: The Method of Multivariate Surrogate Synchrony (mv-SUSY)" by Deborah Meier and Wolfgang Tschacher}}
 \examples{
 set.seed(1)
 data = as.data.frame(replicate(5, sample(10, 500, TRUE)))

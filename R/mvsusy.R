@@ -175,7 +175,7 @@ print.mvsusy = function(x, ...) {
 }
 
 ## plot various types of plots using mvsusy object
-plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wise","time series"), ..., plotly) {
+plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wise","time series"), ..., bins, plotly) {
   if (!inherits(x, "mvsusy"))
     stop("'x' must be an object of class 'mvsusy'")
   type = match.arg(type)
@@ -184,6 +184,9 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
       stop("Argument 'plotly' must be TRUE or FALSE")
     if (isTRUE(plotly) && type!="time series")
       stop("Using 'plotly' is only implemented for time series type of mvSUSY plot")
+  }
+  if (!missing(bins) && type!="free scale") {
+    stop("Argument 'bins' is only used for free scale type of mvSUSY plot")
   }
   # check NSE notes
   segment_num = segment = variable = . = mean.var = segment_id= NULL
@@ -218,7 +221,7 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
     vlines = as.data.frame(as.data.table(x$synchrony)[, .(mean.var=mean(value)), by="variable"])
     rm(value)
     p = ggplot(x$synchrony, aes(x = value, fill = variable))+
-      geom_histogram(color="#e9ecef",alpha=0.8, position = 'identity')+ ## bins argument removed vs script as per email
+      geom_histogram(color="#e9ecef",alpha=0.8, position = 'identity', bins = if (missing(bins)) x$nsegment*.5 else bins)+
       geom_vline(data = vlines, aes(xintercept = mean.var), linetype = "dashed", size = 0.8, alpha = 0.9)+
       facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= paste("n segments =", x$max_pseudo), 'synchrony_real'=paste("n segments =", x$nsegment))))+
       theme_light()+
