@@ -27,8 +27,8 @@
 \seealso{\code{\link{mvsusy}}}
 \examples{
 set.seed(1)
-data = as.data.frame(replicate(5, sample(10, 500, TRUE)))
-res = mvsusy(data, segment=10, Hz=10, max_pseudo=100)
+data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
+res = mvsusy(data, segment=10, Hz=10)
 plot(res, type="eigenvalue")
 plot(res, type="density")
 plot(res, type="free scale")

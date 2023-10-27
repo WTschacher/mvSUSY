@@ -29,10 +29,10 @@ library(mvSUSY)
 data = read.csv(file.choose(), header=TRUE, sep=" ", na.strings=".")
 
 ## mockup random data if needed
-#data = as.data.frame(replicate(5, sample(10, 500, TRUE)))
+#data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
 
 ## compute mvSUSY using 'lambda_max' method
-res = mvsusy(data, segment=10, Hz=10, max_pseudo=100)
+res = mvsusy(data, segment=10, Hz=10)
 res
 
 ## plot
@@ -43,7 +43,7 @@ plot(res, type="segment-wise")
 plot(res, type="time series")
 
 ## compute mvSUSY using 'omega' method
-res = mvsusy(data, segment=10, Hz=10, max_pseudo=100, method="omega")
+res = mvsusy(data, segment=10, Hz=10, method="omega")
 res
 
 plot(res, type="density")

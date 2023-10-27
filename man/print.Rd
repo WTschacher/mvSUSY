@@ -17,8 +17,8 @@
 \seealso{\code{\link{mvsusy}}}
 \examples{
 set.seed(1)
-data = as.data.frame(replicate(5, sample(10, 500, TRUE)))
-res = mvsusy(data, segment=10L, Hz=10L, max_pseudo=100)
+data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
+res = mvsusy(data, segment=10L, Hz=10L)
 res
 }
 \keyword{ data }
