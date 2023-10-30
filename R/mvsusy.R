@@ -215,7 +215,7 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
       labs(y = "density", x = "synchrony") +
       theme_light()+
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), text = element_text(vjust = 0, size = 12, family="serif"))+
-      labs(title = "Dean")
+      labs(title = "Density: real vs. surrogate synchrony")
   } else if (type=="free scale") {
     value = NULL ## fix check NSE notes
     vlines = as.data.frame(as.data.table(x$synchrony)[, .(mean.var=mean(value)), by="variable"])
@@ -223,12 +223,12 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
     p = ggplot(x$synchrony, aes(x = value, fill = variable))+
       geom_histogram(color="#e9ecef",alpha=0.8, position = 'identity', bins = if (missing(bins)) x$nsegment*.5 else bins)+
       geom_vline(data = vlines, aes(xintercept = mean.var), linetype = "dashed", size = 0.8, alpha = 0.9)+
-      facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= paste("n segments =", x$max_pseudo), 'synchrony_real'=paste("n segments =", x$nsegment))))+
+      facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= paste0("surrogate synchrony (n segments = ", x$max_pseudo,")"), 'synchrony_real'=paste0("real synchrony (n segments = ", x$nsegment,")"))))+
       theme_light()+
       scale_fill_manual(values = c("brown3","chartreuse4"))+
       theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       theme(text = element_text(vjust = 0, size = 15, family="serif"),  strip.text = element_text(size=15))+
-      labs(x="synchrony", title = "histogram of multivariate synchrony", subtitle = paste("segmentsize =", x$segment_size_s, "method = ", x$method, sep = " "))
+      labs(x="synchrony", title = "histogram of multivariate synchrony", subtitle = paste0("segment-size = ", x$segment_size_s, ", method = ", x$method))
   } else if (type=="segment-wise") {
     real = x$synchrony[x$synchrony$variable == "synchrony_real", , drop=FALSE]
     real$segment_id = seq_len(nrow(real))
@@ -237,9 +237,9 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
       geom_hline(aes(yintercept = x$pseudo_mean,
                      linetype = "mean surrogate synchrony"), color = "brown3", linewidth=1.5, alpha=.5)+
       geom_hline(aes(yintercept = x$pseudo_mean-x$pseudo_sd,
-                     linetype = "sd surrogate synchrony"), color = "brown3", linewidth=1, alpha=.5)+
+                     linetype = "SD surrogate synchrony"), color = "brown3", linewidth=1, alpha=.5)+
       geom_hline(aes(yintercept = x$pseudo_mean+x$pseudo_sd,
-                     linetype = "sd surrogate synchrony"), color = "brown3", linewidth=1, alpha=.5, show.legend=FALSE)+
+                     linetype = "SD surrogate synchrony"), color = "brown3", linewidth=1, alpha=.5, show.legend=FALSE)+
       labs(title="synchrony per segment", x = "segment", y = "synchrony")+
       theme_minimal()+
       theme(text = element_text(vjust = 0, size = 12, family="serif"),  strip.text = element_text(size=12))+
