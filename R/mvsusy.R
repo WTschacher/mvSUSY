@@ -223,7 +223,7 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
     p = ggplot(x$synchrony, aes(x = value, fill = variable))+
       geom_histogram(color="#e9ecef",alpha=0.8, position = 'identity', bins = if (missing(bins)) x$nsegment*.5 else bins)+
       geom_vline(data = vlines, aes(xintercept = mean.var), linetype = "dashed", size = 0.8, alpha = 0.9)+
-      facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= paste0("surrogate synchrony (n segments = ", x$max_pseudo,")"), 'synchrony_real'=paste0("real synchrony (n segments = ", x$nsegment,")"))))+
+      facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= sprintf("surrogate synchronies (%s surrogates)", x$max_pseudo), 'synchrony_real'=sprintf("real segment synchronies (%s segments)", x$nsegment))))+
       theme_light()+
       scale_fill_manual(values = c("brown3","chartreuse4"))+
       theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
