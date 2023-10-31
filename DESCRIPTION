@@ -2,7 +2,7 @@ Package: mvSUSY
 Version: 0.1.0
 Title: Multivariate Surrogate Synchrony
 Authors@R: c(
-  person("Wolfgang","Tschacher", role=c("aut","cre"), email="wolfgang.tschacher@upd.unibe.ch"),
+  person("Wolfgang","Tschacher", role=c("aut","cre"), email="wolfgang.tschacher@unibe.ch"),
   person("Deborah","Meier",      role="aut", email="meier_deborah@gmx.net"),
   person("Jan","Gorecki",        role="ctb"))
 Description: Multivariate Surrogate Synchrony estimates the synchrony within datasets that contain more than two time series. Multivariate SUSY was adapted and extended from SUCO and SUSY with respect to implementing the surrogate controls. 'mvSUSY' works as described in Meier & Tschacher (2021) <doi:10.3390/e23111385>.
