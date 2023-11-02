@@ -161,7 +161,7 @@ print.mvsusy = function(x, ...) {
   df$pseudo_mean = round(df$pseudo_mean,5)
   df$pseudo_sd = round(df$pseudo_sd,5)
   df$ES = round(df$ES,5)
-  df$t_statistic = abs(round(df$t_statistic,5))
+  df$t_statistic = round(df$t_statistic,5)*-1 ## we want t-statistic to be positive unlike when surrogates set is bigger than real dataset
   df$p_value = format(df$p_value, scientific=FALSE)
   df$statistic_nonpar = format(df$statistic_nonpar, scientific=FALSE)
   df$p_value_nonpar = format(df$p_value_nonpar, scientific=FALSE)
@@ -229,7 +229,7 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
       scale_fill_manual(values = c("brown3","chartreuse4"))+
       theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       theme(text = element_text(vjust = 0, size = 15, family="serif"),  strip.text = element_text(size=15))+
-      labs(x="synchrony", title = "Density", subtitle = paste0("segment-size = ", x$segment_size_s, ", method = ", x$method))
+      labs(x="synchrony", title = "Histogram of multivariate synchrony", subtitle = paste0("segment-size = ", x$segment_size_s, ", method = ", x$method))
   } else if (type=="segment-wise") {
     real = x$synchrony[x$synchrony$variable == "synchrony_real", , drop=FALSE]
     real$segment_id = seq_len(nrow(real))
