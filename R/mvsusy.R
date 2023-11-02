@@ -161,7 +161,7 @@ print.mvsusy = function(x, ...) {
   df$pseudo_mean = round(df$pseudo_mean,5)
   df$pseudo_sd = round(df$pseudo_sd,5)
   df$ES = round(df$ES,5)
-  df$t_statistic = round(df$t_statistic,5)
+  df$t_statistic = abs(round(df$t_statistic,5))
   df$p_value = format(df$p_value, scientific=FALSE)
   df$statistic_nonpar = format(df$statistic_nonpar, scientific=FALSE)
   df$p_value_nonpar = format(df$p_value_nonpar, scientific=FALSE)
@@ -195,11 +195,12 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
       stop("plot mvSUSY of type eigenvalue is only for mvSUSY computed using 'lambda_max' method")
     p = ggplot(x$EV, aes(x = as.factor(segment_num), group = segment)) +
       geom_line(aes(y = value, colour = data)) +
-      scale_color_manual(values = c('real' = 'chartreuse4', 'pseudo' = 'brown3'))+
+      scale_color_manual(label = c('pseudo'= "surrogates", 'real'="real"),
+                         values = c('real' = 'chartreuse4', 'pseudo' = 'brown3'))+
       scale_y_continuous(breaks = seq(0, max(x$EV$value), by = 1)) +
-      facet_wrap(~data, labeller = as_labeller(c(`pseudo` = paste( "n segments =", x$max_pseudo), `real` = paste( "n segments =", x$nsegment)))) +
+      facet_wrap(~data, labeller = as_labeller(c(`pseudo` = sprintf("%s surrogates", x$max_pseudo), `real` = sprintf("%s segments", x$nsegment)))) +
       labs(y = "eigenvalue", x = "dimension",
-           title = "eigenvalues per segment for real and pseudo data", subtitle = paste( "segmentsize =", x$segment_size_s)) +
+           title = "Eigenvalues for real and surrogate data", subtitle = paste( "segment-size =", x$segment_size_s)) +
       theme_light()+
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
             panel.border = element_blank(), text = element_text(vjust = 0, size = 15, family="serif"), strip.text = element_text(size=15))
@@ -208,7 +209,7 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
       geom_density(aes(x = value, fill = variable), alpha = .1, linewidth = 1, show.legend = FALSE)+
       geom_rug(aes(x = value, y = 0))+
       scale_colour_manual('data',
-                          label = c('synchrony_pseudo'= "pseudo", 'synchrony_real'="real"),
+                          label = c('synchrony_pseudo'= "surrogates", 'synchrony_real'="real"),
                           values = c('synchrony_real' = 'chartreuse4', 'synchrony_pseudo' = 'brown3'))+
       scale_fill_manual('data',
                         values = c('synchrony_real' = 'chartreuse4', 'synchrony_pseudo' = 'brown3'))+
@@ -222,13 +223,13 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
     rm(value)
     p = ggplot(x$synchrony, aes(x = value, fill = variable))+
       geom_histogram(color="#e9ecef",alpha=0.8, position = 'identity', bins = if (missing(bins)) x$nsegment*.5 else bins)+
-      geom_vline(data = vlines, aes(xintercept = mean.var), linetype = "dashed", size = 0.8, alpha = 0.9)+
-      facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= sprintf("surrogate synchronies (%s surrogates)", x$max_pseudo), 'synchrony_real'=sprintf("real segment synchronies (%s segments)", x$nsegment))))+
+      geom_vline(data = vlines, aes(xintercept = mean.var), linetype = "dashed", linewidth = 0.8, alpha = 0.9)+
+      facet_wrap(~variable, scales ="free", labeller = as_labeller(c('synchrony_pseudo'= sprintf("%s surrogates", x$max_pseudo), 'synchrony_real'=sprintf("%s segments", x$nsegment))))+
       theme_light()+
       scale_fill_manual(values = c("brown3","chartreuse4"))+
       theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       theme(text = element_text(vjust = 0, size = 15, family="serif"),  strip.text = element_text(size=15))+
-      labs(x="synchrony", title = "histogram of multivariate synchrony", subtitle = paste0("segment-size = ", x$segment_size_s, ", method = ", x$method))
+      labs(x="synchrony", title = "Density", subtitle = paste0("segment-size = ", x$segment_size_s, ", method = ", x$method))
   } else if (type=="segment-wise") {
     real = x$synchrony[x$synchrony$variable == "synchrony_real", , drop=FALSE]
     real$segment_id = seq_len(nrow(real))
@@ -240,7 +241,7 @@ plot.mvsusy = function(x, type=c("eigenvalue","density","free scale","segment-wi
                      linetype = "SD surrogate synchrony"), color = "brown3", linewidth=1, alpha=.5)+
       geom_hline(aes(yintercept = x$pseudo_mean+x$pseudo_sd,
                      linetype = "SD surrogate synchrony"), color = "brown3", linewidth=1, alpha=.5, show.legend=FALSE)+
-      labs(title="synchrony per segment", x = "segment", y = "synchrony")+
+      labs(title="Synchrony per segment", x = "segment", y = "synchrony")+
       theme_minimal()+
       theme(text = element_text(vjust = 0, size = 12, family="serif"),  strip.text = element_text(size=12))+
       theme(legend.position = "bottom", legend.title = element_blank())+
