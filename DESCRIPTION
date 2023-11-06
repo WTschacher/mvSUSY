@@ -5,7 +5,7 @@ Authors@R: c(
   person("Wolfgang","Tschacher", role=c("aut","cre"), email="wolfgang.tschacher@unibe.ch"),
   person("Deborah","Meier",      role="aut", email="meier_deborah@gmx.net"),
   person("Jan","Gorecki",        role="ctb"))
-Description: Multivariate Surrogate Synchrony estimates the synchrony within datasets that contain more than two time series. Multivariate SUSY was adapted and extended from SUCO and SUSY with respect to implementing the surrogate controls. 'mvSUSY' works as described in Meier & Tschacher (2021) <doi:10.3390/e23111385>.
+Description: Multivariate Surrogate Synchrony (mvSUSY) estimates the synchrony within datasets that contain more than two time series. mvSUSY was developed from Surrogate Synchrony (SUSY) with respect to implementing surrogate controls, and extends synchrony estimation to multivariate data. 'mvSUSY' works as described in Meier & Tschacher (2021).
 Imports: data.table, RcppAlgos, ggplot2, ggsci
 Suggests: plotly
 License: GPL-2
