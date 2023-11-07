@@ -26,14 +26,18 @@
 }
 \seealso{\code{\link{mvsusy}}}
 \examples{
+\donttest{
 set.seed(1)
 data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
+old = setDTthreads(1L)
 res = mvsusy(data, segment=10, Hz=10)
+setDTthreads(old)
 plot(res, type="eigenvalue")
 plot(res, type="density")
 plot(res, type="free scale")
 plot(res, type="segment-wise")
 plot(res, type="time series")
 plot(res, type="time series", plotly=FALSE)
+}
 }
 \keyword{ data }

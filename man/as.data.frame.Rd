@@ -18,10 +18,12 @@
 }
 \seealso{\code{\link{mvsusy}}}
 \examples{
+\donttest{
 set.seed(1)
 data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
 res = mvsusy(data, segment=10L, Hz=10L)
 df = as.data.frame(res)
 df
+}
 }
 \keyword{ data }

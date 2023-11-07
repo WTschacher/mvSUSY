@@ -31,6 +31,7 @@ mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1)
   Tschacher W, Scheier C, & Grawe K (1998). Order and Pattern Formation in Psychotherapy. Nonlinear Dyn. Psychol. Life Sci., 2, 195-215.
 }
 \examples{
+\donttest{
 set.seed(1)
 data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
 
@@ -47,5 +48,6 @@ plot(res, type="density")
 ## export to flat file via data.frame and write.csv
 df = as.data.frame(res)
 df
+}
 }
 \keyword{ data }
