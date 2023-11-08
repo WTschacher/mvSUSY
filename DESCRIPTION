@@ -1,5 +1,5 @@
 Package: mvSUSY
-Version: 0.1.0
+Version: 0.1.1
 Title: Multivariate Surrogate Synchrony
 Authors@R: c(
   person("Wolfgang","Tschacher", role=c("aut","cre"), email="wolfgang.tschacher@unibe.ch"),

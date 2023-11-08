@@ -149,7 +149,9 @@ as.data.frame.mvsusy = function(x, row.names=NULL, optional=FALSE, ...) {
     "real_mean", "real_sd", "pseudo_mean", "pseudo_sd", "ES",
     "t_statistic", "p_value", "statistic_nonpar", "p_value_nonpar"
   )
-  as.data.frame(ans)
+  df = as.data.frame(ans)
+  rownames(df) = NULL
+  df
 }
 
 print.mvsusy = function(x, ...) {
