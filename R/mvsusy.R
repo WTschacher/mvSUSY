@@ -128,7 +128,8 @@ mvsusy = function(x, segment, Hz,
     method=method, n_col=nx, n_row=nrow(x), seed=seed, n_pseudo=length(comb_pseudo),
     segment_size_s = segment, data_per_segment = segmentHz*nx,
     real_mean=real_mean, real_sd=real_sd, pseudo_mean=pseudo_mean, pseudo_sd=pseudo_sd, ES_synchrony=ES_synchrony, EV=ev,
-    t_tests = t_tests, wilcox_tests = wilcox_tests,
+    t_tests = t_tests * -1, ## we want t-statistic to be positive unlike when surrogates set is bigger than real dataset
+    wilcox_tests = wilcox_tests,
     nsegment = nsegment, max_pseudo = max_pseudo,
     synchrony = synchrony, data = data, segmentHz = segmentHz
   )
@@ -163,7 +164,7 @@ print.mvsusy = function(x, ...) {
   df$pseudo_mean = round(df$pseudo_mean,5)
   df$pseudo_sd = round(df$pseudo_sd,5)
   df$ES = round(df$ES,5)
-  df$t_statistic = round(df$t_statistic,5)*-1 ## we want t-statistic to be positive unlike when surrogates set is bigger than real dataset
+  df$t_statistic = round(df$t_statistic,5)
   df$p_value = format(df$p_value, scientific=FALSE)
   df$statistic_nonpar = format(df$statistic_nonpar, scientific=FALSE)
   df$p_value_nonpar = format(df$p_value_nonpar, scientific=FALSE)
