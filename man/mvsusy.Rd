@@ -6,7 +6,7 @@
   Multivariate Surrogate Synchrony (mvSUSY) estimates the synchrony within datasets that contain more than two time series. mvSUSY was developed from Surrogate Synchrony (SUSY) with respect to implementing surrogate controls, and extends synchrony estimation to multivariate data.
 }
 \usage{
-mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1)
+mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1, data_name=NA_character_)
 }
 \arguments{
   \item{x}{ A data.frame of numeric columns. }
