@@ -1,0 +1,127 @@
+<!DOCTYPE html><html><head><title>R: Create a new document based on a template</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>draft {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='draft'>Create a new document based on a template</h2>
+
+<h3>Description</h3>
+
+<p>Create (and optionally edit) a draft of an R Markdown document based on a
+template.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>draft(file, template, package = NULL, create_dir = "default", edit = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="draft_:_file">file</code></td>
+<td>
+<p>File name for the draft</p>
+</td></tr>
+<tr><td><code id="draft_:_template">template</code></td>
+<td>
+<p>Template to use as the basis for the draft. This is either
+the full path to a template directory or the name of a template directory
+within the <code>rmarkdown/templates</code> directory of a package.</p>
+</td></tr>
+<tr><td><code id="draft_:_package">package</code></td>
+<td>
+<p>(Optional) Name of package where the template is located.</p>
+</td></tr>
+<tr><td><code id="draft_:_create_dir">create_dir</code></td>
+<td>
+<p><code>TRUE</code> to create a new directory for the document
+(the &quot;default&quot; setting leaves this behavior up to the creator of the
+template).</p>
+</td></tr>
+<tr><td><code id="draft_:_edit">edit</code></td>
+<td>
+<p><code>TRUE</code> to edit the template immediately</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>draft</code> function creates new R Markdown documents based on
+templates that are either located on the filesystem or within an R package.
+The template and its supporting files will be copied to the location
+specified by <code>file</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The file name of the new document (invisibly).
+</p>
+
+
+<h3>Note</h3>
+
+<p>An R Markdown template consists of a directory that contains a
+description of the template, a skeleton Rmd file used as the basis for new
+documents, and optionally additional supporting files that are provided
+along with the skeleton (e.g. a logo graphic).
+</p>
+<p>If the template directory is contained within a package then it should be
+located at <code>inst/rmarkdown/templates</code>. For example, a package named
+<span class="pkg">pubtools</span> that wanted to provide a template named
+<code>quarterly_report</code> would need to provide the following files within
+the <code>pubtools/inst/rmarkdown/templates</code> directory:
+</p>
+<p><code>quarterly_report/template.yaml</code> <br />
+<code>quarterly_report/skeleton/skeleton.Rmd</code> <br />
+</p>
+<p>The <code>template.yaml</code> file should include a <code>name</code> field. If you
+want to ensure that a new directory is always created for a given template,
+then you can add the <code>create_dir</code> field to the <code>template.yaml</code>
+file. For example:
+</p>
+<p><code>create_dir: true</code> <br />
+</p>
+<p>The <code>skeleton/skeleton.Rmd</code> file should include the initial contents
+you want for files created from this template. Additional files can be
+added to the <code>skeleton</code> directory, for example:
+</p>
+<p><code>skeleton/logo.png</code> <br />
+</p>
+<p>These files will automatically be copied to the directory containing the
+new R Markdown draft.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+rmarkdown::draft("Q4Report.Rmd",
+                 template="/opt/rmd/templates/quarterly_report")
+
+rmarkdown::draft("Q4Report.Rmd",
+                 template="quarterly_report", package="pubtools")
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

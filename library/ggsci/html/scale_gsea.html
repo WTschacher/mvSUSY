@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: The GSEA GenePattern Color Scales</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>scale_color_gsea {ggsci}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='scale_color_gsea'>The GSEA GenePattern Color Scales</h2>
+
+<h3>Description</h3>
+
+<p>See <code><a href="../../ggsci/help/pal_gsea.html">pal_gsea</a></code> for details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>scale_color_gsea(palette = c("default"), alpha = 1, reverse = FALSE, ...)
+
+scale_colour_gsea(palette = c("default"), alpha = 1, reverse = FALSE, ...)
+
+scale_fill_gsea(palette = c("default"), alpha = 1, reverse = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="scale_color_gsea_:_palette">palette</code></td>
+<td>
+<p>Palette type.
+Currently there is one available option: <code>"default"</code>
+(continuous palette with 12 base colors).</p>
+</td></tr>
+<tr><td><code id="scale_color_gsea_:_alpha">alpha</code></td>
+<td>
+<p>Transparency level, a real number in (0, 1].
+See <code>alpha</code> in <code><a href="../../grDevices/help/rgb.html">rgb</a></code> for details.</p>
+</td></tr>
+<tr><td><code id="scale_color_gsea_:_reverse">reverse</code></td>
+<td>
+<p>Logical. Should the order of the colors be reversed?</p>
+</td></tr>
+<tr><td><code id="scale_color_gsea_:_...">...</code></td>
+<td>
+<p>additional parameters for <code><a href="../../ggplot2/help/discrete_scale.html">discrete_scale</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Nan Xiao &lt;<a href="mailto:me@nanx.me">me@nanx.me</a>&gt; |
+&lt;<a href="https://nanx.me">https://nanx.me</a>&gt;
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library("ggplot2")
+library("reshape2")
+data("mtcars")
+
+cor &lt;- cor(mtcars)
+cor_melt &lt;- melt(cor)
+
+ggplot(
+  cor_melt,
+  aes(x = Var1, y = Var2, fill = value)
+) +
+  geom_tile(colour = "black", size = 0.3) +
+  theme_bw() + scale_fill_gsea()
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggsci</em> version 3.0.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

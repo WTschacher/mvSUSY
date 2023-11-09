@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Exact Rational Binomial Probabilities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>binomQ {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='binomQ'>Exact Rational Binomial Probabilities</h2>
+
+<h3>Description</h3>
+
+<p>Compute <em>exact</em> binomial probabilities using (big integer and) big
+rational arithmetic.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>dbinomQ(x, size, prob, log = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="binomQ_:_x">x</code>, <code id="binomQ_:_size">size</code></td>
+<td>
+<p>integer or big integer (<code>"<a href="../../gmp/help/bigz.html">bigz</a>"</code>), will be
+passed to <code><a href="../../gmp/help/chooseZ.html">chooseZ</a>()</code>.</p>
+</td></tr>
+<tr><td><code id="binomQ_:_prob">prob</code></td>
+<td>
+<p>the probability; should be big rational
+(<code>"<a href="../../gmp/help/bigq.html">bigq</a>"</code>); if not it is coerced with a warning.</p>
+</td></tr>
+<tr><td><code id="binomQ_:_log">log</code></td>
+<td>
+<p>logical; must be <code>FALSE</code> on purpose.  Use
+<code>log(Rmpfr::<a href="../../Rmpfr/help/mpfr.html">mpfr</a>(dbinomQ(..), precB))</code> for the
+logarithm of such big rational numbers.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a big rational (<code>"<a href="../../gmp/help/bigq.html">bigq</a>"</code>) of the <code><a href="../../base/html/length.html">length</a></code> of
+(recycled) <code>x+size+prob</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gmp/help/chooseZ.html">chooseZ</a></code>; <span class="rlang"><b>R</b></span>'s (<span class="pkg">stats</span> package) <code><a href="../../stats/html/Binomial.html">dbinom</a>()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>dbinomQ(0:8,8, as.bigq(1,2))
+##  1/256  1/32   7/64   7/32   35/128 7/32   7/64   1/32   1/256
+
+ph16. &lt;- dbinomQ(0:16, size=16, prob = 1/2)  # innocous warning
+ph16  &lt;- dbinomQ(0:16, size=16, prob = as.bigq(1,2))
+ph16.75 &lt;- dbinomQ(0:16, size=16, prob = as.bigq(3,4))
+ph8.75  &lt;- dbinomQ(0:8, 8, as.bigq(3,4))
+stopifnot(exprs = {
+   dbinomQ(0:8,8, as.bigq(1,2)) * 2^8 == choose(8, 0:8)
+   identical(ph8.75, chooseZ(8,0:8) * 3^(0:8) / 4^8)
+   all.equal(ph8.75, choose (8,0:8) * 3^(0:8) / 4^8, tol=1e-15) # see exactly equal
+   identical(ph16, ph16.)
+   identical(ph16,
+            dbinomQ(0:16, size=16, prob = as.bigz(1)/2))
+   all.equal(dbinom(0:16, 16, prob=1/2), asNumeric(ph16),    tol=1e-15)
+   all.equal(dbinom(0:16, 16, prob=3/4), asNumeric(ph16.75), tol=1e-15)
+})
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

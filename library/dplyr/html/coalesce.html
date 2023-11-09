@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Find the first non-missing element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>coalesce {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='coalesce'>Find the first non-missing element</h2>
+
+<h3>Description</h3>
+
+<p>Given a set of vectors, <code>coalesce()</code> finds the first non-missing value at
+each position. It's inspired by the SQL <code>COALESCE</code> function which does the
+same thing for SQL <code>NULL</code>s.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>coalesce(..., .ptype = NULL, .size = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="coalesce_:_...">...</code></td>
+<td>
+<p>&lt;<code><a href="../../rlang/help/dyn-dots.html">dynamic-dots</a></code>&gt;
+</p>
+<p>One or more vectors. These will be
+<a href="../../vctrs/help/vector_recycling_rules.html">recycled</a> against each other, and will be
+cast to their common type.</p>
+</td></tr>
+<tr><td><code id="coalesce_:_.ptype">.ptype</code></td>
+<td>
+<p>An optional prototype declaring the desired output type. If
+supplied, this overrides the common type of the vectors in <code>...</code>.</p>
+</td></tr>
+<tr><td><code id="coalesce_:_.size">.size</code></td>
+<td>
+<p>An optional size declaring the desired output size. If supplied,
+this overrides the common size of the vectors in <code>...</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector with the same type and size as the common type and common
+size of the vectors in <code>...</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/na_if.html">na_if()</a></code> to replace specified values with an <code>NA</code>.
+<code><a href="../../tidyr/help/replace_na.html">tidyr::replace_na()</a></code> to replace <code>NA</code> with a value.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Use a single value to replace all missing values
+x &lt;- sample(c(1:5, NA, NA, NA))
+coalesce(x, 0L)
+
+# The equivalent to a missing value in a list is `NULL`
+coalesce(list(1, 2, NULL), list(NA))
+
+# Or generate a complete vector from partially missing pieces
+y &lt;- c(1, 2, NA, NA, 5)
+z &lt;- c(NA, NA, 3, 4, 5)
+coalesce(y, z)
+
+# Supply lists by splicing them into dots:
+vecs &lt;- list(
+  c(1, 2, NA, NA, 5),
+  c(NA, NA, 3, 4, 5)
+)
+coalesce(!!!vecs)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

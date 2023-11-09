@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Transform spatial position data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sf_transform_xy {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sf_transform_xy'>Transform spatial position data</h2>
+
+<h3>Description</h3>
+
+<p>Helper function that can transform spatial position data (pairs of x, y
+values) among coordinate systems. This is implemented as a thin wrapper
+around <code><a href="../../sf/help/sf_project.html">sf::sf_project()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sf_transform_xy(data, target_crs, source_crs, authority_compliant = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sf_transform_xy_:_data">data</code></td>
+<td>
+<p>Data frame or list containing numerical columns <code>x</code> and <code>y</code>.</p>
+</td></tr>
+<tr><td><code id="sf_transform_xy_:_target_crs">target_crs</code>, <code id="sf_transform_xy_:_source_crs">source_crs</code></td>
+<td>
+<p>Target and source coordinate reference systems.
+If <code>NULL</code> or <code>NA</code>, the data is not transformed.</p>
+</td></tr>
+<tr><td><code id="sf_transform_xy_:_authority_compliant">authority_compliant</code></td>
+<td>
+<p>logical; <code>TRUE</code> means handle axis order authority
+compliant (e.g. EPSG:4326 implying <code>x = lat</code>, <code>y = lon</code>), <code>FALSE</code> means use
+visualisation order (i.e. always <code>x = lon</code>, <code>y = lat</code>). Default is <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A copy of the input data with <code>x</code> and <code>y</code> replaced by transformed values.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>if (requireNamespace("sf", quietly = TRUE)) {
+# location of cities in NC by long (x) and lat (y)
+data &lt;- data.frame(
+  city = c("Charlotte", "Raleigh", "Greensboro"),
+  x =  c(-80.843, -78.639, -79.792),
+  y = c(35.227, 35.772, 36.073)
+)
+
+# transform to projected coordinates
+data_proj &lt;- sf_transform_xy(data, 3347, 4326)
+data_proj
+
+# transform back
+sf_transform_xy(data_proj, 4326, 3347)
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

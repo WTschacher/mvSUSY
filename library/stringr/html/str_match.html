@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><title>R: Extract components (capturing groups) from a match</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_match {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_match'>Extract components (capturing groups) from a match</h2>
+
+<h3>Description</h3>
+
+<p>Extract any number of matches defined by unnamed, <code>(pattern)</code>, and
+named, <code style="white-space: pre;">&#8288;(?&lt;name&gt;pattern)&#8288;</code> capture groups.
+</p>
+<p>Use a non-capturing group, <code style="white-space: pre;">&#8288;(?:pattern)&#8288;</code>, if you need to override default
+operate precedence but don't want to capture the result.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_match(string, pattern)
+
+str_match_all(string, pattern)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_match_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_match_:_pattern">pattern</code></td>
+<td>
+<p>Unlike other stringr functions, <code>str_match()</code> only supports
+regular expressions, as described <code>vignette("regular-expressions")</code>.
+The pattern should contain at least one capturing group.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+
+<ul>
+<li> <p><code>str_match()</code>: a character matrix with the same number of rows as the
+length of <code>string</code>/<code>pattern</code>. The first column is the complete match,
+followed by one column for each capture group. The columns will be named
+if you used &quot;named captured groups&quot;, i.e. <code style="white-space: pre;">&#8288;(?&lt;name&gt;pattern')&#8288;</code>.
+</p>
+</li>
+<li> <p><code>str_match_all()</code>: a list of the same length as <code>string</code>/<code>pattern</code>
+containing character matrices. Each matrix has columns as descrbed above
+and one row for each match.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringr/help/str_extract.html">str_extract()</a></code> to extract the complete match,
+<code><a href="../../stringi/help/stri_match.html">stringi::stri_match()</a></code> for the underlying implementation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>strings &lt;- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+  "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+  "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+  "Home: 543.355.3679")
+phone &lt;- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+
+str_extract(strings, phone)
+str_match(strings, phone)
+
+# Extract/match all
+str_extract_all(strings, phone)
+str_match_all(strings, phone)
+
+# You can also name the groups to make further manipulation easier
+phone &lt;- "(?&lt;area&gt;[2-9][0-9]{2})[- .](?&lt;phone&gt;[0-9]{3}[- .][0-9]{4})"
+str_match(strings, phone)
+
+x &lt;- c("&lt;a&gt; &lt;b&gt;", "&lt;a&gt; &lt;&gt;", "&lt;a&gt;", "", NA)
+str_match(x, "&lt;(.*?)&gt; &lt;(.*?)&gt;")
+str_match_all(x, "&lt;(.*?)&gt;")
+
+str_extract(x, "&lt;.*?&gt;")
+str_extract_all(x, "&lt;.*?&gt;")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

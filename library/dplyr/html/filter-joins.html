@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><title>R: Filtering joins</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>filter-joins {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='filter-joins'>Filtering joins</h2>
+
+<h3>Description</h3>
+
+<p>Filtering joins filter rows from <code>x</code> based on the presence or absence
+of matches in <code>y</code>:
+</p>
+
+<ul>
+<li> <p><code>semi_join()</code> return all rows from <code>x</code> with a match in <code>y</code>.
+</p>
+</li>
+<li> <p><code>anti_join()</code> return all rows from <code>x</code> with<strong>out</strong> a match in <code>y</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>semi_join(x, y, by = NULL, copy = FALSE, ...)
+
+## S3 method for class 'data.frame'
+semi_join(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na", "never"))
+
+anti_join(x, y, by = NULL, copy = FALSE, ...)
+
+## S3 method for class 'data.frame'
+anti_join(x, y, by = NULL, copy = FALSE, ..., na_matches = c("na", "never"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="filter-joins_:_x">x</code>, <code id="filter-joins_:_y">y</code></td>
+<td>
+<p>A pair of data frames, data frame extensions (e.g. a tibble), or
+lazy data frames (e.g. from dbplyr or dtplyr). See <em>Methods</em>, below, for
+more details.</p>
+</td></tr>
+<tr><td><code id="filter-joins_:_by">by</code></td>
+<td>
+<p>A join specification created with <code><a href="../../dplyr/help/join_by.html">join_by()</a></code>, or a character
+vector of variables to join by.
+</p>
+<p>If <code>NULL</code>, the default, <code style="white-space: pre;">&#8288;*_join()&#8288;</code> will perform a natural join, using all
+variables in common across <code>x</code> and <code>y</code>. A message lists the variables so
+that you can check they're correct; suppress the message by supplying <code>by</code>
+explicitly.
+</p>
+<p>To join on different variables between <code>x</code> and <code>y</code>, use a <code><a href="../../dplyr/help/join_by.html">join_by()</a></code>
+specification. For example, <code>join_by(a == b)</code> will match <code>x$a</code> to <code>y$b</code>.
+</p>
+<p>To join by multiple variables, use a <code><a href="../../dplyr/help/join_by.html">join_by()</a></code> specification with
+multiple expressions. For example, <code>join_by(a == b, c == d)</code> will match
+<code>x$a</code> to <code>y$b</code> and <code>x$c</code> to <code>y$d</code>. If the column names are the same between
+<code>x</code> and <code>y</code>, you can shorten this by listing only the variable names, like
+<code>join_by(a, c)</code>.
+</p>
+<p><code><a href="../../dplyr/help/join_by.html">join_by()</a></code> can also be used to perform inequality, rolling, and overlap
+joins. See the documentation at <a href="../../dplyr/help/join_by.html">?join_by</a> for details on
+these types of joins.
+</p>
+<p>For simple equality joins, you can alternatively specify a character vector
+of variable names to join by. For example, <code>by = c("a", "b")</code> joins <code>x$a</code>
+to <code>y$a</code> and <code>x$b</code> to <code>y$b</code>. If variable names differ between <code>x</code> and <code>y</code>,
+use a named character vector like <code>by = c("x_a" = "y_a", "x_b" = "y_b")</code>.
+</p>
+<p>To perform a cross-join, generating all combinations of <code>x</code> and <code>y</code>, see
+<code><a href="../../dplyr/help/cross_join.html">cross_join()</a></code>.</p>
+</td></tr>
+<tr><td><code id="filter-joins_:_copy">copy</code></td>
+<td>
+<p>If <code>x</code> and <code>y</code> are not from the same data source,
+and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
+same src as <code>x</code>.  This allows you to join tables across srcs, but
+it is a potentially expensive operation so you must opt into it.</p>
+</td></tr>
+<tr><td><code id="filter-joins_:_...">...</code></td>
+<td>
+<p>Other parameters passed onto methods.</p>
+</td></tr>
+<tr><td><code id="filter-joins_:_na_matches">na_matches</code></td>
+<td>
+<p>Should two <code>NA</code> or two <code>NaN</code> values match?
+</p>
+
+<ul>
+<li> <p><code>"na"</code>, the default, treats two <code>NA</code> or two <code>NaN</code> values as equal, like
+<code>%in%</code>, <code><a href="../../base/html/match.html">match()</a></code>, and <code><a href="../../base/html/merge.html">merge()</a></code>.
+</p>
+</li>
+<li> <p><code>"never"</code> treats two <code>NA</code> or two <code>NaN</code> values as different, and will
+never match them together or to any other values. This is similar to joins
+for database sources and to <code>base::merge(incomparables = NA)</code>.
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the same type as <code>x</code>. The output has the following properties:
+</p>
+
+<ul>
+<li><p> Rows are a subset of the input, but appear in the same order.
+</p>
+</li>
+<li><p> Columns are not modified.
+</p>
+</li>
+<li><p> Data frame attributes are preserved.
+</p>
+</li>
+<li><p> Groups are taken from <code>x</code>. The number of groups may be reduced.
+</p>
+</li></ul>
+
+
+
+<h3>Methods</h3>
+
+<p>These function are <strong>generic</strong>s, which means that packages can provide
+implementations (methods) for other classes. See the documentation of
+individual methods for extra arguments and differences in behaviour.
+</p>
+<p>Methods available in currently loaded packages:
+</p>
+
+<ul>
+<li> <p><code>semi_join()</code>: no methods found.
+</p>
+</li>
+<li> <p><code>anti_join()</code>: no methods found.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>Other joins: 
+<code><a href="../../dplyr/help/cross_join.html">cross_join</a>()</code>,
+<code><a href="../../dplyr/help/mutate-joins.html">mutate-joins</a></code>,
+<code><a href="../../dplyr/help/nest_join.html">nest_join</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># "Filtering" joins keep cases from the LHS
+band_members %&gt;% semi_join(band_instruments)
+band_members %&gt;% anti_join(band_instruments)
+
+# To suppress the message about joining variables, supply `by`
+band_members %&gt;% semi_join(band_instruments, by = join_by(name))
+# This is good practice in production code
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: List available R Markdown template in a package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>available_templates {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='available_templates'>List available R Markdown template in a package</h2>
+
+<h3>Description</h3>
+
+<p>List the available template by name that can be used with <code><a href="../../rmarkdown/help/draft.html">draft()</a></code> to create
+a new document for R Markdown from a package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>available_templates(package = "rmarkdown", full_path = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="available_templates_:_package">package</code></td>
+<td>
+<p>Package to list template from. Default to <strong>rmarkdown</strong></p>
+</td></tr>
+<tr><td><code id="available_templates_:_full_path">full_path</code></td>
+<td>
+<p>Set to <code>TRUE</code> to get the full path to the available templates</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of templates name to use within <code><a href="../../rmarkdown/help/draft.html">draft()</a></code>. If
+<code>full_path = TRUE</code>, it returns the full path to the templates.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># List rmarkdown templates &amp; create a draft
+available_templates()
+
+# List rticles templates
+available_templates("rticles")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>R: Add custom objects to ggplot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>ggplot_add {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='ggplot_add'>Add custom objects to ggplot</h2>
+
+<h3>Description</h3>
+
+<p>This generic allows you to add your own methods for adding custom objects to
+a ggplot with <a href="../../ggplot2/help/+2B.gg.html">+.gg</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ggplot_add(object, plot, object_name)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="ggplot_add_:_object">object</code></td>
+<td>
+<p>An object to add to the plot</p>
+</td></tr>
+<tr><td><code id="ggplot_add_:_plot">plot</code></td>
+<td>
+<p>The ggplot object to add <code>object</code> to</p>
+</td></tr>
+<tr><td><code id="ggplot_add_:_object_name">object_name</code></td>
+<td>
+<p>The name of the object to add</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A modified ggplot object
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

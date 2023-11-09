@@ -1,0 +1,165 @@
+<!DOCTYPE html><html><head><title>R: Simulate Color Vision Deficiency</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>simulate_cvd {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='simulate_cvd'>Simulate Color Vision Deficiency</h2>
+
+<h3>Description</h3>
+
+<p>Transformation of R colors by simulating color vision deficiencies,
+based on a CVD transform matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>simulate_cvd(col, cvd_transform, linear = TRUE)
+
+deutan(col, severity = 1, linear = TRUE)
+
+protan(col, severity = 1, linear = TRUE)
+
+tritan(col, severity = 1, linear = TRUE)
+
+interpolate_cvd_transform(cvd, severity = 1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="simulate_cvd_:_col">col</code></td>
+<td>
+<p>vector of R colors. Can be any of the three kinds of R colors,
+i.e., either a color name (an element of <code><a href="../../grDevices/help/colors.html">colors</a></code>), a hexadecimal (hex)
+string of the form <code>"#rrggbb"</code> or <code>"#rrggbbaa"</code> (see <code><a href="../../grDevices/help/rgb.html">rgb</a></code>), or
+an integer <code>i</code> meaning <code>palette()[i]</code>. Additionally, <code>col</code> can be
+a formal <code><a href="../help/color-class.html">color-class</a></code> object or a matrix with three named
+rows (or columns) containing R/G/B (0-255) values.</p>
+</td></tr>
+<tr><td><code id="simulate_cvd_:_cvd_transform">cvd_transform</code></td>
+<td>
+<p>numeric 3x3 matrix, specifying the color vision deficiency transform matrix.</p>
+</td></tr>
+<tr><td><code id="simulate_cvd_:_linear">linear</code></td>
+<td>
+<p>logical. Should the color vision deficiency transformation be applied to the
+linearized RGB coordinates (default)? If <code>FALSE</code>, the transformation is applied to the
+gamma-corrected sRGB coordinates (which was the default up to version 2.0-3 of the package).</p>
+</td></tr>
+<tr><td><code id="simulate_cvd_:_severity">severity</code></td>
+<td>
+<p>numeric. Severity of the color vision defect, a number between 0 and 1.</p>
+</td></tr>
+<tr><td><code id="simulate_cvd_:_cvd">cvd</code></td>
+<td>
+<p>list of cvd transformation matrices. See <code><a href="../../colorspace/help/cvd.html">cvd</a></code> for available options.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Using the physiologically-based model for simulating color vision deficiency (CVD)
+of Machado et al. (2009), different kinds of limitations can be
+emulated: deuteranope (green cone cells defective), protanope (red cone cells defective),
+and tritanope (blue cone cells defective).
+The workhorse function to do so is <code>simulate_cvd</code> which can take any vector
+of valid R colors and transform them according to a certain CVD transformation
+matrix (see <code><a href="../../colorspace/help/cvd.html">cvd</a></code>) and transformation equation.
+</p>
+<p>The functions <code>deutan</code>, <code>protan</code>, and <code>tritan</code> are the high-level functions for
+simulating the corresponding kind of colorblindness with a given severity.
+Internally, they all call <code>simulate_cvd</code> along with a (possibly interpolated)
+version of the matrices from <code><a href="../../colorspace/help/cvd.html">cvd</a></code>. Matrix interpolation can be carried out with
+the function <code>interpolate_cvd_transform</code> (see examples).
+</p>
+<p>If input <code>col</code> is a matrix with three rows named <code>R</code>, <code>G</code>, and
+<code>B</code> (top down) they are interpreted as Red-Green-Blue values within the
+range <code>[0-255]</code>. Then the CVD transformation is applied directly to these
+coordinates avoiding any further conversions.
+</p>
+<p>Finally, if <code>col</code> is a formal <code><a href="../help/color-class.html">color-class</a></code> object, then its
+coordinates are transformed to (s)RGB coordinates, as described above, and returned as a formal
+object of the same class after the color vision deficiency simulation.
+</p>
+<p>Up to version 2.0-3 of the package, the CVD transformations had been applied
+directly to the gamma-corrected sRGB coordinates (corresponding to the hex coordinates
+of the colors), following the illustrations of Machado et al. (2009). However,
+the paper implicitly relies on a linear RGB space (see page 1294, column 1) where their
+linear matrix transformations for simulating color vision deficiencies are applied.
+Therefore, starting from version 2.1-0 of the package, a new argument <code>linear = TRUE</code>
+has been added that first maps the provided colors to linearized RGB coordinates, applies
+the color vision deficiency transformation, and then maps back to gamma-corrected sRGB
+coordinates. Optionally, <code>linear = FALSE</code> can be used to restore the behavior
+from previous versions. For most colors the difference between the two strategies is
+negligible but for some highly-saturated colors it becomes more noticable, e.g., for
+red, purple, or orange.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A color object as specified in the input <code>col</code> (hexadecimal string, RGB matrix,
+or formal color class) with simulated color vision deficiency.
+</p>
+
+
+<h3>References</h3>
+
+<p>Machado GM, Oliveira MM, Fernandes LAF (2009).
+&ldquo;A Physiologically-Based Model for Simulation of Color Vision Deficiency.&rdquo;
+<em>IEEE Transactions on Visualization and Computer Graphics</em>. <b>15</b>(6), 1291&ndash;1298.
+<a href="https://doi.org/10.1109/TVCG.2009.113">doi:10.1109/TVCG.2009.113</a>
+Online version with supplements at
+<a href="http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html">http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html</a>.
+</p>
+<p>Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
+&ldquo;colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.&rdquo;
+<em>Journal of Statistical Software</em>, <b>96</b>(1), 1&ndash;49.
+<a href="https://doi.org/10.18637/jss.v096.i01">doi:10.18637/jss.v096.i01</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../colorspace/help/cvd.html">cvd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># simulate color-vision deficiency by calling `simulate_cvd` with specified matrix
+simulate_cvd(c("#005000", "blue", "#00BB00"), tritanomaly_cvd["6"][[1]])
+
+# simulate color-vision deficiency by calling the shortcut high-level function
+tritan(c("#005000", "blue", "#00BB00"), severity = 0.6)
+
+# simulate color-vision deficiency by calling `simulate_cvd` with interpolated cvd matrix
+simulate_cvd(c("#005000", "blue", "#00BB00"),
+             interpolate_cvd_transform(tritanomaly_cvd, severity = 0.6))
+
+# apply CVD directly on wide RGB matrix (with R/G/B channels in rows)
+RGB &lt;- diag(3) * 255
+rownames(RGB) &lt;- c("R", "G", "B")
+deutan(RGB)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

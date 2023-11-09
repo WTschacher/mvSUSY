@@ -1,0 +1,278 @@
+<!DOCTYPE html><html><head><title>R: Helpers for importing web fonts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>font_google {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='font_google'>Helpers for importing web fonts</h2>
+
+<h3>Description</h3>
+
+<p>Include font file(s) when defining a Sass variable that represents a CSS
+<code>font-family</code> property.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>font_google(
+  family,
+  local = TRUE,
+  cache = sass_file_cache(sass_cache_context_dir()),
+  wght = NULL,
+  ital = NULL,
+  display = c("swap", "auto", "block", "fallback", "optional")
+)
+
+font_link(family, href)
+
+font_face(
+  family,
+  src,
+  weight = NULL,
+  style = NULL,
+  display = c("swap", "auto", "block", "fallback", "optional"),
+  stretch = NULL,
+  variant = NULL,
+  unicode_range = NULL
+)
+
+font_collection(..., default_flag = TRUE, quote = TRUE)
+
+is_font_collection(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="font_google_:_family">family</code></td>
+<td>
+<p>A character string with a <em>single</em> font family name.</p>
+</td></tr>
+<tr><td><code id="font_google_:_local">local</code></td>
+<td>
+<p>Whether or not download and bundle local (woff) font files.</p>
+</td></tr>
+<tr><td><code id="font_google_:_cache">cache</code></td>
+<td>
+<p>A <code><a href="../../sass/help/sass_file_cache.html">sass_file_cache()</a></code> object (or, more generally, a file
+caching class with <code style="white-space: pre;">&#8288;$get_file()&#8288;</code> and <code style="white-space: pre;">&#8288;$set_file()&#8288;</code> methods). Set this
+argument to <code>FALSE</code> or <code>NULL</code> to disable caching.</p>
+</td></tr>
+<tr><td><code id="font_google_:_wght">wght</code></td>
+<td>
+<p>One of the following:
+</p>
+
+<ul>
+<li> <p><code>NULL</code>, the default weight for the <code>family</code>.
+</p>
+</li>
+<li><p> A character string defining an <a href="https://developers.google.com/fonts/docs/css2#axis_ranges">axis range</a>
+</p>
+</li>
+<li><p> A numeric vector of desired font weight(s).
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="font_google_:_ital">ital</code></td>
+<td>
+<p>One of the following:
+</p>
+
+<ul>
+<li> <p><code>NULL</code>, the default <code>font-style</code> for the <code>family</code>.
+</p>
+</li>
+<li> <p><code>0</code>, meaning <code>font-style: normal</code>
+</p>
+</li>
+<li> <p><code>1</code>, meaning <code>font-style: italic</code>
+</p>
+</li>
+<li> <p><code>c(0, 1)</code>, meaning both <code>normal</code> and <code>italic</code>
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="font_google_:_display">display</code></td>
+<td>
+<p>A character vector for the <code>font-display</code> <code style="white-space: pre;">&#8288;@font-face&#8288;</code>
+property.</p>
+</td></tr>
+<tr><td><code id="font_google_:_href">href</code></td>
+<td>
+<p>A URL resource pointing to the font data.</p>
+</td></tr>
+<tr><td><code id="font_google_:_src">src</code></td>
+<td>
+<p>A character vector for the <code>src</code> <code style="white-space: pre;">&#8288;@font-face&#8288;</code> property. Beware
+that is character strings are taken verbatim, so careful quoting and/or URL
+encoding may be required.</p>
+</td></tr>
+<tr><td><code id="font_google_:_weight">weight</code></td>
+<td>
+<p>A character (or numeric) vector for the <code>font-weight</code>
+<code style="white-space: pre;">&#8288;@font-face&#8288;</code> property.</p>
+</td></tr>
+<tr><td><code id="font_google_:_style">style</code></td>
+<td>
+<p>A character vector for the <code>font-style</code> <code style="white-space: pre;">&#8288;@font-face&#8288;</code> property.</p>
+</td></tr>
+<tr><td><code id="font_google_:_stretch">stretch</code></td>
+<td>
+<p>A character vector for the <code>font-stretch</code> <code style="white-space: pre;">&#8288;@font-face&#8288;</code>
+property.</p>
+</td></tr>
+<tr><td><code id="font_google_:_variant">variant</code></td>
+<td>
+<p>A character vector for the <code>font-variant</code> <code style="white-space: pre;">&#8288;@font-face&#8288;</code>
+property.</p>
+</td></tr>
+<tr><td><code id="font_google_:_unicode_range">unicode_range</code></td>
+<td>
+<p>A character vector for <code>unicode-range</code> <code style="white-space: pre;">&#8288;@font-face&#8288;</code>
+property.</p>
+</td></tr>
+<tr><td><code id="font_google_:_...">...</code></td>
+<td>
+<p>a collection of <code>font_google()</code>, <code>font_link()</code>, <code>font_face()</code>, and/or character vector(s) (i.e., family names to include in the CSS <code>font-family</code> properly). Family names are automatically quoted as necessary.</p>
+</td></tr>
+<tr><td><code id="font_google_:_default_flag">default_flag</code></td>
+<td>
+<p>whether or not to include a <code>!default</code> when converted to a Sass variable with <code><a href="../../sass/help/as_sass.html">as_sass()</a></code>.</p>
+</td></tr>
+<tr><td><code id="font_google_:_quote">quote</code></td>
+<td>
+<p>whether or not to attempt automatic quoting of family names.</p>
+</td></tr>
+<tr><td><code id="font_google_:_x">x</code></td>
+<td>
+<p>test whether <code>x</code> is a <code>font_collection()</code>, <code>font_google()</code>, <code>font_link()</code>, or <code>font_face()</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These helpers <strong>must be used the named list approach to variable
+definitions</strong>, for example:
+</p>
+<div class="sourceCode"><pre>list(
+  list("font-variable" = font_google("Pacifico")),
+  list("body{font-family: $font-variable}")
+)
+</pre></div>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code> holding an <code><a href="../../htmltools/help/htmlDependency.html">htmltools::htmlDependency()</a></code> which points
+to the font files.
+</p>
+
+
+<h3>Font fallbacks</h3>
+
+<p>By default, <code>font_google()</code> downloads, caches, and serves the relevant font
+file(s) locally. By locally serving files, there's a guarantee that the font
+can render in any client browser, even when the client doesn't have internet
+access. However, when importing font files remotely (i.e., <code>font_google(..., local = FALSE)</code> or <code>font_link()</code>), it's a good idea to provide fallback
+font(s) in case the remote link isn't working (e.g., maybe the end user
+doesn't have an internet connection). To provide fallback fonts, use
+<code><a href="../../sass/help/font_collection.html">font_collection()</a></code>, for example:
+</p>
+<div class="sourceCode"><pre>pacifico &lt;- font_google("Pacifico", local = FALSE)
+as_sass(list(
+  list("font-variable" = font_collection(pacifico, "system-ui")),
+  list("body{font-family: $font-variable}")
+))
+</pre></div>
+
+
+<h3>Default flags</h3>
+
+<p>These font helpers encourage best practice of adding a <code>!default</code> to Sass
+variable definitions, but the flag may be removed via <code>font_collection()</code> if
+desired.
+</p>
+<div class="sourceCode"><pre>as_sass(list("font-variable" = pacifico))
+#&gt; $font-variable: Pacifico !default;
+as_sass(list("font-variable" = font_collection(pacifico, default_flag = F)))
+#&gt; $font-variable: Pacifico;
+</pre></div>
+
+
+<h3>Serving non-Google fonts locally</h3>
+
+<p>Non-Google fonts may also be served locally with <code>font_face()</code>, but it
+requires downloading font file(s) and pointing <code>src</code> to the right location
+on disk. If you want <code>src</code> to be a relative file path (you almost certainly
+do), then you'll need to mount that resource path using something like
+<code><a href="../../shiny/help/resourcePaths.html">shiny::addResourcePath()</a></code> (for a shiny app) or <code>servr::httd()</code> (for static
+HTML).
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://developers.google.com/fonts/docs/css2">https://developers.google.com/fonts/docs/css2</a>
+</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face">https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face</a>
+</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Web_fonts">https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Web_fonts</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+library(htmltools)
+
+my_font &lt;- list("my-font" = font_google("Pacifico"))
+hello &lt;- tags$body(
+  "Hello",
+  tags$style(
+    sass(
+      list(
+        my_font,
+        list("body {font-family: $my-font}")
+      )
+    )
+  )
+)
+
+if (interactive()) {
+  browsable(hello)
+}
+
+# Three different yet equivalent ways of importing a remotely-hosted Google Font
+a &lt;- font_google("Crimson Pro", wght = "200..900", local = FALSE)
+b &lt;- font_link(
+  "Crimson Pro",
+  href = "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200..900"
+)
+url &lt;- "https://fonts.gstatic.com/s/crimsonpro/v13/q5uDsoa5M_tv7IihmnkabARboYF6CsKj.woff2"
+c &lt;- font_face(
+  family = "Crimson Pro",
+  style = "normal",
+  weight = "200 900",
+  src = paste0("url(", url, ") format('woff2')")
+)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

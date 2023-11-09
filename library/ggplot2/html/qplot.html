@@ -1,0 +1,163 @@
+<!DOCTYPE html><html><head><title>R: Quick plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>qplot {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='qplot'>Quick plot</h2>
+
+<h3>Description</h3>
+
+<p><code>qplot()</code> is now deprecated in order to encourage the users to
+learn <code><a href="../../ggplot2/help/ggplot.html">ggplot()</a></code> as it makes it easier to create complex graphics.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>qplot(
+  x,
+  y,
+  ...,
+  data,
+  facets = NULL,
+  margins = FALSE,
+  geom = "auto",
+  xlim = c(NA, NA),
+  ylim = c(NA, NA),
+  log = "",
+  main = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  asp = NA,
+  stat = deprecated(),
+  position = deprecated()
+)
+
+quickplot(
+  x,
+  y,
+  ...,
+  data,
+  facets = NULL,
+  margins = FALSE,
+  geom = "auto",
+  xlim = c(NA, NA),
+  ylim = c(NA, NA),
+  log = "",
+  main = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  asp = NA,
+  stat = deprecated(),
+  position = deprecated()
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="qplot_:_x">x</code>, <code id="qplot_:_y">y</code>, <code id="qplot_:_...">...</code></td>
+<td>
+<p>Aesthetics passed into each layer</p>
+</td></tr>
+<tr><td><code id="qplot_:_data">data</code></td>
+<td>
+<p>Data frame to use (optional).  If not specified, will create
+one, extracting vectors from the current environment.</p>
+</td></tr>
+<tr><td><code id="qplot_:_facets">facets</code></td>
+<td>
+<p>faceting formula to use. Picks <code><a href="../../ggplot2/help/facet_wrap.html">facet_wrap()</a></code> or
+<code><a href="../../ggplot2/help/facet_grid.html">facet_grid()</a></code> depending on whether the formula is one-
+or two-sided</p>
+</td></tr>
+<tr><td><code id="qplot_:_margins">margins</code></td>
+<td>
+<p>See <code>facet_grid()</code>: display marginal facets?</p>
+</td></tr>
+<tr><td><code id="qplot_:_geom">geom</code></td>
+<td>
+<p>Character vector specifying geom(s) to draw. Defaults to
+&quot;point&quot; if x and y are specified, and &quot;histogram&quot; if only x is specified.</p>
+</td></tr>
+<tr><td><code id="qplot_:_xlim">xlim</code>, <code id="qplot_:_ylim">ylim</code></td>
+<td>
+<p>X and y axis limits</p>
+</td></tr>
+<tr><td><code id="qplot_:_log">log</code></td>
+<td>
+<p>Which variables to log transform (&quot;x&quot;, &quot;y&quot;, or &quot;xy&quot;)</p>
+</td></tr>
+<tr><td><code id="qplot_:_main">main</code>, <code id="qplot_:_xlab">xlab</code>, <code id="qplot_:_ylab">ylab</code></td>
+<td>
+<p>Character vector (or expression) giving plot title,
+x axis label, and y axis label respectively.</p>
+</td></tr>
+<tr><td><code id="qplot_:_asp">asp</code></td>
+<td>
+<p>The y/x aspect ratio</p>
+</td></tr>
+<tr><td><code id="qplot_:_stat">stat</code>, <code id="qplot_:_position">position</code></td>
+<td>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Use data from data.frame
+qplot(mpg, wt, data = mtcars)
+qplot(mpg, wt, data = mtcars, colour = cyl)
+qplot(mpg, wt, data = mtcars, size = cyl)
+qplot(mpg, wt, data = mtcars, facets = vs ~ am)
+
+
+set.seed(1)
+qplot(1:10, rnorm(10), colour = runif(10))
+qplot(1:10, letters[1:10])
+mod &lt;- lm(mpg ~ wt, data = mtcars)
+qplot(resid(mod), fitted(mod))
+
+f &lt;- function() {
+   a &lt;- 1:10
+   b &lt;- a ^ 2
+   qplot(a, b)
+}
+f()
+
+# To set aesthetics, wrap in I()
+qplot(mpg, wt, data = mtcars, colour = I("red"))
+
+# qplot will attempt to guess what geom you want depending on the input
+# both x and y supplied = scatterplot
+qplot(mpg, wt, data = mtcars)
+# just x supplied = histogram
+qplot(mpg, data = mtcars)
+# just y supplied = scatterplot, with x = seq_along(y)
+qplot(y = mpg, data = mtcars)
+
+# Use different geoms
+qplot(mpg, wt, data = mtcars, geom = "path")
+qplot(factor(cyl), wt, data = mtcars, geom = c("boxplot", "jitter"))
+qplot(mpg, data = mtcars, geom = "dotplot")
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

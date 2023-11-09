@@ -1,0 +1,106 @@
+<!DOCTYPE html><html><head><title>R: Switch input control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>input_switch {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='input_switch'>Switch input control</h2>
+
+<h3>Description</h3>
+
+<p>Create an on-off style switch control for specifying logical values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>input_switch(id, label, value = FALSE, width = NULL)
+
+update_switch(id, label = NULL, value = NULL, session = get_current_session())
+
+toggle_switch(id, value = NULL, session = get_current_session())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="input_switch_:_id">id</code></td>
+<td>
+<p>An input id.</p>
+</td></tr>
+<tr><td><code id="input_switch_:_label">label</code></td>
+<td>
+<p>A label for the switch.</p>
+</td></tr>
+<tr><td><code id="input_switch_:_value">value</code></td>
+<td>
+<p>Whether or not the switch should be checked by default.</p>
+</td></tr>
+<tr><td><code id="input_switch_:_width">width</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g.,
+<code>width="200px"</code>).</p>
+</td></tr>
+<tr><td><code id="input_switch_:_session">session</code></td>
+<td>
+<p>a shiny session object (the default should almost always be used).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a UI element for a switch input control. The server value
+received for the input corresponding to <code>id</code> will be a logical
+(<code>TRUE</code>/<code>FALSE</code>) value.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+library(shiny)
+library(bslib)
+
+ui &lt;- page_fixed(
+  title = "Keyboard Settings",
+  h2("Keyboard Settings"),
+  input_switch("auto_capitalization", "Auto-Capitalization", TRUE),
+  input_switch("auto_correction", "Auto-Correction", TRUE),
+  input_switch("check_spelling", "Check Spelling", TRUE),
+  input_switch("smart_punctuation", "Smart Punctuation"),
+  h2("Preview"),
+  verbatimTextOutput("preview")
+)
+
+server &lt;- function(input, output, session) {
+  output$preview &lt;- renderPrint({
+    list(
+      auto_capitalization = input$auto_capitalization,
+      auto_correction = input$auto_correction,
+      check_spelling = input$check_spelling,
+      smart_punctuation = input$smart_punctuation
+    )
+  })
+}
+
+shinyApp(ui, server)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

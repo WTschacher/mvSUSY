@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>R: Polygon for County Map of US South States: Alabama, Georgia,...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>USSouthPolygon {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='USSouthPolygon'>Polygon for County Map of US South States: Alabama, Georgia, and South
+Carolina</h2>
+
+<h3>Description</h3>
+
+<p>County polygons for Alabama, Georgia, and South Carolina plus an artifical
+variable used for coloring.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data("USSouthPolygon")
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with coordinates of the vertices of the county polygons
+(<code>x</code>, <code>y</code>) and an artificial variable <code>z</code> constructed for
+illustrating colored maps.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Polygon data taken from <span class="pkg">maps</span> package of Becker, Wilks,
+Brownrigg, and Minka (2012). Version 2.2-6.
+<a href="https://CRAN.R-project.org/package=maps">https://CRAN.R-project.org/package=maps</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## generate color palette
+pal &lt;- diverging_hcl(9)
+n &lt;- length(pal)
+
+## draw shaded polygons
+plot(0, 0, type = "n", xlab = "", ylab = "", xaxt = "n", yaxt = "n", bty = "n",
+  xlim = c(-88.5, -78.6), ylim = c(30.2, 35.2), asp = 1)
+polygon(USSouthPolygon, col = pal[cut(na.omit(USSouthPolygon$z), breaks = 0:n/n)])
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

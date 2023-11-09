@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><title>R: RFC 2409 Oakley Groups - Parameters for Diffie-Hellman Key...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>Oakley {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='Oakley'>RFC 2409 Oakley Groups - Parameters for Diffie-Hellman Key Exchange</h2>
+
+<h3>Description</h3>
+
+<p>RFC 2409 standardizes global unique prime numbers and generators for
+the purpose of secure asymmetric key exchange on the Internet.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data(Oakley1)
+data(Oakley2)
+</code></pre>
+
+
+<h3>Value</h3>
+
+<p>Oakley1 returns an object of class <code><a href="../../gmp/help/bigz.html">bigz</a></code> for a 768 bit Diffie-Hellman group.  The generator is stored as value with the respective prime number as modulus attribute.
+</p>
+<p>Oakley2 returns an object of class <code><a href="../../gmp/help/bigz.html">bigz</a></code> for a 1024 bit Diffie-Hellman group.  The generator is stored as value with the respective prime number as modulus attribute.
+</p>
+
+
+<h3>References</h3>
+
+<p>The Internet Key Exchange (RFC 2409), Nov. 1998</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>packageDescription("gmp") # {possibly useful for debugging}
+
+data(Oakley1)
+(M1 &lt;- modulus(Oakley1))
+isprime(M1)# '1' : "probably prime"
+sizeinbase(M1)#  232 digits (was 309 in older version)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

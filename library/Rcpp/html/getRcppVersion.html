@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Export the Rcpp (API) Package Version</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>getRcppVersion {Rcpp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='getRcppVersion'>Export the Rcpp (API) Package Version</h2>
+
+<h3>Description</h3>
+
+<p>Helper function to report the package version of the R installation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>getRcppVersion(devel = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="getRcppVersion_:_devel">devel</code></td>
+<td>
+<p>An logical value indicating if the development or
+release version number should be returned, default is release.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>While <code>packageVersion(Rcpp)</code> exports the version registers in
+DESCRIPTION, this version does get incremented more easily
+during development and can therefore be higher than the released
+version.  The actual <code>#define</code> long used at the C++ level
+corresponds more to an &lsquo;API Version&rsquo; which is now provided
+by this function, and use for example in the package skeleton
+generator.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>package_version</code> object with either the release
+or development version.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Dirk Eddelbuettel
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/packageDescription.html">packageVersion</a></code>,
+<code><a href="../../Rcpp/help/Rcpp.package.skeleton.html">Rcpp.package.skeleton</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>getRcppVersion()
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>Rcpp</em> version 1.0.11 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

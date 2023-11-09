@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>R: Modulus of a Big Integer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>modulus {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='modulus'>Modulus of a Big Integer</h2>
+
+<h3>Description</h3>
+
+<p>The modulus of a <code><a href="../../gmp/help/bigz.html">bigz</a></code> number <code class="reqn">a</code> is
+&ldquo;unset&rdquo; when <code class="reqn">a</code> is a regular integer, <code class="reqn">a \in Z</code>).
+Or the modulus can be set to <code class="reqn">m</code> which means
+<code class="reqn">a \in Z/\,m\cdot Z</code>), i.e., all arithmetic with
+<code class="reqn">a</code> is performed &lsquo;modulo m&rsquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>modulus(a)
+modulus(a) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="modulus_:_a">a</code></td>
+<td>
+<p><span class="rlang"><b>R</b></span> object of class <code>"<a href="../../gmp/help/bigz.html">bigz</a>"</code></p>
+</td></tr>
+<tr><td><code id="modulus_:_value">value</code></td>
+<td>
+<p>integer number or object of class <code>"<a href="../../gmp/help/bigz.html">bigz</a>"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- as.bigz(24)
+modulus(x) # NULL, i.e. none
+
+# x element of Z/31Z :
+modulus(x) &lt;- 31
+x+x  #  48 |-&gt; (17 %% 31)
+10*x # 240 |-&gt; (23 %% 31)
+x31 &lt;- x
+
+# reset modulus to "none":
+modulus(x) &lt;- NA; x; x. &lt;- x
+x &lt;- x31
+modulus(x) &lt;- NULL; x
+
+stopifnot(identical(x,            as.bigz(24)), identical(x, x.),
+          identical(modulus(x31), as.bigz(31)))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

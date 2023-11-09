@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head><title>R: c++ type information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>demangle {Rcpp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='demangle'>
+c++ type information 
+</h2>
+
+<h3>Description</h3>
+
+<p><code>demangle</code> gives the demangled type, <code>sizeof</code> its size (in bytes). 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>    demangle(type = "int", ...)
+    sizeof(type = "int", ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="demangle_:_type">type</code></td>
+<td>
+<p>The type we want to demangle</p>
+</td></tr>
+<tr><td><code id="demangle_:_...">...</code></td>
+<td>
+<p>Further argument for <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code> </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The following function is compiled and invoked: 
+</p>
+<pre>
+        SEXP demangle_this_type(){
+            typedef 
+            return wrap( DEMANGLE(type) ) ;
+        }
+        
+        SEXP sizeof_this_type(){
+            typedef 
+            return wrap( sizeof(type) ) ;
+        }
+    </pre>    
+<p><code>DEMANGLE</code> is a macro in &lsquo;<span class="samp">&#8288;Rcpp&#8288;</span>&rsquo; that does the work. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>The demangled type, as a string. 
+</p>
+
+
+<h3>Note</h3>
+
+<p>We only know how to demangle with gcc. If you know how to demangle types
+with your compiler, let us know. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Romain Francois &lt;romain@r-enthusiasts.com&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p>See this <a href="http://gcc.gnu.org/onlinedocs/libstdc++/manual/ext_demangling.html">chapter</a>
+from the GNU C++ library manual. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code> is used to compile the function <code>demangle</code> creates. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+    demangle( "int64_t" )
+    demangle( "uint64_t" )
+
+    demangle( "NumericVector" )
+    demangle( "std::map&lt;std::string,double&gt;" )
+    
+    sizeof( "long" )
+    sizeof( "long long" )
+    
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>Rcpp</em> version 1.0.11 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

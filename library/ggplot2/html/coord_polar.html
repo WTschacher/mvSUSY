@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>R: Polar coordinates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>coord_polar {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='coord_polar'>Polar coordinates</h2>
+
+<h3>Description</h3>
+
+<p>The polar coordinate system is most commonly used for pie charts, which
+are a stacked bar chart in polar coordinates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>coord_polar(theta = "x", start = 0, direction = 1, clip = "on")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="coord_polar_:_theta">theta</code></td>
+<td>
+<p>variable to map angle to (<code>x</code> or <code>y</code>)</p>
+</td></tr>
+<tr><td><code id="coord_polar_:_start">start</code></td>
+<td>
+<p>Offset of starting point from 12 o'clock in radians. Offset
+is applied clockwise or anticlockwise depending on value of <code>direction</code>.</p>
+</td></tr>
+<tr><td><code id="coord_polar_:_direction">direction</code></td>
+<td>
+<p>1, clockwise; -1, anticlockwise</p>
+</td></tr>
+<tr><td><code id="coord_polar_:_clip">clip</code></td>
+<td>
+<p>Should drawing be clipped to the extent of the plot panel? A
+setting of <code>"on"</code> (the default) means yes, and a setting of <code>"off"</code>
+means no. For details, please see <code><a href="../../ggplot2/help/coord_cartesian.html">coord_cartesian()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># NOTE: Use these plots with caution - polar coordinates has
+# major perceptual problems.  The main point of these examples is
+# to demonstrate how these common plots can be described in the
+# grammar.  Use with EXTREME caution.
+
+#' # A pie chart = stacked bar chart + polar coordinates
+pie &lt;- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+ geom_bar(width = 1)
+pie + coord_polar(theta = "y")
+
+
+
+# A coxcomb plot = bar chart + polar coordinates
+cxc &lt;- ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar(width = 1, colour = "black")
+cxc + coord_polar()
+# A new type of plot?
+cxc + coord_polar(theta = "y")
+
+# The bullseye chart
+pie + coord_polar()
+
+# Hadley's favourite pie chart
+df &lt;- data.frame(
+  variable = c("does not resemble", "resembles"),
+  value = c(20, 80)
+)
+ggplot(df, aes(x = "", y = value, fill = variable)) +
+  geom_col(width = 1) +
+  scale_fill_manual(values = c("red", "yellow")) +
+  coord_polar("y", start = pi / 3) +
+  labs(title = "Pac man")
+
+# Windrose + doughnut plot
+if (require("ggplot2movies")) {
+movies$rrating &lt;- cut_interval(movies$rating, length = 1)
+movies$budgetq &lt;- cut_number(movies$budget, 4)
+
+doh &lt;- ggplot(movies, aes(x = rrating, fill = budgetq))
+
+# Wind rose
+doh + geom_bar(width = 1) + coord_polar()
+# Race track plot
+doh + geom_bar(width = 0.9, position = "fill") + coord_polar(theta = "y")
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

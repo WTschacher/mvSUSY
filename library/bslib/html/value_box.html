@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><title>R: Value box</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>value_box {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='value_box'>Value box</h2>
+
+<h3>Description</h3>
+
+<p>An opinionated (<code><a href="../../bslib/help/card.html">card()</a></code>-powered) box, designed for displaying a <code>value</code> and
+<code>title</code>. Optionally, a <code>showcase</code> can provide for context for what the
+<code>value</code> represents (for example, it could hold a <code><a href="../../bsicons/help/bs_icon.html">bsicons::bs_icon()</a></code>, or
+even a <code><a href="../../shiny/help/plotOutput.html">shiny::plotOutput()</a></code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>value_box(
+  title,
+  value,
+  ...,
+  showcase = NULL,
+  showcase_layout = showcase_left_center(),
+  full_screen = FALSE,
+  theme_color = "primary",
+  height = NULL,
+  max_height = NULL,
+  fill = TRUE,
+  class = NULL
+)
+
+showcase_left_center(
+  width = 0.3,
+  max_height = "100px",
+  max_height_full_screen = 0.67
+)
+
+showcase_top_right(
+  width = 0.3,
+  max_height = "75px",
+  max_height_full_screen = 0.67
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="value_box_:_title">title</code>, <code id="value_box_:_value">value</code></td>
+<td>
+<p>A string, number, or <code><a href="../../htmltools/help/builder.html">htmltools::tag()</a></code> child to display as
+the title or value of the value box. The <code>title</code> appears above the <code>value</code>.</p>
+</td></tr>
+<tr><td><code id="value_box_:_...">...</code></td>
+<td>
+<p>Unnamed arguments may be any <code><a href="../../htmltools/help/builder.html">htmltools::tag()</a></code> children to
+display below <code>value</code>. Named arguments become attributes on the containing
+element.</p>
+</td></tr>
+<tr><td><code id="value_box_:_showcase">showcase</code></td>
+<td>
+<p>A <code><a href="../../htmltools/help/builder.html">htmltools::tag()</a></code> child to showcase (e.g., a
+<code><a href="../../bsicons/help/bs_icon.html">bsicons::bs_icon()</a></code>, a <code>plotly::plotlyOutput()</code>, etc).</p>
+</td></tr>
+<tr><td><code id="value_box_:_showcase_layout">showcase_layout</code></td>
+<td>
+<p>either <code>showcase_left_center()</code> or
+<code>showcase_top_right()</code>.</p>
+</td></tr>
+<tr><td><code id="value_box_:_full_screen">full_screen</code></td>
+<td>
+<p>If <code>TRUE</code>, an icon will appear when hovering over the card
+body. Clicking the icon expands the card to fit viewport size.</p>
+</td></tr>
+<tr><td><code id="value_box_:_theme_color">theme_color</code></td>
+<td>
+<p>A theme color to use for the background color. Should
+match a name in the Bootstrap Sass variable <code style="white-space: pre;">&#8288;$theme-colors&#8288;</code> (e.g.,
+<code>"secondary"</code>, <code>"success"</code>, <code>"danger"</code>, etc).</p>
+</td></tr>
+<tr><td><code id="value_box_:_height">height</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g.,
+<code>height="200px"</code>). Doesn't apply when a card is made <code>full_screen</code>
+(in this case, consider setting a <code>height</code> in <code><a href="../../bslib/help/card_body.html">card_body()</a></code>).</p>
+</td></tr>
+<tr><td><code id="value_box_:_max_height">max_height</code>, <code id="value_box_:_max_height_full_screen">max_height_full_screen</code></td>
+<td>
+<p>A proportion (i.e., a number between
+0 and 1) or any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> defining the
+showcase max_height.</p>
+</td></tr>
+<tr><td><code id="value_box_:_fill">fill</code></td>
+<td>
+<p>Whether to allow the value box to grow/shrink to fit a fillable
+container with an opinionated height (e.g., <code>page_fillable()</code>).</p>
+</td></tr>
+<tr><td><code id="value_box_:_class">class</code></td>
+<td>
+<p>Utility classes for customizing the appearance of the summary
+card. Use <code style="white-space: pre;">&#8288;bg-*&#8288;</code> and <code style="white-space: pre;">&#8288;text-*&#8288;</code> classes (e.g, <code>"bg-danger"</code> and
+<code>"text-light"</code>) to customize the background/foreground colors.</p>
+</td></tr>
+<tr><td><code id="value_box_:_width">width</code></td>
+<td>
+<p>one of the following:
+</p>
+
+<ul>
+<li><p> A proportion (i.e., a number between 0 and 1) of available width to
+allocate to the showcase.
+</p>
+</li>
+<li><p> A vector of length 2 valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> defining
+the width of each column (for <code>showcase_left_center()</code> the 1st unit defines
+the showcase width and for <code>showcase_top_right</code> the 2nd unit defines the
+showcase width). Note that any units supported by the CSS grid
+<code>grid-template-columns</code> property may be used (e.g., <code>fr</code> units).
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/card.html">card()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+library(htmltools)
+
+if (interactive()) {
+  value_box(
+    "KPI Title",
+    h1(HTML("$1 &lt;i&gt;Billion&lt;/i&gt; Dollars")),
+    span(
+      bsicons::bs_icon("arrow-up"),
+      " 30% VS PREVIOUS 30 DAYS"
+    ),
+    showcase = bsicons::bs_icon("piggy-bank"),
+    class = "bg-success"
+  )
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

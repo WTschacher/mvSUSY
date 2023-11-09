@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head><title>R: Find matching elements</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_subset {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_subset'>Find matching elements</h2>
+
+<h3>Description</h3>
+
+<p><code>str_subset()</code> returns all elements of <code>string</code> where there's at least
+one match to <code>pattern</code>. It's a wrapper around <code>x[str_detect(x, pattern)]</code>,
+and is equivalent to <code>grep(pattern, x, value = TRUE)</code>.
+</p>
+<p>Use <code><a href="../../stringr/help/str_extract.html">str_extract()</a></code> to find the location of the match <em>within</em> each string.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_subset(string, pattern, negate = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_subset_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_subset_:_pattern">pattern</code></td>
+<td>
+<p>Pattern to look for.
+</p>
+<p>The default interpretation is a regular expression, as described in
+<code>vignette("regular-expressions")</code>. Use <code><a href="../../stringr/help/regex.html">regex()</a></code> for finer control of the
+matching behaviour.
+</p>
+<p>Match a fixed string (i.e. by comparing only bytes), using
+<code><a href="../../stringr/help/fixed.html">fixed()</a></code>. This is fast, but approximate. Generally,
+for matching human text, you'll want <code><a href="../../stringr/help/coll.html">coll()</a></code> which
+respects character matching rules for the specified locale.
+</p>
+<p>Match character, word, line and sentence boundaries with
+<code><a href="../../stringr/help/boundary.html">boundary()</a></code>. An empty pattern, &quot;&quot;, is equivalent to
+<code>boundary("character")</code>.</p>
+</td></tr>
+<tr><td><code id="str_subset_:_negate">negate</code></td>
+<td>
+<p>If <code>TRUE</code>, return non-matching elements.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector, usually smaller than <code>string</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/grep.html">grep()</a></code> with argument <code>value = TRUE</code>,
+<code><a href="../../stringi/help/stri_subset.html">stringi::stri_subset()</a></code> for the underlying implementation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>fruit &lt;- c("apple", "banana", "pear", "pineapple")
+str_subset(fruit, "a")
+
+str_subset(fruit, "^a")
+str_subset(fruit, "a$")
+str_subset(fruit, "b")
+str_subset(fruit, "[aeiou]")
+
+# Elements that don't match
+str_subset(fruit, "^p", negate = TRUE)
+
+# Missings never match
+str_subset(c("a", NA, "b"), ".")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

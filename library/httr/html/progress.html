@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>R: Add a progress bar.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>progress {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='progress'>Add a progress bar.</h2>
+
+<h3>Description</h3>
+
+<p>Add a progress bar.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>progress(type = c("down", "up"), con = stdout())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="progress_:_type">type</code></td>
+<td>
+<p>Type of progress to display: either number of bytes uploaded
+or downloaded.</p>
+</td></tr>
+<tr><td><code id="progress_:_con">con</code></td>
+<td>
+<p>Connection to send output too. Usually <code>stdout()</code> or
+<code>stderr</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>cap_speed &lt;- config(max_recv_speed_large = 10000)
+## Not run: 
+# If file size is known, you get a progress bar:
+x &lt;- GET("http://httpbin.org/bytes/102400", progress(), cap_speed)
+# Otherwise you get the number of bytes downloaded:
+x &lt;- GET("http://httpbin.org/stream-bytes/102400", progress(), cap_speed)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>R: Legacy name repair</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>tidyr_legacy {tidyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='tidyr_legacy'>Legacy name repair</h2>
+
+<h3>Description</h3>
+
+<p>Ensures all column names are unique using the approach found in
+tidyr 0.8.3 and earlier. Only use this function if you want to preserve
+the naming strategy, otherwise you're better off adopting the new
+tidyverse standard with <code>name_repair = "universal"</code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>tidyr_legacy(nms, prefix = "V", sep = "")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="tidyr_legacy_:_prefix">prefix</code></td>
+<td>
+<p>prefix Prefix to use for unnamed column</p>
+</td></tr>
+<tr><td><code id="tidyr_legacy_:_sep">sep</code></td>
+<td>
+<p>Separator to use between name and unique suffix</p>
+</td></tr>
+<tr><td><code id="tidyr_legacy_:_nm">nm</code></td>
+<td>
+<p>Character vector of names</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(x = 1:2, y = list(tibble(x = 3:5), tibble(x = 4:7)))
+
+# Doesn't work because it would produce a data frame with two
+# columns called x
+## Not run: 
+unnest(df, y)
+
+## End(Not run)
+
+# The new tidyverse standard:
+unnest(df, y, names_repair = "universal")
+
+# The old tidyr approach
+unnest(df, y, names_repair = tidyr_legacy)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidyr</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

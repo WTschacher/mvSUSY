@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>R: R Markdown Document Conversion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>rmarkdown-package {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='rmarkdown-package'>R Markdown Document Conversion</h2>
+
+<h3>Description</h3>
+
+<p>Convert R Markdown documents into a variety of formats including HTML,
+MS Word, PDF, and Beamer.
+</p>
+
+
+<h3>Details</h3>
+
+<p>The <span class="pkg">rmarkdown</span> package includes high level functions for
+converting to a variety of formats. For example:
+</p>
+<pre>
+render("input.Rmd", html_document())
+render("input.Rmd", pdf_document())
+</pre>
+<p>You can also specify a plain markdown file in which case knitting will be
+bypassed:
+</p>
+<pre>render("input.md", html_document())</pre>
+<p>Additional options can be specified along with the output format:
+</p>
+<pre>render("input.Rmd", html_document(toc = TRUE))
+render("input.Rmd", pdf_document(latex_engine = "lualatex"))
+render("input.Rmd", beamer_presentation(incremental = TRUE))
+</pre>
+<p>You can also include arbitrary pandoc command line arguments along with the
+other options:
+</p>
+<pre>
+render("input.Rmd", pdf_document(toc = TRUE, pandoc_args = "--listings"))
+</pre>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../rmarkdown/help/render.html">render</a>, <a href="../../rmarkdown/help/html_document.html">html_document</a>, <a href="../../rmarkdown/help/pdf_document.html">pdf_document</a>,
+<a href="../../rmarkdown/help/word_document.html">word_document</a>, <a href="../../rmarkdown/help/beamer_presentation.html">beamer_presentation</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

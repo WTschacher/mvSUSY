@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><title>R: Inspect JSON sent to plotly.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>plotly_json {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='plotly_json'>Inspect JSON sent to plotly.js</h2>
+
+<h3>Description</h3>
+
+<p>This function is useful for obtaining/viewing/debugging JSON
+sent to plotly.js.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>plotly_json(p = last_plot(), jsonedit = interactive(), pretty = TRUE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="plotly_json_:_p">p</code></td>
+<td>
+<p>a plotly or ggplot object.</p>
+</td></tr>
+<tr><td><code id="plotly_json_:_jsonedit">jsonedit</code></td>
+<td>
+<p>use <a href="../../listviewer/help/jsonedit.html">listviewer::jsonedit</a> to view the JSON?</p>
+</td></tr>
+<tr><td><code id="plotly_json_:_pretty">pretty</code></td>
+<td>
+<p>adds indentation whitespace to JSON output. Can be TRUE/FALSE
+or a number specifying the number of spaces to indent. See <a href="../../jsonlite/help/prettify.html">jsonlite::prettify</a>.</p>
+</td></tr>
+<tr><td><code id="plotly_json_:_...">...</code></td>
+<td>
+<p>other options passed onto <a href="../../listviewer/help/jsonedit.html">listviewer::jsonedit</a></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+  
+plotly_json(plot_ly())
+plotly_json(plot_ly(), FALSE)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

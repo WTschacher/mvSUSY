@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>R: Detect the presence/absence of a match at the start/end</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_starts {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_starts'>Detect the presence/absence of a match at the start/end</h2>
+
+<h3>Description</h3>
+
+<p><code>str_starts()</code> and <code>str_ends()</code> are special cases of <code><a href="../../stringr/help/str_detect.html">str_detect()</a></code> that
+only match at the beginning or end of a string, respectively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_starts(string, pattern, negate = FALSE)
+
+str_ends(string, pattern, negate = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_starts_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_starts_:_pattern">pattern</code></td>
+<td>
+<p>Pattern with which the string starts or ends.
+</p>
+<p>The default interpretation is a regular expression, as described in
+<a href="../../stringi/help/about_search_regex.html">stringi::about_search_regex</a>. Control options with <code><a href="../../stringr/help/regex.html">regex()</a></code>.
+</p>
+<p>Match a fixed string (i.e. by comparing only bytes), using <code><a href="../../stringr/help/fixed.html">fixed()</a></code>. This
+is fast, but approximate. Generally, for matching human text, you'll want
+<code><a href="../../stringr/help/coll.html">coll()</a></code> which respects character matching rules for the specified locale.</p>
+</td></tr>
+<tr><td><code id="str_starts_:_negate">negate</code></td>
+<td>
+<p>If <code>TRUE</code>, return non-matching elements.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>fruit &lt;- c("apple", "banana", "pear", "pineapple")
+str_starts(fruit, "p")
+str_starts(fruit, "p", negate = TRUE)
+str_ends(fruit, "e")
+str_ends(fruit, "e", negate = TRUE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

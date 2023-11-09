@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>R: Superseded interface to 'label_scientific()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>scientific_format {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='scientific_format'>Superseded interface to <code>label_scientific()</code></h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>These functions are kept for backward compatibility; you should switch
+to <code><a href="../../scales/help/label_scientific.html">label_scientific()</a></code> for new code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>scientific_format(
+  digits = 3,
+  scale = 1,
+  prefix = "",
+  suffix = "",
+  decimal.mark = ".",
+  trim = TRUE,
+  ...
+)
+
+scientific(
+  x,
+  digits = 3,
+  scale = 1,
+  prefix = "",
+  suffix = "",
+  decimal.mark = ".",
+  trim = TRUE,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="scientific_format_:_digits">digits</code></td>
+<td>
+<p>Number of digits to show before exponent.</p>
+</td></tr>
+<tr><td><code id="scientific_format_:_scale">scale</code></td>
+<td>
+<p>A scaling factor: <code>x</code> will be multiplied by <code>scale</code> before
+formatting. This is useful if the underlying data is very small or very
+large.</p>
+</td></tr>
+<tr><td><code id="scientific_format_:_prefix">prefix</code>, <code id="scientific_format_:_suffix">suffix</code></td>
+<td>
+<p>Symbols to display before and after value.</p>
+</td></tr>
+<tr><td><code id="scientific_format_:_decimal.mark">decimal.mark</code></td>
+<td>
+<p>The character to be used to indicate the numeric
+decimal point.</p>
+</td></tr>
+<tr><td><code id="scientific_format_:_trim">trim</code></td>
+<td>
+<p>Logical, if <code>FALSE</code>, values are right-justified to a common
+width (see <code><a href="../../base/help/format.html">base::format()</a></code>).</p>
+</td></tr>
+<tr><td><code id="scientific_format_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../base/help/format.html">base::format()</a></code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

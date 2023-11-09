@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><title>R: Install/Uninstall TinyTeX</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>install_tinytex {tinytex}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='install_tinytex'>Install/Uninstall TinyTeX</h2>
+
+<h3>Description</h3>
+
+<p>The function <code>install_tinytex()</code> downloads and installs TinyTeX, a
+custom LaTeX distribution based on TeX Live. The function
+<code>uninstall_tinytex()</code> removes TinyTeX; <code>reinstall_tinytex()</code>
+reinstalls TinyTeX as well as previously installed LaTeX packages by default;
+<code>tinytex_root()</code> returns the root directory of TinyTeX if found.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>install_tinytex(
+  force = FALSE,
+  dir = "auto",
+  version = "daily",
+  bundle = "TinyTeX-1",
+  repository = "auto",
+  extra_packages = if (is_tinytex()) tl_pkgs(),
+  add_path = TRUE
+)
+
+uninstall_tinytex(force = FALSE, dir = tinytex_root())
+
+reinstall_tinytex(packages = TRUE, dir = tinytex_root(), ...)
+
+tinytex_root(error = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="install_tinytex_:_force">force</code></td>
+<td>
+<p>Whether to force to install or uninstall TinyTeX. For
+<code>install_tinytex()</code>, <code>force = FALSE</code> will stop this function from
+installing TinyTeX if another LaTeX distribution is detected, or the
+directory specified via the <code>dir</code> argument exists.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_dir">dir</code></td>
+<td>
+<p>The directory to install (should not exist unless <code>force =
+TRUE</code>) or uninstall TinyTeX.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_version">version</code></td>
+<td>
+<p>The version of TinyTeX, e.g., <code>"2020.09"</code> (see all
+available versions at <a href="https://github.com/rstudio/tinytex-releases">https://github.com/rstudio/tinytex-releases</a>, or
+via <code>xfun::github_releases('rstudio/tinytex-releases')</code>). By default,
+it installs the latest daily build of TinyTeX. If <code>version =
+'latest'</code>, it installs the latest monthly Github release of TinyTeX.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_bundle">bundle</code></td>
+<td>
+<p>The bundle name of TinyTeX (which determines the collection of
+LaTeX packages to install). See
+<a href="https://github.com/rstudio/tinytex-releases#releases">https://github.com/rstudio/tinytex-releases#releases</a> for all possible
+bundles and their meanings.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_repository">repository</code></td>
+<td>
+<p>The CTAN repository to set. By default, it is the
+repository automatically chosen by <code>https://mirror.ctan.org</code> (which is
+usually the fastest one to your location). You can find available
+repositories at <code>https://ctan.org/mirrors</code>), e.g.,
+<code>'http://mirrors.tuna.tsinghua.edu.cn/CTAN/'</code>, or
+<code>'https://mirror.las.iastate.edu/tex-archive/'</code>. In theory, this
+argument should end with the path &lsquo;<span class="file">/systems/texlive/tlnet</span>&rsquo;, and if it
+does not, the path will be automatically appended.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_extra_packages">extra_packages</code></td>
+<td>
+<p>A character vector of extra LaTeX packages to be
+installed. By default, a vector of all currently installed LaTeX packages
+if an existing installation of TinyTeX is found. If you want a fresh
+installation, you may use <code>extra_packages = NULL</code>.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_add_path">add_path</code></td>
+<td>
+<p>Whether to run the command <code>tlmgr path add</code> to add
+the bin path of TeX Live to the system environment variable <var>PATH</var>.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_packages">packages</code></td>
+<td>
+<p>Whether to reinstall all currently installed packages.</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_...">...</code></td>
+<td>
+<p>Other arguments to be passed to <code>install_tinytex()</code> (note
+that the <code>extra_packages</code> argument will be set to <code>tl_pkgs()</code> if
+<code>packages = TRUE</code>).</p>
+</td></tr>
+<tr><td><code id="install_tinytex_:_error">error</code></td>
+<td>
+<p>Whether to signal an error if TinyTeX is not found.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>If you really want to disable the installation, you may set the
+environment variable <var>TINYTEX_PREVENT_INSTALL</var> to <code>true</code>. Then
+<code>install_tinytex()</code> will fail immediately. This can be useful to
+sysadmins who want to prevent the accidental installation of TinyTeX.
+</p>
+<p>Installing TinyTeX requires perl (on Linux, perl-base is insufficient).
+</p>
+
+
+<h3>References</h3>
+
+<p>See the TinyTeX documentation (<a href="https://yihui.org/tinytex/">https://yihui.org/tinytex/</a>)
+for the default installation directories on different platforms.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tinytex</em> version 0.48 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

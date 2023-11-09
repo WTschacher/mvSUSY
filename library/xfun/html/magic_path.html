@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: Find a file or directory under a root directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>magic_path {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='magic_path'>Find a file or directory under a root directory</h2>
+
+<h3>Description</h3>
+
+<p>Given a path, try to find it recursively under a root directory. The input
+path can be an incomplete path, e.g., it can be a base filename, and
+<code>magic_path()</code> will try to find this file under subdirectories.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>magic_path(
+  ...,
+  root = proj_root(),
+  relative = TRUE,
+  error = TRUE,
+  message = getOption("xfun.magic_path.message", TRUE),
+  n_dirs = getOption("xfun.magic_path.n_dirs", 10000)
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="magic_path_:_...">...</code></td>
+<td>
+<p>A character vector of path components.</p>
+</td></tr>
+<tr><td><code id="magic_path_:_root">root</code></td>
+<td>
+<p>The root directory under which to search for the path. If
+<code>NULL</code>, the current working directory is used.</p>
+</td></tr>
+<tr><td><code id="magic_path_:_relative">relative</code></td>
+<td>
+<p>Whether to return a relative path.</p>
+</td></tr>
+<tr><td><code id="magic_path_:_error">error</code></td>
+<td>
+<p>Whether to signal an error if the path is not found, or multiple
+paths are found.</p>
+</td></tr>
+<tr><td><code id="magic_path_:_message">message</code></td>
+<td>
+<p>Whether to emit a message when multiple paths are found and
+<code>error = FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="magic_path_:_n_dirs">n_dirs</code></td>
+<td>
+<p>The number of subdirectories to recursively search. The
+recursive search may be time-consuming when there are a large number of
+subdirectories under the root directory. If you really want to search for
+all subdirectories, you may try <code>n_dirs = Inf</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The path found under the root directory, or an error when <code>error = TRUE</code> and the path is not found (or multiple paths are found).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+xfun::magic_path("mtcars.csv")  # find any file that has the base name mtcars.csv
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

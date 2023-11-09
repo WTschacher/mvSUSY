@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><title>R: Create a webserver to listen for OAuth callback.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>oauth_listener {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='oauth_listener'>Create a webserver to listen for OAuth callback.</h2>
+
+<h3>Description</h3>
+
+<p>This opens a web browser pointing to <code>request_url</code>, and opens a
+webserver on port 1410 to listen to the reponse.  The redirect url should
+either be set previously (during the OAuth authentication dance) or
+supplied as a parameter to the url.  See <code><a href="../../httr/help/oauth1.0_token.html">oauth1.0_token()</a></code> and
+<code><a href="../../httr/help/oauth2.0_token.html">oauth2.0_token()</a></code> for examples of both techniques.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>oauth_listener(request_url, is_interactive = interactive())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="oauth_listener_:_request_url">request_url</code></td>
+<td>
+<p>the url to send the browser to</p>
+</td></tr>
+<tr><td><code id="oauth_listener_:_is_interactive">is_interactive</code></td>
+<td>
+<p>DEPRECATED</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function should not normally be called directly by the user.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head><title>R: Categorical filter controls</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>filter_select {crosstalk}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='filter_select'>Categorical filter controls</h2>
+
+<h3>Description</h3>
+
+<p>Creates a select box or list of checkboxes, for filtering a
+<code><a href="../../crosstalk/help/SharedData.html">SharedData</a></code> object based on categorical data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>filter_select(id, label, sharedData, group, allLevels = FALSE, multiple = TRUE)
+
+filter_checkbox(
+  id,
+  label,
+  sharedData,
+  group,
+  allLevels = FALSE,
+  inline = FALSE,
+  columns = 1
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="filter_select_:_id">id</code></td>
+<td>
+<p>An HTML element ID; must be unique within the web page</p>
+</td></tr>
+<tr><td><code id="filter_select_:_label">label</code></td>
+<td>
+<p>A human-readable label</p>
+</td></tr>
+<tr><td><code id="filter_select_:_sharedData">sharedData</code></td>
+<td>
+<p><code>SharedData</code> object with the data to filter</p>
+</td></tr>
+<tr><td><code id="filter_select_:_group">group</code></td>
+<td>
+<p>A one-sided formula whose values will populate this select box.
+Generally this should be a character or factor column; if not, it will be
+coerced to character.</p>
+</td></tr>
+<tr><td><code id="filter_select_:_allLevels">allLevels</code></td>
+<td>
+<p>If the vector described by <code>group</code> is factor-based,
+should all the levels be displayed as options, or only ones that are
+present in the data?</p>
+</td></tr>
+<tr><td><code id="filter_select_:_multiple">multiple</code></td>
+<td>
+<p>Can multiple values be selected?</p>
+</td></tr>
+<tr><td><code id="filter_select_:_inline">inline</code></td>
+<td>
+<p>If <code>TRUE</code>, render checkbox options horizontally instead of vertically.</p>
+</td></tr>
+<tr><td><code id="filter_select_:_columns">columns</code></td>
+<td>
+<p>Number of columns the options should be arranged into.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Only run examples in interactive R sessions
+if (interactive()) {
+
+sd &lt;- SharedData$new(chickwts)
+filter_select("feedtype", "Feed type", sd, "feed")
+
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>crosstalk</em> version 1.2.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

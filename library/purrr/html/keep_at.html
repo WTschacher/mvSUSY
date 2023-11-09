@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>R: Keep/discard elements based on their name/position</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>keep_at {purrr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='keep_at'>Keep/discard elements based on their name/position</h2>
+
+<h3>Description</h3>
+
+<p>Keep/discard elements based on their name/position
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>keep_at(x, at)
+
+discard_at(x, at)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="keep_at_:_x">x</code></td>
+<td>
+<p>A list or atomic vector.</p>
+</td></tr>
+<tr><td><code id="keep_at_:_at">at</code></td>
+<td>
+<p>A logical, integer, or character vector giving the elements
+to select. Alternatively, a function that takes a vector of names,
+and returns a logical, integer, or character vector of elements to select.
+</p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>: if the tidyselect package is
+installed, you can use <code>vars()</code> and tidyselect helpers to select
+elements.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../purrr/help/keep.html">keep()</a></code>/<code><a href="../../purrr/help/discard.html">discard()</a></code> to keep/discard elements by value.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(a = 1, b = 2, cat = 10, dog = 15, elephant = 5, e = 10)
+x %&gt;% keep_at(letters)
+x %&gt;% discard_at(letters)
+
+# Can also use a function
+x %&gt;% keep_at(~ nchar(.x) == 3)
+x %&gt;% discard_at(~ nchar(.x) == 3)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>purrr</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

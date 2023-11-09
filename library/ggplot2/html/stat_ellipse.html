@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><title>R: Compute normal data ellipses</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>stat_ellipse {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='stat_ellipse'>Compute normal data ellipses</h2>
+
+<h3>Description</h3>
+
+<p>The method for calculating the ellipses has been modified from
+<code>car::dataEllipse</code> (Fox and Weisberg 2011, Friendly and Monette 2013)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stat_ellipse(
+  mapping = NULL,
+  data = NULL,
+  geom = "path",
+  position = "identity",
+  ...,
+  type = "t",
+  level = 0.95,
+  segments = 51,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="stat_ellipse_:_mapping">mapping</code></td>
+<td>
+<p>Set of aesthetic mappings created by <code><a href="../../ggplot2/help/aes.html">aes()</a></code>. If specified and
+<code>inherit.aes = TRUE</code> (the default), it is combined with the default mapping
+at the top level of the plot. You must supply <code>mapping</code> if there is no plot
+mapping.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_data">data</code></td>
+<td>
+<p>The data to be displayed in this layer. There are three
+options:
+</p>
+<p>If <code>NULL</code>, the default, the data is inherited from the plot
+data as specified in the call to <code><a href="../../ggplot2/help/ggplot.html">ggplot()</a></code>.
+</p>
+<p>A <code>data.frame</code>, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+<code><a href="../../ggplot2/help/fortify.html">fortify()</a></code> for which variables will be created.
+</p>
+<p>A <code>function</code> will be called with a single argument,
+the plot data. The return value must be a <code>data.frame</code>, and
+will be used as the layer data. A <code>function</code> can be created
+from a <code>formula</code> (e.g. <code>~ head(.x, 10)</code>).</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_geom">geom</code></td>
+<td>
+<p>The geometric object to use to display the data, either as a
+<code>ggproto</code> <code>Geom</code> subclass or as a string naming the geom stripped of the
+<code>geom_</code> prefix (e.g. <code>"point"</code> rather than <code>"geom_point"</code>)</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_position">position</code></td>
+<td>
+<p>Position adjustment, either as a string naming the adjustment
+(e.g. <code>"jitter"</code> to use <code>position_jitter</code>), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../ggplot2/help/layer.html">layer()</a></code>. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+<code>colour = "red"</code> or <code>size = 3</code>. They may also be parameters
+to the paired geom/stat.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_type">type</code></td>
+<td>
+<p>The type of ellipse.
+The default <code>"t"</code> assumes a multivariate t-distribution, and
+<code>"norm"</code> assumes a multivariate normal distribution.
+<code>"euclid"</code> draws a circle with the radius equal to <code>level</code>,
+representing the euclidean distance from the center.
+This ellipse probably won't appear circular unless <code>coord_fixed()</code> is applied.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_level">level</code></td>
+<td>
+<p>The level at which to draw an ellipse,
+or, if <code>type="euclid"</code>, the radius of the circle to be drawn.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_segments">segments</code></td>
+<td>
+<p>The number of segments to be used in drawing the ellipse.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_na.rm">na.rm</code></td>
+<td>
+<p>If <code>FALSE</code>, the default, missing values are removed with
+a warning. If <code>TRUE</code>, missing values are silently removed.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_show.legend">show.legend</code></td>
+<td>
+<p>logical. Should this layer be included in the legends?
+<code>NA</code>, the default, includes if any aesthetics are mapped.
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</p>
+</td></tr>
+<tr><td><code id="stat_ellipse_:_inherit.aes">inherit.aes</code></td>
+<td>
+<p>If <code>FALSE</code>, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. <code><a href="../../ggplot2/help/borders.html">borders()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>John Fox and Sanford Weisberg (2011). An <span class="rlang"><b>R</b></span> Companion to
+Applied Regression, Second Edition. Thousand Oaks CA: Sage. URL:
+<a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/">https://socialsciences.mcmaster.ca/jfox/Books/Companion/</a>
+</p>
+<p>Michael Friendly. Georges Monette. John Fox. &quot;Elliptical Insights: Understanding Statistical Methods through Elliptical Geometry.&quot;
+Statist. Sci. 28 (1) 1 - 39, February 2013. URL: <a href="https://projecteuclid.org/journals/statistical-science/volume-28/issue-1/Elliptical-Insights-Understanding-Statistical-Methods-through-Elliptical-Geometry/10.1214/12-STS402.full">https://projecteuclid.org/journals/statistical-science/volume-28/issue-1/Elliptical-Insights-Understanding-Statistical-Methods-through-Elliptical-Geometry/10.1214/12-STS402.full</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>ggplot(faithful, aes(waiting, eruptions)) +
+  geom_point() +
+  stat_ellipse()
+
+ggplot(faithful, aes(waiting, eruptions, color = eruptions &gt; 3)) +
+  geom_point() +
+  stat_ellipse()
+
+ggplot(faithful, aes(waiting, eruptions, color = eruptions &gt; 3)) +
+  geom_point() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  stat_ellipse(type = "t")
+
+ggplot(faithful, aes(waiting, eruptions, color = eruptions &gt; 3)) +
+  geom_point() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  stat_ellipse(type = "euclid", level = 3) +
+  coord_fixed()
+
+ggplot(faithful, aes(waiting, eruptions, fill = eruptions &gt; 3)) +
+  stat_ellipse(geom = "polygon")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

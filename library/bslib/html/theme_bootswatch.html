@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><title>R: Obtain a theme's Bootswatch theme name</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>theme_bootswatch {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='theme_bootswatch'>Obtain a theme's Bootswatch theme name</h2>
+
+<h3>Description</h3>
+
+<p>Obtain a theme's Bootswatch theme name
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>theme_bootswatch(theme)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="theme_bootswatch_:_theme">theme</code></td>
+<td>
+<p>a <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>the Bootswatch theme named used (if any) in the <code>theme</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

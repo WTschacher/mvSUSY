@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><title>R: Information about the &quot;current&quot; group or variable</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>context {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='context'>Information about the &quot;current&quot; group or variable</h2>
+
+<h3>Description</h3>
+
+<p>These functions return information about the &quot;current&quot; group or &quot;current&quot;
+variable, so only work inside specific contexts like <code><a href="../../dplyr/help/summarise.html">summarise()</a></code> and
+<code><a href="../../dplyr/help/mutate.html">mutate()</a></code>.
+</p>
+
+<ul>
+<li> <p><code>n()</code> gives the current group size.
+</p>
+</li>
+<li> <p><code>cur_group()</code> gives the group keys, a tibble with one row and one column
+for each grouping variable.
+</p>
+</li>
+<li> <p><code>cur_group_id()</code> gives a unique numeric identifier for the current group.
+</p>
+</li>
+<li> <p><code>cur_group_rows()</code> gives the row indices for the current group.
+</p>
+</li>
+<li> <p><code>cur_column()</code> gives the name of the current column (in <code><a href="../../dplyr/help/across.html">across()</a></code> only).
+</p>
+</li></ul>
+
+<p>See <code><a href="../../dplyr/help/group_data.html">group_data()</a></code> for equivalent functions that return values for all
+groups.
+</p>
+<p>See <code><a href="../../dplyr/help/pick.html">pick()</a></code> for a way to select a subset of columns using tidyselect syntax
+while inside <code>summarise()</code> or <code>mutate()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>n()
+
+cur_group()
+
+cur_group_id()
+
+cur_group_rows()
+
+cur_column()
+</code></pre>
+
+
+<h3>data.table</h3>
+
+<p>If you're familiar with data.table:
+</p>
+
+<ul>
+<li> <p><code>cur_group_id()</code> &lt;-&gt; <code>.GRP</code>
+</p>
+</li>
+<li> <p><code>cur_group()</code> &lt;-&gt; <code>.BY</code>
+</p>
+</li>
+<li> <p><code>cur_group_rows()</code> &lt;-&gt; <code>.I</code>
+</p>
+</li></ul>
+
+<p>See <code><a href="../../dplyr/help/pick.html">pick()</a></code> for an equivalent to <code>.SD</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(
+  g = sample(rep(letters[1:3], 1:3)),
+  x = runif(6),
+  y = runif(6)
+)
+gf &lt;- df %&gt;% group_by(g)
+
+gf %&gt;% summarise(n = n())
+
+gf %&gt;% mutate(id = cur_group_id())
+gf %&gt;% reframe(row = cur_group_rows())
+gf %&gt;% summarise(data = list(cur_group()))
+
+gf %&gt;% mutate(across(everything(), ~ paste(cur_column(), round(.x, 2))))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

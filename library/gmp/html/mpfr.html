@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>R: Exported function for mpfr use</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>mpfr {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='mpfr'>Exported function for mpfr use</h2>
+
+<h3>Description</h3>
+
+<p>Theses hidden function are provided for mpfr use. Use theses function with care.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>.as.bigz(a, mod=NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="mpfr_:_a">a</code></td>
+<td>
+<p>either <code><a href="../../base/html/integer.html">integer</a></code>, <code><a href="../../base/html/numeric.html">numeric</a></code> (i.e.,
+<code><a href="../../base/html/double.html">double</a></code>) or <code><a href="../../base/html/character.html">character</a></code> vector.
+</p>
+<p>If character: the strings either start with <code>0x</code> for hexadecimal, <code>0b</code> for
+binary, <code>0</code> for octal, or without a <code>0*</code> prefix for decimal values.
+Formatting errors are signalled as with <code><a href="../../base/html/stop.html">stop</a></code>.</p>
+</td></tr>
+<tr><td><code id="mpfr_:_mod">mod</code></td>
+<td>
+<p>an integer, numeric, string or bigz of the internal modulus, see below.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <span class="rlang"><b>R</b></span> object of (S3) class <code>"bigz"</code>, representing the argument
+(<code>x</code> or <code>a</code>).
+</p>
+
+
+<h3>References</h3>
+
+<p>The GNU MP Library, see <a href="https://gmplib.org">https://gmplib.org</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>.as.bigz(1)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

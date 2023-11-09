@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><title>R: Create a new ggplot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>ggplot {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='ggplot'>Create a new ggplot</h2>
+
+<h3>Description</h3>
+
+<p><code>ggplot()</code> initializes a ggplot object. It can be used to
+declare the input data frame for a graphic and to specify the
+set of plot aesthetics intended to be common throughout all
+subsequent layers unless specifically overridden.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ggplot(data = NULL, mapping = aes(), ..., environment = parent.frame())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="ggplot_:_data">data</code></td>
+<td>
+<p>Default dataset to use for plot. If not already a data.frame,
+will be converted to one by <code><a href="../../ggplot2/help/fortify.html">fortify()</a></code>. If not specified,
+must be supplied in each layer added to the plot.</p>
+</td></tr>
+<tr><td><code id="ggplot_:_mapping">mapping</code></td>
+<td>
+<p>Default list of aesthetic mappings to use for plot.
+If not specified, must be supplied in each layer added to the plot.</p>
+</td></tr>
+<tr><td><code id="ggplot_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to methods. Not currently used.</p>
+</td></tr>
+<tr><td><code id="ggplot_:_environment">environment</code></td>
+<td>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a> Used prior to tidy
+evaluation.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>ggplot()</code> is used to construct the initial plot object,
+and is almost always followed by a plus sign (<code>+</code>) to add
+components to the plot.
+</p>
+<p>There are three common patterns used to invoke <code>ggplot()</code>:
+</p>
+
+<ul>
+<li> <p><code style="white-space: pre;">&#8288;ggplot(data = df, mapping = aes(x, y, other aesthetics))&#8288;</code>
+</p>
+</li>
+<li> <p><code>ggplot(data = df)</code>
+</p>
+</li>
+<li> <p><code>ggplot()</code>
+</p>
+</li></ul>
+
+<p>The first pattern is recommended if all layers use the same
+data and the same set of aesthetics, although this method
+can also be used when adding a layer using data from another
+data frame.
+</p>
+<p>The second pattern specifies the default data frame to use
+for the plot, but no aesthetics are defined up front. This
+is useful when one data frame is used predominantly for the
+plot, but the aesthetics vary from one layer to another.
+</p>
+<p>The third pattern initializes a skeleton <code>ggplot</code> object, which
+is fleshed out as layers are added. This is useful when
+multiple data frames are used to produce different layers, as
+is often the case in complex graphics.
+</p>
+<p>The <code style="white-space: pre;">&#8288;data =&#8288;</code> and <code style="white-space: pre;">&#8288;mapping =&#8288;</code> specifications in the arguments are optional
+(and are often omitted in practice), so long as the data and the mapping
+values are passed into the function in the right order. In the examples
+below, however, they are left in place for clarity.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Create a data frame with some sample data, then create a data frame
+# containing the mean value for each group in the sample data.
+set.seed(1)
+
+sample_df &lt;- data.frame(
+  group = factor(rep(letters[1:3], each = 10)),
+  value = rnorm(30)
+)
+
+group_means_df &lt;- setNames(
+  aggregate(value ~ group, sample_df, mean),
+  c("group", "group_mean")
+)
+
+# The following three code blocks create the same graphic, each using one
+# of the three patterns specified above. In each graphic, the sample data
+# are plotted in the first layer and the group means data frame is used to
+# plot larger red points on top of the sample data in the second layer.
+
+# Pattern 1
+# Both the `data` and `mapping` arguments are passed into the `ggplot()`
+# call. Those arguments are omitted in the first `geom_point()` layer
+# because they get passed along from the `ggplot()` call. Note that the
+# second `geom_point()` layer re-uses the `x = group` aesthetic through
+# that mechanism but overrides the y-position aesthetic.
+ggplot(data = sample_df, mapping = aes(x = group, y = value)) +
+  geom_point() +
+  geom_point(
+    mapping = aes(y = group_mean), data = group_means_df,
+    colour = 'red', size = 3
+  )
+
+# Pattern 2
+# Same plot as above, passing only the `data` argument into the `ggplot()`
+# call. The `mapping` arguments are now required in each `geom_point()`
+# layer because there is no `mapping` argument passed along from the
+# `ggplot()` call.
+ggplot(data = sample_df) +
+  geom_point(mapping = aes(x = group, y = value)) +
+  geom_point(
+    mapping = aes(x = group, y = group_mean), data = group_means_df,
+    colour = 'red', size = 3
+  )
+
+# Pattern 3
+# Same plot as above, passing neither the `data` or `mapping` arguments
+# into the `ggplot()` call. Both those arguments are now required in
+# each `geom_point()` layer. This pattern can be particularly useful when
+# creating more complex graphics with many layers using data from multiple
+# data frames.
+ggplot() +
+  geom_point(mapping = aes(x = group, y = value), data = sample_df) +
+  geom_point(
+    mapping = aes(x = group, y = group_mean), data = group_means_df,
+    colour = 'red', size = 3
+  )
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

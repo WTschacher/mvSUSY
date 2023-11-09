@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>R: Get all chunk labels in a document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>all_labels {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='all_labels'>Get all chunk labels in a document</h2>
+
+<h3>Description</h3>
+
+<p>The function <code>all_labels()</code> returns all chunk labels as a character
+vector. Optionally, you can specify a series of conditions to filter the
+labels. The function 'all_rcpp_labels()' is a wrapper function for
+<code>all_labels(engine == 'Rcpp')</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>all_labels(...)
+
+all_rcpp_labels(...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="all_labels_:_...">...</code></td>
+<td>
+<p>A vector of R expressions, each of which should return <code>TRUE</code>
+or <code>FALSE</code>. The expressions are evaluated using the <em>local</em> chunk
+options of each code chunk as the environment, which means global chunk
+options are not considered when evaluating these expressions. For example,
+if you set the global chunk option <code>opts_chunk$set(purl = TRUE)</code>,
+<code>all_labels(purl == TRUE)</code> will <em>not</em> return the labels of all
+code chunks, but will only return the labels of those code chunks that have
+local chunk options <code>purl = TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For example, suppose the condition expression is <code>engine == 'Rcpp'</code>, the
+object <code>engine</code> is the local chunk option <code>engine</code>. If an
+expression fails to be evaluated (e.g. when a certain object does not exist),
+<code>FALSE</code> is returned and the label for this chunk will be filtered out.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character vector.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Empty code chunks are always ignored, including those chunks that are
+empty in the original document but filled with code using chunk options
+such as <code>ref.label</code> or <code>code</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># the examples below are meaningless unless you put them in a knitr document
+all_labels()
+all_labels(engine == "Rcpp")
+all_labels(echo == FALSE &amp;&amp; results != "hide")
+# or separate the two conditions
+all_labels(echo == FALSE, results != "hide")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

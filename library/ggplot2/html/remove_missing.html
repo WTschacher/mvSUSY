@@ -1,0 +1,64 @@
+<!DOCTYPE html><html><head><title>R: Convenience function to remove missing values from a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>remove_missing {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='remove_missing'>Convenience function to remove missing values from a data.frame</h2>
+
+<h3>Description</h3>
+
+<p>Remove all non-complete rows, with a warning if <code>na.rm = FALSE</code>.
+ggplot is somewhat more accommodating of missing values than R generally.
+For those stats which require complete data, missing values will be
+automatically removed with a warning. If <code>na.rm = TRUE</code> is supplied
+to the statistic, the warning will be suppressed.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>remove_missing(df, na.rm = FALSE, vars = names(df), name = "", finite = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="remove_missing_:_df">df</code></td>
+<td>
+<p>data.frame</p>
+</td></tr>
+<tr><td><code id="remove_missing_:_na.rm">na.rm</code></td>
+<td>
+<p>If true, will suppress warning message.</p>
+</td></tr>
+<tr><td><code id="remove_missing_:_vars">vars</code></td>
+<td>
+<p>Character vector of variables to check for missings in</p>
+</td></tr>
+<tr><td><code id="remove_missing_:_name">name</code></td>
+<td>
+<p>Optional function name to improve error message.</p>
+</td></tr>
+<tr><td><code id="remove_missing_:_finite">finite</code></td>
+<td>
+<p>If <code>TRUE</code>, will also remove non-finite values.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

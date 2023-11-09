@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><title>R: Convert markdown to HTML using knit() and mark_html()</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knit2html {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knit2html'>Convert markdown to HTML using knit() and mark_html()</h2>
+
+<h3>Description</h3>
+
+<p>This is a convenience function to knit the input markdown source and call
+<code>markdown::<a href="../../markdown/help/mark_html.html">mark_html</a>()</code> in the <span class="pkg">markdown</span>
+package to convert the result to HTML.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knit2html(
+  input,
+  output = NULL,
+  ...,
+  envir = parent.frame(),
+  text = NULL,
+  quiet = FALSE,
+  encoding = "UTF-8",
+  force_v1 = getOption("knitr.knit2html.force_v1", FALSE)
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="knit2html_:_input">input</code></td>
+<td>
+<p>Path to the input file.</p>
+</td></tr>
+<tr><td><code id="knit2html_:_output">output</code></td>
+<td>
+<p>Path to the output file for <code>knit()</code>. If <code>NULL</code>, this
+function will try to guess a default, which will be under the current
+working directory.</p>
+</td></tr>
+<tr><td><code id="knit2html_:_...">...</code></td>
+<td>
+<p>Options passed to
+<code>markdown::<a href="../../markdown/help/mark_html.html">mark_html</a>()</code>.</p>
+</td></tr>
+<tr><td><code id="knit2html_:_envir">envir</code></td>
+<td>
+<p>Environment in which code chunks are to be evaluated, for
+example, <code><a href="../../base/html/sys.parent.html">parent.frame</a>()</code>, <code><a href="../../base/html/environment.html">new.env</a>()</code>, or
+<code><a href="../../base/html/environment.html">globalenv</a>()</code>).</p>
+</td></tr>
+<tr><td><code id="knit2html_:_text">text</code></td>
+<td>
+<p>A character vector. This is an alternative way to provide the
+input file.</p>
+</td></tr>
+<tr><td><code id="knit2html_:_quiet">quiet</code></td>
+<td>
+<p>Boolean; suppress the progress bar and messages?</p>
+</td></tr>
+<tr><td><code id="knit2html_:_encoding">encoding</code></td>
+<td>
+<p>Encoding of the input file; always assumed to be UTF-8 (i.e.,
+this argument is effectively ignored).</p>
+</td></tr>
+<tr><td><code id="knit2html_:_force_v1">force_v1</code></td>
+<td>
+<p>Boolean; whether to force rendering the input document as an
+R Markdown v1 document, even if it is for v2.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>If the argument <code>text</code> is NULL, a character string (HTML code)
+is returned; otherwise the result is written into a file and the filename
+is returned.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <span class="pkg">markdown</span> package is for R Markdown v1, which is much less
+powerful than R Markdown v2, i.e. the <span class="pkg">rmarkdown</span> package
+(<a href="https://rmarkdown.rstudio.com">https://rmarkdown.rstudio.com</a>). To render R Markdown v2 documents to
+HTML, please use <code>rmarkdown::render()</code> instead.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../knitr/help/knit.html">knit</a></code>, <code>markdown::<a href="../../markdown/help/mark_html.html">mark_html</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># a minimal example
+writeLines(c("# hello markdown", "```{r hello-random, echo=TRUE}", "rnorm(5)", "```"),
+    "test.Rmd")
+knit2html("test.Rmd")
+if (interactive()) browseURL("test.html")
+
+unlink(c("test.Rmd", "test.html", "test.md"))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

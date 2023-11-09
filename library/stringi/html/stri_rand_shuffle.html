@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Randomly Shuffle Code Points in Each String</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>stri_rand_shuffle {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='stri_rand_shuffle'>Randomly Shuffle Code Points in Each String</h2>
+
+<h3>Description</h3>
+
+<p>Generates a (pseudo)random permutation of the code points
+in each string.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stri_rand_shuffle(str)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="stri_rand_shuffle_:_str">str</code></td>
+<td>
+<p>character vector</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This operation may result in non-Unicode-normalized
+strings and may give peculiar outputs in case of bidirectional strings.
+</p>
+<p>See also <code><a href="../../stringi/help/stri_reverse.html">stri_reverse</a></code> for reversing the order of code points.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a character vector.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p><a href="https://www.gagolewski.com/">Marek Gagolewski</a> and other contributors
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The official online manual of <span class="pkg">stringi</span> at <a href="https://stringi.gagolewski.com/">https://stringi.gagolewski.com/</a>
+</p>
+<p>Gagolewski M., <span class="pkg">stringi</span>: Fast and portable character string processing in R, <em>Journal of Statistical Software</em> 103(2), 2022, 1-59, <a href="https://doi.org/10.18637/jss.v103.i02">doi:10.18637/jss.v103.i02</a>
+</p>
+<p>Other random: 
+<code><a href="../../stringi/help/stri_rand_lipsum.html">stri_rand_lipsum</a>()</code>,
+<code><a href="../../stringi/help/stri_rand_strings.html">stri_rand_strings</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>stri_rand_shuffle(c('abcdefghi', '0123456789'))
+# you can do better than this with stri_rand_strings:
+stri_rand_shuffle(rep(stri_paste(letters, collapse=''), 10))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.7.12 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

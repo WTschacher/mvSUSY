@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>R: Remove or retrieve Sass code from a theme</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bs_remove {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bs_remove'>Remove or retrieve Sass code from a theme</h2>
+
+<h3>Description</h3>
+
+<p>Remove or retrieve Sass code from a theme
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bs_remove(theme, ids = character(0))
+
+bs_retrieve(theme, ids = character(0), include_unnamed = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bs_remove_:_theme">theme</code></td>
+<td>
+<p>a <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="bs_remove_:_ids">ids</code></td>
+<td>
+<p>a character vector of ids</p>
+</td></tr>
+<tr><td><code id="bs_remove_:_include_unnamed">include_unnamed</code></td>
+<td>
+<p>whether or not to include unnamed <code><a href="../../sass/help/sass_layer.html">sass::sass_layer()</a></code>s
+(e.g., Bootstrap Sass variables, functions, and mixins).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a modified <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+# Remove CSS rules for print and carousels
+bs4 &lt;- bs_theme(version = 4)
+bs_remove(bs4, c("_print", "_carousel"))
+
+# Remove BS3 compatibility layer
+bs_remove(bs4, "bs3compat")
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

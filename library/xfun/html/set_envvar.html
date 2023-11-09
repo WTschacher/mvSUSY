@@ -1,0 +1,69 @@
+<!DOCTYPE html><html><head><title>R: Set environment variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>set_envvar {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='set_envvar'>Set environment variables</h2>
+
+<h3>Description</h3>
+
+<p>Set environment variables from a named character vector, and return the old
+values of the variables, so they could be restored later.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>set_envvar(vars)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="set_envvar_:_vars">vars</code></td>
+<td>
+<p>A named character vector of the form <code>c(VARIABLE = VALUE)</code>.
+If any value is <code>NA</code>, this function will try to unset the variable.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The motivation of this function is that <code><a href="../../base/html/Sys.setenv.html">Sys.setenv()</a></code> does not
+return the old values of the environment variables, so it is not
+straightforward to restore the variables later.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Old values of the variables (if not set, <code>NA</code>).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>vars = xfun::set_envvar(c(FOO = "1234"))
+Sys.getenv("FOO")
+xfun::set_envvar(vars)
+Sys.getenv("FOO")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

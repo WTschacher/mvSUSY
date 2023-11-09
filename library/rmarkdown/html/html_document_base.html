@@ -1,0 +1,194 @@
+<!DOCTYPE html><html><head><title>R: Base output format for HTML-based output formats</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>html_document_base {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='html_document_base'>Base output format for HTML-based output formats</h2>
+
+<h3>Description</h3>
+
+<p>Creates an HTML base output format suitable for passing as the
+<code>base_format</code> argument of the <code><a href="../../rmarkdown/help/output_format.html">output_format</a></code> function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>html_document_base(
+  theme = NULL,
+  self_contained = TRUE,
+  lib_dir = NULL,
+  math_method = "default",
+  mathjax = "default",
+  pandoc_args = NULL,
+  template = "default",
+  dependency_resolver = NULL,
+  copy_resources = FALSE,
+  extra_dependencies = NULL,
+  css = NULL,
+  bootstrap_compatible = FALSE,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="html_document_base_:_theme">theme</code></td>
+<td>
+<p>One of the following:
+</p>
+
+<ul>
+<li><p> A <code><a href="../../bslib/help/bs_theme.html">bslib::bs_theme()</a></code> object (or a list of <code><a href="../../bslib/help/bs_theme.html">bslib::bs_theme()</a></code> argument values)
+</p>
+
+<ul>
+<li><p> Use this option for custom themes using Bootstrap 4 or 3.
+</p>
+</li>
+<li><p> In this case, any <code>.scss</code>/<code>.sass</code> files provided to the <code>css</code>
+parameter may utilize the <code>theme</code>'s underlying Sass utilities
+(e.g., variables, mixins, etc).
+</p>
+</li></ul>
+
+</li>
+<li> <p><code>NULL</code> for no theme (i.e., no <code><a href="../../rmarkdown/help/html_dependency_bootstrap.html">html_dependency_bootstrap()</a></code>).
+</p>
+</li>
+<li><p> A character string specifying a <a href="https://bootswatch.com/3/">Bootswatch 3</a>
+theme name (for backwards-compatibility).
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="html_document_base_:_self_contained">self_contained</code></td>
+<td>
+<p>Produce a standalone HTML file with no external
+dependencies, using data: URIs to incorporate the contents of linked
+scripts, stylesheets, images, and videos. Note that even for self contained
+documents MathJax is still loaded externally (this is necessary because of
+its size).</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_lib_dir">lib_dir</code></td>
+<td>
+<p>Directory to copy dependent HTML libraries (e.g. jquery,
+bootstrap, etc.) into. By default this will be the name of the document with
+<code>_files</code> appended to it.</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_math_method">math_method</code></td>
+<td>
+<p>Math rendering engine to use. This will define the math method to use with Pandoc.
+</p>
+
+<ul>
+<li><p> It can be a string for the engine, one of &quot;mathjax&quot;, &quot;mathml&quot;, &quot;webtex&quot;, &quot;katex&quot;, &quot;gladtex&quot;, or &quot;r-katex&quot;
+or &quot;default&quot; for <code>mathjax</code>.
+</p>
+</li>
+<li><p> It can be a list of
+</p>
+
+<ul>
+<li> <p><code>engine</code>:  one of
+&quot;mathjax&quot;, &quot;mathml&quot;, &quot;webtex&quot;, &quot;katex&quot;, or &quot;gladtex&quot;.
+</p>
+</li>
+<li> <p><code>url</code>: A specific url to use with <code>mathjax</code>, <code>katex</code> or <code>webtex</code>.
+Note that for <code>engine = "mathjax"</code>, <code>url = "local"</code> will use a local version of MathJax (which is
+copied into the output directory).
+</p>
+</li></ul>
+
+</li></ul>
+
+<p>For example,
+</p>
+<div class="sourceCode yaml"><pre>output:
+  html_document:
+    math_method:
+      engine: katex
+      url: https://cdn.jsdelivr.net/npm/katex@0.11.1/dist
+</pre></div>
+<p>See <a href="https://pandoc.org/MANUAL.html#math-rendering-in-html">Pandoc's Manual about Math in HTML</a> for the details
+about Pandoc supported methods.
+</p>
+<p>Using <code>math_method = "r-katex"</code> will opt-in server side rendering using
+KaTeX thanks to <a href="https://docs.ropensci.org/katex/">katex</a> R package. This is
+useful compared to <code>math_method = "katex"</code> to have no JS dependency, only a
+CSS dependency for styling equation.</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_mathjax">mathjax</code></td>
+<td>
+<p>Include mathjax. The &quot;default&quot; option uses an https URL from a
+MathJax CDN. The &quot;local&quot; option uses a local version of MathJax (which is
+copied into the output directory). You can pass an alternate URL or pass
+<code>NULL</code> to exclude MathJax entirely.</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_pandoc_args">pandoc_args</code></td>
+<td>
+<p>Additional command line options to pass to pandoc</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_template">template</code></td>
+<td>
+<p>Pandoc template to use for rendering. Pass &quot;default&quot; to use
+the rmarkdown package default template; pass <code>NULL</code> to use pandoc's
+built-in template; pass a path to use a custom template that you've created.
+Note that if you don't use the &quot;default&quot; template then some features of
+<code>html_document</code> won't be available (see the Templates section below for
+more details).</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_dependency_resolver">dependency_resolver</code></td>
+<td>
+<p>A dependency resolver</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_copy_resources">copy_resources</code></td>
+<td>
+<p>Copy resources</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_extra_dependencies">extra_dependencies</code></td>
+<td>
+<p>Extra dependencies as a list of the
+<code>html_dependency</code> class objects typically generated by
+<code><a href="../../htmltools/help/htmlDependency.html">htmltools:htmlDependency()</a></code>.</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_css">css</code></td>
+<td>
+<p>CSS and/or Sass files to include. Files with an extension of .sass
+or .scss are compiled to CSS via <code>sass::sass()</code>. Also, if <code>theme</code> is a
+<code><a href="../../bslib/help/bs_theme.html">bslib::bs_theme()</a></code> object, Sass code may reference the relevant Bootstrap
+Sass variables, functions, mixins, etc.</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_bootstrap_compatible">bootstrap_compatible</code></td>
+<td>
+<p>Bootstrap compatible</p>
+</td></tr>
+<tr><td><code id="html_document_base_:_...">...</code></td>
+<td>
+<p>Ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>HTML base output format.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

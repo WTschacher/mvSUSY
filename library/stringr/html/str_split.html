@@ -1,0 +1,170 @@
+<!DOCTYPE html><html><head><title>R: Split up a string into pieces</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_split {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_split'>Split up a string into pieces</h2>
+
+<h3>Description</h3>
+
+<p>These functions differ primarily in their input and output types:
+</p>
+
+<ul>
+<li> <p><code>str_split()</code> takes a character vector and returns a list.
+</p>
+</li>
+<li> <p><code>str_split_1()</code> takes a single string and returns a character vector.
+</p>
+</li>
+<li> <p><code>str_split_fixed()</code> takes a character vector and returns a matrix.
+</p>
+</li>
+<li> <p><code>str_split_i()</code> takes a character vector and returns a character
+vector.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_split(string, pattern, n = Inf, simplify = FALSE)
+
+str_split_1(string, pattern)
+
+str_split_fixed(string, pattern, n)
+
+str_split_i(string, pattern, i)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_split_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_split_:_pattern">pattern</code></td>
+<td>
+<p>Pattern to look for.
+</p>
+<p>The default interpretation is a regular expression, as described in
+<code>vignette("regular-expressions")</code>. Use <code><a href="../../stringr/help/regex.html">regex()</a></code> for finer control of the
+matching behaviour.
+</p>
+<p>Match a fixed string (i.e. by comparing only bytes), using
+<code><a href="../../stringr/help/fixed.html">fixed()</a></code>. This is fast, but approximate. Generally,
+for matching human text, you'll want <code><a href="../../stringr/help/coll.html">coll()</a></code> which
+respects character matching rules for the specified locale.
+</p>
+<p>Match character, word, line and sentence boundaries with
+<code><a href="../../stringr/help/boundary.html">boundary()</a></code>. An empty pattern, &quot;&quot;, is equivalent to
+<code>boundary("character")</code>.</p>
+</td></tr>
+<tr><td><code id="str_split_:_n">n</code></td>
+<td>
+<p>Maximum number of pieces to return. Default (Inf) uses all
+possible split positions.
+</p>
+<p>For <code>split_split()</code>, this determines the maximum length of each element
+of the output. For <code>str_split_fixed()</code>, this determines the number of
+columns in the output; if an input is too short, the result will be padded
+with <code>""</code>.</p>
+</td></tr>
+<tr><td><code id="str_split_:_simplify">simplify</code></td>
+<td>
+<p>A boolean.
+</p>
+
+<ul>
+<li> <p><code>FALSE</code> (the default): returns a list of character vectors.
+</p>
+</li>
+<li> <p><code>TRUE</code>: returns a character matrix.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="str_split_:_i">i</code></td>
+<td>
+<p>Element to return. Use a negative value to count from the
+right hand side.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+
+<ul>
+<li> <p><code>str_split_1()</code>: a character vector.
+</p>
+</li>
+<li> <p><code>str_split()</code>: a list the same length as <code>string</code>/<code>pattern</code> containing
+character vectors.
+</p>
+</li>
+<li> <p><code>str_split_fixed()</code>: a character matrix with <code>n</code> columns and the same
+number of rows as the length of <code>string</code>/<code>pattern</code>.
+</p>
+</li>
+<li> <p><code>str_split_i()</code>: a character vector the same length as <code>string</code>/<code>pattern</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringi/html/stri_split.html">stri_split()</a></code> for the underlying implementation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>fruits &lt;- c(
+  "apples and oranges and pears and bananas",
+  "pineapples and mangos and guavas"
+)
+
+str_split(fruits, " and ")
+str_split(fruits, " and ", simplify = TRUE)
+
+# If you want to split a single string, use `str_split1`
+str_split_1(fruits[[1]], " and ")
+
+# Specify n to restrict the number of possible matches
+str_split(fruits, " and ", n = 3)
+str_split(fruits, " and ", n = 2)
+# If n greater than number of pieces, no padding occurs
+str_split(fruits, " and ", n = 5)
+
+# Use fixed to return a character matrix
+str_split_fixed(fruits, " and ", 3)
+str_split_fixed(fruits, " and ", 4)
+
+# str_split_i extracts only a single piece from a string
+str_split_i(fruits, " and ", 1)
+str_split_i(fruits, " and ", 4)
+# use a negative number to select from the end
+str_split_i(fruits, " and ", -1)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

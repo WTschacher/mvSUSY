@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><title>R: Show warnings from the last command</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>last_dplyr_warnings {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='last_dplyr_warnings'>Show warnings from the last command</h2>
+
+<h3>Description</h3>
+
+<p>Warnings that occur inside a dplyr verb like <code>mutate()</code> are caught
+and stashed away instead of being emitted to the console. This
+prevents rowwise and grouped data frames from flooding the console
+with warnings. To see the original warnings, use
+<code>last_dplyr_warnings()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>last_dplyr_warnings(n = 5)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="last_dplyr_warnings_:_n">n</code></td>
+<td>
+<p>Passed to <code><a href="../../utils/html/head.html">head()</a></code> so that only the first <code>n</code> warnings are
+displayed.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

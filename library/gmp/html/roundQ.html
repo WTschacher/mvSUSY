@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><title>R: Rounding Big Rationals (&quot;bigq&quot;) to Decimals</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>roundQ {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='roundQ'>Rounding Big Rationals (&quot;bigq&quot;) to Decimals</h2>
+
+<h3>Description</h3>
+
+<p>Rounding big rationals (of class <code>"bigq"</code>, see <code><a href="../../gmp/help/as.bigq.html">as.bigq</a>()</code>)
+to decimal <code>digits</code> is strictly based on a (optionally choosable)
+definition of rounding to integer, i.e., <code>digits = 0</code>, the default
+method of which we provide as <code>round0()</code>.
+</p>
+<p>The users typically just call <code>round(x, digits)</code> as elsewhere, and
+the <code>round()</code> method will call <code>round(x, digits, round0=round0)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>round0(x)
+
+roundQ(x, digits = 0, r0 = round0)
+
+## S3 method for class 'bigq'
+round(x, digits = 0)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="roundQ_:_x">x</code></td>
+<td>
+<p>vector of big rationals, i.e., of <code><a href="../../base/html/class.html">class</a></code> <code>"bigq"</code>.</p>
+</td></tr>
+<tr><td><code id="roundQ_:_digits">digits</code></td>
+<td>
+<p>integer number of decimal digits to round to.</p>
+</td></tr>
+<tr><td><code id="roundQ_:_r0">r0</code></td>
+<td>
+<p>a <code><a href="../../base/html/function.html">function</a></code> of one argument which implements a
+version of <code><a href="../../base/html/Round.html">round</a>(x, digits=0)</code>.   The default for
+<code>roundQ()</code> is to use our <code>round0()</code> which implements
+&ldquo;round to even&rdquo;, as base <span class="rlang"><b>R</b></span>'s <code><a href="../../base/html/Round.html">round</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>round0()</code> returns a vector of big integers, i.e., <code>"bigz"</code> classed.
+</p>
+<p><code>roundQ(x, digits, round0)</code> returns a vector of big rationals,
+<code>"bigq"</code>, as <code>x</code>.
+</p>
+<p><code>round.bigq</code> is very simply defined as
+<code>function(x, digits)  roundQ(x, digits)</code> .
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, ETH Zurich</p>
+
+
+<h3>References</h3>
+
+<p>The vignette &ldquo;<em>Exact Decimal Rounding via Rationals</em>&rdquo; from
+CRAN package <a href="https://CRAN.R-project.org/package=round"><span class="pkg">round</span></a>,
+
+
+</p>
+<p>Wikipedia, Rounding, notably &quot;Round half to even&quot;:
+<a href="https://en.wikipedia.org/wiki/Rounding#Round_half_to_even">https://en.wikipedia.org/wiki/Rounding#Round_half_to_even</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Round.html">round</a></code> for (double precision) numbers in base <span class="rlang"><b>R</b></span>;
+<code><a href="../../round/help/roundX.html">roundX</a></code> from CRAN package <a href="https://CRAN.R-project.org/package=round"><span class="pkg">round</span></a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>qq &lt;- as.bigq((-21:31), 10)
+noquote(cbind(as.character(qq), asNumeric(qq)))
+round0(qq) # Big Integer ("bigz")
+## corresponds to R's own "round to even" :
+stopifnot(round0(qq) == round(asNumeric(qq)))
+round(qq) # == round(qq, 0): the same as round0(qq) *but* Big Rational ("bigq")
+
+halfs &lt;- as.bigq(1,2) + -5:12
+
+
+
+## round0() is simply
+round0 &lt;- function (x) {
+    nU &lt;- as.bigz.bigq(xU &lt;- x + as.bigq(1, 2)) # traditional round: .5 rounded up
+    if(any(I &lt;- is.whole.bigq(xU))) { # I &lt;==&gt;  x == &lt;n&gt;.5 : "hard case"
+        I[I] &lt;- .mod.bigz(nU[I], 2L) == 1L # rounded up is odd  ==&gt; round *down*
+        nU[I] &lt;- nU[I] - 1L
+    }
+    nU
+}
+
+## 's' for simple: rounding as you learned in school:
+round0s &lt;- function(x) as.bigz.bigq(x + as.bigq(1, 2))
+
+cbind(halfs, round0s(halfs), round0(halfs))
+
+
+## roundQ() is simply
+roundQ &lt;- function(x, digits = 0, r0 = round0) {
+    ## round(x * 10^d) / 10^d --  vectorizing in both (x, digits)
+    p10 &lt;- as.bigz(10) ^ digits # class: if(all(digits &gt;= 0)) "bigz" else "bigq"
+    r0(x * p10) / p10
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

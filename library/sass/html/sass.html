@@ -1,0 +1,227 @@
+<!DOCTYPE html><html><head><title>R: Compile Sass to CSS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass'>Compile Sass to CSS</h2>
+
+<h3>Description</h3>
+
+<p>Compile Sass to CSS using LibSass.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass(
+  input = NULL,
+  options = sass_options_get(),
+  output = NULL,
+  write_attachments = NA,
+  cache = sass_cache_get(),
+  cache_key_extra = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_:_input">input</code></td>
+<td>
+<p>Any of the following:
+</p>
+
+<ul>
+<li><p> A character vector containing Sass code.
+</p>
+</li>
+<li><p> A named list containing variable names and values.
+</p>
+</li>
+<li><p> A <code><a href="../../sass/help/sass_file.html">sass_file()</a></code>, <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code>, and/or <code><a href="../../sass/help/sass_bundle.html">sass_bundle()</a></code>.
+</p>
+</li>
+<li><p> A <code><a href="../../base/html/list.html">list()</a></code> containing any of the above.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="sass_:_options">options</code></td>
+<td>
+<p>Compiler <code><a href="../../sass/help/sass_options.html">sass_options()</a></code>.</p>
+</td></tr>
+<tr><td><code id="sass_:_output">output</code></td>
+<td>
+<p>Specifies path to output file for compiled CSS. May be a
+character string or <code><a href="../../sass/help/output_template.html">output_template()</a></code></p>
+</td></tr>
+<tr><td><code id="sass_:_write_attachments">write_attachments</code></td>
+<td>
+<p>If the input contains <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code> objects that
+have file attachments, and <code>output</code> is not <code>NULL</code>, then copy the file
+attachments to the directory of <code>output</code>. (Defaults to <code>NA</code>, which merely
+emits a warning if file attachments are present, but does not write them to
+disk; the side-effect of writing extra files is subtle and potentially
+destructive, as files may be overwritten.)</p>
+</td></tr>
+<tr><td><code id="sass_:_cache">cache</code></td>
+<td>
+<p>This can be a directory to use for the cache, a <a href="../../sass/help/FileCache.html">FileCache</a>
+object created by <code><a href="../../sass/help/sass_file_cache.html">sass_file_cache()</a></code>, or <code>FALSE</code> or <code>NULL</code> for no caching.</p>
+</td></tr>
+<tr><td><code id="sass_:_cache_key_extra">cache_key_extra</code></td>
+<td>
+<p>additional information to considering when computing
+the cache key. This should include any information that could possibly
+influence the resulting CSS that isn't already captured by <code>input</code>. For
+example, if <code>input</code> contains something like <code>"@import sass_file.scss"</code> you
+may want to include the <code><a href="../../base/html/file.info.html">file.mtime()</a></code> of <code>sass_file.scss</code> (or, perhaps, a
+<code><a href="../../utils/html/packageDescription.html">packageVersion()</a></code> if <code>sass_file.scss</code> is bundled with an R package).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>If <code>output = NULL</code>, the function returns a string value of the
+compiled CSS. If <code>output</code> is specified, the compiled CSS is written to a
+file and the filename is returned.
+</p>
+
+
+<h3>Caching</h3>
+
+<p>By default, caching is enabled, meaning that <code>sass()</code> avoids the possibly
+expensive re-compilation of CSS whenever the same <code>options</code> and <code>input</code> are
+requested. Unfortunately, in some cases, <code>options</code> and <code>input</code> alone aren't
+enough to determine whether new CSS output must be generated. For example,
+changes in local file
+<a href="https://sass-lang.com/documentation/at-rules/import">imports</a> that aren't
+captured through <code><a href="../../sass/help/sass_file.html">sass_file()</a></code>/<code><a href="../../sass/help/sass_import.html">sass_import()</a></code>, may lead to a
+false-positive cache hit. For this reason, developers are encouraged to
+capture such information in <code>cache_key_extra</code> (possibly with
+<code>packageVersion('myPackage')</code> if shipping Sass with a package), and users
+may want to disable caching altogether during local development by calling
+<code>options(sass.cache=FALSE)</code>.
+</p>
+<p>In some cases when developing and modifying .scss files, <code><a href="../../sass/help/sass.html">sass()</a></code> might not
+detect changes, and keep using cached .css files instead of rebuilding
+them. To be safe, if you are developing a theme with sass, it's best to
+turn off caching by calling <code>options(sass.cache=FALSE)</code>.
+</p>
+<p>If caching is enabled, <code><a href="../../sass/help/sass.html">sass()</a></code> will attempt to bypass the compilation
+process by reusing output from previous <code><a href="../../sass/help/sass.html">sass()</a></code> calls that used equivalent
+inputs. This mechanism works by computing a <em>cache key</em> from each <code><a href="../../sass/help/sass.html">sass()</a></code>
+call's <code>input</code>, <code>option</code>, and <code>cache_key_extra</code> arguments. If an object
+with that hash already exists within the cache directory, its contents are
+used instead of performing the compilation. If it does not exist, then
+compilation is performed and usual and the results are stored in the cache.
+</p>
+<p>If a file that is included using <code><a href="../../sass/help/sass_file.html">sass_file()</a></code> changes on disk (i.e. its
+last-modified time changes), its previous cache entries will effectively be
+invalidated (not removed from disk, but they'll no longer be matched).
+However, if a file imported using <code><a href="../../sass/help/sass_file.html">sass_file()</a></code> itself imports other sass
+files using <code style="white-space: pre;">&#8288;@import&#8288;</code>, changes to those files are invisible to the
+cache and you can end up with stale results. To avoid this problem when
+developing sass code, it's best to disable caching with
+<code>options(sass.cache=FALSE)</code>.
+</p>
+<p>By default, the maximum size of the cache is 40 MB. If it grows past that
+size, the least-recently-used objects will be evicted from the cache to
+keep it under that size. Also by default, the maximum age of objects in the
+cache is one week. Older objects will be evicted from the cache.
+</p>
+<p>To clear the default cache, call <code>sass_cache_get()$reset()</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://sass-lang.com/guide">https://sass-lang.com/guide</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Raw Sass input
+sass("foo { margin: 122px * .3; }")
+
+# List of inputs, including named variables
+sass(list(
+  list(width = "122px"),
+  "foo { margin: $width * .3; }"
+))
+
+# Compile a .scss file
+example_file &lt;- system.file("examples/example-full.scss", package = "sass")
+sass(sass_file(example_file))
+
+# Import a file
+tmp_file &lt;- tempfile()
+writeLines("foo { margin: $width * .3; }", tmp_file)
+sass(list(
+  list(width = "122px"),
+  sass_file(tmp_file)
+))
+
+## Not run: 
+# ======================
+# Caching examples
+# ======================
+# Very slow to compile
+fib_sass &lt;- "@function fib($x) {
+  @if $x &lt;= 1 {
+    @return $x
+  }
+  @return fib($x - 2) + fib($x - 1);
+}
+
+body {
+  width: fib(27);
+}"
+
+# The first time this runs it will be very slow
+system.time(sass(fib_sass))
+
+# But on subsequent calls, it should be very fast
+system.time(sass(fib_sass))
+
+# sass() can be called with cache=NULL; it will be slow
+system.time(sass(fib_sass, cache = NULL))
+
+# Clear the cache
+sass_cache_get()$reset()
+
+## End(Not run)
+
+## Not run: 
+# Example of disabling cache by setting the default cache to NULL.
+
+# Disable the default cache (save the original one first, so we can restore)
+old_cache &lt;- sass_cache_get()
+sass_cache_set(NULL)
+# Will be slow, because no cache
+system.time(sass(fib_sass))
+
+# Restore the original cache
+sass_cache_set(old_cache)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

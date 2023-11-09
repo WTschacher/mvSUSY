@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Access or Modify the Whitepoint</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>whitepoint {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='whitepoint'>Access or Modify the Whitepoint</h2>
+
+<h3>Description</h3>
+
+<p>This function can be used to control the single global whitepoint
+that affects all color conversions within the package (that require
+a whitepoint, i.e., go through XYZ).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>whitepoint(white, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="whitepoint_:_white">white</code>, <code id="whitepoint_:_...">...</code></td>
+<td>
+<p>Either missing (to query the whitepoint) or
+<code>NULL</code> or a specification of the XYZ coordinates of the whitepoint
+(to set the whitepoint, see examples). <code>NULL</code> corresponds to
+CIE D65 with XYZ coordinates 95.047, 100.000, 108.883.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>whitepoint</code> returns an XYZ color object for the whitepoint
+(invisibly in case a new whitepoint was set).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../colorspace/help/XYZ.html">XYZ</a></code> and <a href="../../colorspace/help/color-class.html">color-class</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># query current whitepoint (D65 by default)
+whitepoint()
+
+# Illuminant E 
+whitepoint(XYZ(100, 100, 100))
+
+# equivalently
+whitepoint(100, 100, 100)
+whitepoint(c(100, 100, 100))
+whitepoint(cbind(100, 100, 100))
+
+whitepoint()
+
+## reset
+whitepoint(NULL)
+whitepoint()
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

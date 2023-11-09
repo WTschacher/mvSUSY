@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: Do anything</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>do {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='do'>Do anything</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p><code>do()</code> is superseded as of dplyr 1.0.0, because its syntax never really
+felt like it belonged with the rest of dplyr. It's replaced by a combination
+of <code><a href="../../dplyr/help/reframe.html">reframe()</a></code> (which can produce multiple rows and multiple columns),
+<code><a href="../../dplyr/help/nest_by.html">nest_by()</a></code> (which creates a <a href="../../dplyr/help/rowwise.html">rowwise</a> tibble of nested data),
+and <code><a href="../../dplyr/help/pick.html">pick()</a></code> (which allows you to access the data for the &quot;current&quot; group).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>do(.data, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="do_:_.data">.data</code></td>
+<td>
+<p>a tbl</p>
+</td></tr>
+<tr><td><code id="do_:_...">...</code></td>
+<td>
+<p>Expressions to apply to each group. If named, results will be
+stored in a new column. If unnamed, must return a data frame. You can
+use <code>.</code> to refer to the current group. You can not mix named and
+unnamed arguments.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># do() with unnamed arguments becomes reframe() or summarise()
+# . becomes pick()
+by_cyl &lt;- mtcars %&gt;% group_by(cyl)
+by_cyl %&gt;% do(head(., 2))
+# -&gt;
+by_cyl %&gt;% reframe(head(pick(everything()), 2))
+by_cyl %&gt;% slice_head(n = 2)
+
+# Can refer to variables directly
+by_cyl %&gt;% do(mean = mean(.$vs))
+# -&gt;
+by_cyl %&gt;% summarise(mean = mean(vs))
+
+# do() with named arguments becomes nest_by() + mutate() &amp; list()
+models &lt;- by_cyl %&gt;% do(mod = lm(mpg ~ disp, data = .))
+# -&gt;
+models &lt;- mtcars %&gt;%
+  nest_by(cyl) %&gt;%
+  mutate(mod = list(lm(mpg ~ disp, data = data)))
+models %&gt;% summarise(rsq = summary(mod)$r.squared)
+
+# use broom to turn models into data
+models %&gt;% do(data.frame(
+  var = names(coef(.$mod)),
+  coef(summary(.$mod)))
+)
+
+# -&gt;
+models %&gt;% reframe(broom::tidy(mod))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

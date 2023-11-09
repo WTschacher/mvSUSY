@@ -1,0 +1,144 @@
+<!DOCTYPE html><html><head><title>R: Theme customization UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>run_with_themer {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='run_with_themer'>Theme customization UI</h2>
+
+<h3>Description</h3>
+
+<p>A 'real-time' theme customization UI that you can use to easily make common
+tweaks to Bootstrap variables and immediately see how they would affect your
+app's appearance. There are two ways you can launch the theming UI. For most
+Shiny apps, just use <code>run_with_themer()</code> in place of <code><a href="../../shiny/help/runApp.html">shiny::runApp()</a></code>; they
+should take the same arguments and work the same way. Alternatively, you can
+call the <code>bs_themer()</code> function from inside your server function (or in an R
+Markdown app that is using <code>runtime: shiny</code>, you can call this from any code
+chunk). Note that this function is only intended to be used for development!
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>run_with_themer(appDir = getwd(), ..., gfonts = TRUE, gfonts_update = FALSE)
+
+bs_themer(gfonts = TRUE, gfonts_update = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="run_with_themer_:_appDir">appDir</code></td>
+<td>
+<p>The application to run. This can be a file or directory path,
+or a <code><a href="../../shiny/help/shinyApp.html">shiny::shinyApp()</a></code> object. See <code><a href="../../shiny/help/runApp.html">shiny::runApp()</a></code> for details.</p>
+</td></tr>
+<tr><td><code id="run_with_themer_:_...">...</code></td>
+<td>
+<p>Additional parameters to pass through to <code><a href="../../shiny/help/runApp.html">shiny::runApp()</a></code>.</p>
+</td></tr>
+<tr><td><code id="run_with_themer_:_gfonts">gfonts</code></td>
+<td>
+<p>whether or not to detect Google Fonts and wrap them in
+<code><a href="../../bslib/help/font_google.html">font_google()</a></code> (so that their font files are automatically imported).</p>
+</td></tr>
+<tr><td><code id="run_with_themer_:_gfonts_update">gfonts_update</code></td>
+<td>
+<p>whether or not to update the internal database of
+Google Fonts.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>To help you utilize the changes you see in the preview, this utility prints
+<code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> code to the R console.
+</p>
+
+
+<h3>Value</h3>
+
+<p>nothing. These functions are called for their side-effects.
+</p>
+
+
+<h3>Limitations</h3>
+
+
+<ul>
+<li><p> Doesn't work with Bootstrap 3.
+</p>
+</li>
+<li><p> Doesn't work with IE11.
+</p>
+</li>
+<li><p> Only works inside Shiny apps and <code>runtime: shiny</code> R Markdown documents.
+</p>
+
+<ul>
+<li><p> Can't be used with static R Markdown documents.
+</p>
+</li>
+<li><p> Can be used to some extent with <code>runtime: shiny_prerendered</code>, but only UI
+rendered through a <code>context="server"</code> may update in real-time.
+</p>
+</li></ul>
+
+</li>
+<li><p> Doesn't work with '3rd party' custom widgets that don't make use of
+<code><a href="../../bslib/help/bs_dependency_defer.html">bs_dependency_defer()</a></code> or <code><a href="../../bslib/help/bs_current_theme.html">bs_current_theme()</a></code>.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(shiny)
+
+ui &lt;- fluidPage(
+  theme = bs_theme(bg = "black", fg = "white"),
+  h1("Heading 1"),
+  h2("Heading 2"),
+  p(
+    "Paragraph text;",
+    tags$a(href = "https://www.rstudio.com", "a link")
+  ),
+  p(
+    actionButton("cancel", "Cancel"),
+    actionButton("continue", "Continue", class = "btn-primary")
+  ),
+  tabsetPanel(
+    tabPanel("First tab",
+      "The contents of the first tab"
+    ),
+    tabPanel("Second tab",
+      "The contents of the second tab"
+    )
+  )
+)
+
+if (interactive()) {
+  run_with_themer(shinyApp(ui, function(input, output) {}))
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

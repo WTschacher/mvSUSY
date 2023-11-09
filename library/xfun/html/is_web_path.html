@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><title>R: Test if a path is a web path</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>is_web_path {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='is_web_path'>Test if a path is a web path</h2>
+
+<h3>Description</h3>
+
+<p>Check if a path starts with &lsquo;<span class="file">http://</span>&rsquo; or &lsquo;<span class="file">https://</span>&rsquo; or
+&lsquo;<span class="file">ftp://</span>&rsquo; or &lsquo;<span class="file">ftps://</span>&rsquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>is_web_path(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="is_web_path_:_x">x</code></td>
+<td>
+<p>A vector of paths.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>xfun::is_web_path("https://www.r-project.org")  # TRUE
+xfun::is_web_path("www.r-project.org")  # FALSE
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><title>R: Safe version of median</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>safe_median {ellipsis}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='safe_median'>Safe version of median</h2>
+
+<h3>Description</h3>
+
+<p><code>safe_median()</code> works <code><a href="../../stats/help/median.html">stats::median()</a></code> but warns if some elements of <code>...</code>
+are never used.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>safe_median(x, ...)
+
+## S3 method for class 'numeric'
+safe_median(x, ..., na.rm = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="safe_median_:_x">x</code></td>
+<td>
+<p>Numeric vector</p>
+</td></tr>
+<tr><td><code id="safe_median_:_...">...</code></td>
+<td>
+<p>Additional arguments passed on to methods.</p>
+</td></tr>
+<tr><td><code id="safe_median_:_na.rm">na.rm</code></td>
+<td>
+<p>For numeric method, should missing values be removed?</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(1:10, NA)
+safe_median(x, na.rm = TRUE)
+median(x, na.rm = TRUE)
+
+try(median(x, na.mr = TRUE))
+try(safe_median(x, na.mr = TRUE))
+
+try(median(1, 2, 3))
+try(safe_median(1, 2, 3))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ellipsis</em> version 0.3.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

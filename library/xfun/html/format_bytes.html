@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><title>R: Format numbers of bytes using a specified unit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>format_bytes {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='format_bytes'>Format numbers of bytes using a specified unit</h2>
+
+<h3>Description</h3>
+
+<p>Call the S3 method <code>format.object_size()</code> to format numbers of bytes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>format_bytes(x, units = "auto", ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="format_bytes_:_x">x</code></td>
+<td>
+<p>A numeric vector (each element represents a number of bytes).</p>
+</td></tr>
+<tr><td><code id="format_bytes_:_units">units</code>, <code id="format_bytes_:_...">...</code></td>
+<td>
+<p>Passed to <code><a href="../../utils/html/object.size.html">format()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>xfun::format_bytes(c(1, 1024, 2000, 1e+06, 2e+08))
+xfun::format_bytes(c(1, 1024, 2000, 1e+06, 2e+08), units = "KB")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

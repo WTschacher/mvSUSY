@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><title>R: Retrieve a global option from both 'options()' and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>env_option {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='env_option'>Retrieve a global option from both <code>options()</code> and environment variables</h2>
+
+<h3>Description</h3>
+
+<p>If the option exists in <code><a href="../../base/html/options.html">options()</a></code>, use its value. If not, query the
+environment variable with the name <code>R_NAME</code> where <code>NAME</code> is the capitalized
+option name with dots substituted by underscores. For example, for an option
+<code>xfun.foo</code>, first we try <code>getOption('xfun.foo')</code>; if it does not exist, we
+check the environment variable <code>R_XFUN_FOO</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>env_option(name, default = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="env_option_:_name">name</code></td>
+<td>
+<p>The option name.</p>
+</td></tr>
+<tr><td><code id="env_option_:_default">default</code></td>
+<td>
+<p>The default value if the option is not found in <code><a href="../../base/html/options.html">options()</a></code> or
+environment variables.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This provides two possible ways, whichever is more convenient, for users to
+set an option. For example, global options can be set in the <a href="../../base/html/Startup.html">.Rprofile</a>
+file, and environment variables can be set in the <a href="../../base/html/Startup.html">.Renviron</a> file.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The option value.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>xfun::env_option("xfun.test.option")  # NULL
+
+Sys.setenv(R_XFUN_TEST_OPTION = "1234")
+xfun::env_option("xfun.test.option")  # 1234
+
+options(xfun.test.option = TRUE)
+xfun::env_option("xfun.test.option")  # TRUE (from options())
+options(xfun.test.option = NULL)  # reset the option
+xfun::env_option("xfun.test.option")  # 1234 (from env var)
+
+Sys.unsetenv("R_XFUN_TEST_OPTION")
+xfun::env_option("xfun.test.option")  # NULL again
+
+xfun::env_option("xfun.test.option", FALSE)  # use default
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

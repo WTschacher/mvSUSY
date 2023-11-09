@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Set up a label placement strategy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>label_placer_minmax {isoband}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='label_placer_minmax'>Set up a label placement strategy</h2>
+
+<h3>Description</h3>
+
+<p>These functions set up various label placement strategies.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>label_placer_minmax(
+  placement = "tb",
+  rot_adjuster = angle_halfcircle_bottom(),
+  n = 2
+)
+
+label_placer_none()
+
+label_placer_manual(breaks, x, y, theta)
+
+label_placer_middle(rot_adjuster = angle_halfcircle_bottom())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="label_placer_minmax_:_placement">placement</code></td>
+<td>
+<p>String consisting of any combination of the letters
+&quot;t&quot;, &quot;r&quot;, &quot;b&quot;, &quot;l&quot; indicating the placement of labels at the top,
+to the right, at the bottom, to the left of the isoline.</p>
+</td></tr>
+<tr><td><code id="label_placer_minmax_:_rot_adjuster">rot_adjuster</code></td>
+<td>
+<p>Function that standardizes the rotation angles of the labels.
+See e.g. <code><a href="../../isoband/help/angle_halfcircle_bottom.html">angle_halfcircle_bottom()</a></code>.</p>
+</td></tr>
+<tr><td><code id="label_placer_minmax_:_n">n</code></td>
+<td>
+<p>Size of the point neighborhood over which the rotation angle should be
+calculated.</p>
+</td></tr>
+<tr><td><code id="label_placer_minmax_:_breaks">breaks</code></td>
+<td>
+<p>Character vector specifying the isolines to be labeled,
+as in <code><a href="../../isoband/help/isolines_grob.html">isolines_grob()</a></code>.</p>
+</td></tr>
+<tr><td><code id="label_placer_minmax_:_x">x</code>, <code id="label_placer_minmax_:_y">y</code>, <code id="label_placer_minmax_:_theta">theta</code></td>
+<td>
+<p>Numeric vectors specifying the x and y positions and
+angles (in radians) for each label corresponding to each break.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>label_placer_minmax()</code> places labels at the horizontal or vertical minima or maxima of
+the respective isolines.
+</p>
+<p><code>label_placer_none()</code> places no labels at all.
+</p>
+<p><code>label_placer_manual()</code> places labels at manually defined locations.
+</p>
+<p><code>label_placer_middle()</code> places labels at the middle of each isoline.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>isoband</em> version 0.2.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

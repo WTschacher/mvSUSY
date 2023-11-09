@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><title>R: Create a self-contained HTML document using pandoc.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pandoc_self_contained_html {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pandoc_self_contained_html'>Create a self-contained HTML document using pandoc.</h2>
+
+<h3>Description</h3>
+
+<p>Create a self-contained HTML document by base64 encoding images,
+scripts, and stylesheets referred by the input document.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pandoc_self_contained_html(input, output)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pandoc_self_contained_html_:_input">input</code></td>
+<td>
+<p>Input html file to create self-contained version of.</p>
+</td></tr>
+<tr><td><code id="pandoc_self_contained_html_:_output">output</code></td>
+<td>
+<p>Path to save output.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>(Invisibly) The path of the generated file.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

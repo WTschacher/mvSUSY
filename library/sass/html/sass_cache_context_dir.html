@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><title>R: Return the cache directory for the current context.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_cache_context_dir {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_cache_context_dir'>Return the cache directory for the current context.</h2>
+
+<h3>Description</h3>
+
+<p>Return the cache directory for the current context.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_cache_context_dir()
+</code></pre>
+
+
+<h3>Details</h3>
+
+<p>In most cases, this function returns the user's cache directory, by calling
+<code>tools::R_user_dir("sass", which = "cache")</code> (for R 4.0 and above) or
+<code>rappdirs::user_cache_dir("R-sass")</code> (for older versions of R).
+</p>
+<p>If this function is called from a Shiny application, it will also look for a
+subdirectory named <code style="white-space: pre;">&#8288;app_cache/&#8288;</code>. If it exists, it will use a directory named
+<code style="white-space: pre;">&#8288;app_cache/sass/&#8288;</code> to store the cache.
+</p>
+<p>When running a Shiny application in a typical R session, it will not create
+the <code style="white-space: pre;">&#8288;app_cache/&#8288;</code> subdirectory, but it will use it if present. This scopes the
+cache to the application.
+</p>
+<p>With Shiny applications hosted on Shiny Server and Connect, it <em>will</em> create
+a <code style="white-space: pre;">&#8288;app_cache/sass/&#8288;</code> subdirectory, so that the cache is scoped to the
+application and will not interfere with another application's cache.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

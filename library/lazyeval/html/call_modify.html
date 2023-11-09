@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><title>R: Modify the arguments of a call.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>call_modify {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='call_modify'>Modify the arguments of a call.</h2>
+
+<h3>Description</h3>
+
+<p>Modify the arguments of a call.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>call_modify(call, new_args, env = parent.frame())
+
+call_standardise(call, env = parent.frame())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="call_modify_:_call">call</code></td>
+<td>
+<p>A call to modify. It is first standardised with
+<code><a href="../../lazyeval/help/call_standardise.html">call_standardise</a></code>.</p>
+</td></tr>
+<tr><td><code id="call_modify_:_new_args">new_args</code></td>
+<td>
+<p>A named list of expressions (constants, names or calls)
+used to modify the call. Use <code>NULL</code> to remove arguments.</p>
+</td></tr>
+<tr><td><code id="call_modify_:_env">env</code></td>
+<td>
+<p>Environment in which to look up call value.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>call &lt;- quote(mean(x, na.rm = TRUE))
+call_standardise(call)
+
+# Modify an existing argument
+call_modify(call, list(na.rm = FALSE))
+call_modify(call, list(x = quote(y)))
+
+# Remove an argument
+call_modify(call, list(na.rm = NULL))
+
+# Add a new argument
+call_modify(call, list(trim = 0.1))
+
+# Add an explicit missing argument
+call_modify(call, list(na.rm = quote(expr = )))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

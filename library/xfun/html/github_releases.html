@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><title>R: Get the tags of Github releases of a repository</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>github_releases {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='github_releases'>Get the tags of Github releases of a repository</h2>
+
+<h3>Description</h3>
+
+<p>Use the Github API (<code><a href="../../xfun/help/github_api.html">github_api()</a></code>) to obtain the tags of the
+releases.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>github_releases(
+  repo,
+  tag = "",
+  pattern = "v[0-9.]+",
+  use_jsonlite = loadable("jsonlite")
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="github_releases_:_repo">repo</code></td>
+<td>
+<p>The repository name of the form <code>user/repo</code>, e.g.,
+<code>"yihui/xfun"</code>.</p>
+</td></tr>
+<tr><td><code id="github_releases_:_tag">tag</code></td>
+<td>
+<p>A tag as a character string. If provided, it will be returned if
+the tag exists. If <code>tag = "latest"</code>, the tag of the latest release is
+returned.</p>
+</td></tr>
+<tr><td><code id="github_releases_:_pattern">pattern</code></td>
+<td>
+<p>A regular expression to match the tags.</p>
+</td></tr>
+<tr><td><code id="github_releases_:_use_jsonlite">use_jsonlite</code></td>
+<td>
+<p>Whether to use <span class="pkg">jsonlite</span> to parse the releases info.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of (GIT) tags.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+xfun::github_releases("yihui/xfun")
+xfun::github_releases("gohugoio/hugo")
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html><html><head><title>R: Wrap code using the inline R expression syntax</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>inline_expr {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='inline_expr'>Wrap code using the inline R expression syntax</h2>
+
+<h3>Description</h3>
+
+<p>This is a convenience function to write the &quot;source code&quot; of inline R
+expressions. For example, if you want to write &lsquo;<span class="samp">&#8288;`r 1+1`&#8288;</span>&rsquo; literally in an
+R Markdown document, you may write &lsquo;<span class="samp">&#8288;`` `r knitr::inline_expr('1+1')`
+``&#8288;</span>&rsquo;; for Rnw documents, this may be
+&lsquo;<span class="samp">&#8288;\verb|\Sexpr{knitr::inline_expr{'1+1'}}|&#8288;</span>&rsquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>inline_expr(code, syntax)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="inline_expr_:_code">code</code></td>
+<td>
+<p>Character string of the inline R source code.</p>
+</td></tr>
+<tr><td><code id="inline_expr_:_syntax">syntax</code></td>
+<td>
+<p>A character string to specify the syntax, e.g. <code>rnw</code>,
+<code>html</code>, or <code>md</code>. If not specified, this will be guessed from
+the knitting context.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character string marked up using the inline R code syntax.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(knitr)
+inline_expr("1+1", "rnw")
+inline_expr("1+1", "html")
+inline_expr("1+1", "md")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

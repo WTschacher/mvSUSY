@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><title>R: Mark some paths as directories</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>mark_dirs {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='mark_dirs'>Mark some paths as directories</h2>
+
+<h3>Description</h3>
+
+<p>Add a trailing backlash to a file path if this is a directory. This is useful
+in messages to the console for example to quickly identify directories from
+files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>mark_dirs(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="mark_dirs_:_x">x</code></td>
+<td>
+<p>Character vector of paths to files and directories.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>x</code> is a vector of relative paths, directory test is done with path
+relative to the current working dir. Use <code><a href="../../xfun/help/in_dir.html">in_dir()</a></code> or use absolute
+paths.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>mark_dirs(list.files(find.package("xfun"), full.names = TRUE))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

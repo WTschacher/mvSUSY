@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Clip lines so they don't run into a set of boxes.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>clip_lines {isoband}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='clip_lines'>Clip lines so they don't run into a set of boxes.</h2>
+
+<h3>Description</h3>
+
+<p>Clip lines so they don't run into a set of boxes. Useful for labeling isolines,
+as it allows removal of line segments that would run into any text labels.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>clip_lines(x, y, id, clip_boxes, asp = 1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="clip_lines_:_x">x</code></td>
+<td>
+<p>Numeric vector of x coordinates</p>
+</td></tr>
+<tr><td><code id="clip_lines_:_y">y</code></td>
+<td>
+<p>Numeric vector of y coordinates</p>
+</td></tr>
+<tr><td><code id="clip_lines_:_id">id</code></td>
+<td>
+<p>Integer vector of id numbers indicating which lines are connected</p>
+</td></tr>
+<tr><td><code id="clip_lines_:_clip_boxes">clip_boxes</code></td>
+<td>
+<p>Data frame specifying the locations of boxes to clip to.
+Should have five columns, named <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, <code>theta</code>, which
+specify the x and y positions of each box midpoint, as well as the box width,
+box height, and box angle in radians. Each box is specified by one data
+row.</p>
+</td></tr>
+<tr><td><code id="clip_lines_:_asp">asp</code></td>
+<td>
+<p>Aspect ratio (width/height) of the target canvas. This is used to convert
+widths to heights and vice versa for rotated boxes</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>isoband</em> version 0.2.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

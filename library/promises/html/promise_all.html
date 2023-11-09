@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Combine multiple promise objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>promise_all {promises}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='promise_all'>Combine multiple promise objects</h2>
+
+<h3>Description</h3>
+
+<p>Use <code>promise_all</code> to wait for multiple promise objects to all be successfully
+fulfilled. Use <code>promise_race</code> to wait for the first of multiple promise
+objects to be either fulfilled or rejected.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>promise_all(..., .list = NULL)
+
+promise_race(..., .list = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="promise_all_:_...">...</code></td>
+<td>
+<p>Promise objects. Either all arguments must be named, or all
+arguments must be unnamed. If <code>.list</code> is provided, then these arguments are
+ignored.</p>
+</td></tr>
+<tr><td><code id="promise_all_:_.list">.list</code></td>
+<td>
+<p>A list of promise objects&ndash;an alternative to <code>...</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A promise.
+</p>
+<p>For <code>promise_all</code>, if all of the promises were successful, the returned
+promise will resolve to a list of the promises' values; if any promise
+fails, the first error to be encountered will be used to reject the
+returned promise.
+</p>
+<p>For <code>promise_race</code>, the first of the promises to either fulfill or reject
+will be passed through to the returned promise.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>p1 &lt;- promise(~later::later(~resolve(1), delay = 1))
+p2 &lt;- promise(~later::later(~resolve(2), delay = 2))
+
+# Resolves after 1 second, to the value: 1
+promise_race(p1, p2) %...&gt;% {
+  cat("promise_race:\n")
+  str(.)
+}
+
+# Resolves after 2 seconds, to the value: list(1, 2)
+promise_all(p1, p2) %...&gt;% {
+  cat("promise_all:\n")
+  str(.)
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>promises</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

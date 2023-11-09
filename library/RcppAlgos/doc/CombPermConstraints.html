@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>Constraints, Partitions, and Compositions</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Constraints, Partitions, and
+Compositions</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#constraint-functions" id="toc-constraint-functions">Constraint Functions</a>
+<ul>
+<li><a href="#faster-than-rowsums-and-rowmeans" id="toc-faster-than-rowsums-and-rowmeans">Faster than
+<code>rowSums</code> and <code>rowMeans</code></a></li>
+</ul></li>
+<li><a href="#comparison-operators-and-limitconstraints" id="toc-comparison-operators-and-limitconstraints">Comparison Operators
+and <code>limitConstraints</code></a>
+<ul>
+<li><a href="#one-comparison-operator" id="toc-one-comparison-operator">One Comparison Operator</a></li>
+<li><a href="#two-comparison-operators" id="toc-two-comparison-operators">Two Comparison Operators</a></li>
+<li><a href="#using-tolerance" id="toc-using-tolerance">Using
+<code>tolerance</code></a></li>
+<li><a href="#output-order-with-permutegeneral" id="toc-output-order-with-permutegeneral">Output Order with
+<code>permuteGeneral</code></a></li>
+</ul></li>
+<li><a href="#integer-partitions" id="toc-integer-partitions">Integer
+Partitions</a>
+<ul>
+<li><a href="#case-1-all-integer-partitions-of-n" id="toc-case-1-all-integer-partitions-of-n">Case 1: All Integer
+Partitions of <em>N</em></a></li>
+<li><a href="#case-2-integer-partitions-of-n-of-length-m" id="toc-case-2-integer-partitions-of-n-of-length-m">Case 2: Integer
+Partitions of <em>N</em> of Length <em>m</em></a></li>
+<li><a href="#case-3-integer-partitions-of-n-into-distinct-parts" id="toc-case-3-integer-partitions-of-n-into-distinct-parts">Case 3:
+Integer Partitions of <em>N</em> into Distinct Parts</a></li>
+<li><a href="#case-4-integer-partitions-of-n-into-parts-of-varying-multiplicity" id="toc-case-4-integer-partitions-of-n-into-parts-of-varying-multiplicity">Case
+4: Integer Partitions of <em>N</em> into Parts of Varying
+Multiplicity</a></li>
+</ul></li>
+<li><a href="#efficiency-generating-partitions" id="toc-efficiency-generating-partitions">Efficiency Generating
+Partitions</a></li>
+<li><a href="#integer-compositions" id="toc-integer-compositions">Integer Compositions</a>
+<ul>
+<li><a href="#case-5-all-compositions-of-n" id="toc-case-5-all-compositions-of-n">Case 5: All Compositions of
+<em>N</em></a></li>
+<li><a href="#case-6-compositions-of-n-of-length-m" id="toc-case-6-compositions-of-n-of-length-m">Case 6: Compositions of
+<em>N</em> of Length <em>m</em></a></li>
+<li><a href="#case-7-compositions-of-n-into-distinct-parts" id="toc-case-7-compositions-of-n-into-distinct-parts">Case 7:
+Compositions of <em>N</em> into Distinct Parts</a></li>
+<li><a href="#case-8-integer-compositions-of-n-into-parts-of-varying-multiplicity" id="toc-case-8-integer-compositions-of-n-into-parts-of-varying-multiplicity">Case
+8: Integer Compositions of <em>N</em> into Parts of Varying
+Multiplicity</a></li>
+</ul></li>
+<li><a href="#efficiency-generating-partitions-and-compositions" id="toc-efficiency-generating-partitions-and-compositions">Efficiency
+Generating Partitions and Compositions</a></li>
+<li><a href="#safely-interrupt-execution-with-cpp11check_user_interrupt" id="toc-safely-interrupt-execution-with-cpp11check_user_interrupt">Safely
+Interrupt Execution with <code>cpp11::check_user_interrupt</code></a>
+<ul>
+<li><a href="#note-about-interrupting-execution" id="toc-note-about-interrupting-execution">Note about Interrupting
+Execution</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This document covers the topic of finding combinations or
+permutations that meet a specific set of criteria. For example,
+retrieving all combinations of a vector that have a product between two
+bounds.</p>
+<hr />
+<div id="constraint-functions" class="section level2">
+<h2>Constraint Functions</h2>
+<p>There are 5 compiled constraint functions that can be utilized
+efficiently to test a given result.</p>
+<ol style="list-style-type: decimal">
+<li>sum</li>
+<li>prod</li>
+<li>mean</li>
+<li>max</li>
+<li>min</li>
+</ol>
+<p>They are passed as strings to the <code>constraintFun</code>
+parameter. When these are employed without any other parameters being
+set, an additional column is added that represents the result of
+applying the given function to that combination/permutation. You can
+also set <code>keepResults = TRUE</code> (more on this later).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">90</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;RcppAlgos&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; [1] &#39;2.8.2&#39;</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(<span class="fu">capture.output</span>(<span class="fu">sessionInfo</span>())[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">collapse =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; R version 4.3.1 (2023-06-16)</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; Platform: aarch64-apple-darwin20 (64-bit)</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt; Running under: macOS Ventura 13.4.1</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="do">## base R using combn and FUN</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>combnSum <span class="ot">=</span> <span class="fu">combn</span>(<span class="dv">20</span>, <span class="dv">10</span>, sum)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>algosSum <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="do">## Notice the additional column (i.e. the 11th column)</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="fu">head</span>(algosSum)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11]</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    4    5    6    7    8    9    10    55</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    3    4    5    6    7    8    9    11    56</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    3    4    5    6    7    8    9    12    57</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    3    4    5    6    7    8    9    13    58</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    3    4    5    6    7    8    9    14    59</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co">#&gt; [6,]    1    2    3    4    5    6    7    8    9    15    60</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">as.integer</span>(combnSum), algosSum[,<span class="dv">11</span>])</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="do">## Using parallel</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>paralSum <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">Parallel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="fu">identical</span>(paralSum, algosSum)</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">serial =</span> <span class="fu">comboGeneral</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>             <span class="at">parallel =</span> <span class="fu">comboGeneral</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">Parallel =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>             <span class="at">combnSum =</span> <span class="fu">combn</span>(<span class="dv">20</span>, <span class="dv">10</span>, sum), <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="co">#&gt; Warning in microbenchmark(serial = comboGeneral(20, 10, constraintFun = &quot;sum&quot;), : less</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a><span class="co">#&gt; accurate nanosecond times to avoid potential integer overflows</span></span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="co">#&gt;      expr        min         lq       mean     median         uq      max neval cld</span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="co">#&gt;    serial   3.329755   3.149671   3.232522   2.928422   2.902063 11.39604   100 a  </span></span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="co">#&gt;  parallel   1.000000   1.000000   1.000000   1.000000   1.000000  1.00000   100  b </span></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co">#&gt;  combnSum 164.247037 151.343174 133.832249 139.148691 132.041238 56.83403   100   c</span></span></code></pre></div>
+<div id="faster-than-rowsums-and-rowmeans" class="section level3">
+<h3>Faster than <code>rowSums</code> and <code>rowMeans</code></h3>
+<p>Finding row sums or row means is even faster than simply applying the
+highly efficient <code>rowSums</code>/<code>rowMeans</code>
+<em>after</em> the combinations have already been generated:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">## Pre-generate combinations</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>combs <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="do">## Testing rowSums alone against generating combinations as well as summing</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">serial =</span> <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>             <span class="at">parallel =</span> <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">Parallel =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>              <span class="at">rowsums =</span> <span class="fu">rowSums</span>(combs), <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;      expr      min       lq     mean   median       uq       max neval cld</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;    serial 3.571438 3.296153 2.985064 3.020970 2.899328 1.4400973   100 a  </span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  parallel 1.000000 1.000000 1.000000 1.000000 1.000000 1.0000000   100  b </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;   rowsums 2.143068 1.974135 1.764643 1.740508 1.697244 0.4544122   100   c</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">rowSums</span>(combs),</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>          <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>                       <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>                       <span class="at">Parallel =</span> <span class="cn">TRUE</span>)[,<span class="dv">11</span>])</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="do">## Testing rowMeans alone against generating combinations as well as obtain row means</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">serial =</span> <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>),</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>             <span class="at">parallel =</span> <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">Parallel =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>             <span class="at">rowmeans =</span> <span class="fu">rowMeans</span>(combs), <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt;      expr      min       lq     mean   median       uq      max neval cld</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt;    serial 2.523866 2.454797 2.452449 2.444079 2.417608 1.372691   100 a  </span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt;  parallel 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000   100  b </span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt;  rowmeans 1.425994 1.360147 1.370569 1.348623 1.328322 1.142349   100   c</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fu">rowMeans</span>(combs),</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>          <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>                       <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>                       <span class="at">Parallel =</span> <span class="cn">TRUE</span>)[,<span class="dv">11</span>])</span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>In both cases above, <code>RcppAlgos</code> is doing double the work
+nearly twice as fast!!!</p>
+</div>
+</div>
+<div id="comparison-operators-and-limitconstraints" class="section level2">
+<h2>Comparison Operators and <code>limitConstraints</code></h2>
+<p>The standard 5 comparison operators (i.e. <code>&quot;&lt;&quot;</code>,
+<code>&quot;&gt;&quot;</code>, <code>&quot;&lt;=&quot;</code>, <code>&quot;&gt;=&quot;</code>, &amp;
+<code>&quot;==&quot;</code>) can be used in a variety of ways. In order for them
+to have any effect, they must be used in conjunction with
+<code>constraintFun</code> as well as <code>limitConstraints</code>. The
+latter is the value(s) that will be used for comparison. It can be
+passed as a single value or a vector of two numerical values. This is
+useful when one wants to find results that are between (or outside) of a
+given range.</p>
+<div id="one-comparison-operator" class="section level3">
+<h3>One Comparison Operator</h3>
+<p>First we will look at cases with only one comparison and one value
+for the <code>limitConstraint</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="do">## Generate some random data. N.B. Using R &gt;= 4.0.0</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>myNums <span class="ot">=</span> <span class="fu">sample</span>(<span class="dv">500</span>, <span class="dv">20</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>myNums</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;  [1] 329 313 430  95 209 442 351 317 444 315 246 355 128 131 288   9 352 489 354 244</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="do">## Find all 5-tuples combinations without repetition of myNums</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="do">## (defined above) such that the sum is equal to 1176.</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>p1 <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="at">v =</span> myNums, <span class="at">m =</span> <span class="dv">5</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>                  <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>                  <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>                  <span class="at">limitConstraints =</span> <span class="dv">1176</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="fu">tail</span>(p1)</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; [10,]   95  128  246  352  355</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; [11,]   95  128  288  313  352</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; [12,]   95  131  244  351  355</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; [13,]   95  131  244  352  354</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; [14,]   95  209  244  313  315</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; [15,]  128  131  246  317  354</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="do">## Authenticate with brute force</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>allCombs <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="fu">sort</span>(myNums), <span class="dv">5</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="fu">identical</span>(p1, allCombs[<span class="fu">which</span>(<span class="fu">rowSums</span>(allCombs) <span class="sc">==</span> <span class="dv">1176</span>), ])</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="do">## How about finding combinations with repetition</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="do">## whose mean is less than or equal to 150.</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>p2 <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="at">v =</span> myNums, <span class="at">m =</span> <span class="dv">5</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>                  <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>                  <span class="at">comparisonFun =</span> <span class="st">&quot;&lt;=&quot;</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>                  <span class="at">limitConstraints =</span> <span class="dv">150</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="do">## Again, we authenticate with brute force</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>allCombs <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="fu">sort</span>(myNums), <span class="dv">5</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="fu">identical</span>(p2, allCombs[<span class="fu">which</span>(<span class="fu">rowMeans</span>(allCombs) <span class="sc">&lt;=</span> <span class="dv">150</span>), ])</span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; [1] FALSE  </span><span class="al">###</span><span class="co"> &lt;-- What? They should be the same</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="do">## N.B.</span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="fu">class</span>(p2[<span class="dv">1</span>, ])</span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;numeric&quot;</span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a><span class="fu">class</span>(allCombs[<span class="dv">1</span>, ])</span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a><span class="co">#&gt; [1] &quot;integer&quot;</span></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="do">## When mean is employed or it can be determined that integral</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="do">## values will not suffice for the comparison, we fall back to</span></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="do">## numeric types, thus all.equal should return TRUE</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a><span class="fu">all.equal</span>(p2, allCombs[<span class="fu">which</span>(<span class="fu">rowMeans</span>(allCombs) <span class="sc">&lt;=</span> <span class="dv">150</span>), ])</span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+<div id="two-comparison-operators" class="section level3">
+<h3>Two Comparison Operators</h3>
+<p>Sometimes, we need to generate combinations/permutations such that
+when we apply a constraint function, the results are between (or
+outside) a given range. There is a natural two step process when finding
+results outside a range, however for finding results between a range,
+this two step approach could become computationally demanding. The
+underlying algorithms in <code>RcppAlgos</code> are optimized for both
+cases and avoids adding results that will eventually be removed.</p>
+<p>Using two comparisons is easy. The first comparison operator is
+applied to the first limit and the second operator is applied to the
+second limit.</p>
+<p>Note that in the examples below, we have
+<code>keepResults = TRUE</code>. This means an additional column will be
+added to the output that is the result of applying
+<code>constraintFun</code> to that particular combination.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">## Get combinations such that the product is</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="do">## strictly between 3600 and 4000</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">comboGeneral</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="cn">TRUE</span>, <span class="at">constraintFun =</span> <span class="st">&quot;prod&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>             <span class="at">comparisonFun =</span> <span class="fu">c</span>(<span class="st">&quot;&gt;&quot;</span>,<span class="st">&quot;&lt;&quot;</span>),          <span class="do">## Find results &gt; 3600 and &lt; 4000</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>             <span class="at">limitConstraints =</span> <span class="fu">c</span>(<span class="dv">3600</span>, <span class="dv">4000</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>             <span class="at">keepResults =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    5    5    5    5 3750</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    4    4    4    4    5 3840</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; [3,]    2    2    3    4    4    4    5 3840</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; [4,]    3    3    3    3    3    3    5 3645</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; [5,]    3    3    3    3    3    4    4 3888</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co"># ## The above is the same as doing the following:</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co"># comboGeneral(5, 7, TRUE, constraintFun = &quot;prod&quot;,</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#              comparisonFun = c(&quot;&lt;&quot;,&quot;&gt;&quot;),          ## Note that the comparison vector</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#              limitConstraints = c(4000, 3600),    ## and the limits have flipped</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#              keepResults = TRUE)</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="do">## What about finding combinations outside a range</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>outside <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="cn">TRUE</span>, <span class="at">constraintFun =</span> <span class="st">&quot;prod&quot;</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>                       <span class="at">comparisonFun =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>,<span class="st">&quot;&gt;=&quot;</span>),</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>                       <span class="at">limitConstraints =</span> <span class="fu">c</span>(<span class="dv">3600</span>, <span class="dv">4000</span>),</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                       <span class="at">keepResults =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">apply</span>(outside[, <span class="sc">-</span><span class="dv">8</span>], <span class="dv">1</span>, prod) <span class="sc">&lt;=</span> <span class="dv">3600</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>     <span class="sc">|</span> <span class="fu">apply</span>(outside[, <span class="sc">-</span><span class="dv">8</span>], <span class="dv">1</span>, prod) <span class="sc">&gt;=</span> <span class="dv">4000</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="fu">dim</span>(outside)</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; [1] 325   8</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="do">## Note that we obtained 5 results when searching &quot;between&quot;</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="do">## 3600 and 4000. Thus we have: 325 + 5 = 330</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="fu">comboCount</span>(<span class="dv">5</span>, <span class="dv">7</span>, T)</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; [1] 330</span></span></code></pre></div>
+</div>
+<div id="using-tolerance" class="section level3">
+<h3>Using <code>tolerance</code></h3>
+<p>When the underlying type is <code>numeric</code>, <a href="https://en.wikipedia.org/wiki/Round-off_error">round-off
+errors</a> can occur. As stated in <a href="https://en.wikipedia.org/wiki/Floating-point_error_mitigation">floating-point
+error mitigation</a>:</p>
+<blockquote>
+<p><strong><em>“By definition, floating-point error cannot be
+eliminated, and, at best, can only be managed.”</em></strong></p>
+</blockquote>
+<p>Here is a great stackoverflow post that further illuminates this
+tricky topic:</p>
+<ul>
+<li><a href="https://stackoverflow.com/q/59229545/4408538">What is the
+correct/standard way to check if difference is smaller than machine
+precision?</a></li>
+</ul>
+<p>For these reasons, the argument <code>tolerance</code> can be
+utilized to refine a given constraint. It is added to the upper limit
+and subtracted from the lower limit. The default value is
+<code>sqrt(.Machine$double.eps) ~= 0.00000001490116</code>.</p>
+<p>This default value is good and bad.</p>
+<p>For the good side:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">comboGeneral</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">0.05</span>), <span class="dv">6</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                 <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                 <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                 <span class="at">limitConstraints =</span> <span class="dv">1</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; [1] 199   6</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="do">## Confirm with integers and brute force</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>allCbs <span class="ot">=</span> <span class="fu">comboGeneral</span>(<span class="fu">seq</span>(0L, 50L, 5L), <span class="dv">6</span>, <span class="cn">TRUE</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">sum</span>(allCbs[, <span class="dv">7</span>] <span class="sc">==</span> 100L)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; [1] 199</span></span></code></pre></div>
+<p>If we had a tolerance of zero, we would have obtained an incorrect
+result:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">## We miss 31 combinations that add up to 1</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">comboGeneral</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">0.05</span>), <span class="dv">6</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                 <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                 <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>                 <span class="at">limitConstraints =</span> <span class="dv">1</span>, <span class="at">tolerance =</span> <span class="dv">0</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; [1] 168   6</span></span></code></pre></div>
+<p>And now for a less desirable result. The example below appears to
+give incorrect results. That is, we shouldn’t return any combination
+with a mean of 4.1 or 5.1.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">comboGeneral</span>(<span class="fu">c</span>(<span class="fl">2.1</span>, <span class="fl">3.1</span>, <span class="fl">5.1</span>, <span class="fl">7.1</span>), <span class="dv">3</span>, T,</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>             <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">comparisonFun =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;&quot;</span>, <span class="st">&quot;&gt;&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>             <span class="at">limitConstraints =</span> <span class="fu">c</span>(<span class="fl">5.1</span>, <span class="fl">4.1</span>), <span class="at">keepResults =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]     [,4]</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; [1,]  2.1  3.1  7.1 4.100000</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; [2,]  2.1  5.1  5.1 4.100000</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; [3,]  2.1  5.1  7.1 4.766667</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; [4,]  3.1  3.1  7.1 4.433333</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; [5,]  3.1  5.1  5.1 4.433333</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; [6,]  3.1  5.1  7.1 5.100000</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; [7,]  5.1  5.1  5.1 5.100000</span></span></code></pre></div>
+<p>In the above example, the range that is actually tested against is
+<code>c(4.0999999950329462, 5.1000000049670531)</code>.</p>
+<p>If you want to be absolutely sure you are getting the correct
+results, one must rely on integers as simple changes in arithmetic can
+throw off precision in floating point operations.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">comboGeneral</span>(<span class="fu">c</span>(<span class="dv">21</span>, <span class="dv">31</span>, <span class="dv">51</span>, <span class="dv">71</span>), <span class="dv">3</span>, T,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>             <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">comparisonFun =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;&quot;</span>, <span class="st">&quot;&gt;&quot;</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>             <span class="at">limitConstraints =</span> <span class="fu">c</span>(<span class="dv">51</span>, <span class="dv">41</span>), <span class="at">keepResults =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="dv">10</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]     [,4]</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; [1,]  2.1  5.1  7.1 4.766667</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; [2,]  3.1  3.1  7.1 4.433333</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; [3,]  3.1  5.1  5.1 4.433333</span></span></code></pre></div>
+</div>
+<div id="output-order-with-permutegeneral" class="section level3">
+<h3>Output Order with <code>permuteGeneral</code></h3>
+<p>Typically, when we call <code>permuteGeneral</code>, the output is in
+lexicographical order, however when we apply a constraint, the
+underlying algorithm checks against combinations only, as this is more
+efficient. If a particular combination meets a constraint, then all
+permutations of that vector also meet that constraint, so there is no
+need to check them. For this reason, the output isn’t in order.
+Observe:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">permuteGeneral</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>), <span class="dv">3</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>               <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">comparisonFun =</span> <span class="fu">c</span>(<span class="st">&quot;&gt;&quot;</span>, <span class="st">&quot;&lt;&quot;</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>               <span class="at">limitConstraints =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="at">keepResults =</span> <span class="cn">TRUE</span>, <span class="at">tolerance =</span> <span class="dv">0</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]     [,4]</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt;  [1,]    2    5    7 4.666667   </span><span class="al">###</span><span class="co"> &lt;-- First combination that meets the criteria</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;  [2,]    2    7    5 4.666667</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;  [3,]    5    2    7 4.666667</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;  [4,]    5    7    2 4.666667</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt;  [5,]    7    2    5 4.666667</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt;  [6,]    7    5    2 4.666667</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;  [7,]    3    3    7 4.333333   </span><span class="al">###</span><span class="co"> &lt;-- Second combination that meets the criteria</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;  [8,]    3    7    3 4.333333</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;  [9,]    7    3    3 4.333333</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; [10,]    3    5    5 4.333333   </span><span class="al">###</span><span class="co"> &lt;-- Third combination that meets the criteria</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; [11,]    5    3    5 4.333333</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt; [12,]    5    5    3 4.333333</span></span></code></pre></div>
+<p>As you can see, the <em>2<sup>nd</sup></em> through the
+<em>6<sup>th</sup></em> entries are simply permutations of the
+<em>1<sup>st</sup></em> entry. Similarly, entries <em>8</em> and
+<em>9</em> are permutations of the <em>7<sup>th</sup></em> and entries
+<em>11</em> and <em>12</em> are permutations of the
+<em>10<sup>th</sup></em>.</p>
+</div>
+</div>
+<div id="integer-partitions" class="section level2">
+<h2>Integer Partitions</h2>
+<p>Specialized algorithms are employed when it can be determined that we
+are looking for <a href="https://en.wikipedia.org/wiki/Partition_(number_theory)">integer
+partitions</a>.</p>
+<p>As of version <code>2.5.0</code>, we now have added
+<code>partitionsGeneral</code> which is similar to
+<code>comboGeneral</code> with <code>constraintFun = &quot;sum&quot;</code> and
+<code>comparisonFun = &quot;==&quot;</code>. Instead of using the very general
+<code>limitConstraints</code> parameter, we use <code>target</code> with
+a default of <code>max(v)</code> as it seems more fitting for
+partitions.</p>
+<div id="case-1-all-integer-partitions-of-n" class="section level3">
+<h3>Case 1: All Integer Partitions of <em>N</em></h3>
+<p>We need <code>v = 0:N</code>, <code>repetition = TRUE</code>. When we
+leave <code>m = NULL</code>, <code>m</code> is internally set to the
+length of the longest non-zero combination (this is true for all cases
+below).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    0    0    5</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    1    4</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; [3,]    0    0    0    2    3</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; [4,]    0    0    1    1    3</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; [5,]    0    0    1    2    2</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; [6,]    0    1    1    1    2</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; [7,]    1    1    1    1    1</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="do">## Note that we could also use comboGeneral:</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="do">## comboGeneral(0:5, repetition = TRUE,</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="do">##              constraintFun = &quot;sum&quot;,</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="do">##              comparisonFun = &quot;==&quot;, limitConstraints = 5)</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="do">## The same goes for any of the examples below</span></span></code></pre></div>
+</div>
+<div id="case-2-integer-partitions-of-n-of-length-m" class="section level3">
+<h3>Case 2: Integer Partitions of <em>N</em> of Length <em>m</em></h3>
+<p>Everything is the same as above except for explicitly setting the
+desired length and deciding whether to include zero or not.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">## Including zero</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">3</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    5</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; [2,]    0    1    4</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; [3,]    0    2    3</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; [4,]    1    1    3</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    2</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="do">## Zero not included</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    3</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    2</span></span></code></pre></div>
+</div>
+<div id="case-3-integer-partitions-of-n-into-distinct-parts" class="section level3">
+<h3>Case 3: Integer Partitions of <em>N</em> into Distinct Parts</h3>
+<p>Same as <code>Case 1 &amp; 2</code> except now we have
+<code>repetition = FALSE</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4]</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; [1,]    0    1    2    7</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; [2,]    0    1    3    6</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; [3,]    0    1    4    5</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; [4,]    0    2    3    5</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    3    4</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="do">## Zero not included and restrict the length</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">10</span>, <span class="dv">3</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    7</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    6</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; [3,]    1    4    5</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; [4,]    2    3    5</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="do">## Include zero and restrict the length</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">3</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; [1,]    0    1    9</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; [2,]    0    2    8</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; [3,]    0    3    7</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; [4,]    0    4    6</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    7</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; [6,]    1    3    6</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; [7,]    1    4    5</span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; [8,]    2    3    5</span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="do">## partitions of 10 into distinct parts of every length</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a>    <span class="fu">partitionsGeneral</span>(<span class="dv">10</span>, x)</span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a>})</span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt;      [,1]</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; [1,]   10</span></span>
+<span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2]</span></span>
+<span id="cb12-39"><a href="#cb12-39" tabindex="-1"></a><span class="co">#&gt; [1,]    1    9</span></span>
+<span id="cb12-40"><a href="#cb12-40" tabindex="-1"></a><span class="co">#&gt; [2,]    2    8</span></span>
+<span id="cb12-41"><a href="#cb12-41" tabindex="-1"></a><span class="co">#&gt; [3,]    3    7</span></span>
+<span id="cb12-42"><a href="#cb12-42" tabindex="-1"></a><span class="co">#&gt; [4,]    4    6</span></span>
+<span id="cb12-43"><a href="#cb12-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-44"><a href="#cb12-44" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb12-45"><a href="#cb12-45" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb12-46"><a href="#cb12-46" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    7</span></span>
+<span id="cb12-47"><a href="#cb12-47" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    6</span></span>
+<span id="cb12-48"><a href="#cb12-48" tabindex="-1"></a><span class="co">#&gt; [3,]    1    4    5</span></span>
+<span id="cb12-49"><a href="#cb12-49" tabindex="-1"></a><span class="co">#&gt; [4,]    2    3    5</span></span>
+<span id="cb12-50"><a href="#cb12-50" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-51"><a href="#cb12-51" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
+<span id="cb12-52"><a href="#cb12-52" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4]</span></span>
+<span id="cb12-53"><a href="#cb12-53" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    4</span></span></code></pre></div>
+<div id="using-freqs-to-refine-length" class="section level4">
+<h4>Using <code>freqs</code> to Refine Length</h4>
+<p>We can utilize the <code>freqs</code> argument to obtain more
+distinct partitions by allowing for repeated zeros. The super optimized
+algorithm will only be carried out if zero is included and the number of
+repetitions for every number except zero is one.</p>
+<p>For example, given <code>v = 0:N</code> and <code>J &gt;= 1</code>,
+if <code>freqs = c(J, rep(1, N))</code>, then the super optimized
+algorithm will be used, however if
+<code>freqs = c(J, 2, rep(1, N - 1))</code>, the general algorithm will
+be used. It should be noted that the general algorithms are still highly
+optimized so one should not fear using it.</p>
+<p>A pattern that is guaranteed to retrieve all distinct partitions of
+<em>N</em> is to set <code>v = 0:N</code> and
+<code>freqs = c(N, rep(1, N))</code> (the extra zeros will be left
+off).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="do">## Obtain all distinct partitions of 10</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">10</span>)))    <span class="do">## Same as c(3, rep(1, 10))</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3] [,4]</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt;  [1,]    0    0    0   10</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt;  [2,]    0    0    1    9</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt;  [3,]    0    0    2    8</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt;  [4,]    0    0    3    7</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt;  [5,]    0    0    4    6</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt;  [6,]    0    1    2    7</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt;  [7,]    0    1    3    6</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt;  [8,]    0    1    4    5</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  [9,]    0    2    3    5</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; [10,]    1    2    3    4</span></span></code></pre></div>
+</div>
+<div id="caveats-using-freqs" class="section level4">
+<h4>Caveats Using <code>freqs</code></h4>
+<p>As noted in <code>Case 1</code>, if <code>m = NULL</code>, the length
+of the output will be determined by the longest non-zero combination
+that sums to <em>N</em>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="do">## m is NOT NULL and output has at most 2 zeros</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">3</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">10</span>)))</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt;  [1,]    0    0   10</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt;  [2,]    0    1    9</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt;  [3,]    0    2    8</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt;  [4,]    0    3    7</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt;  [5,]    0    4    6</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt;  [6,]    1    2    7</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt;  [7,]    1    3    6</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt;  [8,]    1    4    5</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt;  [9,]    2    3    5</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="do">## m is NULL and output has at most 2 zeros</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">10</span>)))</span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3] [,4]</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt;  [1,]    0    0    1    9</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a><span class="co">#&gt;  [2,]    0    0    2    8</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a><span class="co">#&gt;  [3,]    0    0    3    7</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co">#&gt;  [4,]    0    0    4    6</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co">#&gt;  [5,]    0    1    2    7</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a><span class="co">#&gt;  [6,]    0    1    3    6</span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a><span class="co">#&gt;  [7,]    0    1    4    5</span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a><span class="co">#&gt;  [8,]    0    2    3    5</span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a><span class="co">#&gt;  [9,]    1    2    3    4</span></span></code></pre></div>
+</div>
+</div>
+<div id="case-4-integer-partitions-of-n-into-parts-of-varying-multiplicity" class="section level3">
+<h3>Case 4: Integer Partitions of <em>N</em> into Parts of Varying
+Multiplicity</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="do">## partitions of 12 into 4 parts where each part can</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="do">## be used a specific number of times (e.g. 2 or 3)</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">12</span>, <span class="dv">4</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">6</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3] [,4]</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    1    2    8</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    1    3    7</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    1    4    6</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt;  [4,]    1    1    5    5</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt;  [5,]    1    2    2    7</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt;  [6,]    1    2    3    6</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt;  [7,]    1    2    4    5</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt;  [8,]    1    3    3    5</span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt;  [9,]    1    3    4    4</span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt; [10,]    2    2    2    6</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="co">#&gt; [11,]    2    2    3    5</span></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="co">#&gt; [12,]    2    2    4    4</span></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="co">#&gt; [13,]    2    3    3    4</span></span></code></pre></div>
+</div>
+</div>
+<div id="efficiency-generating-partitions" class="section level2">
+<h2>Efficiency Generating Partitions</h2>
+<p>Note, as of version <code>2.5.0</code>, one can generate partitions
+in parallel using the <code>nThreads</code> argument.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="do">## partitions of 60</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">partitionsCount</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">60</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; [1] 966467</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="do">## Single threaded</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">60</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt;   0.025   0.013   0.038</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="do">## Using nThreads</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">60</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">nThreads=</span><span class="dv">4</span>))</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt;   0.033   0.024   0.015</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="do">## partitions of 120 into distinct parts</span></span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="fu">partitionsCount</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">120</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">120</span>)))</span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; [1] 2194432</span></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">120</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">120</span>))))</span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a><span class="co">#&gt;   0.020   0.007   0.027</span></span>
+<span id="cb16-23"><a href="#cb16-23" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">120</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">120</span>)), <span class="at">nThreads=</span><span class="dv">4</span>))</span>
+<span id="cb16-25"><a href="#cb16-25" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb16-26"><a href="#cb16-26" tabindex="-1"></a><span class="co">#&gt;   0.023   0.007   0.008</span></span>
+<span id="cb16-27"><a href="#cb16-27" tabindex="-1"></a></span>
+<span id="cb16-28"><a href="#cb16-28" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" tabindex="-1"></a><span class="do">## partitions of 100 into parts of 15 with specific multiplicity</span></span>
+<span id="cb16-30"><a href="#cb16-30" tabindex="-1"></a><span class="fu">partitionsCount</span>(<span class="dv">100</span>, <span class="dv">15</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">20</span>))</span>
+<span id="cb16-31"><a href="#cb16-31" tabindex="-1"></a><span class="co">#&gt; [1] 6704215</span></span>
+<span id="cb16-32"><a href="#cb16-32" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" tabindex="-1"></a><span class="do">## Over 6 million in just over a second!</span></span>
+<span id="cb16-34"><a href="#cb16-34" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">100</span>, <span class="dv">15</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">20</span>)))</span>
+<span id="cb16-35"><a href="#cb16-35" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb16-36"><a href="#cb16-36" tabindex="-1"></a><span class="co">#&gt;   0.342   0.091   0.433</span></span></code></pre></div>
+</div>
+<div id="integer-compositions" class="section level2">
+<h2>Integer Compositions</h2>
+<p><a href="https://en.wikipedia.org/wiki/Composition_(combinatorics)">Compositions</a>
+are related to integer partitions, however order matters. With
+<code>RcppAlgos</code>, we generate standard compositions with
+<code>compositionsGeneral</code>. Currently, the composition algorithms
+are limited to a subset of cases of compositions with repetiion.</p>
+<p>The output with <code>compositionGeneral</code> will be in
+lexicographical order. When we set <code>weak = TRUE</code>, we will
+obtain <strong><em>weak compositions</em></strong>, which allow for
+zeros to be a part of the sequence (E.g.
+<code>c(0, 0, 5), c(0, 5, 0), c(5, 0, 0)</code> are weak compositions of
+5). As the Wikipedia article points out, we can increase the number of
+zeros indefinitely when <code>weak = TRUE</code>.</p>
+<p>For more general cases, we can make use of
+<code>permuteGeneral</code>, keeping in mind that the output will not be
+in lexicographical order. Another consideration with
+<code>permuteGeneral</code> is that when we include zero, we will always
+obtain weak compositions.</p>
+<p>With that in mind, generating compositions with
+<code>RcppAlgos</code> is easy, flexible, and quite efficient.</p>
+<div id="case-5-all-compositions-of-n" class="section level3">
+<h3>Case 5: All Compositions of <em>N</em></h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## See Case 1</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    3</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#&gt; [2,]    0    1    2</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#&gt; [3,]    0    2    1</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; [4,]    1    1    1</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="do">## Get weak compositions</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">weak =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#&gt;  [1,]    0    0    3</span></span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt;  [2,]    0    1    2</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#&gt;  [3,]    0    2    1</span></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt;  [4,]    0    3    0</span></span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="co">#&gt;  [5,]    1    0    2</span></span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="co">#&gt;  [6,]    1    1    1</span></span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="co">#&gt;  [7,]    1    2    0</span></span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="co">#&gt;  [8,]    2    0    1</span></span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="co">#&gt;  [9,]    2    1    0</span></span>
+<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a><span class="co">#&gt; [10,]    3    0    0</span></span>
+<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a><span class="do">## Get weak compositions with width &gt; than target</span></span>
+<span id="cb17-24"><a href="#cb17-24" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">10</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">weak =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb17-25"><a href="#cb17-25" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb17-26"><a href="#cb17-26" tabindex="-1"></a><span class="co">#&gt; [215,]    2    0    0    0    0    1    0    0    0     0</span></span>
+<span id="cb17-27"><a href="#cb17-27" tabindex="-1"></a><span class="co">#&gt; [216,]    2    0    0    0    1    0    0    0    0     0</span></span>
+<span id="cb17-28"><a href="#cb17-28" tabindex="-1"></a><span class="co">#&gt; [217,]    2    0    0    1    0    0    0    0    0     0</span></span>
+<span id="cb17-29"><a href="#cb17-29" tabindex="-1"></a><span class="co">#&gt; [218,]    2    0    1    0    0    0    0    0    0     0</span></span>
+<span id="cb17-30"><a href="#cb17-30" tabindex="-1"></a><span class="co">#&gt; [219,]    2    1    0    0    0    0    0    0    0     0</span></span>
+<span id="cb17-31"><a href="#cb17-31" tabindex="-1"></a><span class="co">#&gt; [220,]    3    0    0    0    0    0    0    0    0     0</span></span>
+<span id="cb17-32"><a href="#cb17-32" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" tabindex="-1"></a><span class="do">## With permuteGeneral, we always get weak compositions, just</span></span>
+<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a><span class="do">## not in lexicographical order</span></span>
+<span id="cb17-35"><a href="#cb17-35" tabindex="-1"></a><span class="fu">permuteGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-36"><a href="#cb17-36" tabindex="-1"></a>               <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb17-37"><a href="#cb17-37" tabindex="-1"></a>               <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>, <span class="at">limitConstraints =</span> <span class="dv">3</span>)</span>
+<span id="cb17-38"><a href="#cb17-38" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb17-39"><a href="#cb17-39" tabindex="-1"></a><span class="co">#&gt;  [1,]    0    0    3</span></span>
+<span id="cb17-40"><a href="#cb17-40" tabindex="-1"></a><span class="co">#&gt;  [2,]    0    3    0</span></span>
+<span id="cb17-41"><a href="#cb17-41" tabindex="-1"></a><span class="co">#&gt;  [3,]    3    0    0</span></span>
+<span id="cb17-42"><a href="#cb17-42" tabindex="-1"></a><span class="co">#&gt;  [4,]    0    1    2</span></span>
+<span id="cb17-43"><a href="#cb17-43" tabindex="-1"></a><span class="co">#&gt;  [5,]    0    2    1</span></span>
+<span id="cb17-44"><a href="#cb17-44" tabindex="-1"></a><span class="co">#&gt;  [6,]    1    0    2</span></span>
+<span id="cb17-45"><a href="#cb17-45" tabindex="-1"></a><span class="co">#&gt;  [7,]    1    2    0</span></span>
+<span id="cb17-46"><a href="#cb17-46" tabindex="-1"></a><span class="co">#&gt;  [8,]    2    0    1</span></span>
+<span id="cb17-47"><a href="#cb17-47" tabindex="-1"></a><span class="co">#&gt;  [9,]    2    1    0</span></span>
+<span id="cb17-48"><a href="#cb17-48" tabindex="-1"></a><span class="co">#&gt; [10,]    1    1    1</span></span>
+<span id="cb17-49"><a href="#cb17-49" tabindex="-1"></a></span>
+<span id="cb17-50"><a href="#cb17-50" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">permuteGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">10</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-51"><a href="#cb17-51" tabindex="-1"></a>                    <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb17-52"><a href="#cb17-52" tabindex="-1"></a>                    <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>, <span class="at">limitConstraints =</span> <span class="dv">3</span>))</span>
+<span id="cb17-53"><a href="#cb17-53" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb17-54"><a href="#cb17-54" tabindex="-1"></a><span class="co">#&gt; [215,]    1    1    0    0    0    0    0    1    0     0</span></span>
+<span id="cb17-55"><a href="#cb17-55" tabindex="-1"></a><span class="co">#&gt; [216,]    1    1    0    0    0    0    1    0    0     0</span></span>
+<span id="cb17-56"><a href="#cb17-56" tabindex="-1"></a><span class="co">#&gt; [217,]    1    1    0    0    0    1    0    0    0     0</span></span>
+<span id="cb17-57"><a href="#cb17-57" tabindex="-1"></a><span class="co">#&gt; [218,]    1    1    0    0    1    0    0    0    0     0</span></span>
+<span id="cb17-58"><a href="#cb17-58" tabindex="-1"></a><span class="co">#&gt; [219,]    1    1    0    1    0    0    0    0    0     0</span></span>
+<span id="cb17-59"><a href="#cb17-59" tabindex="-1"></a><span class="co">#&gt; [220,]    1    1    1    0    0    0    0    0    0     0</span></span></code></pre></div>
+</div>
+<div id="case-6-compositions-of-n-of-length-m" class="section level3">
+<h3>Case 6: Compositions of <em>N</em> of Length <em>m</em></h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="do">## See Case 2. N.B. weak = TRUE has no effect</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">compositionsGeneral</span>(<span class="dv">6</span>, <span class="dv">3</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    1    4</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    2    3</span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    3    2</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt;  [4,]    1    4    1</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt;  [5,]    2    1    3</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt;  [6,]    2    2    2</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt;  [7,]    2    3    1</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt;  [8,]    3    1    2</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt;  [9,]    3    2    1</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt; [10,]    4    1    1</span></span></code></pre></div>
+</div>
+<div id="case-7-compositions-of-n-into-distinct-parts" class="section level3">
+<h3>Case 7: Compositions of <em>N</em> into Distinct Parts</h3>
+<p>We must use <code>permuteGeneral</code> here.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">compositionsGeneral</span>(<span class="dv">6</span>, <span class="dv">3</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="co">#&gt; Error: Currently, there is no composition algorithm for this case.</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co">#&gt;  Use permuteCount, permuteIter, permuteGeneral, permuteSample, or</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="co">#&gt;  permuteRank instead.</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="do">## See Case 3</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="fu">permuteGeneral</span>(<span class="dv">6</span>, <span class="dv">3</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>               <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>               <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>, <span class="at">limitConstraints =</span> <span class="dv">6</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    2</span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt; [3,]    2    1    3</span></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co">#&gt; [4,]    2    3    1</span></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co">#&gt; [5,]    3    1    2</span></span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt; [6,]    3    2    1</span></span></code></pre></div>
+</div>
+<div id="case-8-integer-compositions-of-n-into-parts-of-varying-multiplicity" class="section level3">
+<h3>Case 8: Integer Compositions of <em>N</em> into Parts of Varying
+Multiplicity</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="do">## compositions of 5 into 3 parts where each part can</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="do">## be used a maximum of 2 times.</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="fu">permuteGeneral</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">5</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>               <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>               <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>               <span class="at">limitConstraints =</span> <span class="dv">5</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    3</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    1</span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="co">#&gt; [3,]    3    1    1</span></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    2</span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt; [5,]    2    1    2</span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="co">#&gt; [6,]    2    2    1</span></span></code></pre></div>
+</div>
+</div>
+<div id="efficiency-generating-partitions-and-compositions" class="section level2">
+<h2>Efficiency Generating Partitions and Compositions</h2>
+<p>With <code>compositionGeneral</code> we are able to take advantage of
+parallel computation. With <code>permuteGeneral</code>, the parallel
+options have no effect when generating compositions.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="do">## compositions of 25</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">25</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="co">#&gt;   1.702   0.098   1.799</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="fu">compositionsCount</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">25</span>, <span class="at">repetition=</span><span class="cn">TRUE</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="co">#&gt; [1] 16777216</span></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="do">## Use multiple threads for greater efficiency. Generate</span></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="do">## over 16 million compositions in under a second!</span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">25</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">nThreads =</span> <span class="dv">4</span>))</span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a><span class="co">#&gt;   1.854   0.102   0.546</span></span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a><span class="do">## weak compositions of 12 usnig nThreads = 4</span></span>
+<span id="cb21-17"><a href="#cb21-17" tabindex="-1"></a><span class="fu">system.time</span>(weakComp12 <span class="ot">&lt;-</span> <span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-18"><a href="#cb21-18" tabindex="-1"></a>                                              <span class="at">weak =</span> <span class="cn">TRUE</span>, <span class="at">nThreads =</span> <span class="dv">4</span>))</span>
+<span id="cb21-19"><a href="#cb21-19" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb21-20"><a href="#cb21-20" tabindex="-1"></a><span class="co">#&gt;   0.012   0.006   0.005</span></span>
+<span id="cb21-21"><a href="#cb21-21" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" tabindex="-1"></a><span class="do">## And using permuteGeneral</span></span>
+<span id="cb21-23"><a href="#cb21-23" tabindex="-1"></a><span class="fu">system.time</span>(weakPerm12 <span class="ot">&lt;-</span> <span class="fu">permuteGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">12</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-24"><a href="#cb21-24" tabindex="-1"></a>                                         <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb21-25"><a href="#cb21-25" tabindex="-1"></a>                                         <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb21-26"><a href="#cb21-26" tabindex="-1"></a>                                         <span class="at">limitConstraints =</span> <span class="dv">12</span>))</span>
+<span id="cb21-27"><a href="#cb21-27" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb21-28"><a href="#cb21-28" tabindex="-1"></a><span class="co">#&gt;   0.011   0.004   0.015</span></span>
+<span id="cb21-29"><a href="#cb21-29" tabindex="-1"></a></span>
+<span id="cb21-30"><a href="#cb21-30" tabindex="-1"></a><span class="fu">dim</span>(weakPerm12)</span>
+<span id="cb21-31"><a href="#cb21-31" tabindex="-1"></a><span class="co">#&gt; [1] 1352078      12</span></span>
+<span id="cb21-32"><a href="#cb21-32" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" tabindex="-1"></a><span class="fu">identical</span>(weakPerm12[<span class="fu">do.call</span>(order, <span class="fu">as.data.frame</span>(weakPerm12)), ],</span>
+<span id="cb21-34"><a href="#cb21-34" tabindex="-1"></a>          weakComp12)</span>
+<span id="cb21-35"><a href="#cb21-35" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb21-36"><a href="#cb21-36" tabindex="-1"></a></span>
+<span id="cb21-37"><a href="#cb21-37" tabindex="-1"></a></span>
+<span id="cb21-38"><a href="#cb21-38" tabindex="-1"></a><span class="do">## General compositions with varying multiplicities</span></span>
+<span id="cb21-39"><a href="#cb21-39" tabindex="-1"></a><span class="fu">system.time</span>(comp25_gen <span class="ot">&lt;-</span> <span class="fu">permuteGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">5</span>),</span>
+<span id="cb21-40"><a href="#cb21-40" tabindex="-1"></a>                                         <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb21-41"><a href="#cb21-41" tabindex="-1"></a>                                         <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb21-42"><a href="#cb21-42" tabindex="-1"></a>                                         <span class="at">limitConstraints =</span> <span class="dv">25</span>))</span>
+<span id="cb21-43"><a href="#cb21-43" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb21-44"><a href="#cb21-44" tabindex="-1"></a><span class="co">#&gt;   0.025   0.007   0.032</span></span>
+<span id="cb21-45"><a href="#cb21-45" tabindex="-1"></a></span>
+<span id="cb21-46"><a href="#cb21-46" tabindex="-1"></a><span class="fu">dim</span>(comp25_gen)</span>
+<span id="cb21-47"><a href="#cb21-47" tabindex="-1"></a><span class="co">#&gt; [1] 946092     10</span></span></code></pre></div>
+</div>
+<div id="safely-interrupt-execution-with-cpp11check_user_interrupt" class="section level2">
+<h2>Safely Interrupt Execution with
+<code>cpp11::check_user_interrupt</code></h2>
+<p>Some of these operations can take some time, especially when you are
+in the exploratory phase and you don’t have that much information about
+what type of solution you will obtain. For this reason, we have added
+the ability to interrupt execution. Under the hood, we call
+<code>cpp11::check_user_interrupt()</code> once every second to check if
+the user has requested for the process to be interrupted. Note that we
+only check for user interruptions when we cannot determine the number of
+results up front.</p>
+<p>This means that if we initiate a process that will take a long time
+or exhaust all of the available memory (e.g. we forget to put an upper
+limit on the number of results, relax the tolerance, etc.), we can
+simply hit <code>Ctrl + c</code>, or <code>esc</code> if using
+<code>RStudio</code>, to stop execution.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>s <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="do">## Oops!! We forgot to limit the output/put a loose tolerance</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="do">## There are as.numeric(comboCount(s, 20, T)) ~= 4.964324e+41</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="do">## This will either take a long long time, or all of your</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="do">## memory will be consumed!!!</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="do">## No problem... simply hit Ctrl + c or if in RStudio, hit esc</span></span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="do">## or hit the &quot;Stop&quot; button</span></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="do">## system.time(testInterrupt &lt;- partitionsGeneral(s, 20, TRUE, target = 0))</span></span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="do">## Timing stopped at: 1.029 0.011 1.04</span></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="do">##</span></span></code></pre></div>
+<div id="note-about-interrupting-execution" class="section level3">
+<h3>Note about Interrupting Execution</h3>
+<p>Generally, we encourage user to use iterators (See <a href="https://jwood000.github.io/RcppAlgos/articles/CombinatoricsIterators.html">Combinatorial
+Iterators in RcppAlgos</a>) as they offer greater flexibility. For
+example, with iterators it is easy to avoid resource consuming calls by
+only fetching a few results at a time.</p>
+<p>Here is an example of how to investigate difficult problems due to
+combinatorial explosion without fear of having to restart R.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="do">## We use &quot;s&quot; defined above</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>iter <span class="ot">=</span> <span class="fu">partitionsIter</span>(s, <span class="dv">20</span>, <span class="cn">TRUE</span>, <span class="at">target =</span> <span class="dv">0</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="do">## Test one iteration to see if we need to relax the tolerance</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="fu">system.time</span>(iter<span class="sc">@</span><span class="fu">nextIter</span>())</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#&gt;   5.194   0.021   5.216</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="do">## 8 seconds per iteration is a bit much... Let&#39;s loosen things</span></span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="do">## a little by increasing the tolerance from sqrt(.Machine$double.eps)</span></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="do">## ~= 1.49e-8 to 1e-5.</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a>relaxedIter <span class="ot">=</span> <span class="fu">partitionsIter</span>(s, <span class="dv">20</span>, <span class="cn">TRUE</span>, <span class="at">target =</span> <span class="dv">0</span>, <span class="at">tolerance =</span> <span class="fl">1e-5</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a><span class="fu">system.time</span>(relaxedIter<span class="sc">@</span><span class="fu">nextIter</span>())</span>
+<span id="cb23-15"><a href="#cb23-15" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb23-16"><a href="#cb23-16" tabindex="-1"></a><span class="co">#&gt;       0       0       0</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

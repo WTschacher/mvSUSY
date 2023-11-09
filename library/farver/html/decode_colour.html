@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><title>R: Decode RGB hex-strings into colour values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>decode_colour {farver}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='decode_colour'>Decode RGB hex-strings into colour values</h2>
+
+<h3>Description</h3>
+
+<p>This is a version of <code><a href="../../grDevices/help/col2rgb.html">grDevices::col2rgb()</a></code> that returns the colour values in
+the standard form expected by farver (matrix with a row per colour). As with
+<code><a href="../../farver/help/encode_colour.html">encode_colour()</a></code> it can do colour conversion on the fly, meaning that you can
+decode a hex string directly into any of the supported colour spaces.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>decode_colour(colour, alpha = FALSE, to = "rgb", white = "D65", na_value = NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="decode_colour_:_colour">colour</code></td>
+<td>
+<p>A character vector of hex-encoded values or a valid colour name
+as given in <code><a href="../../grDevices/help/colors.html">grDevices::colours()</a></code>.</p>
+</td></tr>
+<tr><td><code id="decode_colour_:_alpha">alpha</code></td>
+<td>
+<p>If <code>TRUE</code> the alpha channel will be returned as well (scaled
+between 0 and 1). If no alpha channel exists in the colour it will be
+assumed 1. If <code>FALSE</code> any alpha channel is ignored.</p>
+</td></tr>
+<tr><td><code id="decode_colour_:_to">to</code></td>
+<td>
+<p>The output colour space. Allowed values are: <code>"cmy"</code>,
+<code>"cmyk"</code>, <code>"hsl"</code>, <code>"hsb"</code>, <code>"hsv"</code>, <code>"lab"</code> (CIE L*ab), <code>"hunterlab"</code>
+(Hunter Lab), <code>"oklab"</code>, <code>"lch"</code> (CIE Lch(ab) / polarLAB), <code>"luv"</code>,
+<code>"rgb"</code> (sRGB), <code>"xyz"</code>, <code>"yxy"</code> (CIE xyY), <code>"hcl"</code> (CIE Lch(uv) / polarLuv),
+or <code>"oklch"</code> (Polar form of oklab)</p>
+</td></tr>
+<tr><td><code id="decode_colour_:_white">white</code></td>
+<td>
+<p>The white reference of the output colour space. Will only have
+an effect for relative colour spaces such as Lab and luv. Any value accepted
+by <code><a href="../../farver/help/as_white_ref.html">as_white_ref()</a></code> allowed.</p>
+</td></tr>
+<tr><td><code id="decode_colour_:_na_value">na_value</code></td>
+<td>
+<p>A valid colour string or <code>NA</code> to use when <code>colour</code> contains
+<code>NA</code> elements. The general approach in farver is to carry <code>NA</code> values over,
+but if you want to mimick <code><a href="../../grDevices/html/col2rgb.html">col2rgb()</a></code> you should set
+<code>na_value = 'transparent'</code>, i.e. treat <code>NA</code> as transparent white.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix with a row for each element in <code>colour</code> and either
+3, 4, or 5 columns depending on the value of <code>alpha</code> and <code>to</code>.
+</p>
+
+
+<h3>Handling of non-finite and out of bounds values</h3>
+
+<p><code>NA</code>, <code>NaN</code>, <code>-Inf</code>, and <code>Inf</code> are treated as invalid input and will result
+in <code>NA</code> values for the colour. If a given colourspace has finite bounds in
+some of their channels, the input will be capped before conversion, and the
+output will be capped before returning, so that both input and output colours
+are valid colours in their respective space. This means that converting back
+and forth between two colourspaces may result in a change in the colour if
+the gamut of one of the spaces is less than the other.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other encoding and decoding functions: 
+<code><a href="../../farver/help/encode_colour.html">encode_colour</a>()</code>,
+<code><a href="../../farver/help/manip_channel.html">manip_channel</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># basic use
+decode_colour(c('#43e1f6', 'steelblue', '#67ce9fe4'))
+
+# Return alpha as well (no alpha value is interpreted as 1)
+decode_colour(c('#43e1f6', 'steelblue', '#67ce9fe4'), alpha = TRUE)
+
+# Decode directly into specific colour space
+decode_colour(c('#43e1f6', 'steelblue', '#67ce9fe4'), to = 'lch')
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>farver</em> version 2.1.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

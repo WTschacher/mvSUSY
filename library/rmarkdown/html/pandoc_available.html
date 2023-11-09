@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Check pandoc availability and version</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pandoc_available {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pandoc_available'>Check pandoc availability and version</h2>
+
+<h3>Description</h3>
+
+<p>Determine whether pandoc is currently available on the system (optionally
+checking for a specific version or greater). Determine the specific version
+of pandoc available.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pandoc_available(version = NULL, error = FALSE)
+
+pandoc_version()
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pandoc_available_:_version">version</code></td>
+<td>
+<p>Required version of pandoc</p>
+</td></tr>
+<tr><td><code id="pandoc_available_:_error">error</code></td>
+<td>
+<p>Whether to signal an error if pandoc with the required version
+is not found</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The system environment variable &lsquo;<span class="samp">&#8288;PATH&#8288;</span>&rsquo; as well as the version of pandoc
+shipped with RStudio (its location is set via the environment variable
+&lsquo;<span class="samp">&#8288;RSTUDIO_PANDOC&#8288;</span>&rsquo; by RStudio products like the RStudio IDE, RStudio
+Server, Shiny Server, and RStudio Connect, etc) are scanned for pandoc and
+the highest version available is used. Please do not modify the environment
+variable &lsquo;<span class="samp">&#8288;RSTUDIO_PANDOC&#8288;</span>&rsquo; unless you know what it means.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>pandoc_available</code> returns a logical indicating whether the
+required version of pandoc is available. <code>pandoc_version</code> returns a
+<code><a href="../../base/help/numeric_version.html">numeric_version</a></code> with the version of pandoc found.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+library(rmarkdown)
+
+if (pandoc_available())
+  cat("pandoc", as.character(pandoc_version()), "is available!\n")
+
+if (pandoc_available("1.12.3"))
+  cat("required version of pandoc is available!\n")
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

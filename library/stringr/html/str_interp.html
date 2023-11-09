@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><title>R: String interpolation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_interp {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_interp'>String interpolation</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p><code>str_interp()</code> is superseded in favour of <code><a href="../../stringr/help/str_glue.html">str_glue()</a></code>.
+</p>
+<p>String interpolation is a useful way of specifying a character string which
+depends on values in a certain environment. It allows for string creation
+which is easier to read and write when compared to using e.g.
+<code><a href="../../base/html/paste.html">paste()</a></code> or <code><a href="../../base/html/sprintf.html">sprintf()</a></code>. The (template) string can
+include expression placeholders of the form <code style="white-space: pre;">&#8288;${expression}&#8288;</code> or
+<code style="white-space: pre;">&#8288;$[format]{expression}&#8288;</code>, where expressions are valid R expressions that
+can be evaluated in the given environment, and <code>format</code> is a format
+specification valid for use with <code><a href="../../base/html/sprintf.html">sprintf()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_interp(string, env = parent.frame())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_interp_:_string">string</code></td>
+<td>
+<p>A template character string. This function is not vectorised:
+a character vector will be collapsed into a single string.</p>
+</td></tr>
+<tr><td><code id="str_interp_:_env">env</code></td>
+<td>
+<p>The environment in which to evaluate the expressions.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An interpolated character string.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Stefan Milton Bache
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringr/help/str_glue.html">str_glue()</a></code> and <code><a href="../../stringr/help/str_glue_data.html">str_glue_data()</a></code> for alternative approaches to
+the same problem.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+# Using values from the environment, and some formats
+user_name &lt;- "smbache"
+amount &lt;- 6.656
+account &lt;- 1337
+str_interp("User ${user_name} (account $[08d]{account}) has $$[.2f]{amount}.")
+
+# Nested brace pairs work inside expressions too, and any braces can be
+# placed outside the expressions.
+str_interp("Works with } nested { braces too: $[.2f]{{{2 + 2}*{amount}}}")
+
+# Values can also come from a list
+str_interp(
+  "One value, ${value1}, and then another, ${value2*2}.",
+  list(value1 = 10, value2 = 20)
+)
+
+# Or a data frame
+str_interp(
+  "Values are $[.2f]{max(Sepal.Width)} and $[.2f]{min(Sepal.Width)}.",
+  iris
+)
+
+# Use a vector when the string is long:
+max_char &lt;- 80
+str_interp(c(
+  "This particular line is so long that it is hard to write ",
+  "without breaking the ${max_char}-char barrier!"
+))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

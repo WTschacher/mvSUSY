@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Partition chunk options from the code chunk body</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>partition_chunk {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='partition_chunk'>Partition chunk options from the code chunk body</h2>
+
+<h3>Description</h3>
+
+<p>Chunk options can be written in special comments (e.g., after <code style="white-space: pre;">&#8288;#|&#8288;</code> for R
+code chunks) inside a code chunk. This function partitions these options from
+the chunk body.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>partition_chunk(engine, code)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="partition_chunk_:_engine">engine</code></td>
+<td>
+<p>The name of the language engine (to determine the appropriate
+comment character).</p>
+</td></tr>
+<tr><td><code id="partition_chunk_:_code">code</code></td>
+<td>
+<p>A character vector (lines of code).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list with the following items: </p>
+<dl>
+<dt><code>options</code></dt><dd><p>The
+parsed options (if any) as a list.</p>
+</dd> <dt><code>src</code></dt><dd><p>The part of the input
+that contains the options.</p>
+</dd> <dt><code>code</code></dt><dd><p>The part of the input that
+contains the code.</p>
+</dd></dl>
+
+
+
+<h3>Note</h3>
+
+<p>Chunk options must be written on <em>continuous</em> lines (i.e., all
+lines must start with the special comment prefix such as <code style="white-space: pre;">&#8288;#|&#8288;</code>) at the
+beginning of the chunk body.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># parse yaml-like items
+yaml_like = c("#| label: mine", "#| echo: true", "#| fig.width: 8", "#| foo: bar",
+    "1 + 1")
+writeLines(yaml_like)
+knitr::partition_chunk("r", yaml_like)
+
+# parse CSV syntax
+csv_like = c("#| mine, echo = TRUE, fig.width = 8, foo = 'bar'", "1 + 1")
+writeLines(csv_like)
+knitr::partition_chunk("r", csv_like)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

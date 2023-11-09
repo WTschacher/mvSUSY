@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><title>R: Combine multiple words into a single string</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>combine_words {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='combine_words'>Combine multiple words into a single string</h2>
+
+<h3>Description</h3>
+
+<p>When a value from an inline R expression is a character vector of multiple
+elements, we may want to combine them into a phrase like &lsquo;<span class="samp">&#8288;a and b&#8288;</span>&rsquo;, or
+<code>a, b, and c</code>. That is what this a helper function does.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>combine_words(
+  words,
+  sep = ", ",
+  and = " and ",
+  before = "",
+  after = before,
+  oxford_comma = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="combine_words_:_words">words</code></td>
+<td>
+<p>A character vector.</p>
+</td></tr>
+<tr><td><code id="combine_words_:_sep">sep</code></td>
+<td>
+<p>Separator to be inserted between words.</p>
+</td></tr>
+<tr><td><code id="combine_words_:_and">and</code></td>
+<td>
+<p>Character string to be prepended to the last word.</p>
+</td></tr>
+<tr><td><code id="combine_words_:_before">before</code>, <code id="combine_words_:_after">after</code></td>
+<td>
+<p>A character string to be added before/after each word.</p>
+</td></tr>
+<tr><td><code id="combine_words_:_oxford_comma">oxford_comma</code></td>
+<td>
+<p>Whether to insert the separator between the last two
+elements in the list.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If the length of the input <code>words</code> is smaller than or equal to 1,
+<code>words</code> is returned. When <code>words</code> is of length 2, the first word
+and second word are combined using the <code>and</code> string, or if blank,
+<code>sep</code> if is used. When the length is greater than 2, <code>sep</code> is used
+to separate all words, and the <code>and</code> string is prepended to the last
+word.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character string marked by <code>xfun::<a href="../../xfun/html/raw_string.html">raw_string</a>()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>combine_words("a")
+combine_words(c("a", "b"))
+combine_words(c("a", "b", "c"))
+combine_words(c("a", "b", "c"), sep = " / ", and = "")
+combine_words(c("a", "b", "c"), and = "")
+combine_words(c("a", "b", "c"), before = "\"", after = "\"")
+combine_words(c("a", "b", "c"), before = "\"", after = "\"", oxford_comma = FALSE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>R: Create implementation scaffolding for an HTML widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>scaffoldWidget {htmlwidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='scaffoldWidget'>Create implementation scaffolding for an HTML widget</h2>
+
+<h3>Description</h3>
+
+<p>Add the minimal code required to implement an HTML widget to an R package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>scaffoldWidget(name, bowerPkg = NULL, edit = interactive())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="scaffoldWidget_:_name">name</code></td>
+<td>
+<p>Name of widget</p>
+</td></tr>
+<tr><td><code id="scaffoldWidget_:_bowerPkg">bowerPkg</code></td>
+<td>
+<p>Optional name of <a href="https://bower.io/">Bower</a> package upon
+which this widget is based. If you specify this parameter then bower will
+be used to automatically download the widget's source code and dependencies
+and add them to the widget's YAML.</p>
+</td></tr>
+<tr><td><code id="scaffoldWidget_:_edit">edit</code></td>
+<td>
+<p>Automatically open the widget's JavaScript source file after
+creating the scaffolding.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This function must be executed from the root directory of the package
+you wish to add the widget to.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmlwidgets</em> version 1.6.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

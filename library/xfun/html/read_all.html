@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>R: Read all text files and concatenate their content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>read_all {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='read_all'>Read all text files and concatenate their content</h2>
+
+<h3>Description</h3>
+
+<p>Read files one by one, and optionally add text before/after the content. Then
+combine all content into one character vector.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>read_all(files, before = function(f) NULL, after = function(f) NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="read_all_:_files">files</code></td>
+<td>
+<p>A vector of file paths.</p>
+</td></tr>
+<tr><td><code id="read_all_:_before">before</code>, <code id="read_all_:_after">after</code></td>
+<td>
+<p>A function that takes one file path as the input and
+returns values to be added before or after the content of the file.
+Alternatively, they can be constant values to be added.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># two files in this package
+fs = system.file("scripts", c("call-fun.R", "child-pids.sh"), package = "xfun")
+xfun::read_all(fs)
+
+# add file paths before file content and an empty line after content
+xfun::read_all(fs, before = function(f) paste("#-----", f, "-----"), after = "")
+
+# add constants
+xfun::read_all(fs, before = "/*", after = c("*/", ""))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

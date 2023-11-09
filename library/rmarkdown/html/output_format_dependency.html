@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><title>R: Define and merge an R Markdown's output format dependency</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>output_format_dependency {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='output_format_dependency'>Define and merge an R Markdown's output format dependency</h2>
+
+<h3>Description</h3>
+
+<p>Define and merge a dependency such as pre/post-processors from within
+chunks. The merge happens explicitly when a list of dependencies are
+passed to <code>knitr::knit_meta_add()</code> or implicitly when a dependency
+is <code>knitr::knit_print</code>ed. Defining a function that does the former is
+the best way for package developers to share the dependency. On the
+contrary, the latter is useful to declare a document-specific dependency.
+This function shares some arguments with <code><a href="../../rmarkdown/help/output_format.html">output_format</a></code>,
+but lacks the others because dependency is resolved after <code>post_knit</code>
+and before <code>pre_processor</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>output_format_dependency(
+  name,
+  pandoc = list(),
+  pre_processor = NULL,
+  post_processor = NULL,
+  file_scope = NULL,
+  on_exit = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="output_format_dependency_:_name">name</code></td>
+<td>
+<p>A dependency name. If some dependencies share the same name,
+then only the first one will be merged to the output format.</p>
+</td></tr>
+<tr><td><code id="output_format_dependency_:_pandoc">pandoc</code></td>
+<td>
+<p>Pandoc options for an output format (see
+<code><a href="../../rmarkdown/help/pandoc_options.html">pandoc_options</a></code>)</p>
+</td></tr>
+<tr><td><code id="output_format_dependency_:_pre_processor">pre_processor</code></td>
+<td>
+<p>An optional pre-processor function that receives the
+<code>metadata</code>, <code>input_file</code>, <code>runtime</code>, <code>knit_meta</code>,
+<code>files_dir</code>, and <code>output_dir</code> and can return additional arguments
+to pass to pandoc.</p>
+</td></tr>
+<tr><td><code id="output_format_dependency_:_post_processor">post_processor</code></td>
+<td>
+<p>An optional post-processor function that receives the
+<code>metadata</code>, <code>input_file</code>, <code>output_file</code>, <code>clean</code>, and
+<code>verbose</code> parameters, and can return an alternative
+<code>output_file</code>.</p>
+</td></tr>
+<tr><td><code id="output_format_dependency_:_file_scope">file_scope</code></td>
+<td>
+<p>A function that will split markdown input to pandoc into
+multiple named files. This is useful when the caller has concatenated a set
+of Rmd files together (as <span class="pkg">bookdown</span> does), and those files may need to
+processed by pandoc using the <code>--file-scope</code> option. The first
+argument is input file paths and the second is <code>NULL</code> or current file
+scope which is a named list of files w/ <code>name</code> and <code>content</code> for
+each file. The return is the new file scope. Also, the arguments should
+include <code>...</code> for the future extensions.</p>
+</td></tr>
+<tr><td><code id="output_format_dependency_:_on_exit">on_exit</code></td>
+<td>
+<p>A function to call when <code>rmarkdown::render()</code> finishes
+execution (as registered with a <code><a href="../../base/html/on.exit.html">on.exit</a></code> handler).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An list of arguments with the &quot;rmd_dependency&quot; class.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Implicitly add lua filters from within a chunk
+# This relies on (implicit) printing of the dependency in a chunk via
+# knitr::knit_print()`
+output_format_dependency(
+  "lua_filter1",
+  pandoc = list(lua_filters = "example1.lua")
+)
+
+# Explicitly add lua filters from within a chunk
+knitr::knit_meta_add(list(output_format_dependency(
+  "lua_filter2",
+  pandoc = list(lua_filters = "example2.lua")
+)))
+
+# List the available dependencies
+# Note that the list may include dependencies with duplicated names. In that
+# case, the first one is merged to the output format and the others are
+# discarded.
+str(knitr::knit_meta("output_format_dependency", clean = FALSE))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

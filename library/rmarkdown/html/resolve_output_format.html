@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Resolve the output format for an R Markdown document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>resolve_output_format {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='resolve_output_format'>Resolve the output format for an R Markdown document</h2>
+
+<h3>Description</h3>
+
+<p>Read the YAML metadata (and any common output YAML file) for the
+document and return an output format object that can be
+passed to the <code><a href="../../rmarkdown/help/render.html">render</a></code> function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>resolve_output_format(
+  input,
+  output_format = NULL,
+  output_options = NULL,
+  output_yaml = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="resolve_output_format_:_input">input</code></td>
+<td>
+<p>Input file (Rmd or plain markdown)</p>
+</td></tr>
+<tr><td><code id="resolve_output_format_:_output_format">output_format</code></td>
+<td>
+<p>Name of output format (or <code>NULL</code> to use
+the default format for the input file).</p>
+</td></tr>
+<tr><td><code id="resolve_output_format_:_output_options">output_options</code></td>
+<td>
+<p>List of output options that should override the
+options specified in metadata.</p>
+</td></tr>
+<tr><td><code id="resolve_output_format_:_output_yaml">output_yaml</code></td>
+<td>
+<p>Paths to YAML files specifying output formats and their
+configurations. The first existing one is used. If none are found, then
+the function searches YAML files specified to the <code>output_yaml</code> top-level
+parameter in the YAML front matter, _output.yml or _output.yaml, and then uses
+the first existing one.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is useful for front-end tools that need to modify
+the default behavior of an output format.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An R Markdown output format definition that can be passed to
+<code><a href="../../rmarkdown/help/render.html">render</a></code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

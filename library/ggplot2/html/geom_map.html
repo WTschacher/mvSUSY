@@ -1,0 +1,229 @@
+<!DOCTYPE html><html><head><title>R: Polygons from a reference map</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>geom_map {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='geom_map'>Polygons from a reference map</h2>
+
+<h3>Description</h3>
+
+<p>Display polygons as a map. This is meant as annotation, so it does not
+affect position scales. Note that this function predates the <code><a href="../../ggplot2/help/geom_sf.html">geom_sf()</a></code>
+framework and does not work with sf geometry columns as input. However,
+it can be used in conjunction with <code>geom_sf()</code> layers and/or
+<code><a href="../../ggplot2/help/coord_sf.html">coord_sf()</a></code> (see examples).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>geom_map(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  ...,
+  map,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="geom_map_:_mapping">mapping</code></td>
+<td>
+<p>Set of aesthetic mappings created by <code><a href="../../ggplot2/help/aes.html">aes()</a></code>. If specified and
+<code>inherit.aes = TRUE</code> (the default), it is combined with the default mapping
+at the top level of the plot. You must supply <code>mapping</code> if there is no plot
+mapping.</p>
+</td></tr>
+<tr><td><code id="geom_map_:_data">data</code></td>
+<td>
+<p>The data to be displayed in this layer. There are three
+options:
+</p>
+<p>If <code>NULL</code>, the default, the data is inherited from the plot
+data as specified in the call to <code><a href="../../ggplot2/help/ggplot.html">ggplot()</a></code>.
+</p>
+<p>A <code>data.frame</code>, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+<code><a href="../../ggplot2/help/fortify.html">fortify()</a></code> for which variables will be created.
+</p>
+<p>A <code>function</code> will be called with a single argument,
+the plot data. The return value must be a <code>data.frame</code>, and
+will be used as the layer data. A <code>function</code> can be created
+from a <code>formula</code> (e.g. <code>~ head(.x, 10)</code>).</p>
+</td></tr>
+<tr><td><code id="geom_map_:_stat">stat</code></td>
+<td>
+<p>The statistical transformation to use on the data for this
+layer, either as a <code>ggproto</code> <code>Geom</code> subclass or as a string naming the
+stat stripped of the <code>stat_</code> prefix (e.g. <code>"count"</code> rather than
+<code>"stat_count"</code>)</p>
+</td></tr>
+<tr><td><code id="geom_map_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../ggplot2/help/layer.html">layer()</a></code>. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+<code>colour = "red"</code> or <code>size = 3</code>. They may also be parameters
+to the paired geom/stat.</p>
+</td></tr>
+<tr><td><code id="geom_map_:_map">map</code></td>
+<td>
+<p>Data frame that contains the map coordinates.  This will
+typically be created using <code><a href="../../ggplot2/help/fortify.html">fortify()</a></code> on a spatial object.
+It must contain columns <code>x</code> or <code>long</code>, <code>y</code> or
+<code>lat</code>, and <code>region</code> or <code>id</code>.</p>
+</td></tr>
+<tr><td><code id="geom_map_:_na.rm">na.rm</code></td>
+<td>
+<p>If <code>FALSE</code>, the default, missing values are removed with
+a warning. If <code>TRUE</code>, missing values are silently removed.</p>
+</td></tr>
+<tr><td><code id="geom_map_:_show.legend">show.legend</code></td>
+<td>
+<p>logical. Should this layer be included in the legends?
+<code>NA</code>, the default, includes if any aesthetics are mapped.
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</p>
+</td></tr>
+<tr><td><code id="geom_map_:_inherit.aes">inherit.aes</code></td>
+<td>
+<p>If <code>FALSE</code>, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. <code><a href="../../ggplot2/help/borders.html">borders()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Aesthetics</h3>
+
+<p><code>geom_map()</code> understands the following aesthetics (required aesthetics are in bold):
+</p>
+
+<ul>
+<li> <p><strong><code>map_id</code></strong>
+</p>
+</li>
+<li> <p><code>alpha</code>
+</p>
+</li>
+<li> <p><code>colour</code>
+</p>
+</li>
+<li> <p><code>fill</code>
+</p>
+</li>
+<li> <p><code>group</code>
+</p>
+</li>
+<li> <p><code>linetype</code>
+</p>
+</li>
+<li> <p><code>linewidth</code>
+</p>
+</li>
+<li> <p><code>subgroup</code>
+</p>
+</li></ul>
+
+<p>Learn more about setting these aesthetics in <code>vignette("ggplot2-specs")</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># First, a made-up example containing a few polygons, to explain
+# how `geom_map()` works. It requires two data frames:
+# One contains the coordinates of each polygon (`positions`), and is
+# provided via the `map` argument. The other contains the
+# other the values associated with each polygon (`values`).  An id
+# variable links the two together.
+
+ids &lt;- factor(c("1.1", "2.1", "1.2", "2.2", "1.3", "2.3"))
+
+values &lt;- data.frame(
+  id = ids,
+  value = c(3, 3.1, 3.1, 3.2, 3.15, 3.5)
+)
+
+positions &lt;- data.frame(
+  id = rep(ids, each = 4),
+  x = c(2, 1, 1.1, 2.2, 1, 0, 0.3, 1.1, 2.2, 1.1, 1.2, 2.5, 1.1, 0.3,
+  0.5, 1.2, 2.5, 1.2, 1.3, 2.7, 1.2, 0.5, 0.6, 1.3),
+  y = c(-0.5, 0, 1, 0.5, 0, 0.5, 1.5, 1, 0.5, 1, 2.1, 1.7, 1, 1.5,
+  2.2, 2.1, 1.7, 2.1, 3.2, 2.8, 2.1, 2.2, 3.3, 3.2)
+)
+
+ggplot(values) +
+  geom_map(aes(map_id = id), map = positions) +
+  expand_limits(positions)
+ggplot(values, aes(fill = value)) +
+  geom_map(aes(map_id = id), map = positions) +
+  expand_limits(positions)
+ggplot(values, aes(fill = value)) +
+  geom_map(aes(map_id = id), map = positions) +
+  expand_limits(positions) + ylim(0, 3)
+
+# Now some examples with real maps
+if (require(maps)) {
+
+  crimes &lt;- data.frame(state = tolower(rownames(USArrests)), USArrests)
+
+  # Equivalent to crimes %&gt;% tidyr::pivot_longer(Murder:Rape)
+  vars &lt;- lapply(names(crimes)[-1], function(j) {
+    data.frame(state = crimes$state, variable = j, value = crimes[[j]])
+  })
+  crimes_long &lt;- do.call("rbind", vars)
+
+  states_map &lt;- map_data("state")
+
+  # without geospatial coordinate system, the resulting plot
+  # looks weird
+  ggplot(crimes, aes(map_id = state)) +
+    geom_map(aes(fill = Murder), map = states_map) +
+    expand_limits(x = states_map$long, y = states_map$lat)
+
+  # in combination with `coord_sf()` we get an appropriate result
+  ggplot(crimes, aes(map_id = state)) +
+    geom_map(aes(fill = Murder), map = states_map) +
+    # crs = 5070 is a Conus Albers projection for North America,
+    #   see: https://epsg.io/5070
+    # default_crs = 4326 tells coord_sf() that the input map data
+    #   are in longitude-latitude format
+    coord_sf(
+      crs = 5070, default_crs = 4326,
+      xlim = c(-125, -70), ylim = c(25, 52)
+    )
+
+ ggplot(crimes_long, aes(map_id = state)) +
+   geom_map(aes(fill = value), map = states_map) +
+   coord_sf(
+     crs = 5070, default_crs = 4326,
+     xlim = c(-125, -70), ylim = c(25, 52)
+   ) +
+   facet_wrap(~variable)
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

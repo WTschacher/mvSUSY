@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Render isobands</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>isobands_grob {isoband}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='isobands_grob'>Render isobands</h2>
+
+<h3>Description</h3>
+
+<p>This function generates a grid grob that represents isobands.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>isobands_grob(bands, gp = gpar(), units = "npc")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="isobands_grob_:_bands">bands</code></td>
+<td>
+<p>Isobands, as produced by the <code><a href="../../isoband/help/isobands.html">isobands()</a></code> function.</p>
+</td></tr>
+<tr><td><code id="isobands_grob_:_gp">gp</code></td>
+<td>
+<p>Grid graphical parameters. Parameters are recycled among
+the total number of bands drawn.</p>
+</td></tr>
+<tr><td><code id="isobands_grob_:_units">units</code></td>
+<td>
+<p>A character string specifying the units in which to
+interpret the isobands coordinates. Defaults to <code>"npc"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="../../isoband/help/isolines_grob.html">isolines_grob()</a></code> for drawing of isolines.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(grid)
+
+viridis_pal &lt;- colorRampPalette(
+  c("#440154", "#414487", "#2A788E", "#22A884", "#7AD151", "#FDE725"),
+  space = "Lab"
+)
+
+x &lt;- (1:ncol(volcano))/(ncol(volcano)+1)
+y &lt;- (nrow(volcano):1)/(nrow(volcano)+1)
+bands &lt;- isobands(x, y, volcano, 5*(18:38), 5*(19:39))
+
+b &lt;- isobands_grob(
+  bands,
+  gp = gpar(col = "black", fill = viridis_pal(21), alpha = 0.5)
+)
+
+grid.newpage()
+grid.draw(b)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>isoband</em> version 0.2.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

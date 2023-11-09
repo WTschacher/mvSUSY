@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><title>R: Separate a collapsed column into multiple rows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>separate_rows {tidyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='separate_rows'>Separate a collapsed column into multiple rows</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p><code>separate_rows()</code> has been superseded in favour of <code><a href="../../tidyr/help/separate_longer_delim.html">separate_longer_delim()</a></code>
+because it has a more consistent API with other separate functions.
+Superseded functions will not go away, but will only receive critical bug
+fixes.
+</p>
+<p>If a variable contains observations with multiple delimited values,
+<code>separate_rows()</code> separates the values and places each one in its own row.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>separate_rows(data, ..., sep = "[^[:alnum:].]+", convert = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="separate_rows_:_data">data</code></td>
+<td>
+<p>A data frame.</p>
+</td></tr>
+<tr><td><code id="separate_rows_:_...">...</code></td>
+<td>
+<p>&lt;<code><a href="../../tidyr/help/tidyr_tidy_select.html">tidy-select</a></code>&gt; Columns to separate across
+multiple rows</p>
+</td></tr>
+<tr><td><code id="separate_rows_:_sep">sep</code></td>
+<td>
+<p>Separator delimiting collapsed values.</p>
+</td></tr>
+<tr><td><code id="separate_rows_:_convert">convert</code></td>
+<td>
+<p>If <code>TRUE</code> will automatically run
+<code><a href="../../utils/html/type.convert.html">type.convert()</a></code> on the key column. This is useful if the column
+types are actually numeric, integer, or logical.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(
+  x = 1:3,
+  y = c("a", "d,e,f", "g,h"),
+  z = c("1", "2,3,4", "5,6")
+)
+separate_rows(df, y, z, convert = TRUE)
+
+# Now recommended
+df %&gt;%
+  separate_longer_delim(c(y, z), delim = ",")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidyr</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

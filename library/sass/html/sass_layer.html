@@ -1,0 +1,205 @@
+<!DOCTYPE html><html><head><title>R: Bundling Sass layers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_layer {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_layer'>Bundling Sass layers</h2>
+
+<h3>Description</h3>
+
+<p>Sass layers provide a way to package Sass variables, rules, functions, and
+mixins in a structured and composable way that follows best Sass practices.
+Most importantly, when multiple <code>sass_layer()</code> are combined into a
+<code>sass_bundle()</code>, variable <code>defaults</code> for later layers are placed <em>before</em>
+earlier layers, effectively 'new' defaults through all the 'old' defaults.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_layer(
+  functions = NULL,
+  defaults = NULL,
+  mixins = NULL,
+  rules = NULL,
+  html_deps = NULL,
+  file_attachments = character(0),
+  declarations = NULL,
+  tags = NULL
+)
+
+sass_layer_file(file)
+
+sass_bundle(...)
+
+sass_bundle_remove(bundle, name)
+
+is_sass_bundle(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_layer_:_functions">functions</code></td>
+<td>
+<p><code><a href="../../sass/help/as_sass.html">as_sass()</a></code> <code>input</code> intended for <a href="https://rstudio.github.io/sass/articles/sass.html#functions-1">Sass functions</a>.
+Functions are placed before <code>defaults</code> so that variable definitions may make
+use of functions.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_defaults">defaults</code></td>
+<td>
+<p><code><a href="../../sass/help/as_sass.html">as_sass()</a></code> <code>input</code> intended for <a href="https://rstudio.github.io/sass/articles/sass.html#variables-1">variable defaults</a>.
+These variable defaults after placed after <code>functions</code> but before <code>mixins</code>.
+When multiple layers are combined in a <code>sass_bundle()</code>, defaults are merged
+in reverse order; that is, <code>sass_bundle(layer1, layer2)</code> will include
+<code>layer2$defaults</code> before <code>layer1$defaults</code>.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_mixins">mixins</code></td>
+<td>
+<p><code><a href="../../sass/help/as_sass.html">as_sass()</a></code> <code>input</code> intended for <a href="https://rstudio.github.io/sass/articles/sass.html#mixins-1">Sass mixins</a>. Mixins
+are placed after <code>defaults</code>, but before <code>rules</code>.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_rules">rules</code></td>
+<td>
+<p><code><a href="../../sass/help/as_sass.html">as_sass()</a></code> <code>input</code> intended for <a href="https://sass-lang.com/documentation/style-rules">Sass rules</a>. Rules are placed last
+(i.e., after <code>functions</code>, <code>defaults</code>, and <code>mixins</code>).</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_html_deps">html_deps</code></td>
+<td>
+<p>An HTML dependency (or a list of them). This dependency
+gets attached to the return value of <code><a href="../../sass/help/sass.html">sass()</a></code>/<code><a href="../../sass/help/as_sass.html">as_sass()</a></code>.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_file_attachments">file_attachments</code></td>
+<td>
+<p>A named character vector, representing file assets
+that are referenced (using relative paths) from the sass in this layer. The
+vector names should be a relative path, and the corresponding vector values
+should be absolute paths to files or directories that exist; at render
+time, each value will be copied to the relative path indicated by its name.
+(For directories, the <em>contents</em> of the source directory will be copied
+into the destination directory; the directory itself will not be copied.)
+You can also omit the name, in which case that file or directory will be
+copied directly into the output directory.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_declarations">declarations</code></td>
+<td>
+<p>Deprecated, use <code>functions</code> or <code>mixins</code> instead.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_tags">tags</code></td>
+<td>
+<p>Deprecated. Preserve meta information using a key in <code>sass_bundle(KEY = val)</code>.
+preserve simple metadata as layers are merged.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_file">file</code></td>
+<td>
+<p>file path to a <code>.scss</code> file.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_...">...</code></td>
+<td>
+<p>A collection of <code>sass_layer()</code>s and/or objects that <code><a href="../../sass/help/as_sass.html">as_sass()</a></code>
+understands. Arguments should be provided in reverse priority order:
+defaults, declarations, and rules in later layers will take precedence over
+those of previous layers. Non-layer values will be converted to layers by
+calling <code>sass_layer(rules = ...)</code>.</p>
+</td></tr>
+<tr><td><code id="sass_layer_:_bundle">bundle</code></td>
+<td>
+<p>Output value from <code>sass_layer()</code> or <code>sass_bundle()</code></p>
+</td></tr>
+<tr><td><code id="sass_layer_:_name">name</code></td>
+<td>
+<p>If a Sass layer name is contained in <code>name</code>, the matching Sass layer will be removed from the <code>bundle</code></p>
+</td></tr>
+<tr><td><code id="sass_layer_:_x">x</code></td>
+<td>
+<p>object to inspect</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>sass_layer()</code>: Compose the parts of a single Sass layer. Object returned is a <code>sass_bundle()</code> with a single Sass layer
+</p>
+</li>
+<li> <p><code>sass_layer_file()</code>: Read in a <code>.scss</code> file with parse special <code style="white-space: pre;">&#8288;/*-- scss:(functions|defaults|rules|mixins) --*/&#8288;</code> comments as relevant sections of a <code>sass_layer()</code>.
+</p>
+</li>
+<li> <p><code>sass_bundle()</code>: Collect <code>sass_bundle()</code> and/or <code>sass_layer()</code> objects. Unnamed Sass bundles will be concatenated together, preserving their internal name structures. Named Sass bundles will be condensed into a single Sass layer for easier removal from the returned Sass bundle.
+</p>
+</li>
+<li> <p><code>sass_bundle_remove()</code>: Remove a whole <code>sass_layer()</code> from a <code>sass_bundle()</code> object.
+</p>
+</li>
+<li> <p><code>is_sass_bundle()</code>: Check if <code>x</code> is a Sass bundle object
+</p>
+</li></ul>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>blue &lt;- list(color = "blue !default")
+red &lt;- list(color = "red !default")
+green &lt;- list(color = "green !default")
+
+# a sass_layer() by itself is not very useful, it just defines some
+# SASS to place before (defaults) and after (rules)
+core &lt;- sass_layer(defaults = blue, rules = "body { color: $color; }")
+core
+sass(core)
+
+# However, by stacking sass_layer()s, we have ability to place
+# SASS both before and after some other sass (e.g., core)
+# Here we place a red default _before_ the blue default and export the
+# color SASS variable as a CSS variable _after_ the core
+red_layer &lt;- sass_layer(red, rules = ":root{ --color: #{$color}; }")
+sass(sass_bundle(core, red_layer))
+sass(sass_bundle(core, red_layer, sass_layer(green)))
+
+# Example of merging layers and removing a layer
+# Remember to name the layers that are removable
+core_layers &lt;- sass_bundle(core, red = red_layer, green = sass_layer(green))
+core_layers # pretty printed for console
+core_slim &lt;- sass_bundle_remove(core_layers, "red")
+sass(core_slim)
+
+
+# File attachment example: Create a checkboard pattern .png, then
+# use it from a sass layer
+
+tmp_png &lt;- tempfile(fileext = ".png")
+grDevices::png(filename = tmp_png, width = 20, height = 20,
+  bg = "transparent", antialias = "none")
+par(mar = rep_len(0,4), xaxs = "i", yaxs = "i")
+plot.new()
+rect(c(0,0.5), c(0,0.5), c(0.5,1), c(0.5,1), col = "#00000044", border=NA)
+dev.off()
+
+layer &lt;- sass_layer(
+  rules = ".bg-check { background-image: url(images/demo_checkboard_bg.png) }",
+  file_attachments = c("images/demo_checkboard_bg.png" = tmp_png)
+)
+
+output_path &lt;- tempfile(fileext = ".css")
+sass(layer, output = output_path, write_attachments = TRUE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

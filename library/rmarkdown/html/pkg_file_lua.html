@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><title>R: Get the full paths of Lua filters in an R package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pkg_file_lua {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pkg_file_lua'>Get the full paths of Lua filters in an R package</h2>
+
+<h3>Description</h3>
+
+<p>Lua filters stored in a source package in the &lsquo;<span class="file">inst/rmarkdown/lua</span>&rsquo;
+directory will be installed to the &lsquo;<span class="file">rmarkdown/lua</span>&rsquo; directory in the
+package path. This function finds the full paths of the Lua filters in the
+installed packages.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pkg_file_lua(filters = NULL, package = "rmarkdown")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pkg_file_lua_:_filters">filters</code></td>
+<td>
+<p>A character vector of filenames for Lua filters to be
+retrieved in &lsquo;<span class="file">rmarkdown/lua</span>&rsquo; folder of the package. By default
+(<code>NULL</code>), if none is provided, it returns all filters in that folder.</p>
+</td></tr>
+<tr><td><code id="pkg_file_lua_:_package">package</code></td>
+<td>
+<p>The name of the package in which to look for the filters.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of absolute file paths for the Lua filter from the
+package. The returned paths have been processed by
+<code><a href="../../rmarkdown/help/pandoc_path_arg.html">pandoc_path_arg</a>()</code>, so they are ready to be used by Pandoc.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># list all Lua filters stored in the rmarkdown package
+pkg_file_lua()
+# get a specific filter
+pkg_file_lua(c("pagebreak.lua", "latex_div.lua"))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

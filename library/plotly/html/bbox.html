@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>R: Estimate bounding box of a rotated string</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bbox {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bbox'>Estimate bounding box of a rotated string</h2>
+
+<h3>Description</h3>
+
+<p>Estimate bounding box of a rotated string
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bbox(txt = "foo", angle = 0, size = 12)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bbox_:_txt">txt</code></td>
+<td>
+<p>a character string of length 1</p>
+</td></tr>
+<tr><td><code id="bbox_:_angle">angle</code></td>
+<td>
+<p>sets the angle of the tick labels with respect to the
+horizontal (e.g., <code>tickangle</code> of -90 draws the tick labels vertically)</p>
+</td></tr>
+<tr><td><code id="bbox_:_size">size</code></td>
+<td>
+<p>vertical size of a character</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>https://www.dropbox.com/s/nc6968prgw8ne4w/bbox.pdf?dl=0
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

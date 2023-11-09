@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>R: Force computation of a database query</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>compute {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='compute'>Force computation of a database query</h2>
+
+<h3>Description</h3>
+
+<p><code>compute()</code> stores results in a remote temporary table.
+<code>collect()</code> retrieves data into a local tibble.
+<code>collapse()</code> is slightly different: it doesn't force computation, but
+instead forces generation of the SQL query. This is sometimes needed to work
+around bugs in dplyr's SQL generation.
+</p>
+<p>All functions preserve grouping and ordering.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>compute(x, ...)
+
+collect(x, ...)
+
+collapse(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="compute_:_x">x</code></td>
+<td>
+<p>A data frame, data frame extension (e.g. a tibble), or a lazy
+data frame (e.g. from dbplyr or dtplyr). See <em>Methods</em>, below, for more
+details.</p>
+</td></tr>
+<tr><td><code id="compute_:_...">...</code></td>
+<td>
+<p>Arguments passed on to methods</p>
+</td></tr>
+</table>
+
+
+<h3>Methods</h3>
+
+<p>These functions are <strong>generics</strong>, which means that packages can provide
+implementations (methods) for other classes. See the documentation of
+individual methods for extra arguments and differences in behaviour.
+</p>
+<p>Methods available in currently loaded packages:
+</p>
+
+<ul>
+<li> <p><code>compute()</code>: no methods found
+</p>
+</li>
+<li> <p><code>collect()</code>: no methods found
+</p>
+</li>
+<li> <p><code>collapse()</code>: no methods found
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/copy_to.html">copy_to()</a></code>, the opposite of <code>collect()</code>: it takes a local data
+frame and uploads it to the remote source.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+mtcars2 &lt;- dbplyr::src_memdb() %&gt;%
+  copy_to(mtcars, name = "mtcars2-cc", overwrite = TRUE)
+
+remote &lt;- mtcars2 %&gt;%
+  filter(cyl == 8) %&gt;%
+  select(mpg:drat)
+
+# Compute query and save in remote table
+compute(remote)
+
+# Compute query bring back to this session
+collect(remote)
+
+# Creates a fresh query based on the generated SQL
+collapse(remote)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

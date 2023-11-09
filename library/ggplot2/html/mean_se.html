@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><title>R: Calculate mean and standard error of the mean</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>mean_se {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='mean_se'>Calculate mean and standard error of the mean</h2>
+
+<h3>Description</h3>
+
+<p>For use with <code><a href="../../ggplot2/help/stat_summary.html">stat_summary()</a></code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>mean_se(x, mult = 1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="mean_se_:_x">x</code></td>
+<td>
+<p>numeric vector.</p>
+</td></tr>
+<tr><td><code id="mean_se_:_mult">mult</code></td>
+<td>
+<p>number of multiples of standard error.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data frame with three columns:
+</p>
+
+<dl>
+<dt><code>y</code></dt><dd><p> The mean.</p>
+</dd>
+<dt><code>ymin</code></dt><dd><p> The mean minus the multiples of the standard error.</p>
+</dd>
+<dt><code>ymax</code></dt><dd><p> The mean plus the multiples of the standard error.</p>
+</dd>
+</dl>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>set.seed(1)
+x &lt;- rnorm(100)
+mean_se(x)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

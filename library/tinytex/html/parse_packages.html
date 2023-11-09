@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><title>R: Find missing LaTeX packages from a LaTeX log file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>parse_packages {tinytex}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='parse_packages'>Find missing LaTeX packages from a LaTeX log file</h2>
+
+<h3>Description</h3>
+
+<p>Analyze the error messages in a LaTeX log file to figure out the names of
+missing LaTeX packages that caused the errors. These packages can be
+installed via <code><a href="../../tinytex/help/tlmgr_install.html">tlmgr_install</a>()</code>. Searching for missing packages
+is based on <code><a href="../../tinytex/help/tlmgr_search.html">tlmgr_search</a>()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>parse_packages(
+  log,
+  text = read_lines(log),
+  files = detect_files(text),
+  quiet = rep(FALSE, 3)
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="parse_packages_:_log">log</code></td>
+<td>
+<p>Path to the LaTeX log file (typically named &lsquo;<span class="file">*.log</span>&rsquo;).</p>
+</td></tr>
+<tr><td><code id="parse_packages_:_text">text</code></td>
+<td>
+<p>A character vector of the error log (read from the file provided
+by the <code>log</code> argument by default).</p>
+</td></tr>
+<tr><td><code id="parse_packages_:_files">files</code></td>
+<td>
+<p>A character vector of names of the missing files (automatically
+detected from the <code>log</code> by default).</p>
+</td></tr>
+<tr><td><code id="parse_packages_:_quiet">quiet</code></td>
+<td>
+<p>Whether to suppress messages when finding packages. It should be
+a logical vector of length 3: the first element indicates whether to
+suppress the message when no missing LaTeX packages could be detected from
+the log, the second element indicate whether to suppress the message when
+searching for packages via <code>tlmgr_search()</code>, and the third element
+indicates whether to warn if no packages could be found via
+<code>tlmgr_search()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of LaTeX package names.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tinytex</em> version 0.48 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Define aesthetic mappings programmatically</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>aes_ {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='aes_'>Define aesthetic mappings programmatically</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>
+</p>
+<p>Aesthetic mappings describe how variables in the data are mapped to visual
+properties (aesthetics) of geoms. <code><a href="../../ggplot2/help/aes.html">aes()</a></code> uses non-standard
+evaluation to capture the variable names. <code>aes_()</code> and <code>aes_string()</code>
+require you to explicitly quote the inputs either with <code>""</code> for
+<code>aes_string()</code>, or with <code>quote</code> or <code>~</code> for <code>aes_()</code>.
+(<code>aes_q()</code> is an alias to <code>aes_()</code>). This makes <code>aes_()</code> and
+<code>aes_string()</code> easy to program with.
+</p>
+<p><code>aes_string()</code> and <code>aes_()</code> are particularly useful when writing
+functions that create plots because you can use strings or quoted
+names/calls to define the aesthetic mappings, rather than having to use
+<code><a href="../../base/html/substitute.html">substitute()</a></code> to generate a call to <code>aes()</code>.
+</p>
+<p>I recommend using <code>aes_()</code>, because creating the equivalents of
+<code>aes(colour = "my colour")</code> or <code>aes(x = `X$1`)</code>
+with <code>aes_string()</code> is quite clunky.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>aes_(x, y, ...)
+
+aes_string(x, y, ...)
+
+aes_q(x, y, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="aes__:_x">x</code>, <code id="aes__:_y">y</code>, <code id="aes__:_...">...</code></td>
+<td>
+<p>List of name value pairs. Elements must be either
+quoted calls, strings, one-sided formulas or constants.</p>
+</td></tr>
+</table>
+
+
+<h3>Life cycle</h3>
+
+<p>All these functions are soft-deprecated. Please use tidy evaluation idioms
+instead. Regarding <code>aes_string()</code>, you can replace it with <code>.data</code> pronoun.
+For example, the following code can achieve the same mapping as
+<code>aes_string(x_var, y_var)</code>.
+</p>
+<div class="sourceCode r"><pre>x_var &lt;- "foo"
+y_var &lt;- "bar"
+aes(.data[[x_var]], .data[[y_var]])
+</pre></div>
+<p>For more details, please see <code>vignette("ggplot2-in-packages")</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../ggplot2/help/aes.html">aes()</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

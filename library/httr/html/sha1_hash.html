@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><title>R: SHA1 hash</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sha1_hash {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sha1_hash'>SHA1 hash</h2>
+
+<h3>Description</h3>
+
+<p>Creates a SHA1 hash of data using either HMAC or RSA.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sha1_hash(key, string, method = "HMAC-SHA1")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sha1_hash_:_key">key</code></td>
+<td>
+<p>The key to create the hash with</p>
+</td></tr>
+<tr><td><code id="sha1_hash_:_string">string</code></td>
+<td>
+<p>data to securely hash</p>
+</td></tr>
+<tr><td><code id="sha1_hash_:_method">method</code></td>
+<td>
+<p>The method to use, either HMAC-SHA1 or RSA-SHA1</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

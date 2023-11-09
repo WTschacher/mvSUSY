@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><title>R: Create a row/col spacer gtable.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>gtable_spacer {gtable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='gtable_spacer'>Create a row/col spacer gtable.</h2>
+
+<h3>Description</h3>
+
+<p>Create a zero-column or zero-row gtable with the given heights or widths
+respectively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>gtable_row_spacer(widths)
+
+gtable_col_spacer(heights)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="gtable_spacer_:_widths">widths</code></td>
+<td>
+<p>unit vector of widths</p>
+</td></tr>
+<tr><td><code id="gtable_spacer_:_heights">heights</code></td>
+<td>
+<p>unit vector of heights</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A gtable object
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other gtable construction: 
+<code><a href="../../gtable/help/gtable_col.html">gtable_col</a>()</code>,
+<code><a href="../../gtable/help/gtable_matrix.html">gtable_matrix</a>()</code>,
+<code><a href="../../gtable/help/gtable_row.html">gtable_row</a>()</code>,
+<code><a href="../../gtable/help/gtable.html">gtable</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>gtable</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

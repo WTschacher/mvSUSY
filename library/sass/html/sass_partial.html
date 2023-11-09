@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><title>R: Compile rules against a Sass Bundle or Sass Layer object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_partial {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_partial'>Compile rules against a Sass Bundle or Sass Layer object</h2>
+
+<h3>Description</h3>
+
+<p>Replaces the rules for a <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code> object with new rules, and compile it.
+This is useful when (for example) you want to compile a set of rules using
+variables derived from a theme, but you do not want the resulting CSS for the
+entire theme &ndash; just the CSS for the specific rules passed in.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_partial(
+  rules,
+  bundle,
+  options = sass_options_get(),
+  output = NULL,
+  write_attachments = NA,
+  cache = sass_cache_get(),
+  cache_key_extra = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_partial_:_rules">rules</code></td>
+<td>
+<p>A set of sass rules, which will be used instead of the rules
+from <code>layer</code>.</p>
+</td></tr>
+<tr><td><code id="sass_partial_:_bundle">bundle</code></td>
+<td>
+<p>A <code><a href="../../sass/help/sass_bundle.html">sass_bundle()</a></code> or <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="sass_partial_:_options">options</code></td>
+<td>
+<p>Compiler <code><a href="../../sass/help/sass_options.html">sass_options()</a></code>.</p>
+</td></tr>
+<tr><td><code id="sass_partial_:_output">output</code></td>
+<td>
+<p>Specifies path to output file for compiled CSS. May be a
+character string or <code><a href="../../sass/help/output_template.html">output_template()</a></code></p>
+</td></tr>
+<tr><td><code id="sass_partial_:_write_attachments">write_attachments</code></td>
+<td>
+<p>If the input contains <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code> objects that
+have file attachments, and <code>output</code> is not <code>NULL</code>, then copy the file
+attachments to the directory of <code>output</code>. (Defaults to <code>NA</code>, which merely
+emits a warning if file attachments are present, but does not write them to
+disk; the side-effect of writing extra files is subtle and potentially
+destructive, as files may be overwritten.)</p>
+</td></tr>
+<tr><td><code id="sass_partial_:_cache">cache</code></td>
+<td>
+<p>This can be a directory to use for the cache, a <a href="../../sass/help/FileCache.html">FileCache</a>
+object created by <code><a href="../../sass/help/sass_file_cache.html">sass_file_cache()</a></code>, or <code>FALSE</code> or <code>NULL</code> for no caching.</p>
+</td></tr>
+<tr><td><code id="sass_partial_:_cache_key_extra">cache_key_extra</code></td>
+<td>
+<p>additional information to considering when computing
+the cache key. This should include any information that could possibly
+influence the resulting CSS that isn't already captured by <code>input</code>. For
+example, if <code>input</code> contains something like <code>"@import sass_file.scss"</code> you
+may want to include the <code><a href="../../base/html/file.info.html">file.mtime()</a></code> of <code>sass_file.scss</code> (or, perhaps, a
+<code><a href="../../utils/html/packageDescription.html">packageVersion()</a></code> if <code>sass_file.scss</code> is bundled with an R package).</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>theme &lt;- sass_layer(
+  defaults = sass_file(system.file("examples/variables.scss", package = "sass")),
+  rules = sass_file(system.file("examples/rules.scss", package = "sass"))
+)
+
+# Compile the theme
+sass(theme)
+
+# Sometimes we want to use the variables from the theme to compile other sass
+my_rules &lt;- ".someclass { background-color: $bg; color: $fg; }"
+sass_partial(my_rules, theme)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

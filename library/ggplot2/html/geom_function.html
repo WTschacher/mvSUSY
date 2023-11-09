@@ -1,0 +1,253 @@
+<!DOCTYPE html><html><head><title>R: Draw a function as a continuous curve</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>geom_function {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='geom_function'>Draw a function as a continuous curve</h2>
+
+<h3>Description</h3>
+
+<p>Computes and draws a function as a continuous curve. This makes it easy to
+superimpose a function on top of an existing plot. The function is called
+with a grid of evenly spaced values along the x axis, and the results are
+drawn (by default) with a line.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>geom_function(
+  mapping = NULL,
+  data = NULL,
+  stat = "function",
+  position = "identity",
+  ...,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+stat_function(
+  mapping = NULL,
+  data = NULL,
+  geom = "function",
+  position = "identity",
+  ...,
+  fun,
+  xlim = NULL,
+  n = 101,
+  args = list(),
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="geom_function_:_mapping">mapping</code></td>
+<td>
+<p>Set of aesthetic mappings created by <code><a href="../../ggplot2/help/aes.html">aes()</a></code>. If specified and
+<code>inherit.aes = TRUE</code> (the default), it is combined with the default mapping
+at the top level of the plot. You must supply <code>mapping</code> if there is no plot
+mapping.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_data">data</code></td>
+<td>
+<p>Ignored by <code>stat_function()</code>, do not use.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_stat">stat</code></td>
+<td>
+<p>The statistical transformation to use on the data for this
+layer, either as a <code>ggproto</code> <code>Geom</code> subclass or as a string naming the
+stat stripped of the <code>stat_</code> prefix (e.g. <code>"count"</code> rather than
+<code>"stat_count"</code>)</p>
+</td></tr>
+<tr><td><code id="geom_function_:_position">position</code></td>
+<td>
+<p>Position adjustment, either as a string naming the adjustment
+(e.g. <code>"jitter"</code> to use <code>position_jitter</code>), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../ggplot2/help/layer.html">layer()</a></code>. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+<code>colour = "red"</code> or <code>size = 3</code>. They may also be parameters
+to the paired geom/stat.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_na.rm">na.rm</code></td>
+<td>
+<p>If <code>FALSE</code>, the default, missing values are removed with
+a warning. If <code>TRUE</code>, missing values are silently removed.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_show.legend">show.legend</code></td>
+<td>
+<p>logical. Should this layer be included in the legends?
+<code>NA</code>, the default, includes if any aesthetics are mapped.
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_inherit.aes">inherit.aes</code></td>
+<td>
+<p>If <code>FALSE</code>, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. <code><a href="../../ggplot2/help/borders.html">borders()</a></code>.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_geom">geom</code></td>
+<td>
+<p>The geometric object to use to display the data, either as a
+<code>ggproto</code> <code>Geom</code> subclass or as a string naming the geom stripped of the
+<code>geom_</code> prefix (e.g. <code>"point"</code> rather than <code>"geom_point"</code>)</p>
+</td></tr>
+<tr><td><code id="geom_function_:_fun">fun</code></td>
+<td>
+<p>Function to use. Either 1) an anonymous function in the base or
+rlang formula syntax (see <code><a href="../../rlang/help/as_function.html">rlang::as_function()</a></code>)
+or 2) a quoted or character name referencing a function; see examples. Must
+be vectorised.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_xlim">xlim</code></td>
+<td>
+<p>Optionally, specify the range of the function.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_n">n</code></td>
+<td>
+<p>Number of points to interpolate along the x axis.</p>
+</td></tr>
+<tr><td><code id="geom_function_:_args">args</code></td>
+<td>
+<p>List of additional arguments passed on to the function defined by <code>fun</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Aesthetics</h3>
+
+<p><code>geom_function()</code> understands the following aesthetics (required aesthetics are in bold):
+</p>
+
+<ul>
+<li> <p><strong><code>x</code></strong>
+</p>
+</li>
+<li> <p><strong><code>y</code></strong>
+</p>
+</li>
+<li> <p><code>alpha</code>
+</p>
+</li>
+<li> <p><code>colour</code>
+</p>
+</li>
+<li> <p><code>group</code>
+</p>
+</li>
+<li> <p><code>linetype</code>
+</p>
+</li>
+<li> <p><code>linewidth</code>
+</p>
+</li></ul>
+
+<p>Learn more about setting these aesthetics in <code>vignette("ggplot2-specs")</code>.
+</p>
+
+
+<h3>Computed variables</h3>
+
+<p>These are calculated by the 'stat' part of layers and can be accessed with <a href="../../ggplot2/help/aes_eval.html">delayed evaluation</a>.
+</p>
+
+<ul>
+<li> <p><code>after_stat(x)</code><br /> <code>x</code> values along a grid.
+</p>
+</li>
+<li> <p><code>after_stat(y)</code><br /> values of the function evaluated at corresponding <code>x</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../rlang/help/as_function.html">rlang::as_function()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+# geom_function() is useful for overlaying functions
+set.seed(1492)
+ggplot(data.frame(x = rnorm(100)), aes(x)) +
+  geom_density() +
+  geom_function(fun = dnorm, colour = "red")
+
+# To plot functions without data, specify range of x-axis
+base &lt;-
+  ggplot() +
+  xlim(-5, 5)
+
+base + geom_function(fun = dnorm)
+
+base + geom_function(fun = dnorm, args = list(mean = 2, sd = .5))
+
+# The underlying mechanics evaluate the function at discrete points
+# and connect the points with lines
+base + stat_function(fun = dnorm, geom = "point")
+
+base + stat_function(fun = dnorm, geom = "point", n = 20)
+
+base + stat_function(fun = dnorm, geom = "polygon", color = "blue", fill = "blue", alpha = 0.5)
+
+base + geom_function(fun = dnorm, n = 20)
+
+# Two functions on the same plot
+base +
+  geom_function(aes(colour = "normal"), fun = dnorm) +
+  geom_function(aes(colour = "t, df = 1"), fun = dt, args = list(df = 1))
+
+# Using a custom anonymous function
+base + geom_function(fun = function(x) 0.5*exp(-abs(x)))
+
+base + geom_function(fun = ~ 0.5*exp(-abs(.x)))
+
+# Using a custom named function
+f &lt;- function(x) 0.5*exp(-abs(x))
+
+base + geom_function(fun = f)
+
+# Using xlim to restrict the range of function
+ggplot(data.frame(x = rnorm(100)), aes(x)) +
+geom_density() +
+geom_function(fun = dnorm, colour = "red", xlim=c(-1, 1))
+
+# Using xlim to widen the range of function
+ggplot(data.frame(x = rnorm(100)), aes(x)) +
+geom_density() +
+geom_function(fun = dnorm, colour = "red", xlim=c(-7, 7))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

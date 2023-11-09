@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Flexible equality comparison for data frames</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>all_equal {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='all_equal'>Flexible equality comparison for data frames</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>
+</p>
+<p><code>all_equal()</code> allows you to compare data frames, optionally ignoring
+row and column names. It is deprecated as of dplyr 1.1.0, because it
+makes it too easy to ignore important differences.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>all_equal(
+  target,
+  current,
+  ignore_col_order = TRUE,
+  ignore_row_order = TRUE,
+  convert = FALSE,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="all_equal_:_target">target</code>, <code id="all_equal_:_current">current</code></td>
+<td>
+<p>Two data frames to compare.</p>
+</td></tr>
+<tr><td><code id="all_equal_:_ignore_col_order">ignore_col_order</code></td>
+<td>
+<p>Should order of columns be ignored?</p>
+</td></tr>
+<tr><td><code id="all_equal_:_ignore_row_order">ignore_row_order</code></td>
+<td>
+<p>Should order of rows be ignored?</p>
+</td></tr>
+<tr><td><code id="all_equal_:_convert">convert</code></td>
+<td>
+<p>Should similar classes be converted? Currently this will
+convert factor to character and integer to double.</p>
+</td></tr>
+<tr><td><code id="all_equal_:_...">...</code></td>
+<td>
+<p>Ignored. Needed for compatibility with <code>all.equal()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> if equal, otherwise a character vector describing
+the reasons why they're not equal. Use <code><a href="../../base/html/Logic.html">isTRUE()</a></code> if using the
+result in an <code>if</code> expression.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>scramble &lt;- function(x) x[sample(nrow(x)), sample(ncol(x))]
+
+# `all_equal()` ignored row and column ordering by default,
+# but we now feel that that makes it too easy to make mistakes
+mtcars2 &lt;- scramble(mtcars)
+all_equal(mtcars, mtcars2)
+
+# Instead, be explicit about the row and column ordering
+all.equal(
+  mtcars,
+  mtcars2[rownames(mtcars), names(mtcars)]
+)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

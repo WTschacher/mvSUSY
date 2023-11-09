@@ -1,0 +1,261 @@
+<!DOCTYPE html><html><head><title>R: Sidebar layouts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sidebar {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sidebar'>Sidebar layouts</h2>
+
+<h3>Description</h3>
+
+<p>Create a collapsing sidebar layout by providing a <code>sidebar()</code>
+object to the <code>sidebar</code> argument of:
+</p>
+
+<ul>
+<li> <p><code><a href="../../bslib/help/page_sidebar.html">page_sidebar()</a></code>
+</p>
+
+<ul>
+<li><p> Creates a &quot;page-level&quot; sidebar.
+</p>
+</li></ul>
+
+</li>
+<li> <p><code><a href="../../bslib/help/page_navbar.html">page_navbar()</a></code>
+</p>
+
+<ul>
+<li><p> Creates a multi-page app with a &quot;page-level&quot; sidebar.
+</p>
+</li>
+<li><p> Creates a multi page/tab UI with a singular <code>sidebar()</code> (which is
+shown on every page/tab).
+</p>
+</li></ul>
+
+</li>
+<li> <p><code>layout_sidebar()</code>
+</p>
+
+<ul>
+<li><p> Creates a &quot;floating&quot; sidebar layout component which can be dropped
+inside any <code><a href="../../bslib/help/page.html">page()</a></code> and/or <code><a href="../../bslib/help/card.html">card()</a></code> context.
+</p>
+</li></ul>
+
+</li>
+<li> <p><code><a href="../../bslib/help/navset_card_tab.html">navset_card_tab()</a></code> and <code><a href="../../bslib/help/navset_card_pill.html">navset_card_pill()</a></code>
+</p>
+
+<ul>
+<li><p> Creates a multi-tab card with a sidebar inside of it.
+</p>
+</li></ul>
+
+</li></ul>
+
+<p>See <a href="https://rstudio.github.io/bslib/articles/sidebars.html">this article</a>
+to learn more.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sidebar(
+  ...,
+  width = 250,
+  position = c("left", "right"),
+  open = c("desktop", "open", "closed", "always"),
+  id = NULL,
+  title = NULL,
+  bg = NULL,
+  fg = NULL,
+  class = NULL,
+  max_height_mobile = NULL,
+  gap = NULL,
+  padding = NULL
+)
+
+layout_sidebar(
+  ...,
+  sidebar = NULL,
+  fillable = TRUE,
+  fill = TRUE,
+  bg = NULL,
+  fg = NULL,
+  border = NULL,
+  border_radius = NULL,
+  border_color = NULL,
+  padding = NULL,
+  gap = NULL,
+  height = NULL
+)
+
+toggle_sidebar(id, open = NULL, session = get_current_session())
+
+sidebar_toggle(id, open = NULL, session = get_current_session())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sidebar_:_...">...</code></td>
+<td>
+<p>Unnamed arguments can be any valid child of an <a href="../../htmltools/help/builder.html">htmltools tag</a> and named arguments become HTML attributes on
+returned UI element. In the case of <code>layout_sidebar()</code>, these arguments are
+passed to the main content tag (not the sidebar+main content container).</p>
+</td></tr>
+<tr><td><code id="sidebar_:_width">width</code></td>
+<td>
+<p>A valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> used for the
+width of the sidebar.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_position">position</code></td>
+<td>
+<p>Where the sidebar should appear relative to the main content.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_open">open</code></td>
+<td>
+<p>The initial state of the sidebar, choosing from the following
+options:
+</p>
+
+<ul>
+<li> <p><code>"desktop"</code>: The sidebar starts open on desktop screen, closed on mobile.
+This is default sidebar behavior.
+</p>
+</li>
+<li> <p><code>"open"</code> or <code>TRUE</code>: The sidebar starts open.
+</p>
+</li>
+<li> <p><code>"closed"</code> or <code>FALSE</code>: The sidebar starts closed.
+</p>
+</li>
+<li> <p><code>"always"</code> or <code>NA</code>: The sidebar is always open and cannot be closed.
+</p>
+</li></ul>
+
+<p>In <code>sidebar_toggle()</code>, <code>open</code> indicates the desired state of the sidebar,
+where the default of <code>open = NULL</code> will cause the sidebar to be toggled
+open if closed or vice versa. Note that <code>sidebar_toggle()</code> can only open or
+close the sidebar, so it does not support the <code>"desktop"</code> and <code>"always"</code>
+options.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_id">id</code></td>
+<td>
+<p>A character string. Required if wanting to re-actively read (or
+update) the <code>collapsible</code> state in a Shiny app.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_title">title</code></td>
+<td>
+<p>A character title to be used as the sidebar title, which will be
+wrapped in a <code style="white-space: pre;">&#8288;&lt;div&gt;&#8288;</code> element with class <code>sidebar-title</code>. You can also
+provide a custom <code><a href="../../htmltools/help/builder.html">htmltools::tag()</a></code> for the title element, in which case
+you'll likely want to give this element <code>class = "sidebar-title"</code>.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_bg">bg</code>, <code id="sidebar_:_fg">fg</code></td>
+<td>
+<p>A background or foreground color. If only one of either is
+provided, an accessible contrasting color is provided for the opposite
+color, e.g. setting <code>bg</code> chooses an appropriate <code>fg</code> color.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_class">class</code></td>
+<td>
+<p>CSS classes for the sidebar container element, in addition to
+the fixed <code>.sidebar</code> class.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_max_height_mobile">max_height_mobile</code></td>
+<td>
+<p>The maximum height of the horizontal sidebar when
+viewed on mobile devices. The default is <code style="white-space: pre;">&#8288;250px&#8288;</code> unless the sidebar is
+included in a <code><a href="../../bslib/help/layout_sidebar.html">layout_sidebar()</a></code> with a specified height, in which case
+the default is to take up no more than 50% of the layout container.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_gap">gap</code></td>
+<td>
+<p>A <a href="../../htmltools/help/validateCssUnit.html">CSS length unit</a> defining the
+vertical <code>gap</code> (i.e., spacing) between adjacent elements provided to <code>...</code>.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_padding">padding</code></td>
+<td>
+<p>Padding within the sidebar itself. This can be a numeric
+vector (which will be interpreted as pixels) or a character vector with
+valid CSS lengths. <code>padding</code> may be one to four values. If one, then
+that value will be used for all four sides. If two, then the first value
+will be used for the top and bottom, while the second value will be used
+for left and right. If three, then the first will be used for top, the
+second will be left and right, and the third will be bottom. If four, then
+the values will be interpreted as top, right, bottom, and left
+respectively.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_sidebar">sidebar</code></td>
+<td>
+<p>A <code><a href="../../bslib/help/sidebar.html">sidebar()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_fillable">fillable</code></td>
+<td>
+<p>Whether or not the <code>main</code> content area should be considered a
+fillable (i.e., flexbox) container.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_fill">fill</code></td>
+<td>
+<p>Whether or not to allow the layout container to grow/shrink to fit a
+fillable container with an opinionated height (e.g., <code>page_fillable()</code>).</p>
+</td></tr>
+<tr><td><code id="sidebar_:_border">border</code></td>
+<td>
+<p>Whether or not to add a border.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_border_radius">border_radius</code></td>
+<td>
+<p>Whether or not to add a border radius.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_border_color">border_color</code></td>
+<td>
+<p>The border color that is applied to the entire layout (if
+<code>border = TRUE</code>) and the color of the border between the sidebar and the
+main content area.</p>
+</td></tr>
+<tr><td><code id="sidebar_:_height">height</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g.,
+<code>height="200px"</code>). Doesn't apply when a card is made <code>full_screen</code>
+(in this case, consider setting a <code>height</code> in <code><a href="../../bslib/help/card_body.html">card_body()</a></code>).</p>
+</td></tr>
+<tr><td><code id="sidebar_:_session">session</code></td>
+<td>
+<p>A Shiny session object (the default should almost always be
+used).</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>toggle_sidebar()</code>: Toggle a <code>sidebar()</code> state during an active Shiny user
+session.
+</p>
+</li>
+<li> <p><code>sidebar_toggle()</code>: An alias for <code><a href="../../bslib/help/toggle_sidebar.html">toggle_sidebar()</a></code>.
+</p>
+</li></ul>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

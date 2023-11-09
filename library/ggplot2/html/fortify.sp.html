@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><title>R: Fortify method for classes from the sp package.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>fortify.sp {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='fortify.sp'>Fortify method for classes from the sp package.</h2>
+
+<h3>Description</h3>
+
+<p>To figure out the correct variable name for region, inspect
+<code>as.data.frame(model)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'SpatialPolygonsDataFrame'
+fortify(model, data, region = NULL, ...)
+
+## S3 method for class 'SpatialPolygons'
+fortify(model, data, ...)
+
+## S3 method for class 'Polygons'
+fortify(model, data, ...)
+
+## S3 method for class 'Polygon'
+fortify(model, data, ...)
+
+## S3 method for class 'SpatialLinesDataFrame'
+fortify(model, data, ...)
+
+## S3 method for class 'Lines'
+fortify(model, data, ...)
+
+## S3 method for class 'Line'
+fortify(model, data, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="fortify.sp_:_model">model</code></td>
+<td>
+<p><code>SpatialPolygonsDataFrame</code> to convert into a dataframe.</p>
+</td></tr>
+<tr><td><code id="fortify.sp_:_data">data</code></td>
+<td>
+<p>not used by this method</p>
+</td></tr>
+<tr><td><code id="fortify.sp_:_region">region</code></td>
+<td>
+<p>name of variable used to split up regions</p>
+</td></tr>
+<tr><td><code id="fortify.sp_:_...">...</code></td>
+<td>
+<p>not used by this method</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

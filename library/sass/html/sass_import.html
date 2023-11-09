@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><title>R: Sass Import</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_import {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_import'>Sass Import</h2>
+
+<h3>Description</h3>
+
+<p>Create an import statement to be used within your Sass file. See
+<a href="https://sass-lang.com/documentation/at-rules/import">https://sass-lang.com/documentation/at-rules/import</a> for
+more details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_import(input, quote = TRUE)
+
+sass_file(input)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_import_:_input">input</code></td>
+<td>
+<p>Character string to be placed in an import statement.</p>
+</td></tr>
+<tr><td><code id="sass_import_:_quote">quote</code></td>
+<td>
+<p>Logical that determines if a double quote is added to the import
+value. Defaults to <code>TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>sass_file()</code> adds extra checks to make sure an appropriate file path
+exists given the input value.
+</p>
+<p>Note that the LibSass compiler expects .sass files to use the Sass Indented
+Syntax.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Fully defined Sass import string.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>sass_import("foo")
+sass_import("$foo", FALSE)
+
+tmp_scss_file &lt;- tempfile(fileext = ".scss")
+writeLines("$color: red; body{ color: $color; }", tmp_scss_file)
+sass_file(tmp_scss_file)
+sass(sass_file(tmp_scss_file))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html><html><head><title>R: Select grouping variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>group_cols {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='group_cols'>Select grouping variables</h2>
+
+<h3>Description</h3>
+
+<p>This selection helpers matches grouping variables. It can be used
+in <code><a href="../../dplyr/help/select.html">select()</a></code> or <code><a href="../../dplyr/help/vars.html">vars()</a></code> selections.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>group_cols(vars = NULL, data = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="group_cols_:_vars">vars</code></td>
+<td>
+<p>Deprecated; please use data instead.</p>
+</td></tr>
+<tr><td><code id="group_cols_:_data">data</code></td>
+<td>
+<p>For advanced use only. The default <code>NULL</code> automatically
+finds the &quot;current&quot; data frames.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/groups.html">groups()</a></code> and <code><a href="../../dplyr/help/group_vars.html">group_vars()</a></code> for retrieving the grouping
+variables outside selection contexts.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>gdf &lt;- iris %&gt;% group_by(Species)
+gdf %&gt;% select(group_cols())
+
+# Remove the grouping variables from mutate selections:
+gdf %&gt;% mutate_at(vars(-group_cols()), `/`, 100)
+# -&gt; No longer necessary with across()
+gdf %&gt;% mutate(across(everything(), ~ . / 100))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><title>R: Remove whitespace</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_trim {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_trim'>Remove whitespace</h2>
+
+<h3>Description</h3>
+
+<p><code>str_trim()</code> removes whitespace from start and end of string; <code>str_squish()</code>
+removes whitespace at the start and end, and replaces all internal whitespace
+with a single space.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_trim(string, side = c("both", "left", "right"))
+
+str_squish(string)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_trim_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_trim_:_side">side</code></td>
+<td>
+<p>Side on which to remove whitespace: &quot;left&quot;, &quot;right&quot;, or
+&quot;both&quot;, the default.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector the same length as <code>string</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringr/help/str_pad.html">str_pad()</a></code> to add whitespace
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>str_trim("  String with trailing and leading white space\t")
+str_trim("\n\nString with trailing and leading white space\n\n")
+
+str_squish("  String with trailing,  middle, and leading white space\t")
+str_squish("\n\nString with excess,  trailing and leading white   space\n\n")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

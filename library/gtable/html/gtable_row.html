@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><title>R: Create a single row gtable.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>gtable_row {gtable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='gtable_row'>Create a single row gtable.</h2>
+
+<h3>Description</h3>
+
+<p>This function puts grobs in a list side-by-side in a single-row gtable from
+left to right witrh the given widths and height.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>gtable_row(name, grobs, height = NULL, widths = NULL, z = NULL, vp = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="gtable_row_:_name">name</code></td>
+<td>
+<p>a string giving the name of the table. This is used to name
+the layout viewport</p>
+</td></tr>
+<tr><td><code id="gtable_row_:_grobs">grobs</code></td>
+<td>
+<p>a single grob or a list of grobs</p>
+</td></tr>
+<tr><td><code id="gtable_row_:_height">height</code></td>
+<td>
+<p>a unit vector giving the height of this row</p>
+</td></tr>
+<tr><td><code id="gtable_row_:_widths">widths</code></td>
+<td>
+<p>a unit vector giving the width of each column</p>
+</td></tr>
+<tr><td><code id="gtable_row_:_z">z</code></td>
+<td>
+<p>a numeric vector giving the order in which the grobs should be
+plotted.  Use <code>Inf</code> (the default) to plot above or <code>-Inf</code>
+below all existing grobs. By default positions are on the integers,
+giving plenty of room to insert new grobs between existing grobs.</p>
+</td></tr>
+<tr><td><code id="gtable_row_:_vp">vp</code></td>
+<td>
+<p>a grid viewport object (or NULL).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A gtable with a single row and the same number of columns as
+elements in the grobs list
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other gtable construction: 
+<code><a href="../../gtable/help/gtable_col.html">gtable_col</a>()</code>,
+<code><a href="../../gtable/help/gtable_matrix.html">gtable_matrix</a>()</code>,
+<code><a href="../../gtable/help/gtable_spacer.html">gtable_spacer</a></code>,
+<code><a href="../../gtable/help/gtable.html">gtable</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(grid)
+a &lt;- rectGrob(gp = gpar(fill = "red"))
+b &lt;- circleGrob()
+c &lt;- linesGrob()
+gt &lt;- gtable_row("demo", list(a, b, c))
+gt
+plot(gt)
+gtable_show_layout(gt)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gtable</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

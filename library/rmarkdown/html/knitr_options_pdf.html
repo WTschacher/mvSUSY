@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><title>R: Knitr options for a PDF output format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knitr_options_pdf {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knitr_options_pdf'>Knitr options for a PDF output format</h2>
+
+<h3>Description</h3>
+
+<p>Define knitr options for an R Markdown output format
+that creates PDF output.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knitr_options_pdf(fig_width, fig_height, fig_crop, dev = "pdf")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="knitr_options_pdf_:_fig_width">fig_width</code></td>
+<td>
+<p>Default width (in inches) for figures</p>
+</td></tr>
+<tr><td><code id="knitr_options_pdf_:_fig_height">fig_height</code></td>
+<td>
+<p>Default height (in inches) for figures</p>
+</td></tr>
+<tr><td><code id="knitr_options_pdf_:_fig_crop">fig_crop</code></td>
+<td>
+<p>Whether to crop PDF figures with the command
+<code>pdfcrop</code>. This requires the tools <code>pdfcrop</code> and
+<code>ghostscript</code> to be installed. By default, <code>fig_crop = TRUE</code>
+if these two tools are available.</p>
+</td></tr>
+<tr><td><code id="knitr_options_pdf_:_dev">dev</code></td>
+<td>
+<p>Graphics device to use for figure output (defaults to png)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An list that can be passed as the <code>knitr</code> argument of the
+<code><a href="../../rmarkdown/help/output_format.html">output_format</a></code> function.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../rmarkdown/help/knitr_options.html">knitr_options</a>, <a href="../../rmarkdown/help/output_format.html">output_format</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

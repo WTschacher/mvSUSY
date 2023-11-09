@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><title>R: Write Text Lines to a Text File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>stri_write_lines {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='stri_write_lines'>Write Text Lines to a Text File</h2>
+
+<h3>Description</h3>
+
+<p>Writes a text file is such a way that each element of a given
+character vector becomes a separate text line.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stri_write_lines(
+  str,
+  con,
+  encoding = "UTF-8",
+  sep = ifelse(.Platform$OS.type == "windows", "\r\n", "\n"),
+  fname = con
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="stri_write_lines_:_str">str</code></td>
+<td>
+<p>character vector with data to write</p>
+</td></tr>
+<tr><td><code id="stri_write_lines_:_con">con</code></td>
+<td>
+<p>name of the output file or a connection object
+(opened in the binary mode)</p>
+</td></tr>
+<tr><td><code id="stri_write_lines_:_encoding">encoding</code></td>
+<td>
+<p>output encoding, <code>NULL</code> or <code>''</code> for
+the current default one</p>
+</td></tr>
+<tr><td><code id="stri_write_lines_:_sep">sep</code></td>
+<td>
+<p>newline separator</p>
+</td></tr>
+<tr><td><code id="stri_write_lines_:_fname">fname</code></td>
+<td>
+<p>deprecated alias of <code>con</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is a substitute for the <span class="rlang"><b>R</b></span> <code><a href="../../base/html/writeLines.html">writeLines</a></code> function,
+with the ability to easily re-encode the output.
+</p>
+<p>We suggest using the UTF-8 encoding for all text files:
+thus, it is the default one for the output.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns nothing noteworthy.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p><a href="https://www.gagolewski.com/">Marek Gagolewski</a> and other contributors
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The official online manual of <span class="pkg">stringi</span> at <a href="https://stringi.gagolewski.com/">https://stringi.gagolewski.com/</a>
+</p>
+<p>Gagolewski M., <span class="pkg">stringi</span>: Fast and portable character string processing in R, <em>Journal of Statistical Software</em> 103(2), 2022, 1-59, <a href="https://doi.org/10.18637/jss.v103.i02">doi:10.18637/jss.v103.i02</a>
+</p>
+<p>Other files: 
+<code><a href="../../stringi/help/stri_read_lines.html">stri_read_lines</a>()</code>,
+<code><a href="../../stringi/help/stri_read_raw.html">stri_read_raw</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.7.12 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

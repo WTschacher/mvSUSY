@@ -1,0 +1,7 @@
+Package: mvSUSY
+Version: 0.1.1
+Imports: data.table, RcppAlgos, ggplot2, ggsci
+Suggests: plotly
+License: GPL-2
+MD5sum: b8615c825c39da5092d2abf3a03cb3e8
+NeedsCompilation: no

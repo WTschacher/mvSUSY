@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Add additional headers to a request.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>add_headers {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='add_headers'>Add additional headers to a request.</h2>
+
+<h3>Description</h3>
+
+<p>Wikipedia provides a useful list of common http headers:
+<a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields">https://en.wikipedia.org/wiki/List_of_HTTP_header_fields</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>add_headers(..., .headers = character())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="add_headers_:_...">...</code></td>
+<td>
+<p>named header values.  To stop an existing header from being
+set, pass an empty string: <code>""</code>.</p>
+</td></tr>
+<tr><td><code id="add_headers_:_.headers">.headers</code></td>
+<td>
+<p>a named character vector</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../httr/help/accept.html">accept()</a></code> and <code><a href="../../httr/help/content_type.html">content_type()</a></code> for
+convenience functions for setting accept and content-type headers.
+</p>
+<p>Other config: 
+<code><a href="../../httr/help/authenticate.html">authenticate</a>()</code>,
+<code><a href="../../httr/help/config.html">config</a>()</code>,
+<code><a href="../../httr/help/set_cookies.html">set_cookies</a>()</code>,
+<code><a href="../../httr/help/timeout.html">timeout</a>()</code>,
+<code><a href="../../httr/help/use_proxy.html">use_proxy</a>()</code>,
+<code><a href="../../httr/help/user_agent.html">user_agent</a>()</code>,
+<code><a href="../../httr/help/verbose.html">verbose</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>add_headers(a = 1, b = 2)
+add_headers(.headers = c(a = "1", b = "2"))
+
+## Not run: 
+GET("http://httpbin.org/headers")
+
+# Add arbitrary headers
+GET(
+  "http://httpbin.org/headers",
+  add_headers(version = version$version.string)
+)
+
+# Override default headers with empty strings
+GET("http://httpbin.org/headers", add_headers(Accept = ""))
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><title>R: Relational Operators</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>Relational_Operator {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='Relational_Operator'>Relational Operators</h2>
+
+<h3>Description</h3>
+
+<p>Binary operators which allow the comparison of values in atomic vectors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'bigz'
+sign(x)
+## S3 method for class 'bigz'
+e1 == e2
+## S3 method for class 'bigz'
+ e1 &lt; e2
+## S3 method for class 'bigz'
+e1 &gt;= e2
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="Relational_Operator_:_x">x</code>, <code id="Relational_Operator_:_e1">e1</code>, <code id="Relational_Operator_:_e2">e2</code></td>
+<td>
+<p><span class="rlang"><b>R</b></span> object (vector or matrix-like) of class <code>"<a href="../../gmp/help/bigz.html">bigz</a>"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gmp/help/mod.bigz.html">mod.bigz</a></code> for arithmetic operators.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>  x &lt;- as.bigz(8000)
+  x ^ 300 &lt; 2 ^x
+
+  sign(as.bigz(-3:3))
+  sign(as.bigq(-2:2, 7))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

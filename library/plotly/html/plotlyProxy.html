@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Modify a plotly object inside a shiny app</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>plotlyProxy {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='plotlyProxy'>Modify a plotly object inside a shiny app</h2>
+
+<h3>Description</h3>
+
+<p>Modify a plotly object inside a shiny app
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>plotlyProxy(
+  outputId,
+  session = shiny::getDefaultReactiveDomain(),
+  deferUntilFlush = TRUE
+)
+
+plotlyProxyInvoke(p, method, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="plotlyProxy_:_outputId">outputId</code></td>
+<td>
+<p>single-element character vector indicating the output ID
+map to modify (if invoked from a Shiny module, the namespace will be added
+automatically)</p>
+</td></tr>
+<tr><td><code id="plotlyProxy_:_session">session</code></td>
+<td>
+<p>the Shiny session object to which the map belongs; usually the
+default value will suffice.</p>
+</td></tr>
+<tr><td><code id="plotlyProxy_:_deferUntilFlush">deferUntilFlush</code></td>
+<td>
+<p>indicates whether actions performed against this
+instance should be carried out right away, or whether they should be held
+until after the next time all of the outputs are updated.</p>
+</td></tr>
+<tr><td><code id="plotlyProxy_:_p">p</code></td>
+<td>
+<p>a plotly proxy object (created with <code>plotlyProxy</code>)</p>
+</td></tr>
+<tr><td><code id="plotlyProxy_:_method">method</code></td>
+<td>
+<p>a plotlyjs method to invoke. For a list of options,
+visit <a href="https://plotly.com/javascript/plotlyjs-function-reference/">https://plotly.com/javascript/plotlyjs-function-reference/</a></p>
+</td></tr>
+<tr><td><code id="plotlyProxy_:_...">...</code></td>
+<td>
+<p>unnamed arguments passed onto the plotly.js method</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+
+if (require("shiny") &amp;&amp; interactive()) {
+  plotly_example("shiny", "proxy_relayout")
+  plotly_example("shiny", "proxy_mapbox")
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

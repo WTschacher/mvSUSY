@@ -1,0 +1,5 @@
+as.data.frame.mvsusy	as.data.frame
+mvSUSY	mvsusy
+mvsusy	mvsusy
+plot.mvsusy	plot
+print.mvsusy	print

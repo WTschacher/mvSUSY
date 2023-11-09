@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><title>R: Generate a message with 'cat()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>msg_cat {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='msg_cat'>Generate a message with <code>cat()</code></h2>
+
+<h3>Description</h3>
+
+<p>This function is similar to <code><a href="../../base/html/message.html">message()</a></code>, and the difference is
+that <code>msg_cat()</code> uses <code><a href="../../base/html/cat.html">cat()</a></code> to write out the message,
+which is sent to <code><a href="../../base/html/showConnections.html">stdout()</a></code> instead of <code><a href="../../base/html/showConnections.html">stderr()</a></code>. The
+message can be suppressed by <code><a href="../../base/html/message.html">suppressMessages()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>msg_cat(...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="msg_cat_:_...">...</code></td>
+<td>
+<p>Character strings of messages, which will be concatenated into one
+string via <code>paste(c(...), collapse = '')</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Invisible <code>NULL</code>, with the side-effect of printing the message.
+</p>
+
+
+<h3>Note</h3>
+
+<p>By default, a newline will not be appended to the message. If you need
+a newline, you have to explicitly add it to the message (see
+&lsquo;Examples&rsquo;).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>This function was inspired by <code>rlang::inform()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>{
+    # a message without a newline at the end
+    xfun::msg_cat("Hello world!")
+    # add a newline at the end
+    xfun::msg_cat(" This message appears right after the previous one.\n")
+}
+suppressMessages(xfun::msg_cat("Hello world!"))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

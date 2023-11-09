@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><title>R: Compute caching information for a response.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>cache_info {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='cache_info'>Compute caching information for a response.</h2>
+
+<h3>Description</h3>
+
+<p><code>cache_info()</code> gives details of cacheability of a response,
+<code>rerequest()</code> re-performs the original request doing as little work
+as possible (if not expired, returns response as is, or performs
+revalidation if Etag or Last-Modified headers are present).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>cache_info(r)
+
+rerequest(r)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="cache_info_:_r">r</code></td>
+<td>
+<p>A response</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Never cached, always causes redownload
+r1 &lt;- GET("https://www.google.com")
+cache_info(r1)
+r1$date
+rerequest(r1)$date
+
+# Expires in a year
+r2 &lt;- GET("https://www.google.com/images/srpr/logo11w.png")
+cache_info(r2)
+r2$date
+rerequest(r2)$date
+
+## Not run: 
+# Has last-modified and etag, so does revalidation
+r3 &lt;- GET("http://httpbin.org/cache")
+cache_info(r3)
+r3$date
+rerequest(r3)$date
+
+# Expires after 5 seconds
+r4 &lt;- GET("http://httpbin.org/cache/5")
+cache_info(r4)
+r4$date
+rerequest(r4)$date
+Sys.sleep(5)
+cache_info(r4)
+rerequest(r4)$date
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

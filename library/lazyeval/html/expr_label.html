@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Find the expression associated with an argument</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>expr_label {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='expr_label'>Find the expression associated with an argument</h2>
+
+<h3>Description</h3>
+
+<p><code>expr_find()</code> finds the full expression; <code>expr_text()</code> turns the
+expression into a single string; <code>expr_label()</code> formats it nicely for
+use in messages. <code>expr_env()</code> finds the environment associated with
+the expression.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>expr_label(x)
+
+expr_text(x, width = 60L, nlines = Inf)
+
+expr_find(x)
+
+expr_env(x, default_env)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="expr_label_:_x">x</code></td>
+<td>
+<p>A promise (function argument)</p>
+</td></tr>
+<tr><td><code id="expr_label_:_width">width</code></td>
+<td>
+<p>Width of each line</p>
+</td></tr>
+<tr><td><code id="expr_label_:_nlines">nlines</code></td>
+<td>
+<p>Maximum number of lines to extract.</p>
+</td></tr>
+<tr><td><code id="expr_label_:_default_env">default_env</code></td>
+<td>
+<p>If supplied, <code>expr_env</code> will return this if the
+promise has already been forced. Otherwise it will throw an error.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions never force promises, and will work even if a promise has
+previously been forced.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Unlike substitute(), expr_find() finds the original expression
+f &lt;- function(x) g(x)
+g &lt;- function(y) h(y)
+h &lt;- function(z) list(substitute(z), expr_find(z))
+
+f(1 + 2 + 3)
+
+expr_label(10)
+# Names a quoted with ``
+expr_label(x)
+# Strings are encoded
+expr_label("a\nb")
+# Expressions are captured
+expr_label(a + b + c)
+# Long expressions are collapsed
+expr_label(foo({
+  1 + 2
+  print(x)
+}))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

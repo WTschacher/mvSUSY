@@ -1,0 +1,117 @@
+<!DOCTYPE html><html><head><title>R: Convert a document with pandoc</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pandoc_convert {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pandoc_convert'>Convert a document with pandoc</h2>
+
+<h3>Description</h3>
+
+<p>Convert documents to and from various formats using the pandoc utility.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pandoc_convert(
+  input,
+  to = NULL,
+  from = NULL,
+  output = NULL,
+  citeproc = FALSE,
+  options = NULL,
+  verbose = FALSE,
+  wd = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pandoc_convert_:_input">input</code></td>
+<td>
+<p>Character vector containing paths to input files
+(files must be UTF-8 encoded)</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_to">to</code></td>
+<td>
+<p>Format to convert to (if not specified, you must specify
+<code>output</code>)</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_from">from</code></td>
+<td>
+<p>Format to convert from (if not specified then the format is
+determined based on the file extension of <code>input</code>).</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_output">output</code></td>
+<td>
+<p>Output file (if not specified then determined based on format
+being converted to).</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_citeproc">citeproc</code></td>
+<td>
+<p><code>TRUE</code> to run the pandoc-citeproc filter (for processing
+citations) as part of the conversion.</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_options">options</code></td>
+<td>
+<p>Character vector of command line options to pass to pandoc.</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_verbose">verbose</code></td>
+<td>
+<p><code>TRUE</code> to show the pandoc command line which was executed</p>
+</td></tr>
+<tr><td><code id="pandoc_convert_:_wd">wd</code></td>
+<td>
+<p>Working directory in which code will be executed. If not
+supplied, defaults to the common base directory of <code>input</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Supported input and output formats are described in the
+<a href="https://pandoc.org/MANUAL.html">pandoc user guide</a>.
+</p>
+<p>The system path as well as the version of pandoc shipped with RStudio (if
+running under RStudio) are scanned for pandoc and the highest version
+available is used.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+library(rmarkdown)
+
+# convert markdown to various formats
+pandoc_convert("input.md", to = "html")
+pandoc_convert("input.md", to = "latex")
+
+# process citations
+pandoc_convert("input.md", to = "html", citeproc = TRUE)
+
+# add some pandoc options
+pandoc_convert("input.md", to = "latex", options = c("--listings"))
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

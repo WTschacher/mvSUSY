@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head><title>R: Nest a tibble using a grouping specification</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>group_nest {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='group_nest'>Nest a tibble using a grouping specification</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="../help/figures/lifecycle-experimental.svg" alt='[Experimental]' /></a>
+</p>
+<p>Nest a tibble using a grouping specification
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>group_nest(.tbl, ..., .key = "data", keep = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="group_nest_:_.tbl">.tbl</code></td>
+<td>
+<p>A tbl</p>
+</td></tr>
+<tr><td><code id="group_nest_:_...">...</code></td>
+<td>
+<p>Grouping specification, forwarded to <code><a href="../../dplyr/help/group_by.html">group_by()</a></code></p>
+</td></tr>
+<tr><td><code id="group_nest_:_.key">.key</code></td>
+<td>
+<p>the name of the list column</p>
+</td></tr>
+<tr><td><code id="group_nest_:_keep">keep</code></td>
+<td>
+<p>Should the grouping columns be kept in the list column.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A tbl with one row per unique combination of the grouping variables.
+The first columns are the grouping variables, followed by a list column of tibbles
+with matching rows of the remaining columns.
+</p>
+
+
+<h3>Lifecycle</h3>
+
+<p><code>group_nest()</code> is not stable because <code><a href="../../tidyr/help/nest.html">tidyr::nest(.by =)</a></code>
+provides very similar behavior. It may be deprecated in the future.
+</p>
+
+
+<h3>Grouped data frames</h3>
+
+<p>The primary use case for <code><a href="../../dplyr/help/group_nest.html">group_nest()</a></code> is with already grouped data frames,
+typically a result of <code><a href="../../dplyr/help/group_by.html">group_by()</a></code>. In this case <code><a href="../../dplyr/help/group_nest.html">group_nest()</a></code> only uses
+the first argument, the grouped tibble, and warns when <code>...</code> is used.
+</p>
+
+
+<h3>Ungrouped data frames</h3>
+
+<p>When used on ungrouped data frames, <code><a href="../../dplyr/help/group_nest.html">group_nest()</a></code> forwards the <code>...</code> to
+<code><a href="../../dplyr/help/group_by.html">group_by()</a></code> before nesting, therefore the <code>...</code> are subject to the data mask.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other grouping functions: 
+<code><a href="../../dplyr/help/group_by.html">group_by</a>()</code>,
+<code><a href="../../dplyr/help/group_map.html">group_map</a>()</code>,
+<code><a href="../../dplyr/help/group_split.html">group_split</a>()</code>,
+<code><a href="../../dplyr/help/group_trim.html">group_trim</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+#----- use case 1: a grouped data frame
+iris %&gt;%
+  group_by(Species) %&gt;%
+  group_nest()
+
+# this can be useful if the grouped data has been altered before nesting
+iris %&gt;%
+  group_by(Species) %&gt;%
+  filter(Sepal.Length &gt; mean(Sepal.Length)) %&gt;%
+  group_nest()
+
+#----- use case 2: using group_nest() on a ungrouped data frame with
+#                  a grouping specification that uses the data mask
+starwars %&gt;%
+  group_nest(species, homeworld)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

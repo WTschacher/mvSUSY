@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>High Performance Benchmarks</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">High Performance Benchmarks</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#setup-information" id="toc-setup-information">Setup
+Information</a></li>
+<li><a href="#combinations" id="toc-combinations">Combinations</a>
+<ul>
+<li><a href="#combinations---distinct" id="toc-combinations---distinct">Combinations - Distinct</a></li>
+<li><a href="#combinations---repetition" id="toc-combinations---repetition">Combinations - Repetition</a></li>
+<li><a href="#combinations---multisets" id="toc-combinations---multisets">Combinations - Multisets</a></li>
+</ul></li>
+<li><a href="#permutations" id="toc-permutations">Permutations</a>
+<ul>
+<li><a href="#permutations---distinct" id="toc-permutations---distinct">Permutations - Distinct</a></li>
+<li><a href="#permutations---repetition" id="toc-permutations---repetition">Permutations - Repetition</a></li>
+<li><a href="#permutations---multisets" id="toc-permutations---multisets">Permutations - Multisets</a></li>
+</ul></li>
+<li><a href="#partitions" id="toc-partitions">Partitions</a>
+<ul>
+<li><a href="#partitions---distinct" id="toc-partitions---distinct">Partitions - Distinct</a></li>
+<li><a href="#partitions---repetition" id="toc-partitions---repetition">Partitions - Repetition</a></li>
+<li><a href="#partitions---multisets" id="toc-partitions---multisets">Partitions - Multisets</a></li>
+</ul></li>
+<li><a href="#compositions" id="toc-compositions">Compositions</a>
+<ul>
+<li><a href="#compositions---repetition" id="toc-compositions---repetition">Compositions - Repetition</a></li>
+</ul></li>
+<li><a href="#iterators" id="toc-iterators">Iterators</a>
+<ul>
+<li><a href="#combinations-1" id="toc-combinations-1">Combinations</a></li>
+<li><a href="#permutations-1" id="toc-permutations-1">Permutations</a></li>
+<li><a href="#partitions-1" id="toc-partitions-1">Partitions</a></li>
+<li><a href="#compositions-1" id="toc-compositions-1">Compositions</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This document serves as an overview for measuring the performance of
+<code>RcppAlgos</code> against other tools for generating combinations,
+permutations, and partitions. This stackoverflow post: <a href="https://stackoverflow.com/a/47983855/4408538">How to generate
+permutations or combinations of object in R?</a> has some benchmarks.
+You will note that the examples in that post are relatively small. The
+benchmarks below will focus on larger examples where performance really
+matters and for this reason we only consider the packages <a href="https://cran.r-project.org/package=arrangements">arrangements</a>,
+<a href="https://cran.r-project.org/package=partitions">partitions</a>,
+and <a href="https://cran.r-project.org/package=RcppAlgos">RcppAlgos</a>.</p>
+<div id="setup-information" class="section level2">
+<h2>Setup Information</h2>
+<p>For the benchmarks below, we used a
+<code>2022 Macbook Air Apple M2 24 GB</code> machine.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(partitions)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(arrangements)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;arrangements&#39;</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; The following object is masked from &#39;package:partitions&#39;:</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;     compositions</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">90</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>pertinent_output <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(<span class="fu">sessionInfo</span>())</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(pertinent_output[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">collapse =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt; R version 4.3.1 (2023-06-16)</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt; Platform: aarch64-apple-darwin20 (64-bit)</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt; Running under: macOS Ventura 13.4.1</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;RcppAlgos&quot;</span>, <span class="st">&quot;arrangements&quot;</span>, <span class="st">&quot;partitions&quot;</span>, <span class="st">&quot;microbenchmark&quot;</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="fu">sapply</span>(pkgs, packageVersion, <span class="at">simplify =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; $RcppAlgos</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="co">#&gt; [1] &#39;2.8.2&#39;</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; $arrangements</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#&gt; [1] &#39;1.1.9&#39;</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; $partitions</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; [1] &#39;1.10.7&#39;</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="co">#&gt; $microbenchmark</span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co">#&gt; [1] &#39;1.4.10&#39;</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>numThreads <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">as.integer</span>(RcppAlgos<span class="sc">::</span><span class="fu">stdThreadMax</span>() <span class="sc">/</span> <span class="dv">2</span>), <span class="dv">6</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>numThreads</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="co">#&gt; [1] 4</span></span></code></pre></div>
+</div>
+<div id="combinations" class="section level2">
+<h2>Combinations</h2>
+<div id="combinations---distinct" class="section level3">
+<h3>Combinations - Distinct</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">13</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="dv">100</span>, <span class="dv">30</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">21</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(v1, m, <span class="at">Parallel =</span> T)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">combinations</span>(v1, m)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; [1] 14307150       21</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">comboGeneral</span>(v1, m, <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">comboGeneral</span>(v1, m),</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">combinations</span>(v1, m),</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; Warning in microbenchmark(cbRcppAlgosPar = comboGeneral(v1, m, nThreads = numThreads), :</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; less accurate nanosecond times to avoid potential integer overflows</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    15 a  </span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 3.466 3.197 3.134  3.131 3.057 2.995    15  b </span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 3.388 3.124 3.058  3.059 2.988 2.867    15   c</span></span></code></pre></div>
+</div>
+<div id="combinations---repetition" class="section level3">
+<h3>Combinations - Repetition</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> v1[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(v2, m, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">nThreads =</span> numThreads)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">combinations</span>(v2, m, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; [1] 10015005       20</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">comboGeneral</span>(v2, m, <span class="cn">TRUE</span>, <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">comboGeneral</span>(v2, m, <span class="cn">TRUE</span>),</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">combinations</span>(v2, m, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    15  a </span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 2.902 3.015 3.052  2.992 2.983 3.915    15   b</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 3.067 3.049 3.012  3.016 2.980 2.934    15   b</span></span></code></pre></div>
+</div>
+<div id="combinations---multisets" class="section level3">
+<h3>Combinations - Multisets</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>myFreqs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>v3 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">21</span>, <span class="dv">34</span>, <span class="dv">55</span>, <span class="dv">89</span>, <span class="dv">144</span>, <span class="dv">233</span>, <span class="dv">377</span>, <span class="dv">610</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(v3, <span class="dv">20</span>, <span class="at">freqs =</span> myFreqs, <span class="at">nThreads =</span> numThreads)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">combinations</span>(<span class="at">freq =</span> myFreqs, <span class="at">k =</span> <span class="dv">20</span>, <span class="at">x =</span> v3)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; [1] 14594082       20</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">comboGeneral</span>(v3, <span class="dv">20</span>, <span class="at">freqs =</span> myFreqs, <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">comboGeneral</span>(v3, <span class="dv">20</span>, <span class="at">freqs =</span> myFreqs),</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">combinations</span>(<span class="at">freq =</span> myFreqs, <span class="at">k =</span> <span class="dv">20</span>, <span class="at">x =</span> v3),</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    10 a  </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 3.117 3.128 3.086  3.087 3.089 2.954    10  b </span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 5.863 5.976 5.857  5.872 5.839 5.578    10   c</span></span></code></pre></div>
+</div>
+</div>
+<div id="permutations" class="section level2">
+<h2>Permutations</h2>
+<div id="permutations---distinct" class="section level3">
+<h3>Permutations - Distinct</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>v4 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">23</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">37</span>, <span class="dv">41</span>, <span class="dv">43</span>, <span class="dv">47</span>, <span class="dv">53</span>, <span class="dv">59</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">permuteGeneral</span>(v4, <span class="dv">6</span>, <span class="at">nThreads =</span> numThreads)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">permutations</span>(v4, <span class="dv">6</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; [1] 8910720       6</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">permuteGeneral</span>(v4, <span class="dv">6</span>, <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">permuteGeneral</span>(v4, <span class="dv">6</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">permutations</span>(v4, <span class="dv">6</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    15 a  </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 1.523 1.522 1.442  1.517 1.233 1.371    15  b </span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 2.540 2.535 2.353  2.499 2.123 2.084    15   c</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="do">## Indexing permutation example with the partitions package</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">permuteGeneral</span>(<span class="dv">11</span>, <span class="at">nThreads =</span> <span class="dv">4</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">permutations</span>(<span class="dv">11</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fu">perms</span>(<span class="dv">11</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; [1] 39916800       11</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2), <span class="fu">identical</span>(t1, <span class="fu">t</span>(<span class="fu">as.matrix</span>(t3))))</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="fu">rm</span>(t1, t2, t3)</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">permuteGeneral</span>(<span class="dv">11</span>, <span class="at">nThreads =</span> <span class="dv">4</span>),</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">permuteGeneral</span>(<span class="dv">11</span>),</span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">permutations</span>(<span class="dv">11</span>),</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> <span class="fu">perms</span>(<span class="dv">11</span>),</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">5</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval  cld</span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000     5 a   </span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 2.499 2.534 2.185  2.497 1.765 1.937     5  b  </span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 4.110 4.090 3.678  4.219 3.144 3.260     5   c </span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 8.056 8.104 7.204  8.316 6.046 6.397     5    d</span></span></code></pre></div>
+</div>
+<div id="permutations---repetition" class="section level3">
+<h3>Permutations - Repetition</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>v5 <span class="ot">&lt;-</span> v3[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">permuteGeneral</span>(v5, <span class="dv">10</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">nThreads =</span> numThreads)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">permutations</span>(v5, <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; [1] 9765625      10</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">permuteGeneral</span>(v5, <span class="dv">10</span>, <span class="cn">TRUE</span>, <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">permuteGeneral</span>(v5, <span class="dv">10</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">permutations</span>(<span class="at">x =</span> v5, <span class="at">k =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    10 a  </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 2.814 2.816 2.983  2.801 2.774 4.459    10  b </span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 3.486 3.443 3.604  3.431 3.410 5.059    10   c</span></span></code></pre></div>
+</div>
+<div id="permutations---multisets" class="section level3">
+<h3>Permutations - Multisets</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>v6 <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">runif</span>(<span class="dv">12</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">permuteGeneral</span>(v6, <span class="dv">7</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span>), <span class="at">nThreads =</span> numThreads)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">permutations</span>(<span class="at">freq =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span>), <span class="at">k =</span> <span class="dv">7</span>, <span class="at">x =</span> v6)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; [1] 19520760        7</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">permuteGeneral</span>(v6, <span class="dv">7</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span>), <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">permuteGeneral</span>(v6, <span class="dv">7</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span>)),</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">permutations</span>(<span class="at">freq =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span>), <span class="at">k =</span> <span class="dv">7</span>, <span class="at">x =</span> v6),</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    10 a  </span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 3.101 3.223 2.994  3.213 3.195 1.907    10  b </span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 3.547 3.547 3.319  3.549 3.541 2.122    10   c</span></span></code></pre></div>
+</div>
+</div>
+<div id="partitions" class="section level2">
+<h2>Partitions</h2>
+<div id="partitions---distinct" class="section level3">
+<h3>Partitions - Distinct</h3>
+<div id="all-distinct-partitions" class="section level4">
+<h4>All Distinct Partitions</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">140</span>, <span class="at">freqs=</span><span class="fu">c</span>(<span class="dv">140</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">140</span>)),</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                   <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                   <span class="at">limitConstraints =</span> <span class="dv">140</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">partitions</span>(<span class="dv">140</span>, <span class="at">distinct =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fu">diffparts</span>(<span class="dv">140</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># Each package has different output formats... we only examine dimensions</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co"># and that each result is a partition of 140</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(t2)), <span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(<span class="fu">t</span>(t3))),</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>                    <span class="fu">all</span>(<span class="fu">rowSums</span>(t1) <span class="sc">==</span> <span class="dv">140</span>), <span class="fu">all</span>(<span class="fu">rowSums</span>(t2) <span class="sc">==</span> <span class="dv">140</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>                    <span class="fu">all</span>(<span class="fu">colSums</span>(t3) <span class="sc">==</span> <span class="dv">140</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; [1] 9617150      16</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="fu">rm</span>(t1, t2, t3)</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">140</span>, <span class="at">freqs=</span><span class="fu">c</span>(<span class="dv">140</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">140</span>)), <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">140</span>, <span class="at">freqs=</span><span class="fu">c</span>(<span class="dv">140</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">140</span>))),</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">partitions</span>(<span class="dv">140</span>, <span class="at">distinct =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> <span class="fu">diffparts</span>(<span class="dv">140</span>),</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt;            expr    min     lq   mean median     uq    max neval  cld</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar  1.000  1.000  1.000  1.000  1.000  1.000    10 a   </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer  3.291  3.284  3.027  3.530  2.663  2.485    10  b  </span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt;  cbArrangements  2.617  2.591  2.351  2.565  2.133  1.989    10   c </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 17.788 18.491 16.415 19.044 14.459 13.510    10    d</span></span></code></pre></div>
+</div>
+<div id="restricted-distinct-partitions" class="section level4">
+<h4>Restricted Distinct Partitions</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(<span class="dv">160</span>, <span class="dv">10</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                   <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                   <span class="at">limitConstraints =</span> <span class="dv">160</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">partitions</span>(<span class="dv">160</span>, <span class="dv">10</span>, <span class="at">distinct =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt; [1] 8942920      10</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">160</span>, <span class="dv">10</span>, <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">160</span>, <span class="dv">10</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">partitions</span>(<span class="dv">160</span>, <span class="dv">10</span>, <span class="at">distinct =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    10 a  </span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 3.368 3.365 2.944  3.286 2.236 2.378    10  b </span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 4.418 4.389 3.737  4.285 2.910 2.736    10   c</span></span></code></pre></div>
+</div>
+</div>
+<div id="partitions---repetition" class="section level3">
+<h3>Partitions - Repetition</h3>
+<div id="all-partitions" class="section level4">
+<h4>All Partitions</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">65</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>                   <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>, <span class="at">limitConstraints =</span> <span class="dv">65</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">partitions</span>(<span class="dv">65</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fu">parts</span>(<span class="dv">65</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># Each package has different output formats... we only examine dimensions</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co"># and that each result is a partition of 65</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(t2)), <span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(<span class="fu">t</span>(t3))),</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">rowSums</span>(t1) <span class="sc">==</span> <span class="dv">65</span>), <span class="fu">all</span>(<span class="fu">rowSums</span>(t2) <span class="sc">==</span> <span class="dv">65</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">colSums</span>(t3) <span class="sc">==</span> <span class="dv">65</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; [1] 2012558      65</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="fu">rm</span>(t1, t2, t3)</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">65</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>                                                  <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">65</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">partitions</span>(<span class="dv">65</span>),</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> <span class="fu">parts</span>(<span class="dv">65</span>),</span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">20</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median     uq    max neval cld</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000  1.000 1.0000    20 a  </span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 2.869 2.544 2.285  2.464  2.402 0.8894    20  b </span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 2.337 1.986 1.872  1.929  1.877 1.2701    20  b </span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 9.119 8.959 9.232 10.740 10.446 3.8642    20   c</span></span></code></pre></div>
+</div>
+<div id="restricted-partitions" class="section level4">
+<h4>Restricted Partitions</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(<span class="dv">100</span>, <span class="dv">15</span>, <span class="cn">TRUE</span>, <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>                   <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>, <span class="at">limitConstraints =</span> <span class="dv">100</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">partitions</span>(<span class="dv">100</span>, <span class="dv">15</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2))</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; [1] 9921212      15</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co"># This takes a really long time... not because of restrictedparts,</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co"># but because apply is not that fast. This transformation is</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co"># needed for proper comparisons. As a result, we will compare</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co"># a smaller example</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co"># t3 &lt;- t(apply(as.matrix(restrictedparts(100, 15, include.zero = F)), 2, sort))</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">restrictedparts</span>(<span class="dv">50</span>, <span class="dv">15</span>, <span class="at">include.zero =</span> F)), <span class="dv">2</span>, sort))</span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">partitions</span>(<span class="dv">50</span>, <span class="dv">15</span>), t3))</span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="fu">rm</span>(t3)</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">100</span>, <span class="dv">15</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>                                                  <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">100</span>, <span class="dv">15</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">partitions</span>(<span class="dv">100</span>, <span class="dv">15</span>),</span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> <span class="fu">restrictedparts</span>(<span class="dv">100</span>, <span class="dv">15</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a>                                                <span class="at">include.zero =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt;            expr    min     lq   mean median     uq   max neval  cld</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar  1.000  1.000  1.000  1.000  1.000 1.000    10 a   </span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer  3.352  3.366  2.525  2.645  2.764 1.246    10  b  </span></span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt;  cbArrangements  4.207  4.216  3.126  3.326  3.305 1.513    10   c </span></span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 15.888 16.140 11.928 12.606 12.364 6.303    10    d</span></span></code></pre></div>
+</div>
+</div>
+<div id="partitions---multisets" class="section level3">
+<h3>Partitions - Multisets</h3>
+<p>Currenlty, <code>RcppAlgos</code> is the only package capable of
+efficiently generating partitions of multisets. Therefore, we will only
+time <code>RcppAlgos</code> and use this as a reference for future
+improvements.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(<span class="dv">120</span>, <span class="dv">10</span>, <span class="at">freqs=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">15</span>),</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>                   <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                   <span class="at">limitConstraints =</span> <span class="dv">120</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; [1] 7340225      10</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">rowSums</span>(t1) <span class="sc">==</span> <span class="dv">120</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgos =</span> <span class="fu">partitionsGeneral</span>(<span class="dv">120</span>, <span class="dv">10</span>, <span class="at">freqs=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">15</span>)),</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">10</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt;         expr   min    lq mean median    uq   max neval</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgos 284.7 287.6  291  289.6 295.2 298.2    10</span></span></code></pre></div>
+</div>
+</div>
+<div id="compositions" class="section level2">
+<h2>Compositions</h2>
+<div id="compositions---repetition" class="section level3">
+<h3>Compositions - Repetition</h3>
+<div id="all-compositions-small-case" class="section level4">
+<h4>All Compositions (Small case)</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> arrangements<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">15</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> partitions<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">15</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co"># Each package has different output formats... we only examine dimensions</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co"># and that each result is a partition of 15</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(t2)), <span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(<span class="fu">t</span>(t3))),</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">rowSums</span>(t1) <span class="sc">==</span> <span class="dv">15</span>), <span class="fu">all</span>(<span class="fu">rowSums</span>(t2) <span class="sc">==</span> <span class="dv">15</span>),</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">colSums</span>(t3) <span class="sc">==</span> <span class="dv">15</span>))</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; [1] 16384    15</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="fu">rm</span>(t1, t2, t3)</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosSer =</span> <span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>               <span class="at">cbArrangements =</span> arrangements<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">15</span>),</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> partitions<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">15</span>),</span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">20</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt;            expr     min      lq    mean  median      uq     max neval cld</span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer   1.000   1.000   1.000   1.000   1.000   1.000    20  a </span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt;  cbArrangements   1.237   1.237   1.234   1.229   1.233   1.234    20  a </span></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 130.273 148.479 179.197 178.491 203.364 262.383    20   b</span></span></code></pre></div>
+<p>For the next two examples, we will exclude the
+<code>partitions</code> package for efficiency reasons.</p>
+</div>
+<div id="all-compositions-larger-case" class="section level4">
+<h4>All Compositions (Larger case)</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> arrangements<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">23</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co"># Each package has different output formats... we only examine dimensions</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co"># and that each result is a partition of 23</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(<span class="fu">dim</span>(t1), <span class="fu">dim</span>(t2)), <span class="fu">all</span>(<span class="fu">rowSums</span>(t1) <span class="sc">==</span> <span class="dv">23</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">rowSums</span>(t2) <span class="sc">==</span> <span class="dv">23</span>))</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; [1] 4194304      23</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>                                                    <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">compositionsGeneral</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">23</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>               <span class="at">cbArrangements =</span> arrangements<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">23</span>),</span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">20</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    20 a  </span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 3.361 3.383 3.293  3.381 3.378 2.250    20  b </span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 3.707 3.740 3.657  3.763 3.761 2.506    20   c</span></span></code></pre></div>
+</div>
+<div id="restricted-compositions" class="section level4">
+<h4>Restricted Compositions</h4>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">compositionsGeneral</span>(<span class="dv">30</span>, <span class="dv">10</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> arrangements<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">30</span>, <span class="dv">10</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">identical</span>(t1, t2), <span class="fu">all</span>(<span class="fu">rowSums</span>(t1) <span class="sc">==</span> <span class="dv">30</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">dim</span>(t1)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; [1] 10015005       10</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="fu">rm</span>(t1, t2)</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgosPar =</span> <span class="fu">compositionsGeneral</span>(<span class="dv">30</span>, <span class="dv">10</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>                                                    <span class="at">nThreads =</span> numThreads),</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>               <span class="at">cbRcppAlgosSer =</span> <span class="fu">compositionsGeneral</span>(<span class="dv">30</span>, <span class="dv">10</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>               <span class="at">cbArrangements =</span> arrangements<span class="sc">::</span><span class="fu">compositions</span>(<span class="dv">30</span>, <span class="dv">10</span>),</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">20</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosPar 1.000 1.000 1.000  1.000 1.000 1.000    20 a  </span></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="co">#&gt;  cbRcppAlgosSer 3.042 3.075 3.069  3.071 3.065 3.059    20  b </span></span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 3.132 3.129 3.109  3.115 3.100 3.070    20   c</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="iterators" class="section level2">
+<h2>Iterators</h2>
+<p>We will show one example from each category to demonstrate the
+efficiency of the iterators in <code>RcppAlgos</code>. The results are
+similar for the rest of the cases not shown.</p>
+<div id="combinations-1" class="section level3">
+<h3>Combinations</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>pkg_arrangements <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">icombinations</span>(n, <span class="fu">as.integer</span>(n <span class="sc">/</span> <span class="dv">2</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">$</span><span class="fu">getnext</span>()</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>}</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>pkg_RcppAlgos <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">comboIter</span>(n, <span class="fu">as.integer</span>(n <span class="sc">/</span> <span class="dv">2</span>))</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>}</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">comboCount</span>(<span class="dv">18</span>, <span class="dv">9</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>total</span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; [1] 48620</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgos    =</span> <span class="fu">pkg_RcppAlgos</span>(<span class="dv">18</span>, total),</span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">pkg_arrangements</span>(<span class="dv">18</span>, total),</span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq  max neval cld</span></span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="co">#&gt;     cbRcppAlgos  1.00  1.00  1.00   1.00  1.00  1.0    15  a </span></span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 19.39 18.95 18.49  18.68 18.63 15.6    15   b</span></span></code></pre></div>
+</div>
+<div id="permutations-1" class="section level3">
+<h3>Permutations</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>pkg_arrangements <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">ipermutations</span>(n)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">$</span><span class="fu">getnext</span>()</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>}</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>pkg_RcppAlgos <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">permuteIter</span>(n)</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>}</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">permuteCount</span>(<span class="dv">8</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>total</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt; [1] 40320</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgos    =</span> <span class="fu">pkg_RcppAlgos</span>(<span class="dv">8</span>, total),</span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">pkg_arrangements</span>(<span class="dv">8</span>, total),</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="co">#&gt;     cbRcppAlgos  1.00  1.00  1.00   1.00  1.00  1.00    15  a </span></span>
+<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 19.11 18.85 18.62  18.67 17.92 20.89    15   b</span></span></code></pre></div>
+</div>
+<div id="partitions-1" class="section level3">
+<h3>Partitions</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>pkg_partitions <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">firstpart</span>(n)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(total <span class="sc">-</span> <span class="dv">1</span>)) a <span class="ot">&lt;-</span> <span class="fu">nextpart</span>(a)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>}</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>pkg_arrangements <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">ipartitions</span>(n)</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">$</span><span class="fu">getnext</span>()</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>}</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>pkg_RcppAlgos <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">partitionsIter</span>(<span class="dv">0</span><span class="sc">:</span>n, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>}</span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">partitionsCount</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">40</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>total</span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt; [1] 37338</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgos    =</span> <span class="fu">pkg_RcppAlgos</span>(<span class="dv">40</span>, total),</span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">pkg_arrangements</span>(<span class="dv">40</span>, total),</span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> <span class="fu">pkg_partitions</span>(<span class="dv">40</span>, total),</span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median   uq   max neval cld</span></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co">#&gt;     cbRcppAlgos  1.00  1.00  1.00   1.00  1.0  1.00    15 a  </span></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 15.30 15.36 14.95  15.27 14.9 13.63    15  b </span></span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 24.85 24.97 24.02  24.93 24.3 18.44    15   c</span></span></code></pre></div>
+</div>
+<div id="compositions-1" class="section level3">
+<h3>Compositions</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>pkg_partitions <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">firstcomposition</span>(n)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(total <span class="sc">-</span> <span class="dv">1</span>)) a <span class="ot">&lt;-</span> <span class="fu">nextcomposition</span>(a, <span class="cn">FALSE</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>}</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>pkg_arrangements <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">icompositions</span>(n)</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">$</span><span class="fu">getnext</span>()</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>}</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>pkg_RcppAlgos <span class="ot">&lt;-</span> <span class="cf">function</span>(n, total) {</span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">compositionsIter</span>(<span class="dv">0</span><span class="sc">:</span>n, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>}</span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>total <span class="ot">&lt;-</span> <span class="fu">compositionsCount</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a>total</span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co">#&gt; [1] 16384</span></span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">cbRcppAlgos    =</span> <span class="fu">pkg_RcppAlgos</span>(<span class="dv">15</span>, total),</span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a>               <span class="at">cbArrangements =</span> <span class="fu">pkg_arrangements</span>(<span class="dv">15</span>, total),</span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a>               <span class="at">cbPartitions   =</span> <span class="fu">pkg_partitions</span>(<span class="dv">15</span>, total),</span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a>               <span class="at">times =</span> <span class="dv">15</span>, <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="co">#&gt;            expr   min    lq  mean median    uq   max neval cld</span></span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="co">#&gt;     cbRcppAlgos  1.00  1.00  1.00   1.00  1.00  1.00    15 a  </span></span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a><span class="co">#&gt;  cbArrangements 14.06 13.84 13.56  13.83 13.72 12.00    15  b </span></span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a><span class="co">#&gt;    cbPartitions 46.04 45.00 44.88  44.40 44.14 45.76    15   c</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

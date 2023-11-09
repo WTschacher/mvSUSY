@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><title>R: Build automatic dependencies among chunks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>dep_auto {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='dep_auto'>Build automatic dependencies among chunks</h2>
+
+<h3>Description</h3>
+
+<p>When the chunk option <code>autodep = TRUE</code>, all names of objects created in
+a chunk will be saved in a file named &lsquo;<span class="file">__objects</span>&rsquo; and all global objects
+used in a chunk will be saved to &lsquo;<span class="file">__globals</span>&rsquo;. This function can analyze
+object names in these files to automatically build cache dependencies, which
+is similar to the effect of the <code>dependson</code> option. It is supposed to be
+used in the first chunk of a document and this chunk must not be cached.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>dep_auto(path = opts_chunk$get("cache.path"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="dep_auto_:_path">path</code></td>
+<td>
+<p>Path to the dependency file.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>NULL</code>. The dependencies are built as a side effect.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Be cautious about <code>path</code>: because this function is used in a
+chunk, the working directory when the chunk is evaluated is the directory
+of the input document in <code><a href="../../knitr/help/knit.html">knit</a></code>, and if that directory differs
+from the working directory before calling <code>knit()</code>, you need to adjust
+the <code>path</code> argument here to make sure this function can find the cache
+files &lsquo;<span class="file">__objects</span>&rsquo; and &lsquo;<span class="file">__globals</span>&rsquo;.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://yihui.org/knitr/demo/cache/">https://yihui.org/knitr/demo/cache/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../knitr/help/dep_prev.html">dep_prev</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

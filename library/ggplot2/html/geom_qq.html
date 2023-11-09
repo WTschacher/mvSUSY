@@ -1,0 +1,271 @@
+<!DOCTYPE html><html><head><title>R: A quantile-quantile plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>geom_qq_line {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='geom_qq_line'>A quantile-quantile plot</h2>
+
+<h3>Description</h3>
+
+<p><code>geom_qq()</code> and <code>stat_qq()</code> produce quantile-quantile plots. <code>geom_qq_line()</code> and
+<code>stat_qq_line()</code> compute the slope and intercept of the line connecting the
+points at specified quartiles of the theoretical and sample distributions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>geom_qq_line(
+  mapping = NULL,
+  data = NULL,
+  geom = "path",
+  position = "identity",
+  ...,
+  distribution = stats::qnorm,
+  dparams = list(),
+  line.p = c(0.25, 0.75),
+  fullrange = FALSE,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+stat_qq_line(
+  mapping = NULL,
+  data = NULL,
+  geom = "path",
+  position = "identity",
+  ...,
+  distribution = stats::qnorm,
+  dparams = list(),
+  line.p = c(0.25, 0.75),
+  fullrange = FALSE,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+geom_qq(
+  mapping = NULL,
+  data = NULL,
+  geom = "point",
+  position = "identity",
+  ...,
+  distribution = stats::qnorm,
+  dparams = list(),
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+stat_qq(
+  mapping = NULL,
+  data = NULL,
+  geom = "point",
+  position = "identity",
+  ...,
+  distribution = stats::qnorm,
+  dparams = list(),
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="geom_qq_line_:_mapping">mapping</code></td>
+<td>
+<p>Set of aesthetic mappings created by <code><a href="../../ggplot2/help/aes.html">aes()</a></code>. If specified and
+<code>inherit.aes = TRUE</code> (the default), it is combined with the default mapping
+at the top level of the plot. You must supply <code>mapping</code> if there is no plot
+mapping.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_data">data</code></td>
+<td>
+<p>The data to be displayed in this layer. There are three
+options:
+</p>
+<p>If <code>NULL</code>, the default, the data is inherited from the plot
+data as specified in the call to <code><a href="../../ggplot2/help/ggplot.html">ggplot()</a></code>.
+</p>
+<p>A <code>data.frame</code>, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+<code><a href="../../ggplot2/help/fortify.html">fortify()</a></code> for which variables will be created.
+</p>
+<p>A <code>function</code> will be called with a single argument,
+the plot data. The return value must be a <code>data.frame</code>, and
+will be used as the layer data. A <code>function</code> can be created
+from a <code>formula</code> (e.g. <code>~ head(.x, 10)</code>).</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_geom">geom</code></td>
+<td>
+<p>The geometric object to use to display the data, either as a
+<code>ggproto</code> <code>Geom</code> subclass or as a string naming the geom stripped of the
+<code>geom_</code> prefix (e.g. <code>"point"</code> rather than <code>"geom_point"</code>)</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_position">position</code></td>
+<td>
+<p>Position adjustment, either as a string naming the adjustment
+(e.g. <code>"jitter"</code> to use <code>position_jitter</code>), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../ggplot2/help/layer.html">layer()</a></code>. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+<code>colour = "red"</code> or <code>size = 3</code>. They may also be parameters
+to the paired geom/stat.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_distribution">distribution</code></td>
+<td>
+<p>Distribution function to use, if x not specified</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_dparams">dparams</code></td>
+<td>
+<p>Additional parameters passed on to <code>distribution</code>
+function.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_line.p">line.p</code></td>
+<td>
+<p>Vector of quantiles to use when fitting the Q-Q line, defaults
+defaults to <code>c(.25, .75)</code>.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_fullrange">fullrange</code></td>
+<td>
+<p>Should the q-q line span the full range of the plot, or just
+the data</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_na.rm">na.rm</code></td>
+<td>
+<p>If <code>FALSE</code>, the default, missing values are removed with
+a warning. If <code>TRUE</code>, missing values are silently removed.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_show.legend">show.legend</code></td>
+<td>
+<p>logical. Should this layer be included in the legends?
+<code>NA</code>, the default, includes if any aesthetics are mapped.
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</p>
+</td></tr>
+<tr><td><code id="geom_qq_line_:_inherit.aes">inherit.aes</code></td>
+<td>
+<p>If <code>FALSE</code>, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. <code><a href="../../ggplot2/help/borders.html">borders()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Aesthetics</h3>
+
+<p><code>stat_qq()</code> understands the following aesthetics (required aesthetics are in bold):
+</p>
+
+<ul>
+<li> <p><strong><code>sample</code></strong>
+</p>
+</li>
+<li> <p><code>group</code>
+</p>
+</li>
+<li> <p><code>x</code>
+</p>
+</li>
+<li> <p><code>y</code>
+</p>
+</li></ul>
+
+<p>Learn more about setting these aesthetics in <code>vignette("ggplot2-specs")</code>.
+</p>
+<p><code>stat_qq_line()</code> understands the following aesthetics (required aesthetics are in bold):
+</p>
+
+<ul>
+<li> <p><strong><code>sample</code></strong>
+</p>
+</li>
+<li> <p><code>group</code>
+</p>
+</li>
+<li> <p><code>x</code>
+</p>
+</li>
+<li> <p><code>y</code>
+</p>
+</li></ul>
+
+<p>Learn more about setting these aesthetics in <code>vignette("ggplot2-specs")</code>.
+</p>
+
+
+<h3>Computed variables</h3>
+
+<p>These are calculated by the 'stat' part of layers and can be accessed with <a href="../../ggplot2/help/aes_eval.html">delayed evaluation</a>. <br /> Variables computed by <code>stat_qq()</code>:
+</p>
+
+<ul>
+<li> <p><code>after_stat(sample)</code><br /> Sample quantiles.
+</p>
+</li>
+<li> <p><code>after_stat(theoretical)</code><br /> Theoretical quantiles.
+</p>
+</li></ul>
+
+<p>Variables computed by <code>stat_qq_line()</code>:
+</p>
+
+<ul>
+<li> <p><code>after_stat(x)</code><br /> x-coordinates of the endpoints of the line segment connecting the  points at the chosen quantiles of the theoretical and the sample  distributions.
+</p>
+</li>
+<li> <p><code>after_stat(y)</code><br /> y-coordinates of the endpoints.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+df &lt;- data.frame(y = rt(200, df = 5))
+p &lt;- ggplot(df, aes(sample = y))
+p + stat_qq() + stat_qq_line()
+
+# Use fitdistr from MASS to estimate distribution params
+params &lt;- as.list(MASS::fitdistr(df$y, "t")$estimate)
+ggplot(df, aes(sample = y)) +
+  stat_qq(distribution = qt, dparams = params["df"]) +
+  stat_qq_line(distribution = qt, dparams = params["df"])
+
+# Using to explore the distribution of a variable
+ggplot(mtcars, aes(sample = mpg)) +
+  stat_qq() +
+  stat_qq_line()
+ggplot(mtcars, aes(sample = mpg, colour = factor(cyl))) +
+  stat_qq() +
+  stat_qq_line()
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

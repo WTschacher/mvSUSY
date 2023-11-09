@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><title>R: Show colours</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>show_col {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='show_col'>Show colours</h2>
+
+<h3>Description</h3>
+
+<p>A quick and dirty way to show colours in a plot.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>show_col(colours, labels = TRUE, borders = NULL, cex_label = 1, ncol = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="show_col_:_colours">colours</code></td>
+<td>
+<p>A character vector of colours</p>
+</td></tr>
+<tr><td><code id="show_col_:_labels">labels</code></td>
+<td>
+<p>Label each colour with its hex name?</p>
+</td></tr>
+<tr><td><code id="show_col_:_borders">borders</code></td>
+<td>
+<p>Border colour for each tile. Default uses <code>par("fg")</code>.
+Use <code>border = NA</code> to omit borders.</p>
+</td></tr>
+<tr><td><code id="show_col_:_cex_label">cex_label</code></td>
+<td>
+<p>Size of printed labels, as multiplier of default size.</p>
+</td></tr>
+<tr><td><code id="show_col_:_ncol">ncol</code></td>
+<td>
+<p>Number of columns. If not supplied, tries to be as square as
+possible.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>show_col(hue_pal()(9))
+show_col(hue_pal()(9), borders = NA)
+
+show_col(viridis_pal()(16))
+show_col(viridis_pal()(16), labels = FALSE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

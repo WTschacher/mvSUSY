@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>R: Find out broken packages and reinstall them</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>broken_packages {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='broken_packages'>Find out broken packages and reinstall them</h2>
+
+<h3>Description</h3>
+
+<p>If a package is broken (i.e., not <code><a href="../../xfun/help/loadable.html">loadable()</a></code>), reinstall it.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>broken_packages(reinstall = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="broken_packages_:_reinstall">reinstall</code></td>
+<td>
+<p>Whether to reinstall the broken packages, or only list their
+names.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Installed R packages could be broken for several reasons. One common reason
+is that you have upgraded R to a newer <code>x.y</code> version, e.g., from <code style="white-space: pre;">&#8288;4.0.5&#8288;</code> to
+<code style="white-space: pre;">&#8288;4.1.0&#8288;</code>, in which case you need to reinstall previously installed packages.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character vector of names of broken package.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

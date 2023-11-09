@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>R: Count unique combinations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>n_distinct {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='n_distinct'>Count unique combinations</h2>
+
+<h3>Description</h3>
+
+<p><code>n_distinct()</code> counts the number of unique/distinct combinations in a set
+of one or more vectors. It's a faster and more concise equivalent to
+<code>nrow(unique(data.frame(...)))</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>n_distinct(..., na.rm = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="n_distinct_:_...">...</code></td>
+<td>
+<p>Unnamed vectors. If multiple vectors are supplied, then they should
+have the same length.</p>
+</td></tr>
+<tr><td><code id="n_distinct_:_na.rm">na.rm</code></td>
+<td>
+<p>If <code>TRUE</code>, exclude missing observations from the count.
+If there are multiple vectors in <code>...</code>, an observation will
+be excluded if <em>any</em> of the values are missing.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A single number.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(1, 1, 2, 2, 2)
+n_distinct(x)
+
+y &lt;- c(3, 3, NA, 3, 3)
+n_distinct(y)
+n_distinct(y, na.rm = TRUE)
+
+# Pairs (1, 3), (2, 3), and (2, NA) are distinct
+n_distinct(x, y)
+
+# (2, NA) is dropped, leaving 2 distinct combinations
+n_distinct(x, y, na.rm = TRUE)
+
+# Also works with data frames
+n_distinct(data.frame(x, y))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

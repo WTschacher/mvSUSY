@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><title>R: Large sized rationals</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bigq {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bigq'>Large sized rationals</h2>
+
+<h3>Description</h3>
+
+<p>Class <code>"bigq"</code> encodes rationals encoded as ratios of arbitrary
+large integers (via GMP).
+A simple S3 class (internally a <code><a href="../../base/html/raw.html">raw</a></code> vector), it has been
+registered as formal (S4) class (via <code><a href="../../methods/html/setOldClass.html">setOldClass</a></code>), too.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>as.bigq(n, d = 1)
+## S3 method for class 'bigq'
+as.character(x, b=10,...)
+## S3 method for class 'bigq'
+as.double(x,...)
+as.bigz.bigq(a, mod=NA)
+is.bigq(x)
+## S3 method for class 'bigq'
+is.na(x)
+## S3 method for class 'bigq'
+print(x, quote=FALSE, initLine = TRUE, ...)
+denominator(x)
+numerator(x)
+NA_bigq_
+c_bigq(L)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bigq_:_n">n</code>, <code id="bigq_:_d">d</code></td>
+<td>
+<p>either integer, numeric or string value
+(String value: either starting with <code>0x</code> for hexadecimal, <code>0b</code> for
+binary or without prefix for decimal values.
+Any format error results in <code>0</code>).
+<code>n</code> stands for numerator, <code>d</code> for denominator.</p>
+</td></tr>
+<tr><td><code id="bigq_:_a">a</code></td>
+<td>
+<p>an element of class <code>"bigq"</code></p>
+</td></tr>
+<tr><td><code id="bigq_:_mod">mod</code></td>
+<td>
+<p>optional modulus to convert into biginteger</p>
+</td></tr>
+<tr><td><code id="bigq_:_x">x</code></td>
+<td>
+<p>a &ldquo;rational number&rdquo; (vector), of class <code>"bigq"</code>.</p>
+</td></tr>
+<tr><td><code id="bigq_:_b">b</code></td>
+<td>
+<p>base: from 2 to 36</p>
+</td></tr>
+<tr><td><code id="bigq_:_...">...</code></td>
+<td>
+<p>additional arguments passed to methods</p>
+</td></tr>
+<tr><td><code id="bigq_:_quote">quote</code></td>
+<td>
+<p>(for printing:) logical indicating if the numbers
+should be quoted (as characters are);  the default used to be
+<code>TRUE</code> (implicitly) till 2011.</p>
+</td></tr>
+<tr><td><code id="bigq_:_initLine">initLine</code></td>
+<td>
+<p>(for printing:) logical indicating if an
+<b>init</b>ial line (with the class and length or dimension) should
+be printed. 
+
+
+</p>
+</td></tr>
+<tr><td><code id="bigq_:_L">L</code></td>
+<td>
+<p>a <code><a href="../../base/html/list.html">list</a></code> where each element contains <code>"bigq"</code>
+numbers, for <code>c_bigq()</code>, this allows something like an
+<code><a href="../../base/html/lapply.html">sapply</a>()</code> for <code>"bigq"</code> vectors, see <code>sapplyQ()</code>
+in the examples below.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>as.bigq(x)</code> when <code>x</code> is <code><a href="../../base/html/numeric.html">numeric</a></code> (aka
+<code><a href="../../base/html/double.html">double</a></code> precision) calls the &lsquo;<span class="file">GMP</span>&rsquo; function
+<code>mpq_set_d()</code> which is documented to be <em>exact</em> (every finite double
+precision number is a rational number).
+</p>
+<p><code>as.bigz.bigq()</code> returns the smallest integers not less than the
+corresponding rationals bigq.
+</p>
+<p><code>NA_bigq_</code> is computed on package load time as <code>as.bigq(NA)</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <span class="rlang"><b>R</b></span> object of (S3) class <code>"bigq"</code> representing the parameter value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Antoine Lucas</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- as.bigq(21,6)
+x
+# 7 / 2
+# Wow ! result is simplified.
+
+y &lt;- as.bigq(5,3)
+
+# addition works !
+x + y
+
+# You can even try multiplication, division...
+x * y / 13
+
+# and, since May 2012,
+x ^ 20
+stopifnot(is.bigq(x), is.bigq(x + y),
+	  x ^ 20 == as.bigz(7)^20 / 2^20)
+
+# convert to string, double
+as.character(x)
+as.double(x)
+
+stopifnot( is.na(NA_bigq_) )
+
+# Depict the "S4-class" bigq, i.e., the formal (S4) methods:
+if(require("Rmpfr")) # mostly interesting there
+  showMethods(class="bigq")
+
+# an  sapply() version that works for big rationals "bigq":
+sapplyQ &lt;- function(X, FUN, ...) c_bigq(lapply(X, FUN, ...))
+
+# dummy example showing it works (here):
+qq &lt;- as.bigq(1, 1:999)
+q1 &lt;- sapplyQ(qq, function(q) q^2)
+stopifnot( identical(q1, qq^2) )
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

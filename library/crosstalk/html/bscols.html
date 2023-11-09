@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Arrange HTML elements or widgets in Bootstrap columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bscols {crosstalk}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bscols'>Arrange HTML elements or widgets in Bootstrap columns</h2>
+
+<h3>Description</h3>
+
+<p>This helper function makes it easy to put HTML elements side by side. It can
+be called directly from the console but is especially designed to work in an
+R Markdown document. Warning: This will bring in all of Bootstrap!
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bscols(..., widths = NA, device = c("xs", "sm", "md", "lg"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bscols_:_...">...</code></td>
+<td>
+<p><code>htmltools</code> tag objects, lists, text, HTML widgets, or
+NULL. These arguments should be unnamed.</p>
+</td></tr>
+<tr><td><code id="bscols_:_widths">widths</code></td>
+<td>
+<p>The number of columns that should be assigned to each of the
+<code>...</code> elements (the total number of columns available is always 12).
+The width vector will be recycled if there are more <code>...</code> arguments.
+<code>NA</code> columns will evenly split the remaining columns that are left
+after the widths are recycled and non-<code>NA</code> values are subtracted.</p>
+</td></tr>
+<tr><td><code id="bscols_:_device">device</code></td>
+<td>
+<p>The class of device which is targeted by these widths; with
+smaller screen sizes the layout will collapse to a one-column,
+top-to-bottom display instead. xs: never collapse, sm: collapse below
+768px, md: 992px, lg: 1200px.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="../../htmltools/help/browsable.html">browsable</a></code> HTML element.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+library(htmltools)
+
+# If width is unspecified, equal widths will be used
+bscols(
+  div(style = css(width="100%", height="400px", background_color="red")),
+  div(style = css(width="100%", height="400px", background_color="blue"))
+)
+
+# Use NA to absorb remaining width
+bscols(widths = c(2, NA, NA),
+  div(style = css(width="100%", height="400px", background_color="red")),
+  div(style = css(width="100%", height="400px", background_color="blue")),
+  div(style = css(width="100%", height="400px", background_color="green"))
+)
+
+# Recycling widths
+bscols(widths = c(2, 4),
+  div(style = css(width="100%", height="400px", background_color="red")),
+  div(style = css(width="100%", height="400px", background_color="blue")),
+  div(style = css(width="100%", height="400px", background_color="red")),
+  div(style = css(width="100%", height="400px", background_color="blue"))
+)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>crosstalk</em> version 1.2.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

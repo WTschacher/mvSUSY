@@ -1,0 +1,69 @@
+<!DOCTYPE html><html><head><title>R: Subtract dependencies</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>subtractDependencies {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='subtractDependencies'>Subtract dependencies</h2>
+
+<h3>Description</h3>
+
+<p>Remove a set of dependencies from another list of dependencies. The set of
+dependencies to remove can be expressed as either a character vector or a
+list; if the latter, a warning can be emitted if the version of the
+dependency being removed is later than the version of the dependency object
+that is causing the removal.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>subtractDependencies(dependencies, remove, warnOnConflict = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="subtractDependencies_:_dependencies">dependencies</code></td>
+<td>
+<p>A list of <code><a href="../../htmltools/help/htmlDependency.html">htmlDependency()</a></code> objects from which
+dependencies should be removed.</p>
+</td></tr>
+<tr><td><code id="subtractDependencies_:_remove">remove</code></td>
+<td>
+<p>A list of <code><a href="../../htmltools/help/htmlDependency.html">htmlDependency()</a></code> objects indicating which
+dependencies should be removed, or a character vector indicating dependency
+names.</p>
+</td></tr>
+<tr><td><code id="subtractDependencies_:_warnOnConflict">warnOnConflict</code></td>
+<td>
+<p>If <code>TRUE</code>, a warning is emitted for each
+dependency that is removed if the corresponding dependency in <code>remove</code>
+has a lower version number. Has no effect if <code>remove</code> is provided as a
+character vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of <code><a href="../../htmltools/help/htmlDependency.html">htmlDependency()</a></code> objects that don't intersect
+with <code>remove</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

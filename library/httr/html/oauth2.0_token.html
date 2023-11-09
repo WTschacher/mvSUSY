@@ -1,0 +1,160 @@
+<!DOCTYPE html><html><head><title>R: Generate an oauth2.0 token.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>oauth2.0_token {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='oauth2.0_token'>Generate an oauth2.0 token.</h2>
+
+<h3>Description</h3>
+
+<p>This is the final object in the OAuth dance - it encapsulates the app,
+the endpoint, other parameters and the received credentials. It is a
+reference class so that it can be seamlessly updated (e.g. using
+<code style="white-space: pre;">&#8288;$refresh()&#8288;</code>) when access expires.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>oauth2.0_token(
+  endpoint,
+  app,
+  scope = NULL,
+  user_params = NULL,
+  type = NULL,
+  use_oob = getOption("httr_oob_default"),
+  oob_value = NULL,
+  as_header = TRUE,
+  use_basic_auth = FALSE,
+  cache = getOption("httr_oauth_cache"),
+  config_init = list(),
+  client_credentials = FALSE,
+  credentials = NULL,
+  query_authorize_extra = list()
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="oauth2.0_token_:_endpoint">endpoint</code></td>
+<td>
+<p>An OAuth endpoint, created by <code><a href="../../httr/help/oauth_endpoint.html">oauth_endpoint()</a></code></p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_app">app</code></td>
+<td>
+<p>An OAuth consumer application, created by
+<code><a href="../../httr/help/oauth_app.html">oauth_app()</a></code></p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_scope">scope</code></td>
+<td>
+<p>a character vector of scopes to request.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_user_params">user_params</code></td>
+<td>
+<p>Named list holding endpoint specific parameters to pass to
+the server when posting the request for obtaining or refreshing the
+access token.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_type">type</code></td>
+<td>
+<p>content type used to override incorrect server response</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_use_oob">use_oob</code></td>
+<td>
+<p>if FALSE, use a local webserver for the OAuth dance.
+Otherwise, provide a URL to the user and prompt for a validation
+code. Defaults to the of the <code>"httr_oob_default"</code> default,
+or <code>TRUE</code> if <code>httpuv</code> is not installed.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_oob_value">oob_value</code></td>
+<td>
+<p>if provided, specifies the value to use for the redirect_uri
+parameter when retrieving an authorization URL. Defaults to &quot;urn:ietf:wg:oauth:2.0:oob&quot;.
+Requires <code>use_oob = TRUE</code>.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_as_header">as_header</code></td>
+<td>
+<p>If <code>TRUE</code>, the default, configures the token to add
+itself to the bearer header of subsequent requests. If <code>FALSE</code>,
+configures the token to add itself as a url parameter of subsequent
+requests.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_use_basic_auth">use_basic_auth</code></td>
+<td>
+<p>if <code>TRUE</code> use http basic authentication to
+retrieve the token. Some authorization servers require this.
+If <code>FALSE</code>, the default, retrieve the token by including the
+app key and secret in the request body.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_cache">cache</code></td>
+<td>
+<p>A logical value or a string. <code>TRUE</code> means to cache
+using the default cache file <code>.httr-oauth</code>, <code>FALSE</code> means
+don't cache, and <code>NA</code> means to guess using some sensible heuristics.
+A string means use the specified path as the cache file.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_config_init">config_init</code></td>
+<td>
+<p>Additional configuration settings sent to
+<code><a href="../../httr/help/POST.html">POST()</a></code>, e.g. <code><a href="../../httr/help/user_agent.html">user_agent()</a></code>.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_client_credentials">client_credentials</code></td>
+<td>
+<p>Default to <code>FALSE</code>. Set to <code>TRUE</code> to use
+<em>Client Credentials Grant</em> instead of <em>Authorization
+Code Grant</em>. See <a href="https://www.rfc-editor.org/rfc/rfc6749#section-4.4">https://www.rfc-editor.org/rfc/rfc6749#section-4.4</a>.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_credentials">credentials</code></td>
+<td>
+<p>Advanced use only: allows you to completely customise
+token generation.</p>
+</td></tr>
+<tr><td><code id="oauth2.0_token_:_query_authorize_extra">query_authorize_extra</code></td>
+<td>
+<p>Default to <code>list()</code>. Set to named list
+holding query parameters to append to initial auth page query. Useful for
+some APIs.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="../../httr/help/Token.html">Token()</a></code> for full details about the token object, and the
+caching policies used to store credentials across sessions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>Token2.0</code> reference class (RC) object.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other OAuth: 
+<code><a href="../../httr/help/oauth1.0_token.html">oauth1.0_token</a>()</code>,
+<code><a href="../../httr/help/oauth_app.html">oauth_app</a>()</code>,
+<code><a href="../../httr/help/oauth_endpoint.html">oauth_endpoint</a>()</code>,
+<code><a href="../../httr/help/oauth_service_token.html">oauth_service_token</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

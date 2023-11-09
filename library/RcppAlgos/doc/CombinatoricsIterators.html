@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>Combinatorial Iterators in RcppAlgos</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Combinatorial Iterators in RcppAlgos</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#iterating-over-combinations-and-permutations" id="toc-iterating-over-combinations-and-permutations">Iterating over
+Combinations and Permutations</a>
+<ul>
+<li><a href="#bidirectional-iterators" id="toc-bidirectional-iterators">Bidirectional Iterators</a></li>
+<li><a href="#retrieving-more-than-one-result-at-a-time" id="toc-retrieving-more-than-one-result-at-a-time">Retrieving More than
+One Result at a Time</a></li>
+<li><a href="#random-access-iterator" id="toc-random-access-iterator">Random Access Iterator</a></li>
+<li><a href="#user-defined-functions" id="toc-user-defined-functions">User Defined Functions</a></li>
+</ul></li>
+<li><a href="#new-in-verison-2.5.0" id="toc-new-in-verison-2.5.0">New in
+Verison <code>2.5.0</code></a>
+<ul>
+<li><a href="#access-efficiency-in-2.5.0" id="toc-access-efficiency-in-2.5.0">Access Efficiency in
+<code>2.5.0+</code></a></li>
+<li><a href="#iterating-over-partitions-and-compositions-of-a-number" id="toc-iterating-over-partitions-and-compositions-of-a-number">Iterating
+over Partitions and Compositions of a Number</a></li>
+<li><a href="#iterating-over-constrained-combinationspermutations" id="toc-iterating-over-constrained-combinationspermutations">Iterating
+over Constrained Combinations/Permutations</a></li>
+<li><a href="#iterating-over-partitions-of-groups" id="toc-iterating-over-partitions-of-groups">Iterating over Partitions
+of Groups</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This document covers working with combinatorial iterators in
+<code>RcppAlgos</code>. Combinatorial iterators in
+<code>RcppAlgos</code> are memory efficient like traditional iterator
+objects. They allow traversal of
+combinations/permutations/partitions/compositions/comboGroups one by one
+without the necessity for storing all results in memory.</p>
+<p>Unlike traditional combinatorial iterators, the iterators in
+<code>RcppAlgos</code> offers random access via the <code>[[</code>
+operator. This means, we can access the <em>n<sup>th</sup></em> <a href="https://en.wikipedia.org/wiki/Lexicographical_order">lexicographical
+order</a> result on demand without having to first iterate over the
+previous <em>n - 1</em> results.</p>
+<hr />
+<div id="iterating-over-combinations-and-permutations" class="section level2">
+<h2>Iterating over Combinations and Permutations</h2>
+<p>In order to iterate, we must initialize an iterator via
+<code>comboIter</code> or <code>permuteIter</code>. The interface is
+very similar to <code>comboGeneral</code> and
+<code>permuteGeneral</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">90</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="do">## Initialize the iterator</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">comboIter</span>(<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="do">## Get the first combination</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">nextIter</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 3</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="do">## And the next</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">nextIter</span>()</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 4</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="do">## Set the current iterator to a variable</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>iter <span class="ot">=</span> a<span class="sc">$</span><span class="fu">currIter</span>()</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="do">## Iterate until there are no more</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(iter)) {</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    <span class="fu">cat</span>(i, <span class="st">&quot; &quot;</span>, iter, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>    iter <span class="ot">=</span> a<span class="sc">$</span><span class="fu">nextIter</span>()</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>    i <span class="ot">=</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>}</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; 1   1 2 4 </span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#&gt; 2   1 2 5 </span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; 3   1 3 4 </span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; 4   1 3 5 </span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; 5   1 4 5 </span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="co">#&gt; 6   2 3 4 </span></span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="co">#&gt; 7   2 3 5 </span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co">#&gt; 8   2 4 5 </span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="co">#&gt; 9   3 4 5 </span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="co">#&gt; No more results. To see the last result, use the prevIter method(s)</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="do">## See the output of comboGeneral for comparison</span></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="fu">comboGeneral</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="at">lower =</span> <span class="dv">2</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    2    4</span></span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    2    5</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    3    4</span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="co">#&gt;  [4,]    1    3    5</span></span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="co">#&gt;  [5,]    1    4    5</span></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co">#&gt;  [6,]    2    3    4</span></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="co">#&gt;  [7,]    2    3    5</span></span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a><span class="co">#&gt;  [8,]    2    4    5</span></span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a><span class="co">#&gt;  [9,]    3    4    5</span></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a><span class="do">## Call the summary method to see information about our iterator</span></span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a><span class="co">#&gt; [1] 11</span></span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a><span class="co">#&gt; [1] -1</span></span></code></pre></div>
+<div id="bidirectional-iterators" class="section level3">
+<h3>Bidirectional Iterators</h3>
+<p>Some of the combinatorial iterators in <code>RcppAlgos</code> are
+bidirectional iterators. This means that not only can we iterate in a
+forward manner (i.e. lexicographically), but we can also iterate
+backwards (i.e. <a href="https://oeis.org/wiki/Orderings#Reverse_lexicographic_order">Reverse
+Lexicographical Order</a>) via the <code>prevIter</code> method(s).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">## Using the same iterable from the previous section</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">currIter</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; No more results. To see the last result, use the prevIter method(s)</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="do">## As the comment says, we call the prevIter method to see the last result</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">prevIter</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; [1] 3 4 5</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="do">## Get the previous result</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">prevIter</span>()</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; [1] 2 4 5</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="do">## As in the previous example, we set the current iterator to a variable</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>iter <span class="ot">=</span> a<span class="sc">$</span><span class="fu">currIter</span>()</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="do">## Defined above</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="fu">print</span>(i)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="do">## Iterate until we are at the very beginning. Note that the</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="do">## output is exactly the same as above, but in reverse order</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(iter)) {</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>    i <span class="ot">=</span> i <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>    <span class="fu">cat</span>(i, <span class="st">&quot; &quot;</span>, iter, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>    iter <span class="ot">=</span> a<span class="sc">$</span><span class="fu">prevIter</span>()</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>}</span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 9   2 4 5 </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 8   2 3 5 </span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 7   2 3 4 </span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; 6   1 4 5 </span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; 5   1 3 5 </span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; 4   1 3 4 </span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; 3   1 2 5 </span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; 2   1 2 4 </span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; 1   1 2 3 </span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; Iterator Initialized. To see the first result, use the nextIter method(s)</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="do">## Call the summary method to see information about our iterator</span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span></code></pre></div>
+</div>
+<div id="retrieving-more-than-one-result-at-a-time" class="section level3">
+<h3>Retrieving More than One Result at a Time</h3>
+<p>There are four methods which allow for obtaining more than one result
+at a time: <code>nextNIter</code>, <code>prevNIter</code>,
+<code>nextRemaining</code>, and <code>prevRemaining</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="do">## Reset the iterator</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">startOver</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="do">## Get the next 4 combinations</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">nextNIter</span>(<span class="dv">4</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    4</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    5</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; [4,]    1    3    4</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="do">## Get the summary. Note that the index has been updated</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; [1] 4</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; [1] 6</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="do">## View the current combination</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">currIter</span>()</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; [1] 1 3 4</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="do">## Get the remaining combinations with nextRemaining</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">nextRemaining</span>()</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3    5</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; [2,]    1    4    5</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; [3,]    2    3    4</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; [4,]    2    3    5</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; [5,]    2    4    5</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; [6,]    3    4    5</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt; [1] 11</span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="co">#&gt; [1] -1</span></span></code></pre></div>
+<p>Now, we look at the opposite direction.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">## Get the previous 4 combinations</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">prevNIter</span>(<span class="dv">4</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; [1,]    3    4    5</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; [2,]    2    4    5</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; [3,]    2    3    5</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; [4,]    2    3    4</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="do">## Get the summary. Note that the index has been updated</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [1] 7</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="do">## View the current combination</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">currIter</span>()</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; [1] 2 3 4</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="do">## Get the remaining previous combinations with prevRemaining</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">prevRemaining</span>()</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; [1,]    1    4    5</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    5</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; [3,]    1    3    4</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    5</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    4</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; [6,]    1    2    3</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span></code></pre></div>
+</div>
+<div id="random-access-iterator" class="section level3">
+<h3>Random Access Iterator</h3>
+<p>As with the bidirectional iterators, with some of the combinatorial
+iterators in <code>RcppAlgos</code>, we can jump to the
+<em>n<sup>th</sup></em> result without the need for iterating over the
+first <em>n - 1</em> results.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## Reset the iterator</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">startOver</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="do">## How many total combinations do we have?</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()<span class="sc">$</span>totalResults</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="do">## Let&#39;s get the 3rd combination</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>a[[<span class="dv">3</span>]]</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 5</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="do">## See the summary. Note that the index has been updated</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; [1] 7</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="do">## Let&#39;s see the 9th combination</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>a[[<span class="dv">9</span>]]</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; [1] 2 4 5</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="do">## What about the first and last combination?</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">front</span>()</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 3</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">back</span>()</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; [1] 3 4 5</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="do">## Again the index has been updated</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">currIter</span>()</span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a><span class="co">#&gt; [1] 3 4 5</span></span></code></pre></div>
+<p>We can also easily return a random sample of combinations with the
+<code>[[</code> operator by passing a vector of indices. In these cases,
+it should be noted that the current index will not be updated.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">## Set the current index to the second combination</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>a[[<span class="dv">2</span>]]</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 4</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">121</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>samp <span class="ot">=</span> <span class="fu">sample</span>(a<span class="sc">$</span><span class="fu">summary</span>()<span class="sc">$</span>totalResults, <span class="dv">4</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>samp</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; [1]  4  7 10  1</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>a[[samp]]</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3    4</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; [2,]    2    3    4</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; [3,]    3    4    5</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    3</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="do">## Note that the current index remains unchanged</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>a<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 5 choose 3&quot;</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; [1] 8</span></span></code></pre></div>
+</div>
+<div id="user-defined-functions" class="section level3">
+<h3>User Defined Functions</h3>
+<p>Just as with <code>comboGeneral</code> and
+<code>permuteGeneral</code>, we can pass a user defined function to
+<code>comboIter</code> and <code>permuteIter</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## Initialize the iterator</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>b <span class="ot">=</span> <span class="fu">permuteIter</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="dv">3</span>, <span class="at">FUN =</span> <span class="cf">function</span>(p) <span class="fu">paste</span>(p, <span class="at">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>                <span class="at">FUN.VALUE =</span> <span class="st">&quot;a&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">nextIter</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; [1] &quot;ABC&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">nextNIter</span>(<span class="dv">5</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;ABD&quot; &quot;ACB&quot; &quot;ACD&quot; &quot;ADB&quot; &quot;ADC&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">back</span>()</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; [1] &quot;DCB&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">prevIter</span>()</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; [1] &quot;DCA&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">prevNIter</span>(<span class="dv">5</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; [1] &quot;DBC&quot; &quot;DBA&quot; &quot;DAC&quot; &quot;DAB&quot; &quot;CDB&quot;</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">nextRemaining</span>()</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; [1] &quot;DAB&quot; &quot;DAC&quot; &quot;DBA&quot; &quot;DBC&quot; &quot;DCA&quot; &quot;DCB&quot;</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="do">## Random access</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>b[[<span class="dv">5</span>]]</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; [1] &quot;ADB&quot;</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">prevRemaining</span>()</span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; [1] &quot;ACD&quot; &quot;ACB&quot; &quot;ABD&quot; &quot;ABC&quot;</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="do">## View the source vector</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a>b<span class="sc">$</span><span class="fu">sourceVector</span>()</span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot;</span></span></code></pre></div>
+</div>
+</div>
+<div id="new-in-verison-2.5.0" class="section level2">
+<h2>New in Verison <code>2.5.0</code></h2>
+<p>As of version <code>2.5.0</code>, we no longer rely on
+<code>Rcpp</code> as a dependency, which means that we do not utilize
+<code>Rcpp</code> modules for exposing C++ classes. This is now carried
+out using external pointers (See <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#External-pointers-and-weak-references">External
+pointers and weak references</a>) along with <a href="http://adv-r.had.co.nz/S4.html">S4 Classes</a>. We use the slots
+of <code>S4</code> classes for exposing each method so access is carried
+out with the “at sign”, <code>@</code>. We have also added the ability
+to access each method with the “dollar sign”, <code>$</code>, for
+backwards compatibility.</p>
+<div id="access-efficiency-in-2.5.0" class="section level3">
+<h3>Access Efficiency in <code>2.5.0+</code></h3>
+<p>Our tests show that accessing methods is much more efficient in
+<code>2.5.0+</code> compared to prior versions. In the below tests, we
+measure excecution time of calling <code>nextIter</code> multiple times
+in different versions. We will use the function
+<code>test_nextIter</code> for our testing. If one needs to reproduce,
+simply download the <code>2.4.3</code> tar here: <a href="https://cran.r-project.org/src/contrib/Archive/RcppAlgos/" class="uri">https://cran.r-project.org/src/contrib/Archive/RcppAlgos/</a>,
+change <code>RcppAlgos</code> to <code>RcppAlgos243</code> in a few
+place (e.g. <code>DESCRIPTION</code>, <code>NAMESPACE</code>, etc.), and
+rebuild.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>test_nextIter <span class="ot">&lt;-</span> <span class="cf">function</span>(n, m, <span class="at">get_val =</span> <span class="cn">FALSE</span>, <span class="at">v =</span> <span class="dv">243</span>) {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="cf">if</span> (v <span class="sc">==</span> <span class="dv">243</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>        RcppAlgos243<span class="sc">::</span><span class="fu">comboIter</span>(n, m)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>        <span class="fu">comboIter</span>(n, m)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    }</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    total <span class="ot">&lt;-</span> <span class="fu">comboCount</span>(n, m)</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="cf">if</span> (get_val) {</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>        mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(0L, <span class="at">nrow =</span> total, <span class="at">ncol =</span> m)</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>        <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) mat[i, ] <span class="ot">&lt;-</span> a<span class="sc">$</span><span class="fu">nextIter</span>()</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>        <span class="fu">return</span>(mat)</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>        <span class="cf">if</span> (v <span class="sc">==</span> <span class="dv">243</span>) {</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>            <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">$</span><span class="fu">nextIter</span>()</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>            <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>total) a<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>        }</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>        <span class="fu">invisible</span>(<span class="cn">NULL</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>    }</span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>}</span></code></pre></div>
+<div id="version-2.4.3-using-rcpp" class="section level4">
+<h4>Version <code>2.4.3</code> Using <code>Rcpp</code></h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="do">## Using R version 4.1.3</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="fu">comboCount</span>(<span class="dv">15</span>, <span class="dv">8</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; [1] 6435</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">v243 =</span> <span class="fu">test_nextIter</span>(<span class="dv">15</span>, <span class="dv">8</span>))</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt; Warning in microbenchmark(v243 = test_nextIter(15, 8)): less accurate nanosecond times to</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; avoid potential integer overflows</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt;  expr      min       lq     mean   median       uq      max neval</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;  v243 20.81299 21.83592 24.21892 21.99418 22.36261 230.2301   100</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">test_nextIter</span>(<span class="dv">15</span>, <span class="dv">8</span>, <span class="at">get_val =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>          <span class="fu">comboGeneral</span>(<span class="dv">15</span>, <span class="dv">8</span>))</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="fu">comboCount</span>(<span class="dv">25</span>, <span class="dv">10</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; [1] 3268760</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">test_nextIter</span>(<span class="dv">25</span>, <span class="dv">10</span>))</span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt;  11.180   0.056  11.237</span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="fu">Rprof</span>(<span class="st">&quot;Version243.out&quot;</span>, <span class="at">memory.profiling =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="fu">test_nextIter</span>(<span class="dv">25</span>, <span class="dv">10</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="fu">Rprof</span>(<span class="cn">NULL</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">summaryRprof</span>(<span class="st">&quot;Version243.out&quot;</span>, <span class="at">memory =</span> <span class="st">&quot;both&quot;</span>), head)</span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co">#&gt; $by.self</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co">#&gt;                  self.time self.pct total.time total.pct mem.total</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#&gt; &quot;$&quot;                   3.30    32.10       7.84     76.26    8162.1</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; &quot;as.environment&quot;      2.94    28.60       2.94     28.60    3105.6</span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; &quot;test_nextIter&quot;       1.24    12.06      10.28    100.00   10553.0</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; &quot;.External&quot;           0.86     8.37       0.86      8.37     813.3</span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; &quot;exists&quot;              0.76     7.39       0.76      7.39     790.3</span></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; &quot;get&quot;                 0.76     7.39       0.76      7.39     778.5</span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="co">#&gt; $by.total</span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co">#&gt;                 total.time total.pct mem.total self.time self.pct</span></span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="co">#&gt; &quot;test_nextIter&quot;      10.28       100     10553      1.24    12.06</span></span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a><span class="co">#&gt; &quot;&lt;Anonymous&gt;&quot;        10.28       100     10553      0.00     0.00</span></span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a><span class="co">#&gt; &quot;block_exec&quot;         10.28       100     10553      0.00     0.00</span></span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a><span class="co">#&gt; &quot;call_block&quot;         10.28       100     10553      0.00     0.00</span></span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a><span class="co">#&gt; &quot;do.call&quot;            10.28       100     10553      0.00     0.00</span></span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a><span class="co">#&gt; &quot;doTryCatch&quot;         10.28       100     10553      0.00     0.00</span></span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a><span class="co">#&gt; $sample.interval</span></span>
+<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a><span class="co">#&gt; [1] 0.02</span></span>
+<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a><span class="co">#&gt; $sampling.time</span></span>
+<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a><span class="co">#&gt; [1] 10.28</span></span></code></pre></div>
+</div>
+<div id="version-2.8.2-no-rcpp" class="section level4">
+<h4>Version <code>2.8.2</code> (No <code>Rcpp</code>)</h4>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>curr_version <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">packageVersion</span>(<span class="st">&quot;RcppAlgos&quot;</span>)))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>curr_version</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; [1] 282</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">curr_v =</span> <span class="fu">test_nextIter</span>(<span class="dv">15</span>, <span class="dv">8</span>, <span class="at">v =</span> curr_version))</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt;    expr      min      lq     mean   median       uq      max neval</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt;  curr_v 2.592881 2.66582 2.725664 2.697021 2.740502 4.556002   100</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">test_nextIter</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">v =</span> curr_version))</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt;   1.352   0.007   1.359</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">test_nextIter</span>(<span class="dv">15</span>, <span class="dv">8</span>, <span class="at">get_val =</span> <span class="cn">TRUE</span>, <span class="at">v =</span> curr_version),</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>          <span class="fu">comboGeneral</span>(<span class="dv">15</span>, <span class="dv">8</span>))</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="fu">Rprof</span>(<span class="st">&quot;Version250.out&quot;</span>, <span class="at">memory.profiling =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="fu">test_nextIter</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">v =</span> curr_version)</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="fu">Rprof</span>(<span class="cn">NULL</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">summaryRprof</span>(<span class="st">&quot;Version250.out&quot;</span>, <span class="at">memory =</span> <span class="st">&quot;both&quot;</span>), head)</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; $by.self</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt;                 self.time self.pct total.time total.pct mem.total</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; &quot;.Call&quot;              0.44    37.93       0.44     37.93     342.1</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; &quot;&lt;Anonymous&gt;&quot;        0.40    34.48       1.16    100.00     893.2</span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; &quot;test_nextIter&quot;      0.32    27.59       1.16    100.00     893.2</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt; $by.total</span></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt;                 total.time total.pct mem.total self.time self.pct</span></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; &quot;&lt;Anonymous&gt;&quot;         1.16       100     893.2      0.40    34.48</span></span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; &quot;test_nextIter&quot;       1.16       100     893.2      0.32    27.59</span></span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; &quot;block_exec&quot;          1.16       100     893.2      0.00     0.00</span></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; &quot;call_block&quot;          1.16       100     893.2      0.00     0.00</span></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt; &quot;do.call&quot;             1.16       100     893.2      0.00     0.00</span></span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="co">#&gt; &quot;doTryCatch&quot;          1.16       100     893.2      0.00     0.00</span></span>
+<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a><span class="co">#&gt; $sample.interval</span></span>
+<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a><span class="co">#&gt; [1] 0.02</span></span>
+<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a><span class="co">#&gt; $sampling.time</span></span>
+<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a><span class="co">#&gt; [1] 1.16</span></span></code></pre></div>
+</div>
+<div id="conclusions" class="section level4">
+<h4>Conclusions</h4>
+<p>It appears that memory is the issue in previous versions. Indeed, if
+we look at <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Memory-statistics-from-Rprof">Memory
+statistics from Rprof</a>, and view both files with
+<code>memory = &quot;stats&quot;</code> we see that the C funciton,
+<code>duplicate</code>, appears to be the main culprit.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">## We set index = 1 to ensure we get the very bottom of the stack</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">### Verison 2.4.3</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>v243 <span class="ot">&lt;-</span> <span class="fu">summaryRprof</span>(<span class="st">&quot;Version243.out&quot;</span>, <span class="at">memory =</span> <span class="st">&quot;stats&quot;</span>, <span class="at">index =</span> <span class="dv">1</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>v243</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; index: &quot;tryCatch&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;      vsize.small  max.vsize.small      vsize.large  max.vsize.large            nodes </span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt;          1073652         17383752            29464         15144240         20850022 </span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt;        max.nodes     duplications tot.duplications          samples </span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;        185810240            19044          9788589              514</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="do">## Version 2.5.0</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>v250 <span class="ot">&lt;-</span> <span class="fu">summaryRprof</span>(<span class="st">&quot;Version250.out&quot;</span>, <span class="at">memory =</span> <span class="st">&quot;stats&quot;</span>, <span class="at">index =</span> <span class="dv">1</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>v250</span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; index: &quot;tryCatch&quot;</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt;      vsize.small  max.vsize.small      vsize.large  max.vsize.large            nodes </span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt;          3484924         27881344           270247         15674344         16400051 </span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt;        max.nodes     duplications tot.duplications          samples </span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt;        188884920                2              124               58</span></span></code></pre></div>
+<p>With verison <code>2.5.0+</code> there are only 124
+<code>tot.duplications</code> whereas with version <code>2.4.3</code>
+there are millions of <code>tot.duplications</code>. In fact, there are
+a total of 9788589 duplications with version <code>2.4.3</code>. This
+together with <code>comboCount(25, 10) = 3,268,760</code> implies that
+the C funciton, <code>duplicate</code>, is called about 3 times per
+iteration with older versions (i.e. 9788589 <code>/ 3268760 ~=</code>
+2.9946).</p>
+</div>
+</div>
+<div id="iterating-over-partitions-and-compositions-of-a-number" class="section level3">
+<h3>Iterating over Partitions and Compositions of a Number</h3>
+<p>For most partition cases, we have all of the capabilities of the
+standard <code>comboIter</code> and <code>permuteIter</code> except for
+bidirectionality (i.e. the <code>prevIter</code> methods). For cases
+involving standard multisets we also don’t have random access
+methods.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="do">## Similar illustration of comboIter(5, 3) at the top</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">partitionsIter</span>(<span class="dv">16</span>, <span class="dv">4</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; [1]  1  2  3 10</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 4 9</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>iter <span class="ot">=</span> p<span class="sc">@</span><span class="fu">currIter</span>()</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(iter)) {</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>    <span class="fu">cat</span>(i, <span class="st">&quot; &quot;</span>, iter, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>    iter <span class="ot">=</span> p<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>    i <span class="ot">=</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a>}</span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 1   1 2 4 9 </span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 2   1 2 5 8 </span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 3   1 2 6 7 </span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 4   1 3 4 8 </span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; 5   1 3 5 7 </span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; 6   1 4 5 6 </span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; 7   2 3 4 7 </span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; 8   2 3 5 6 </span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; No more results.</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="fu">partitionsGeneral</span>(<span class="dv">16</span>, <span class="dv">4</span>, <span class="at">lower =</span> <span class="dv">2</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4]</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    4    9</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    5    8</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    6    7</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; [4,]    1    3    4    8</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; [5,]    1    3    5    7</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; [6,]    1    4    5    6</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; [7,]    2    3    4    7</span></span>
+<span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="co">#&gt; [8,]    2    3    5    6</span></span>
+<span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">summary</span>()</span>
+<span id="cb12-39"><a href="#cb12-39" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb12-40"><a href="#cb12-40" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Partitions of 16 into 4 parts&quot;</span></span>
+<span id="cb12-41"><a href="#cb12-41" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-42"><a href="#cb12-42" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb12-43"><a href="#cb12-43" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb12-44"><a href="#cb12-44" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-45"><a href="#cb12-45" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb12-46"><a href="#cb12-46" tabindex="-1"></a><span class="co">#&gt; [1] 9</span></span>
+<span id="cb12-47"><a href="#cb12-47" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-48"><a href="#cb12-48" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb12-49"><a href="#cb12-49" tabindex="-1"></a><span class="co">#&gt; [1] -1</span></span>
+<span id="cb12-50"><a href="#cb12-50" tabindex="-1"></a></span>
+<span id="cb12-51"><a href="#cb12-51" tabindex="-1"></a><span class="do">## Using random access</span></span>
+<span id="cb12-52"><a href="#cb12-52" tabindex="-1"></a>p[[<span class="dv">7</span>]]</span>
+<span id="cb12-53"><a href="#cb12-53" tabindex="-1"></a><span class="co">#&gt; [1] 1 4 5 6</span></span>
+<span id="cb12-54"><a href="#cb12-54" tabindex="-1"></a></span>
+<span id="cb12-55"><a href="#cb12-55" tabindex="-1"></a><span class="do">## No previous iterators</span></span>
+<span id="cb12-56"><a href="#cb12-56" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">prevIter</span>()</span>
+<span id="cb12-57"><a href="#cb12-57" tabindex="-1"></a><span class="co">#&gt; Error in eval(expr, envir, enclos): no slot of name &quot;prevIter&quot; for this object of class &quot;Partitions&quot;</span></span></code></pre></div>
+<p>For compositions, the options are limited to a subset of compositions
+with repetition.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="do">## Similar illustration of comboIter(5, 3) at the top</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">compositionsIter</span>(<span class="dv">6</span>, <span class="dv">3</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt; [1] 1 1 4</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; [1] 1 2 3</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>iter <span class="ot">=</span> p<span class="sc">@</span><span class="fu">currIter</span>()</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(iter)) {</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>    <span class="fu">cat</span>(i, <span class="st">&quot; &quot;</span>, iter, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    iter <span class="ot">=</span> p<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>    i <span class="ot">=</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>}</span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="co">#&gt; 1   1 2 3 </span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt; 2   1 3 2 </span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt; 3   1 4 1 </span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt; 4   2 1 3 </span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt; 5   2 2 2 </span></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a><span class="co">#&gt; 6   2 3 1 </span></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a><span class="co">#&gt; 7   3 1 2 </span></span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a><span class="co">#&gt; 8   3 2 1 </span></span>
+<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a><span class="co">#&gt; 9   4 1 1 </span></span>
+<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a><span class="co">#&gt; No more results.</span></span>
+<span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a><span class="fu">compositionsGeneral</span>(<span class="dv">6</span>, <span class="dv">3</span>, <span class="cn">TRUE</span>, <span class="at">lower =</span> <span class="dv">2</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb13-30"><a href="#cb13-30" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    2    3</span></span>
+<span id="cb13-31"><a href="#cb13-31" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    3    2</span></span>
+<span id="cb13-32"><a href="#cb13-32" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    4    1</span></span>
+<span id="cb13-33"><a href="#cb13-33" tabindex="-1"></a><span class="co">#&gt;  [4,]    2    1    3</span></span>
+<span id="cb13-34"><a href="#cb13-34" tabindex="-1"></a><span class="co">#&gt;  [5,]    2    2    2</span></span>
+<span id="cb13-35"><a href="#cb13-35" tabindex="-1"></a><span class="co">#&gt;  [6,]    2    3    1</span></span>
+<span id="cb13-36"><a href="#cb13-36" tabindex="-1"></a><span class="co">#&gt;  [7,]    3    1    2</span></span>
+<span id="cb13-37"><a href="#cb13-37" tabindex="-1"></a><span class="co">#&gt;  [8,]    3    2    1</span></span>
+<span id="cb13-38"><a href="#cb13-38" tabindex="-1"></a><span class="co">#&gt;  [9,]    4    1    1</span></span>
+<span id="cb13-39"><a href="#cb13-39" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">summary</span>()</span>
+<span id="cb13-41"><a href="#cb13-41" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb13-42"><a href="#cb13-42" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Compositions with repetition of 6 into 3 parts&quot;</span></span>
+<span id="cb13-43"><a href="#cb13-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-44"><a href="#cb13-44" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb13-45"><a href="#cb13-45" tabindex="-1"></a><span class="co">#&gt; [1] 11</span></span>
+<span id="cb13-46"><a href="#cb13-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-50"><a href="#cb13-50" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb13-51"><a href="#cb13-51" tabindex="-1"></a><span class="co">#&gt; [1] -1</span></span>
+<span id="cb13-52"><a href="#cb13-52" tabindex="-1"></a></span>
+<span id="cb13-53"><a href="#cb13-53" tabindex="-1"></a><span class="do">## Using random access</span></span>
+<span id="cb13-54"><a href="#cb13-54" tabindex="-1"></a>p[[<span class="dv">7</span>]]</span>
+<span id="cb13-55"><a href="#cb13-55" tabindex="-1"></a><span class="co">#&gt; [1] 2 3 1</span></span>
+<span id="cb13-56"><a href="#cb13-56" tabindex="-1"></a></span>
+<span id="cb13-57"><a href="#cb13-57" tabindex="-1"></a><span class="do">## No previous iterators</span></span>
+<span id="cb13-58"><a href="#cb13-58" tabindex="-1"></a>p<span class="sc">@</span><span class="fu">prevIter</span>()</span>
+<span id="cb13-59"><a href="#cb13-59" tabindex="-1"></a><span class="co">#&gt; Error in eval(expr, envir, enclos): no slot of name &quot;prevIter&quot; for this object of class &quot;Partitions&quot;</span></span></code></pre></div>
+</div>
+<div id="iterating-over-constrained-combinationspermutations" class="section level3">
+<h3>Iterating over Constrained Combinations/Permutations</h3>
+<p>Now, the combinatorial iterators have all of the features of their
+“general” analogs (I.e.
+<code>{combo|permute|partitions|compositions}General</code>), which
+includes constrained results.</p>
+<p>For general constrained cases, these iterators offer huge advantages
+over their “general” counterparts. Previously, one had to guess how many
+results there would be using the <code>upper</code> parameter as
+executing the function with no constraints meant the user could be
+waiting for a while or consume a large amount of resources.</p>
+<p>Another drawback is that it difficult to start generating from a
+particular point. With the “general” functions, if the
+<code>lower</code> parameter is used, we have to make a decision in
+order to disambiguate the use. Without constraints, using
+<code>lower</code> is easy to understand. It simply means to start
+generating results starting at a particular lexicographical result,
+which we can do efficiently (i.e. no need to generate the first
+<code>lower - 1</code> results). With constraints, it could mean one of
+two things:</p>
+<ol style="list-style-type: decimal">
+<li>Start checking from a particular lexicographical result without
+considering the constraint (as we do normally).</li>
+<li>Start generating results from a particular result with regards to
+the final constrained output.</li>
+</ol>
+<p>In <code>RcppAlgos</code> we have always used the first
+interpretation. A big downside for the second point is that we don’t
+have any fast algorithms for enumerating the total number of results,
+which reduces determining the <em>n<sup>th</sup></em> result to a brute
+force approach.</p>
+<p>With iterators, we can generate <em>n</em> results with
+<code>nextNIter(n)</code> or calling <code>nextIter()</code> <em>n</em>
+times (or some combination of the two). Then, if we want to continue
+iterating, we pick up where we left off fetching the <em>(n +
+1)<sup>th</sup></em> result and beyond (if there are any results left).
+This allows us to keep memory low without sacrificing our current
+state.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">55</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>s <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">print</span>(s)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt;  [1]  0.478135161 -2.818403214 -4.650360052  2.915492940  0.602420762 -4.257748260</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt;  [7] -3.684770642 -2.058761222  0.007612633 -4.116755421</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="do">## Using comboGeneral to retrieve all results</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="fu">comboGeneral</span>(s, <span class="dv">5</span>, <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>             <span class="at">comparisonFun =</span> <span class="st">&quot;&lt;&quot;</span>, <span class="at">limitConstraints =</span> <span class="sc">-</span><span class="dv">3</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt;            [,1]      [,2]      [,3]      [,4]         [,5]</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt;  [1,] -4.650360 -4.257748 -4.116755 -3.684771 -2.818403214</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;  [2,] -4.650360 -4.257748 -4.116755 -3.684771 -2.058761222</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;  [3,] -4.650360 -4.257748 -4.116755 -3.684771  0.007612633</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;  [4,] -4.650360 -4.257748 -4.116755 -3.684771  0.478135161</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt;  [5,] -4.650360 -4.257748 -4.116755 -3.684771  0.602420762</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt;  [6,] -4.650360 -4.257748 -4.116755 -2.818403 -2.058761222</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a><span class="co">#&gt;  [7,] -4.650360 -4.257748 -4.116755 -2.818403  0.007612633</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a><span class="co">#&gt;  [8,] -4.650360 -4.257748 -4.116755 -2.818403  0.478135161</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co">#&gt;  [9,] -4.650360 -4.257748 -4.116755 -2.818403  0.602420762</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co">#&gt; [10,] -4.650360 -4.257748 -4.116755 -2.058761  0.007612633</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a><span class="co">#&gt; [11,] -4.650360 -4.257748 -3.684771 -2.818403 -2.058761222</span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a><span class="co">#&gt; [12,] -4.650360 -4.257748 -3.684771 -2.818403  0.007612633</span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a><span class="co">#&gt; [13,] -4.650360 -4.116755 -3.684771 -2.818403 -2.058761222</span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a><span class="co">#&gt; [14,] -4.650360 -4.116755 -3.684771 -2.818403  0.007612633</span></span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a><span class="co">#&gt; [15,] -4.257748 -4.116755 -3.684771 -2.818403 -2.058761222</span></span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a><span class="do">## Using comboIter</span></span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">comboIter</span>(s, <span class="dv">5</span>, <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>              <span class="at">comparisonFun =</span> <span class="st">&quot;&lt;&quot;</span>, <span class="at">limitConstraints =</span> <span class="sc">-</span><span class="dv">3</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a><span class="do">## See the first result</span></span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a>a<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a><span class="co">#&gt; [1] -4.650360 -4.257748 -4.116755 -3.684771 -2.818403</span></span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a></span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a><span class="do">## Get the next three</span></span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a>a<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="dv">3</span>)</span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a><span class="co">#&gt;          [,1]      [,2]      [,3]      [,4]         [,5]</span></span>
+<span id="cb14-40"><a href="#cb14-40" tabindex="-1"></a><span class="co">#&gt; [1,] -4.65036 -4.257748 -4.116755 -3.684771 -2.058761222</span></span>
+<span id="cb14-41"><a href="#cb14-41" tabindex="-1"></a><span class="co">#&gt; [2,] -4.65036 -4.257748 -4.116755 -3.684771  0.007612633</span></span>
+<span id="cb14-42"><a href="#cb14-42" tabindex="-1"></a><span class="co">#&gt; [3,] -4.65036 -4.257748 -4.116755 -3.684771  0.478135161</span></span>
+<span id="cb14-43"><a href="#cb14-43" tabindex="-1"></a></span>
+<span id="cb14-44"><a href="#cb14-44" tabindex="-1"></a><span class="do">## See the summary... Note the totalResults and totalRemaining</span></span>
+<span id="cb14-45"><a href="#cb14-45" tabindex="-1"></a><span class="do">## fields are NA as we are not able to calculate this upfront.</span></span>
+<span id="cb14-46"><a href="#cb14-46" tabindex="-1"></a>a<span class="sc">@</span><span class="fu">summary</span>()</span>
+<span id="cb14-47"><a href="#cb14-47" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb14-48"><a href="#cb14-48" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 10 choose 5 where the mean is &lt; -3&quot;</span></span>
+<span id="cb14-49"><a href="#cb14-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-50"><a href="#cb14-50" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb14-51"><a href="#cb14-51" tabindex="-1"></a><span class="co">#&gt; [1] 4</span></span>
+<span id="cb14-52"><a href="#cb14-52" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-53"><a href="#cb14-53" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb14-54"><a href="#cb14-54" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb14-55"><a href="#cb14-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-56"><a href="#cb14-56" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb14-57"><a href="#cb14-57" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb14-58"><a href="#cb14-58" tabindex="-1"></a></span>
+<span id="cb14-59"><a href="#cb14-59" tabindex="-1"></a></span>
+<span id="cb14-60"><a href="#cb14-60" tabindex="-1"></a>a<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="dv">3</span>)</span>
+<span id="cb14-61"><a href="#cb14-61" tabindex="-1"></a><span class="co">#&gt;          [,1]      [,2]      [,3]      [,4]         [,5]</span></span>
+<span id="cb14-62"><a href="#cb14-62" tabindex="-1"></a><span class="co">#&gt; [1,] -4.65036 -4.257748 -4.116755 -3.684771  0.602420762</span></span>
+<span id="cb14-63"><a href="#cb14-63" tabindex="-1"></a><span class="co">#&gt; [2,] -4.65036 -4.257748 -4.116755 -2.818403 -2.058761222</span></span>
+<span id="cb14-64"><a href="#cb14-64" tabindex="-1"></a><span class="co">#&gt; [3,] -4.65036 -4.257748 -4.116755 -2.818403  0.007612633</span></span>
+<span id="cb14-65"><a href="#cb14-65" tabindex="-1"></a></span>
+<span id="cb14-66"><a href="#cb14-66" tabindex="-1"></a><span class="do">## Get the rest</span></span>
+<span id="cb14-67"><a href="#cb14-67" tabindex="-1"></a>a<span class="sc">@</span><span class="fu">nextRemaining</span>()</span>
+<span id="cb14-68"><a href="#cb14-68" tabindex="-1"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]         [,5]</span></span>
+<span id="cb14-69"><a href="#cb14-69" tabindex="-1"></a><span class="co">#&gt; [1,] -4.650360 -4.257748 -4.116755 -2.818403  0.478135161</span></span>
+<span id="cb14-70"><a href="#cb14-70" tabindex="-1"></a><span class="co">#&gt; [2,] -4.650360 -4.257748 -4.116755 -2.818403  0.602420762</span></span>
+<span id="cb14-71"><a href="#cb14-71" tabindex="-1"></a><span class="co">#&gt; [3,] -4.650360 -4.257748 -4.116755 -2.058761  0.007612633</span></span>
+<span id="cb14-72"><a href="#cb14-72" tabindex="-1"></a><span class="co">#&gt; [4,] -4.650360 -4.257748 -3.684771 -2.818403 -2.058761222</span></span>
+<span id="cb14-73"><a href="#cb14-73" tabindex="-1"></a><span class="co">#&gt; [5,] -4.650360 -4.257748 -3.684771 -2.818403  0.007612633</span></span>
+<span id="cb14-74"><a href="#cb14-74" tabindex="-1"></a><span class="co">#&gt; [6,] -4.650360 -4.116755 -3.684771 -2.818403 -2.058761222</span></span>
+<span id="cb14-75"><a href="#cb14-75" tabindex="-1"></a><span class="co">#&gt; [7,] -4.650360 -4.116755 -3.684771 -2.818403  0.007612633</span></span>
+<span id="cb14-76"><a href="#cb14-76" tabindex="-1"></a><span class="co">#&gt; [8,] -4.257748 -4.116755 -3.684771 -2.818403 -2.058761222</span></span></code></pre></div>
+<p>They are very efficient as well. Consider the example below where we
+use <code>comboGeneral</code> to generate all results without capping
+the output. Again, we are in a situation where we don’t know <em>a
+priori</em> how many results we will obtain.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">77</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>s <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">100</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="do">## Over one trillion results to sift through</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">comboCount</span>(s, <span class="dv">15</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; [1] 2.25083e+12</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>time_all <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>    <span class="fu">print</span>(</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>        <span class="fu">nrow</span>(</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>            <span class="fu">comboGeneral</span>(s, <span class="dv">15</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>                         <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>                         <span class="at">comparisonFun =</span> <span class="st">&quot;&gt;&quot;</span>,</span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>                         <span class="at">limitConstraints =</span> <span class="dv">83</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>        )</span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>    )</span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>})</span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a><span class="co">#&gt; [1] 38935252</span></span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>time_all</span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a><span class="co">#&gt;   2.087   2.156   5.338</span></span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a><span class="do">## Over 4 GBs of results</span></span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>(<span class="dv">38935252</span> <span class="sc">*</span> <span class="dv">15</span> <span class="sc">*</span> <span class="dv">8</span>) <span class="sc">/</span> <span class="dv">2</span><span class="sc">^</span><span class="dv">30</span></span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a><span class="co">#&gt; [1] 4.351353</span></span></code></pre></div>
+<p>Just over 5 seconds isn’t bad, however 4 GBs could put a strain on
+your computer.</p>
+<p>Let’s use iterators instead and only generate ten thousand at a time
+to keep memory low. We should mention here that the iterators are
+“smart” in that there is no fear in requesting more results than what is
+actually left. For example, if in the problem above, we had iterated to
+the 38<sup>th</sup> million result and requested 10 million more, we
+would only obtain 935,252 results.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>time_iter <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>    a <span class="ot">=</span> <span class="fu">comboIter</span>(s, <span class="dv">15</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                  <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>                  <span class="at">comparisonFun =</span> <span class="st">&quot;&gt;&quot;</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>                  <span class="at">limitConstraints =</span> <span class="dv">83</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>    <span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(a<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="fl">1e4</span>))) {}</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    <span class="fu">print</span>(a<span class="sc">@</span><span class="fu">summary</span>())</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>})</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; No more results.</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 50 choose 15 where the mean is &gt; 83&quot;</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; [1] 38935252</span></span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb16-23"><a href="#cb16-23" tabindex="-1"></a>time_iter</span>
+<span id="cb16-24"><a href="#cb16-24" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb16-25"><a href="#cb16-25" tabindex="-1"></a><span class="co">#&gt;   1.652   0.327   1.979</span></span>
+<span id="cb16-26"><a href="#cb16-26" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" tabindex="-1"></a><span class="do">## Only 1 MBs per iteration</span></span>
+<span id="cb16-28"><a href="#cb16-28" tabindex="-1"></a>(<span class="fl">1e4</span> <span class="sc">*</span> <span class="dv">15</span> <span class="sc">*</span> <span class="dv">8</span>) <span class="sc">/</span> <span class="dv">2</span><span class="sc">^</span><span class="dv">20</span></span>
+<span id="cb16-29"><a href="#cb16-29" tabindex="-1"></a><span class="co">#&gt; [1] 1.144409</span></span></code></pre></div>
+<p>Wow! Using the iterator approach is not only easier on your RAM, but
+faster as well (5.338 <code>/</code> 1.979 <code>~=</code> 2.6973)! Our
+gains came strictly from memory efficiency (From over 4 GBs to just over
+1 MB) as the underlying algorithm is exactly the same.</p>
+<p>Lastly, using iterators make some problems possible that would
+otherwise be intractable because of hardware. For instance, using the
+example above, if we changed the <code>limitConstraints</code> from 83
+to 81 and tried the first approach your computer will most certainly
+become unusable (at least mine did). My memory usage shot up to over 30
+GB and R became unresponsive. After a restart, I tried the second
+approach and obtained my result in just over 10 seconds barely noticing
+any jumps in memory:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="do">## Don&#39;t run... consumes a huge chunk of memory</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co"># time_all &lt;- system.time({</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co">#     print(</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co">#         nrow(</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#             comboGeneral(s, 15,</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#                          constraintFun = &quot;mean&quot;,</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#                          comparisonFun = &quot;&gt;&quot;,</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#                          limitConstraints = 81)  ## 83 --&gt;&gt; 81</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#         )</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#     )</span></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="do">## No problem with iterators</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>    a <span class="ot">=</span> <span class="fu">comboIter</span>(s, <span class="dv">15</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>                  <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a>                  <span class="at">comparisonFun =</span> <span class="st">&quot;&gt;&quot;</span>,</span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a>                  <span class="at">limitConstraints =</span> <span class="dv">81</span>)   <span class="do">## 83 --&gt;&gt; 81</span></span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a>    <span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(a<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="fl">1e4</span>))) {}</span>
+<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a>    <span class="fu">print</span>(a<span class="sc">@</span><span class="fu">summary</span>())</span>
+<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a>})</span>
+<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a><span class="co">#&gt; No more results.</span></span>
+<span id="cb17-24"><a href="#cb17-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-25"><a href="#cb17-25" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb17-26"><a href="#cb17-26" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 50 choose 15 where the mean is &gt; 81&quot;</span></span>
+<span id="cb17-27"><a href="#cb17-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-28"><a href="#cb17-28" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb17-29"><a href="#cb17-29" tabindex="-1"></a><span class="co">#&gt; [1] 271309888</span></span>
+<span id="cb17-30"><a href="#cb17-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-31"><a href="#cb17-31" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb17-32"><a href="#cb17-32" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb17-33"><a href="#cb17-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb17-35"><a href="#cb17-35" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb17-36"><a href="#cb17-36" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb17-37"><a href="#cb17-37" tabindex="-1"></a><span class="co">#&gt;  11.461   2.372  13.834</span></span></code></pre></div>
+</div>
+<div id="iterating-over-partitions-of-groups" class="section level3">
+<h3>Iterating over Partitions of Groups</h3>
+<p>As of version <code>2.8.2</code>, we can iterate over partitions of
+groups with <code>comboGroupsIter</code>.</p>
+<p>Just as with <code>partitionsIter</code>, we have all of the
+capabilities of the standard <code>comboIter</code> and
+<code>permuteIter</code> except for bidirectionality (i.e. the
+<code>prevIter</code> methods).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="do">## Similar illustration of comboIter(5, 3) at the top</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>cg <span class="ot">=</span> <span class="fu">comboGroupsIter</span>(<span class="dv">6</span>, <span class="dv">2</span>, <span class="at">retType =</span> <span class="st">&quot;3Darray&quot;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>cg<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt; [1,]    1    4</span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; [2,]    2    5</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; [3,]    3    6</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>cg<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; [2,]    2    5</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt; [3,]    4    6</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>iter <span class="ot">=</span> cg<span class="sc">@</span><span class="fu">currIter</span>()</span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.null</span>(iter)) {</span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st"> &quot;</span>, i, <span class="st">&quot;-------------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a>    <span class="fu">print</span>(iter)</span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>    iter <span class="ot">=</span> cg<span class="sc">@</span><span class="fu">nextIter</span>()</span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>    i <span class="ot">=</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a>}</span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co">#&gt;   1 -------------</span></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3</span></span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="co">#&gt; [2,]    2    5</span></span>
+<span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a><span class="co">#&gt; [3,]    4    6</span></span>
+<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a><span class="co">#&gt;   2 -------------</span></span>
+<span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3</span></span>
+<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a><span class="co">#&gt; [2,]    2    4</span></span>
+<span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a><span class="co">#&gt; [3,]    5    6</span></span>
+<span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a><span class="co">#&gt;   3 -------------</span></span>
+<span id="cb18-38"><a href="#cb18-38" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-39"><a href="#cb18-39" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3</span></span>
+<span id="cb18-40"><a href="#cb18-40" tabindex="-1"></a><span class="co">#&gt; [2,]    2    4</span></span>
+<span id="cb18-41"><a href="#cb18-41" tabindex="-1"></a><span class="co">#&gt; [3,]    6    5</span></span>
+<span id="cb18-42"><a href="#cb18-42" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-43"><a href="#cb18-43" tabindex="-1"></a><span class="co">#&gt;   4 -------------</span></span>
+<span id="cb18-44"><a href="#cb18-44" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-46"><a href="#cb18-46" tabindex="-1"></a><span class="co">#&gt; [2,]    3    5</span></span>
+<span id="cb18-47"><a href="#cb18-47" tabindex="-1"></a><span class="co">#&gt; [3,]    4    6</span></span>
+<span id="cb18-48"><a href="#cb18-48" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-49"><a href="#cb18-49" tabindex="-1"></a><span class="co">#&gt;   5 -------------</span></span>
+<span id="cb18-50"><a href="#cb18-50" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-51"><a href="#cb18-51" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-52"><a href="#cb18-52" tabindex="-1"></a><span class="co">#&gt; [2,]    3    4</span></span>
+<span id="cb18-53"><a href="#cb18-53" tabindex="-1"></a><span class="co">#&gt; [3,]    5    6</span></span>
+<span id="cb18-54"><a href="#cb18-54" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-55"><a href="#cb18-55" tabindex="-1"></a><span class="co">#&gt;   6 -------------</span></span>
+<span id="cb18-56"><a href="#cb18-56" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-57"><a href="#cb18-57" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-58"><a href="#cb18-58" tabindex="-1"></a><span class="co">#&gt; [2,]    3    4</span></span>
+<span id="cb18-59"><a href="#cb18-59" tabindex="-1"></a><span class="co">#&gt; [3,]    6    5</span></span>
+<span id="cb18-60"><a href="#cb18-60" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-61"><a href="#cb18-61" tabindex="-1"></a><span class="co">#&gt;   7 -------------</span></span>
+<span id="cb18-62"><a href="#cb18-62" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-63"><a href="#cb18-63" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-64"><a href="#cb18-64" tabindex="-1"></a><span class="co">#&gt; [2,]    4    3</span></span>
+<span id="cb18-65"><a href="#cb18-65" tabindex="-1"></a><span class="co">#&gt; [3,]    5    6</span></span>
+<span id="cb18-66"><a href="#cb18-66" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-67"><a href="#cb18-67" tabindex="-1"></a><span class="co">#&gt;   8 -------------</span></span>
+<span id="cb18-68"><a href="#cb18-68" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-69"><a href="#cb18-69" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-70"><a href="#cb18-70" tabindex="-1"></a><span class="co">#&gt; [2,]    4    3</span></span>
+<span id="cb18-71"><a href="#cb18-71" tabindex="-1"></a><span class="co">#&gt; [3,]    6    5</span></span>
+<span id="cb18-72"><a href="#cb18-72" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-73"><a href="#cb18-73" tabindex="-1"></a><span class="co">#&gt;   9 -------------</span></span>
+<span id="cb18-74"><a href="#cb18-74" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-75"><a href="#cb18-75" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-76"><a href="#cb18-76" tabindex="-1"></a><span class="co">#&gt; [2,]    5    3</span></span>
+<span id="cb18-77"><a href="#cb18-77" tabindex="-1"></a><span class="co">#&gt; [3,]    6    4</span></span>
+<span id="cb18-78"><a href="#cb18-78" tabindex="-1"></a><span class="co">#&gt; No more results.</span></span>
+<span id="cb18-79"><a href="#cb18-79" tabindex="-1"></a></span>
+<span id="cb18-80"><a href="#cb18-80" tabindex="-1"></a><span class="fu">comboGroups</span>(<span class="dv">6</span>, <span class="dv">2</span>, <span class="at">retType =</span> <span class="st">&quot;3Darray&quot;</span>, <span class="at">lower =</span> <span class="dv">2</span>)</span>
+<span id="cb18-81"><a href="#cb18-81" tabindex="-1"></a><span class="co">#&gt; , , Grp1</span></span>
+<span id="cb18-82"><a href="#cb18-82" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-83"><a href="#cb18-83" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb18-84"><a href="#cb18-84" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    2    4</span></span>
+<span id="cb18-85"><a href="#cb18-85" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    2    5</span></span>
+<span id="cb18-86"><a href="#cb18-86" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    2    6</span></span>
+<span id="cb18-87"><a href="#cb18-87" tabindex="-1"></a><span class="co">#&gt;  [4,]    1    3    4</span></span>
+<span id="cb18-88"><a href="#cb18-88" tabindex="-1"></a><span class="co">#&gt;  [5,]    1    3    5</span></span>
+<span id="cb18-89"><a href="#cb18-89" tabindex="-1"></a><span class="co">#&gt;  [6,]    1    3    6</span></span>
+<span id="cb18-90"><a href="#cb18-90" tabindex="-1"></a><span class="co">#&gt;  [7,]    1    4    5</span></span>
+<span id="cb18-91"><a href="#cb18-91" tabindex="-1"></a><span class="co">#&gt;  [8,]    1    4    6</span></span>
+<span id="cb18-92"><a href="#cb18-92" tabindex="-1"></a><span class="co">#&gt;  [9,]    1    5    6</span></span>
+<span id="cb18-93"><a href="#cb18-93" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-94"><a href="#cb18-94" tabindex="-1"></a><span class="co">#&gt; , , Grp2</span></span>
+<span id="cb18-95"><a href="#cb18-95" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-96"><a href="#cb18-96" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb18-97"><a href="#cb18-97" tabindex="-1"></a><span class="co">#&gt;  [1,]    3    5    6</span></span>
+<span id="cb18-98"><a href="#cb18-98" tabindex="-1"></a><span class="co">#&gt;  [2,]    3    4    6</span></span>
+<span id="cb18-99"><a href="#cb18-99" tabindex="-1"></a><span class="co">#&gt;  [3,]    3    4    5</span></span>
+<span id="cb18-100"><a href="#cb18-100" tabindex="-1"></a><span class="co">#&gt;  [4,]    2    5    6</span></span>
+<span id="cb18-101"><a href="#cb18-101" tabindex="-1"></a><span class="co">#&gt;  [5,]    2    4    6</span></span>
+<span id="cb18-102"><a href="#cb18-102" tabindex="-1"></a><span class="co">#&gt;  [6,]    2    4    5</span></span>
+<span id="cb18-103"><a href="#cb18-103" tabindex="-1"></a><span class="co">#&gt;  [7,]    2    3    6</span></span>
+<span id="cb18-104"><a href="#cb18-104" tabindex="-1"></a><span class="co">#&gt;  [8,]    2    3    5</span></span>
+<span id="cb18-105"><a href="#cb18-105" tabindex="-1"></a><span class="co">#&gt;  [9,]    2    3    4</span></span>
+<span id="cb18-106"><a href="#cb18-106" tabindex="-1"></a></span>
+<span id="cb18-107"><a href="#cb18-107" tabindex="-1"></a>cg<span class="sc">@</span><span class="fu">summary</span>()</span>
+<span id="cb18-108"><a href="#cb18-108" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb18-109"><a href="#cb18-109" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Partition of v of length 6 into 2 uniform groups&quot;</span></span>
+<span id="cb18-110"><a href="#cb18-110" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-111"><a href="#cb18-111" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb18-112"><a href="#cb18-112" tabindex="-1"></a><span class="co">#&gt; [1] 11</span></span>
+<span id="cb18-113"><a href="#cb18-113" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-114"><a href="#cb18-114" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb18-115"><a href="#cb18-115" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb18-116"><a href="#cb18-116" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-117"><a href="#cb18-117" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb18-118"><a href="#cb18-118" tabindex="-1"></a><span class="co">#&gt; [1] -1</span></span>
+<span id="cb18-119"><a href="#cb18-119" tabindex="-1"></a></span>
+<span id="cb18-120"><a href="#cb18-120" tabindex="-1"></a><span class="do">## Using random access</span></span>
+<span id="cb18-121"><a href="#cb18-121" tabindex="-1"></a>cg[[<span class="dv">7</span>]]</span>
+<span id="cb18-122"><a href="#cb18-122" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2</span></span>
+<span id="cb18-123"><a href="#cb18-123" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2</span></span>
+<span id="cb18-124"><a href="#cb18-124" tabindex="-1"></a><span class="co">#&gt; [2,]    3    4</span></span>
+<span id="cb18-125"><a href="#cb18-125" tabindex="-1"></a><span class="co">#&gt; [3,]    6    5</span></span>
+<span id="cb18-126"><a href="#cb18-126" tabindex="-1"></a></span>
+<span id="cb18-127"><a href="#cb18-127" tabindex="-1"></a><span class="do">## No previous iterators</span></span>
+<span id="cb18-128"><a href="#cb18-128" tabindex="-1"></a>cg<span class="sc">@</span><span class="fu">prevIter</span>()</span>
+<span id="cb18-129"><a href="#cb18-129" tabindex="-1"></a><span class="co">#&gt; Error in eval(expr, envir, enclos): no slot of name &quot;prevIter&quot; for this object of class &quot;ComboGroups&quot;</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

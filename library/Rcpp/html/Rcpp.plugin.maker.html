@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><title>R: Facilitating making package plugins</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>Rcpp.plugin.maker {Rcpp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='Rcpp.plugin.maker'>
+Facilitating making package plugins
+</h2>
+
+<h3>Description</h3>
+
+<p>This function helps packages making inline plugins. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>Rcpp.plugin.maker(
+  include.before = "", 
+  include.after = "", 
+  LinkingTo = unique(c(package, "Rcpp")), 
+  Depends = unique(c(package, "Rcpp")), 
+  Imports = unique(c(package, "Rcpp")), 
+  libs = "", 
+  Makevars = NULL, 
+  Makevars.win = NULL, 
+  package = "Rcpp"
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="Rcpp.plugin.maker_:_include.before">include.before</code></td>
+<td>
+<p>Code to be included before the &lsquo;<span class="samp">&#8288;Rcpp.h&#8288;</span>&rsquo; file</p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_include.after">include.after</code></td>
+<td>
+<p>Code to be included after the &lsquo;<span class="samp">&#8288;Rcpp.h&#8288;</span>&rsquo; file </p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_LinkingTo">LinkingTo</code></td>
+<td>
+<p>Packages to be added to the &lsquo;<span class="samp">&#8288;LinkingTo&#8288;</span>&rsquo; field </p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_Depends">Depends</code></td>
+<td>
+<p>Packages to be added to the &lsquo;<span class="samp">&#8288;Depends&#8288;</span>&rsquo; field [deprecated] </p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_Imports">Imports</code></td>
+<td>
+<p>Packages to be added to the &lsquo;<span class="samp">&#8288;Depends&#8288;</span>&rsquo; field </p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_libs">libs</code></td>
+<td>
+<p>library flags</p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_Makevars">Makevars</code></td>
+<td>
+<p>content for a &lsquo;<span class="samp">&#8288;Makevars&#8288;</span>&rsquo; file, or <code>NULL</code></p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_Makevars.win">Makevars.win</code></td>
+<td>
+<p>content for a &lsquo;<span class="samp">&#8288;Makevars.win&#8288;</span>&rsquo; file, or <code>NULL</code></p>
+</td></tr>
+<tr><td><code id="Rcpp.plugin.maker_:_package">package</code></td>
+<td>
+<p>The package this plugin is for. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A function that is suitable as a plugin. See for example the 
+&lsquo;<span class="samp">&#8288;RcppArmadillo&#8288;</span>&rsquo; package that uses this to create its inline plugin. 
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>Rcpp</em> version 1.0.11 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

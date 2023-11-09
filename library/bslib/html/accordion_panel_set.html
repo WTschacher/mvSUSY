@@ -1,0 +1,137 @@
+<!DOCTYPE html><html><head><title>R: Dynamically update accordions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>accordion_panel_set {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='accordion_panel_set'>Dynamically update accordions</h2>
+
+<h3>Description</h3>
+
+<p>Dynamically (i.e., programmatically) update/modify <code><a href="../../bslib/help/accordion.html">accordion()</a></code>s in a
+Shiny app. These functions require an <code>id</code> to be provided to the
+<code>accordion()</code> and must also be called within an active Shiny session.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>accordion_panel_set(id, values, session = get_current_session())
+
+accordion_panel_open(id, values, session = get_current_session())
+
+accordion_panel_close(id, values, session = get_current_session())
+
+accordion_panel_insert(
+  id,
+  panel,
+  target = NULL,
+  position = c("after", "before"),
+  session = get_current_session()
+)
+
+accordion_panel_remove(id, target, session = get_current_session())
+
+accordion_panel_update(
+  id,
+  target,
+  ...,
+  title = NULL,
+  value = NULL,
+  icon = NULL,
+  session = get_current_session()
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="accordion_panel_set_:_id">id</code></td>
+<td>
+<p>an character string that matches an existing <code><a href="../../bslib/help/accordion.html">accordion()</a></code>'s <code>id</code>.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_values">values</code></td>
+<td>
+<p>either a character string (used to identify particular
+<code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>s by their <code>value</code>) or <code>TRUE</code> (i.e., all <code>values</code>).</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_session">session</code></td>
+<td>
+<p>a shiny session object (the default should almost always be
+used).</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_panel">panel</code></td>
+<td>
+<p>an <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_target">target</code></td>
+<td>
+<p>The <code>value</code> of an existing panel to insert next to. If
+removing: the <code>value</code> of the <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code> to remove.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_position">position</code></td>
+<td>
+<p>Should <code>panel</code> be added before or after the target? When
+<code>target</code> is <code>NULL</code> (the default), <code>"after"</code> will append after the last
+panel and <code>"before"</code> will prepend before the first panel.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_...">...</code></td>
+<td>
+<p>Named arguments become attributes on the <code style="white-space: pre;">&#8288;&lt;div class="accordion"&gt;&#8288;</code>
+element. Unnamed arguments should be <code>accordion_panel()</code>s.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_title">title</code></td>
+<td>
+<p>A title to appear in the <code>accordion_panel()</code>'s header.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_value">value</code></td>
+<td>
+<p>A character string that uniquely identifies this panel.</p>
+</td></tr>
+<tr><td><code id="accordion_panel_set_:_icon">icon</code></td>
+<td>
+<p>A <a href="../../htmltools/help/builder.html">htmltools::tag</a> child (e.g., <code><a href="../../bsicons/help/bs_icon.html">bsicons::bs_icon()</a></code>) which is positioned just before the <code>title</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>accordion_panel_set()</code>: same as <code>accordion_panel_open()</code>, except it
+also closes any currently open panels.
+</p>
+</li>
+<li> <p><code>accordion_panel_open()</code>: open <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>s.
+</p>
+</li>
+<li> <p><code>accordion_panel_close()</code>: close <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>s.
+</p>
+</li>
+<li> <p><code>accordion_panel_insert()</code>: insert a new <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>
+</p>
+</li>
+<li> <p><code>accordion_panel_remove()</code>: remove <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>s.
+</p>
+</li>
+<li> <p><code>accordion_panel_update()</code>: update a <code><a href="../../bslib/help/accordion_panel.html">accordion_panel()</a></code>.
+</p>
+</li></ul>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

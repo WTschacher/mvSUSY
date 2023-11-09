@@ -1,0 +1,69 @@
+<!DOCTYPE html><html><head><title>R: Highlight/query data based on primary key</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>highlight_key {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='highlight_key'>Highlight/query data based on primary key</h2>
+
+<h3>Description</h3>
+
+<p>This function simply creates an object of class <a href="../../crosstalk/help/SharedData.html">crosstalk::SharedData</a>.
+The reason it exists is to make it easier to teach others how to leverage
+its functionality in plotly. It also makes it more discoverable if one
+is already aware of <a href="../../plotly/help/highlight.html">highlight</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>highlight_key(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="highlight_key_:_x">x</code></td>
+<td>
+<p>a plotly visualization or a <code>data.frame</code>.</p>
+</td></tr>
+<tr><td><code id="highlight_key_:_...">...</code></td>
+<td>
+<p>arguments passed to <code>crosstalk::SharedData$new()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <a href="../../crosstalk/help/SharedData.html">crosstalk::SharedData</a>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../plotly/help/highlight.html">highlight</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

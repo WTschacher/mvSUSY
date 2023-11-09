@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: Manipulate file paths</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>path_file {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='path_file'>Manipulate file paths</h2>
+
+<h3>Description</h3>
+
+<p><code>path_file()</code> returns the filename portion of the path, <code>path_dir()</code> returns
+the directory portion. <code>path_ext()</code> returns the last extension (if any) for a
+path. <code>path_ext_remove()</code> removes the last extension and returns the rest of
+the path. <code>path_ext_set()</code> replaces the extension with a new extension. If
+there is no existing extension the new extension is appended.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>path_file(path)
+
+path_dir(path)
+
+path_ext(path)
+
+path_ext_remove(path)
+
+path_ext_set(path, ext)
+
+path_ext(path) &lt;- value
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="path_file_:_path">path</code></td>
+<td>
+<p>A character vector of one or more paths.</p>
+</td></tr>
+<tr><td><code id="path_file_:_ext">ext</code>, <code id="path_file_:_value">value</code></td>
+<td>
+<p>The new file extension.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note because these are not full file paths they return regular character
+vectors, not <code>fs_path()</code> objects.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/help/basename.html">base::basename()</a></code>, <code><a href="../../base/help/basename.html">base::dirname()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>path_file("dir/file.zip")
+
+path_dir("dir/file.zip")
+
+path_ext("dir/file.zip")
+
+path_ext("file.tar.gz")
+
+path_ext_remove("file.tar.gz")
+
+# Only one level of extension is removed
+path_ext_set(path_ext_remove("file.tar.gz"), "zip")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

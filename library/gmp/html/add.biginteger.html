@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head><title>R: Basic Arithmetic Operators for Large Integers (&quot;bigz&quot;)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bigz_operators {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bigz_operators'>Basic Arithmetic Operators for Large Integers (&quot;bigz&quot;)</h2>
+
+<h3>Description</h3>
+
+<p>Addition, substraction, multiplication, (integer) division,
+remainder of division, multiplicative inverse,
+power and logarithm functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>add.bigz(e1, e2)
+sub.bigz(e1, e2 = NULL)
+mul.bigz(e1, e2)
+div.bigz(e1, e2)
+divq.bigz(e1,e2) ## ==  e1 %/% e2
+mod.bigz(e1, e2) ## ==  e1 %%  e2
+## S3 method for class 'bigz'
+abs(x)
+
+inv.bigz(a, b,...)## == (1 / a) (modulo b)
+
+pow.bigz(e1, e2,...)## == e1 ^ e2
+
+## S3 method for class 'bigz'
+log(x, base=exp(1))
+## S3 method for class 'bigz'
+log2(x)
+## S3 method for class 'bigz'
+log10(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bigz_operators_:_x">x</code></td>
+<td>
+<p>bigz, integer or string from an integer</p>
+</td></tr>
+<tr><td><code id="bigz_operators_:_e1">e1</code>, <code id="bigz_operators_:_e2">e2</code>, <code id="bigz_operators_:_a">a</code>, <code id="bigz_operators_:_b">b</code></td>
+<td>
+<p>bigz, integer or string from an integer</p>
+</td></tr>
+<tr><td><code id="bigz_operators_:_base">base</code></td>
+<td>
+<p>base of the logarithm; base e as default</p>
+</td></tr>
+<tr><td><code id="bigz_operators_:_...">...</code></td>
+<td>
+<p>Additional parameters</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Operators can be used directly when objects are of class bigz:
+a + b, log(a), etc.
+</p>
+<p>For details about the internal modulus state, <em>and</em> the rules
+applied for arithmetic operations on big integers with a modulus,
+see the <code><a href="../../gmp/help/bigz.html">bigz</a></code> help page.
+</p>
+<p><code>a / b</code>  <code class="reqn">=</code>  <code>div(a,b)</code> returns a rational number
+unless the operands have a (matching) modulus where
+<code>a * b^-1</code> results.
+<br />
+<code>a %/% b</code> (or, equivalently, <code>divq(a,b)</code>) returns the
+quotient of simple <em>integer</em> division (with truncation towards zero),
+possibly re-adding a modulus at the end (but <em>not</em> using a
+modulus like in <code>a / b</code>).
+</p>
+<p><code>r &lt;- inv.bigz(a, m)</code>, the multiplicative inverse of
+<code>a</code> modulo <code class="reqn">m</code>, corresponds to <code>1/a</code> or <code>a ^-1</code>
+from above <em>when</em> <code>a</code> has modulus <code>m</code>.  Note that
+<code class="reqn">a</code> not always has an inverse modulo <code class="reqn">m</code>, in which case
+<code>r</code> will be <code><a href="../../base/html/NA.html">NA</a></code> with a warning that can be turned
+off via </p>
+<pre>options("gmp:warnNoInv" = FALSE)</pre><p>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Apart from <code>/</code> (or <code>div</code>), where rational numbers
+(<code><a href="../../gmp/help/bigq.html">bigq</a></code>) may result, these functions return an object of
+class <code>"bigz"</code>, representing the result of the arithmetic
+operation.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Immanuel Scholz and Antoine Lucas</p>
+
+
+<h3>References</h3>
+
+<p>The GNU MP Library, see <a href="https://gmplib.org">https://gmplib.org</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># 1+1=2
+as.bigz(1) + 1
+as.bigz(2)^10
+as.bigz(2)^200
+
+# if my.large.num.string is set to a number, this returns the least byte
+(my.large.num.string &lt;- paste(sample(0:9, 200, replace=TRUE), collapse=""))
+mod.bigz(as.bigz(my.large.num.string), "0xff")
+
+# power exponents can be up to MAX_INT in size, or unlimited if a
+# bigz's modulus is set.
+pow.bigz(10,10000)
+
+## Modulo 11,   7 and 8 are inverses :
+as.bigz(7, mod = 11) * 8 ## ==&gt;  1  (mod 11)
+inv.bigz(7, 11)## hence, 8
+a &lt;- 1:10
+(i.a &lt;- inv.bigz(a, 11))
+d &lt;- as.bigz(7)
+a %/% d  # = divq(a, d)
+a %%  d  # = mod.bigz (a, d)
+
+(ii &lt;- inv.bigz(1:10, 16))
+## with 5 warnings (one for each NA)
+op &lt;- options("gmp:warnNoInv" = FALSE)
+i2 &lt;- inv.bigz(1:10, 16) # no warnings
+(i3 &lt;- 1 / as.bigz(1:10, 16))
+i4 &lt;- as.bigz(1:10, 16) ^ -1
+stopifnot(identical(ii, i2),
+	  identical(as.bigz(i2, 16), i3),
+	  identical(i3, i4))
+options(op)# revert previous options' settings
+
+stopifnot(inv.bigz(7, 11) == 8,
+          all(as.bigz(i.a, 11) * a == 1),
+          identical(a %/% d, divq.bigz(1:10, 7)),
+          identical(a %%  d, mod.bigz (a, d))
+ )
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

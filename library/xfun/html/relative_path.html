@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><title>R: Get the relative path of a path relative to a directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>relative_path {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='relative_path'>Get the relative path of a path relative to a directory</h2>
+
+<h3>Description</h3>
+
+<p>Given a directory, return the relative path that is relative to this
+directory. For example, the path &lsquo;<span class="file">foo/bar.txt</span>&rsquo; relative to the directory
+&lsquo;<span class="file">foo/</span>&rsquo; is &lsquo;<span class="file">bar.txt</span>&rsquo;, and the path &lsquo;<span class="file">/a/b/c.txt</span>&rsquo; relative to
+&lsquo;<span class="file">/d/e/</span>&rsquo; is &lsquo;<span class="file">../../a/b/c.txt</span>&rsquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>relative_path(x, dir = ".", use.. = TRUE, error = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="relative_path_:_x">x</code></td>
+<td>
+<p>A vector of paths to be converted to relative paths.</p>
+</td></tr>
+<tr><td><code id="relative_path_:_dir">dir</code></td>
+<td>
+<p>Path to a directory.</p>
+</td></tr>
+<tr><td><code id="relative_path_:_use..">use..</code></td>
+<td>
+<p>Whether to use double-dots (&lsquo;<span class="file">..</span>&rsquo;) in the relative path. A
+double-dot indicates the parent directory (starting from the directory
+provided by the <code>dir</code> argument).</p>
+</td></tr>
+<tr><td><code id="relative_path_:_error">error</code></td>
+<td>
+<p>Whether to signal an error if a path cannot be converted to a
+relative path.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector of relative paths if the conversion succeeded; otherwise the
+original paths when <code>error = FALSE</code>, and an error when <code>error = TRUE</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>xfun::relative_path("foo/bar.txt", "foo/")
+xfun::relative_path("foo/bar/a.txt", "foo/haha/")
+xfun::relative_path(getwd())
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

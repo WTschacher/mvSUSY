@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Journal of Clinical Oncology Color Palettes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pal_jco {ggsci}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pal_jco'>Journal of Clinical Oncology Color Palettes</h2>
+
+<h3>Description</h3>
+
+<p>Color palette inspired by plots in <em>Journal of Clinical Oncology</em>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pal_jco(palette = c("default"), alpha = 1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pal_jco_:_palette">palette</code></td>
+<td>
+<p>Palette type.
+Currently there is one available option: <code>"default"</code>
+(10-color palette).</p>
+</td></tr>
+<tr><td><code id="pal_jco_:_alpha">alpha</code></td>
+<td>
+<p>Transparency level, a real number in (0, 1].
+See <code>alpha</code> in <code><a href="../../grDevices/help/rgb.html">rgb</a></code> for details.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Nan Xiao &lt;<a href="mailto:me@nanx.me">me@nanx.me</a>&gt; |
+&lt;<a href="https://nanx.me">https://nanx.me</a>&gt;
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library("scales")
+show_col(pal_jco("default")(10))
+show_col(pal_jco("default", alpha = 0.6)(10))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggsci</em> version 3.0.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

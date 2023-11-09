@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Register an inline plugin</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>registerPlugin {Rcpp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='registerPlugin'>
+Register an inline plugin
+</h2>
+
+<h3>Description</h3>
+
+<p>Register an <a href="../../inline/help/plugins.html">inline plugin</a> for use with 
+<code><a href="../../Rcpp/help/sourceCpp.html">sourceCpp</a></code> or <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>. Inline plugins are functions
+that return a list with additional includes, environment variables, and
+other compilation context. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>registerPlugin(name, plugin)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="registerPlugin_:_name">name</code></td>
+<td>
+<p>Name of the inline plugin</p>
+</td></tr>
+<tr><td><code id="registerPlugin_:_plugin">plugin</code></td>
+<td>
+<p>Inline plugin function</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Plugins can be added to <code><a href="../../Rcpp/help/sourceCpp.html">sourceCpp</a></code> compilations using the
+<code><a href="../../Rcpp/help/pluginsAttribute.html">Rcpp::plugins</a></code> attribute.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Rcpp/help/pluginsAttribute.html">Rcpp::plugins</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>Rcpp</em> version 1.0.11 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

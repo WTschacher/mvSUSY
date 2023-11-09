@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><title>R: Create an annotation layer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>annotate {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='annotate'>Create an annotation layer</h2>
+
+<h3>Description</h3>
+
+<p>This function adds geoms to a plot, but unlike a typical geom function,
+the properties of the geoms are not mapped from variables of a data frame,
+but are instead passed in as vectors. This is useful for adding small annotations
+(such as text labels) or if you have your data in vectors, and for some
+reason don't want to put them in a data frame.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>annotate(
+  geom,
+  x = NULL,
+  y = NULL,
+  xmin = NULL,
+  xmax = NULL,
+  ymin = NULL,
+  ymax = NULL,
+  xend = NULL,
+  yend = NULL,
+  ...,
+  na.rm = FALSE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="annotate_:_geom">geom</code></td>
+<td>
+<p>name of geom to use for annotation</p>
+</td></tr>
+<tr><td><code id="annotate_:_x">x</code>, <code id="annotate_:_y">y</code>, <code id="annotate_:_xmin">xmin</code>, <code id="annotate_:_ymin">ymin</code>, <code id="annotate_:_xmax">xmax</code>, <code id="annotate_:_ymax">ymax</code>, <code id="annotate_:_xend">xend</code>, <code id="annotate_:_yend">yend</code></td>
+<td>
+<p>positioning aesthetics -
+you must specify at least one of these.</p>
+</td></tr>
+<tr><td><code id="annotate_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../ggplot2/help/layer.html">layer()</a></code>. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+<code>colour = "red"</code> or <code>size = 3</code>. They may also be parameters
+to the paired geom/stat.</p>
+</td></tr>
+<tr><td><code id="annotate_:_na.rm">na.rm</code></td>
+<td>
+<p>If <code>FALSE</code>, the default, missing values are removed with
+a warning. If <code>TRUE</code>, missing values are silently removed.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that all position aesthetics are scaled (i.e. they will expand the
+limits of the plot so they are visible), but all other aesthetics are
+set. This means that layers created with this function will never
+affect the legend.
+</p>
+
+
+<h3>Unsupported geoms</h3>
+
+<p>Due to their special nature, reference line geoms <code><a href="../../ggplot2/help/geom_abline.html">geom_abline()</a></code>,
+<code><a href="../../ggplot2/help/geom_hline.html">geom_hline()</a></code>, and <code><a href="../../ggplot2/help/geom_vline.html">geom_vline()</a></code> can't be used with <code><a href="../../ggplot2/help/annotate.html">annotate()</a></code>.
+You can use these geoms directory for annotations.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>p &lt;- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+p + annotate("text", x = 4, y = 25, label = "Some text")
+p + annotate("text", x = 2:5, y = 25, label = "Some text")
+p + annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21,
+  alpha = .2)
+p + annotate("segment", x = 2.5, xend = 4, y = 15, yend = 25,
+  colour = "blue")
+p + annotate("pointrange", x = 3.5, y = 20, ymin = 12, ymax = 28,
+  colour = "red", size = 2.5, linewidth = 1.5)
+
+p + annotate("text", x = 2:3, y = 20:21, label = c("my label", "label 2"))
+
+p + annotate("text", x = 4, y = 25, label = "italic(R) ^ 2 == 0.75",
+  parse = TRUE)
+p + annotate("text", x = 4, y = 25,
+  label = "paste(italic(R) ^ 2, \" = .75\")", parse = TRUE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

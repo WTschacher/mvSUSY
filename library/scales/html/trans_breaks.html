@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><title>R: Pretty breaks on transformed scale</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>trans_breaks {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='trans_breaks'>Pretty breaks on transformed scale</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>These often do not produce very attractive breaks.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>trans_breaks(trans, inv, n = 5, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="trans_breaks_:_trans">trans</code></td>
+<td>
+<p>function of single variable, <code>x</code>, that given a numeric
+vector returns the transformed values</p>
+</td></tr>
+<tr><td><code id="trans_breaks_:_inv">inv</code></td>
+<td>
+<p>inverse of the transformation function</p>
+</td></tr>
+<tr><td><code id="trans_breaks_:_n">n</code></td>
+<td>
+<p>desired number of ticks</p>
+</td></tr>
+<tr><td><code id="trans_breaks_:_...">...</code></td>
+<td>
+<p>other arguments passed on to pretty</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>trans_breaks("log10", function(x) 10^x)(c(1, 1e6))
+trans_breaks("sqrt", function(x) x^2)(c(1, 100))
+trans_breaks(function(x) 1 / x, function(x) 1 / x)(c(1, 100))
+trans_breaks(function(x) -x, function(x) -x)(c(1, 100))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

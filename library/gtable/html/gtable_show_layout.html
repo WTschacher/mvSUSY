@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Visualise the layout of a gtable.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>gtable_show_layout {gtable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='gtable_show_layout'>Visualise the layout of a gtable.</h2>
+
+<h3>Description</h3>
+
+<p>This function is a simple wrapper around <code><a href="../../grid/help/grid.show.layout.html">grid::grid.show.layout()</a></code> that
+allows you to inspect the layout of the gtable.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>gtable_show_layout(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="gtable_show_layout_:_x">x</code></td>
+<td>
+<p>a gtable object</p>
+</td></tr>
+<tr><td><code id="gtable_show_layout_:_...">...</code></td>
+<td>
+
+<p>Arguments passed on to <code><a href="../../grid/help/grid.show.layout.html">grid::grid.show.layout</a></code>
+</p>
+
+<dl>
+<dt><code>l</code></dt><dd><p>A Grid layout object.</p>
+</dd>
+<dt><code>newpage</code></dt><dd><p>A logical value indicating whether to move on
+to a new page before drawing the diagram.</p>
+</dd>
+<dt><code>vp.ex</code></dt><dd><p>positive number, typically in <code class="reqn">(0,1]</code>, specifying the
+scaling of the layout.</p>
+</dd>
+<dt><code>bg</code></dt><dd><p>The colour used for the background.</p>
+</dd>
+<dt><code>cell.border</code></dt><dd><p>The colour used to draw the borders of the cells
+in the layout.</p>
+</dd>
+<dt><code>cell.fill</code></dt><dd><p>The colour used to fill the cells in the layout.</p>
+</dd>
+<dt><code>cell.label</code></dt><dd><p>A logical indicating whether the layout cells
+should be labelled.</p>
+</dd>
+<dt><code>label.col</code></dt><dd><p>The colour used for layout cell labels.</p>
+</dd>
+<dt><code>unit.col</code></dt><dd><p>The colour used for labelling the widths/heights of
+columns/rows.</p>
+</dd>
+<dt><code>vp</code></dt><dd><p>A Grid viewport object (or NULL).</p>
+</dd>
+</dl>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>gt &lt;- gtable(widths = grid::unit(c(1, 0.5, 2), c("null", "cm", "null")),
+             heights = grid::unit(c(0.2, 1, 3), c("inch", "null", "cm")))
+gtable_show_layout(gt)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gtable</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

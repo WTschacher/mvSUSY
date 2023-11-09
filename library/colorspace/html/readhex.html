@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Read Hexadecimal Color Descriptions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>readhex {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='readhex'>Read Hexadecimal Color Descriptions</h2>
+
+<h3>Description</h3>
+
+<p>This function reads a set of hexadecimal color descriptions from a file and
+creates a color object containing the corresponding colors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>readhex(file = "", class = "RGB")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="readhex_:_file">file</code></td>
+<td>
+<p>The file containing the color descriptions.</p>
+</td></tr>
+<tr><td><code id="readhex_:_class">class</code></td>
+<td>
+<p>The kind of color object to be returned.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The file is assumed to contain hexadecimal color descriptions of the form
+<code>#RRGGBB</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An color object of the specified class containing the color
+descriptions.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Ross Ihaka
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../colorspace/help/writehex.html">writehex</a></code>, <code><a href="../../colorspace/help/readRGB.html">readRGB</a></code>,
+<code><a href="../../colorspace/help/hex2RGB.html">hex2RGB</a></code>, <code><a href="../../colorspace/help/RGB.html">RGB</a></code>, <code><a href="../../colorspace/help/HSV.html">HSV</a></code>,
+<code><a href="../../colorspace/help/XYZ.html">XYZ</a></code>, <code><a href="../../colorspace/help/LAB.html">LAB</a></code>, <code><a href="../../colorspace/help/polarLAB.html">polarLAB</a></code>,
+<code><a href="../../colorspace/help/LUV.html">LUV</a></code>, <code><a href="../../colorspace/help/polarLUV.html">polarLUV</a></code>,
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+rgb &lt;- readhex("pastel.txt")
+hsv &lt;- readhex("pastel.txt", "HSV")
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

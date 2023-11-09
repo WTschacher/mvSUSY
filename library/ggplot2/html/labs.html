@@ -1,0 +1,131 @@
+<!DOCTYPE html><html><head><title>R: Modify axis, legend, and plot labels</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>labs {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='labs'>Modify axis, legend, and plot labels</h2>
+
+<h3>Description</h3>
+
+<p>Good labels are critical for making your plots accessible to a wider
+audience. Always ensure the axis and legend labels display the full
+variable name. Use the plot <code>title</code> and <code>subtitle</code> to explain the
+main findings. It's common to use the <code>caption</code> to provide information
+about the data source. <code>tag</code> can be used for adding identification tags
+to differentiate between multiple plots.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>labs(
+  ...,
+  title = waiver(),
+  subtitle = waiver(),
+  caption = waiver(),
+  tag = waiver(),
+  alt = waiver(),
+  alt_insight = waiver()
+)
+
+xlab(label)
+
+ylab(label)
+
+ggtitle(label, subtitle = waiver())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="labs_:_...">...</code></td>
+<td>
+<p>A list of new name-value pairs. The name should be an aesthetic.</p>
+</td></tr>
+<tr><td><code id="labs_:_title">title</code></td>
+<td>
+<p>The text for the title.</p>
+</td></tr>
+<tr><td><code id="labs_:_subtitle">subtitle</code></td>
+<td>
+<p>The text for the subtitle for the plot which will be
+displayed below the title.</p>
+</td></tr>
+<tr><td><code id="labs_:_caption">caption</code></td>
+<td>
+<p>The text for the caption which will be displayed in the
+bottom-right of the plot by default.</p>
+</td></tr>
+<tr><td><code id="labs_:_tag">tag</code></td>
+<td>
+<p>The text for the tag label which will be displayed at the
+top-left of the plot by default.</p>
+</td></tr>
+<tr><td><code id="labs_:_alt">alt</code>, <code id="labs_:_alt_insight">alt_insight</code></td>
+<td>
+<p>Text used for the generation of alt-text for the plot.
+See <a href="../../ggplot2/help/get_alt_text.html">get_alt_text</a> for examples.</p>
+</td></tr>
+<tr><td><code id="labs_:_label">label</code></td>
+<td>
+<p>The title of the respective axis (for <code>xlab()</code> or <code>ylab()</code>) or
+of the plot (for <code>ggtitle()</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>You can also set axis and legend labels in the individual scales (using
+the first argument, the <code>name</code>). If you're changing other scale options, this
+is recommended.
+</p>
+<p>If a plot already has a title, subtitle, caption, etc., and you want to
+remove it, you can do so by setting the respective argument to <code>NULL</code>. For
+example, if plot <code>p</code> has a subtitle, then <code>p + labs(subtitle = NULL)</code> will
+remove the subtitle from the plot.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>p &lt;- ggplot(mtcars, aes(mpg, wt, colour = cyl)) + geom_point()
+p + labs(colour = "Cylinders")
+p + labs(x = "New x label")
+
+# The plot title appears at the top-left, with the subtitle
+# display in smaller text underneath it
+p + labs(title = "New plot title")
+p + labs(title = "New plot title", subtitle = "A subtitle")
+
+# The caption appears in the bottom-right, and is often used for
+# sources, notes or copyright
+p + labs(caption = "(based on data from ...)")
+
+# The plot tag appears at the top-left, and is typically used
+# for labelling a subplot with a letter.
+p + labs(title = "title", tag = "A")
+
+# If you want to remove a label, set it to NULL.
+p +
+ labs(title = "title") +
+ labs(title = NULL)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

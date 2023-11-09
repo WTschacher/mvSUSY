@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: Flatten a string</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_flatten {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_flatten'>Flatten a string</h2>
+
+<h3>Description</h3>
+
+<p><code>str_flatten()</code> reduces a character vector to a single string. This is a
+summary function because regardless of the length of the input <code>x</code>, it
+always returns a single string.
+</p>
+<p><code>str_flatten_comma()</code> is a variation designed specifically for flattening
+with commas. It automatically recognises if <code>last</code> uses the Oxford comma
+and handles the special case of 2 elements.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_flatten(string, collapse = "", last = NULL, na.rm = FALSE)
+
+str_flatten_comma(string, last = NULL, na.rm = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_flatten_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_flatten_:_collapse">collapse</code></td>
+<td>
+<p>String to insert between each piece. Defaults to <code>""</code>.</p>
+</td></tr>
+<tr><td><code id="str_flatten_:_last">last</code></td>
+<td>
+<p>Optional string to use in place of the final separator.</p>
+</td></tr>
+<tr><td><code id="str_flatten_:_na.rm">na.rm</code></td>
+<td>
+<p>Remove missing values? If <code>FALSE</code> (the default), the result
+will be <code>NA</code> if any element of <code>string</code> is <code>NA</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A string, i.e. a character vector of length 1.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>str_flatten(letters)
+str_flatten(letters, "-")
+
+str_flatten(letters[1:3], ", ")
+
+# Use last to customise the last component
+str_flatten(letters[1:3], ", ", " and ")
+
+# this almost works if you want an Oxford (aka serial) comma
+str_flatten(letters[1:3], ", ", ", and ")
+
+# but it will always add a comma, even when not necessary
+str_flatten(letters[1:2], ", ", ", and ")
+
+# str_flatten_comma knows how to handle the Oxford comma
+str_flatten_comma(letters[1:3], ", and ")
+str_flatten_comma(letters[1:2], ", and ")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

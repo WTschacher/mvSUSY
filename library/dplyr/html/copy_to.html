@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head><title>R: Copy a local data frame to a remote src</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>copy_to {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='copy_to'>Copy a local data frame to a remote src</h2>
+
+<h3>Description</h3>
+
+<p>This function uploads a local data frame into a remote data source, creating
+the table definition as needed. Wherever possible, the new object will be
+temporary, limited to the current connection to the source.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>copy_to(dest, df, name = deparse(substitute(df)), overwrite = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="copy_to_:_dest">dest</code></td>
+<td>
+<p>remote data source</p>
+</td></tr>
+<tr><td><code id="copy_to_:_df">df</code></td>
+<td>
+<p>local data frame</p>
+</td></tr>
+<tr><td><code id="copy_to_:_name">name</code></td>
+<td>
+<p>name for new remote table.</p>
+</td></tr>
+<tr><td><code id="copy_to_:_overwrite">overwrite</code></td>
+<td>
+<p>If <code>TRUE</code>, will overwrite an existing table with
+name <code>name</code>. If <code>FALSE</code>, will throw an error if <code>name</code> already
+exists.</p>
+</td></tr>
+<tr><td><code id="copy_to_:_...">...</code></td>
+<td>
+<p>other parameters passed to methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code>tbl</code> object in the remote source
+</p>
+
+
+<h3>Methods</h3>
+
+<p>This function is a <strong>generic</strong>, which means that packages can provide
+implementations (methods) for other classes. See the documentation of
+individual methods for extra arguments and differences in behaviour.
+</p>
+<p>The following methods are currently available in loaded packages:
+no methods found.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/collect.html">collect()</a></code> for the opposite action; downloading remote data into
+a local dbl.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+iris2 &lt;- dbplyr::src_memdb() %&gt;% copy_to(iris, overwrite = TRUE)
+iris2
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

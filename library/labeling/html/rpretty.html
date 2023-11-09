@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><title>R: R's pretty algorithm implemented in R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>rpretty {labeling}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='rpretty'>R's pretty algorithm implemented in R</h2>
+
+<h3>Description</h3>
+
+<p>R's pretty algorithm implemented in R
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>  rpretty(dmin, dmax, m = 6, n = floor(m) - 1,
+    min.n = n%/%3, shrink.sml = 0.75, high.u.bias = 1.5,
+    u5.bias = 0.5 + 1.5 * high.u.bias)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="rpretty_:_dmin">dmin</code></td>
+<td>
+<p>minimum of the data range</p>
+</td></tr>
+<tr><td><code id="rpretty_:_dmax">dmax</code></td>
+<td>
+<p>maximum of the data range</p>
+</td></tr>
+<tr><td><code id="rpretty_:_m">m</code></td>
+<td>
+<p>number of axis labels</p>
+</td></tr>
+<tr><td><code id="rpretty_:_n">n</code></td>
+<td>
+<p>number of axis intervals (specify one of
+<code>m</code> or <code>n</code>)</p>
+</td></tr>
+<tr><td><code id="rpretty_:_min.n">min.n</code></td>
+<td>
+<p>nonnegative integer giving the
+<em>minimal</em> number of intervals. If <code>min.n == 0</code>,
+<code>pretty(.)</code> may return a single value.</p>
+</td></tr>
+<tr><td><code id="rpretty_:_shrink.sml">shrink.sml</code></td>
+<td>
+<p>positive numeric by a which a default
+scale is shrunk in the case when <code>range(x)</code> is very
+small (usually 0).</p>
+</td></tr>
+<tr><td><code id="rpretty_:_high.u.bias">high.u.bias</code></td>
+<td>
+<p>non-negative numeric, typically
+<code>&gt; 1</code>. The interval unit is determined as
+<code>{1,2,5,10}</code> times <code>b</code>, a power of 10. Larger
+<code>high.u.bias</code> values favor larger units.</p>
+</td></tr>
+<tr><td><code id="rpretty_:_u5.bias">u5.bias</code></td>
+<td>
+<p>non-negative numeric multiplier favoring
+factor 5 over 2. Default and 'optimal': <code>u5.bias =
+  .5 + 1.5*high.u.bias</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>vector of axis label locations
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Justin Talbot <a href="mailto:justintalbot@gmail.com">justintalbot@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988)
+<em>The New S Language</em>. Wadsworth &amp; Brooks/Cole.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>labeling</em> version 0.4.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

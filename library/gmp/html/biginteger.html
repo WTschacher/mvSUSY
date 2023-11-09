@@ -1,0 +1,249 @@
+<!DOCTYPE html><html><head><title>R: Large Sized Integer Values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bigz {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bigz'>Large Sized Integer Values</h2>
+
+<h3>Description</h3>
+
+<p>Class <code>"bigz"</code> encodes arbitrarily large integers (via GMP).
+A simple S3 class (internally a <code><a href="../../base/html/raw.html">raw</a></code> vector), it has been
+registered as formal (S4) class (via <code><a href="../../methods/html/setOldClass.html">setOldClass</a></code>), too.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>as.bigz(a, mod = NA)
+NA_bigz_
+## S3 method for class 'bigz'
+as.character(x, b = 10, ...)
+
+is.bigz(x)
+## S3 method for class 'bigz'
+is.na(x)
+## S3 method for class 'bigz'
+print(x, quote=FALSE, initLine = is.null(modulus(x)), ...)
+c_bigz(L)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bigz_:_a">a</code></td>
+<td>
+<p>either <code><a href="../../base/html/integer.html">integer</a></code>, <code><a href="../../base/html/numeric.html">numeric</a></code> (i.e.,
+<code><a href="../../base/html/double.html">double</a></code>) or <code><a href="../../base/html/character.html">character</a></code> vector.
+</p>
+<p>If character: the strings either start with <code>0x</code> for hexadecimal, <code>0b</code> for
+binary, <code>0</code> for octal, or without a <code>0*</code> prefix for decimal values.
+Formatting errors are signalled as with <code><a href="../../base/html/stop.html">stop</a></code>.</p>
+</td></tr>
+<tr><td><code id="bigz_:_b">b</code></td>
+<td>
+<p>base: from 2 to 36</p>
+</td></tr>
+<tr><td><code id="bigz_:_x">x</code></td>
+<td>
+<p>a &ldquo;big integer number&rdquo; (vector), of class <code>"bigz"</code>.</p>
+</td></tr>
+<tr><td><code id="bigz_:_...">...</code></td>
+<td>
+<p>additional arguments passed to methods</p>
+</td></tr>
+<tr><td><code id="bigz_:_mod">mod</code></td>
+<td>
+<p>an integer, numeric, string or bigz of the internal modulus, see below.</p>
+</td></tr>
+<tr><td><code id="bigz_:_quote">quote</code></td>
+<td>
+<p>(for printing:) logical indicating if the numbers
+should be quoted (as characters are);  the default used to be
+<code>TRUE</code> (implicitly) till 2011.</p>
+</td></tr>
+<tr><td><code id="bigz_:_initLine">initLine</code></td>
+<td>
+<p>(for printing:) logical indicating if an
+<b>init</b>ial line (with the class and length or dimension) should
+be printed.  The default prints it for those cases where the class
+is not easily discernable from the print output.</p>
+</td></tr>
+<tr><td><code id="bigz_:_L">L</code></td>
+<td>
+<p>a <code><a href="../../base/html/list.html">list</a></code> where each element contains <code>"bigz"</code>
+numbers, for <code>c_bigz()</code>, this allows something like an
+<code><a href="../../base/html/lapply.html">sapply</a>()</code> for <code>"bigz"</code> vectors, see <code>sapplyZ()</code>
+in the examples.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Bigz's are integers of arbitrary, but given length (means: only
+restricted by the host memory).  Basic arithmetic operations can be performed
+on bigzs as addition, subtraction, multiplication, division, modulation
+(remainder of division), power, multiplicative inverse, calculating of the
+greatest common divisor, test whether the integer is prime and other operations
+needed when performing standard cryptographic operations.
+</p>
+<p>For a review of basic arithmetics, see <code><a href="../../gmp/help/add.bigz.html">add.bigz</a></code>.
+</p>
+<p>Comparison are supported, i.e., <code>"=="</code>, <code>"!="</code>,
+<code>"&lt;"</code>, <code>"&lt;="</code>, <code>"&gt;"</code>, and <code>"&gt;="</code>.
+</p>
+<p><code>NA_bigz_</code> is computed on package load time as <code>as.bigz(NA)</code>.
+</p>
+<p>Objects of class <code>"bigz"</code> may have a &ldquo;modulus&rdquo;, accessible
+via <code><a href="../../gmp/help/modulus.html">modulus</a>()</code>, currently as an attribute <code>mod</code>.
+When the object has such a modulus <code class="reqn">m</code>, arithmetic is performed
+<em>&ldquo;modulo m&rdquo;</em>, mathematically &ldquo;within the
+ring <code class="reqn">Z/mZ</code>&rdquo;.  For many operations, this means
+</p>
+<pre>   result &lt;- mod.bigz(result, m)  ## == result %% m
+</pre>
+<p>is called after performing the arithmetic operation and the result
+will have the attribute <code>mod</code> set accordingly.
+This however does not apply, e.g., for <code>/</code>, where
+<code class="reqn">a / b := a b^{-1}</code> and
+<code class="reqn">b^{-1}</code> is the <em>multiplicate inverse</em> of <code class="reqn">b</code>
+with respect to ring arithmetic, or <code><a href="../../base/html/NA.html">NA</a></code> with a warning
+when the inverse does not exist.  The warning can be turned off via
+<code>options("gmp:warnModMismatch" = FALSE)</code>
+</p>
+<p>Powers of bigzs can only be performed, if either a modulus is going to
+be applied to the result bigz or if the exponent fits into an integer
+value.  So, if you want to calculate a power in a finite group
+(&ldquo;modulo c&rdquo;), for large <code class="reqn">c</code> do not use
+<code>a ^ b %% c</code>, but rather <code>as.bigz(a,c) ^ b</code>.
+</p>
+<p>The following rules for the result's modulus apply when performing
+arithmetic operations on <code>bigz</code>s:
+</p>
+
+<ul>
+<li><p> If none of the operand has a modulus set, the result will not have a modulus.
+</p>
+</li>
+<li><p> If both operands have a different modulus, the result will not have a
+modulus, except in case of <code><a href="../../gmp/help/mod.bigz.html">mod.bigz</a></code>, where the second operand's
+value is used.
+</p>
+</li>
+<li><p> If only one of the operands has a modulus or both have a common (the
+same), it is set and used for the arithmetic operations, except in
+case of <code>mod.bigz</code>, where the second operand's value is used.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>An <span class="rlang"><b>R</b></span> object of (S3) class <code>"bigz"</code>, representing the argument
+(<code>x</code> or <code>a</code>).
+</p>
+
+
+<h3>Note</h3>
+
+<pre>
+    x &lt;- as.bigz(1234567890123456789012345678901234567890)
+  </pre>
+<p>will not work as <span class="rlang"><b>R</b></span> converts the number to a double, losing precision
+and only then convert to a <code>"bigz"</code> object.
+</p>
+<p>Instead, use the syntax
+</p>
+<pre>
+    x &lt;- as.bigz("1234567890123456789012345678901234567890")
+  </pre>
+
+
+<h3>Author(s)</h3>
+
+<p>Immanuel Scholz</p>
+
+
+<h3>References</h3>
+
+<p>The GNU MP Library, see <a href="https://gmplib.org">https://gmplib.org</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## 1+1=2
+a &lt;- as.bigz(1)
+a + a
+
+## Two non-small Mersenne primes:
+two &lt;- as.bigz(2)
+p1 &lt;- two^107 -1 ; isprime(p1); p1
+p2 &lt;- two^127 -1 ; isprime(p2); p2
+
+stopifnot( is.na(NA_bigz_) )
+
+## Calculate c = x^e mod n
+## --------------------------------------------------------------------
+x &lt;- as.bigz("0x123456789abcdef") # my secret message
+e &lt;- as.bigz(3) # something smelling like a dangerous public RSA exponent
+(n &lt;- p1 * p2) #  a product of two primes
+as.character(n, b=16)# as both primes were Mersenne's..
+
+## recreate the three numbers above [for demo below]:
+n. &lt;- n; x. &lt;- x; e. &lt;- e # save
+Rev &lt;- function() { n &lt;&lt;- n.; x &lt;&lt;- x.; e &lt;&lt;- e.}
+
+# first way to do it right
+modulus(x) &lt;- n
+c &lt;- x ^ e ; c ; Rev()
+
+# similar second way (makes more sense if you reuse e) to do it right
+modulus(e) &lt;- n
+c2 &lt;- x ^ e
+stopifnot(identical(c2, c), is.bigz(c2)) ; Rev()
+
+# third way to do it right
+c3 &lt;- x ^ as.bigz(e, n) ; stopifnot(identical(c3, c))
+
+# fourth way to do it right
+c4 &lt;- as.bigz(x, n) ^ e ; stopifnot(identical(c4, c))
+
+# WRONG! (although very beautiful. Ok only for very small 'e' as here)
+cc &lt;- x ^ e %% n
+cc == c
+
+# Return result in hexa
+as.character(c, b=16)
+
+# Depict the "S4-class" bigz, i.e., the formal (S4) methods:
+if(require("Rmpfr")) # mostly interesting there
+  showMethods(class="bigz")
+
+# an  sapply() version that works for big integers "bigz":
+sapplyZ &lt;- function(X, FUN, ...) c_bigz(lapply(X, FUN, ...))
+
+# dummy example showing it works (here):
+zz &lt;- as.bigz(3)^(1000+ 1:999)
+z1 &lt;- sapplyZ(zz, function(z) z^2)
+stopifnot( identical(z1, zz^2) )
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

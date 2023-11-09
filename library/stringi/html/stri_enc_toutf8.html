@@ -1,0 +1,114 @@
+<!DOCTYPE html><html><head><title>R: Convert Strings To UTF-8</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>stri_enc_toutf8 {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='stri_enc_toutf8'>Convert Strings To UTF-8</h2>
+
+<h3>Description</h3>
+
+<p>Converts character strings with declared marked encodings
+to UTF-8 strings.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stri_enc_toutf8(str, is_unknown_8bit = FALSE, validate = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="stri_enc_toutf8_:_str">str</code></td>
+<td>
+<p>a character vector to be converted</p>
+</td></tr>
+<tr><td><code id="stri_enc_toutf8_:_is_unknown_8bit">is_unknown_8bit</code></td>
+<td>
+<p>a single logical value, see Details</p>
+</td></tr>
+<tr><td><code id="stri_enc_toutf8_:_validate">validate</code></td>
+<td>
+<p>a single logical value (can be <code>NA</code>), see Details</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>is_unknown_8bit</code> is set to <code>FALSE</code> (the default),
+then R encoding marks are used, see <code><a href="../../stringi/help/stri_enc_mark.html">stri_enc_mark</a></code>.
+Bytes-marked strings will cause the function to fail.
+</p>
+<p>If a string is in UTF-8 and has a byte order mark (BOM),
+then the BOM will be silently removed from the output string.
+</p>
+<p>If the default encoding is UTF-8, see <code><a href="../../stringi/help/stri_enc_get.html">stri_enc_get</a></code>,
+then strings marked with <code>native</code> are &ndash; for efficiency reasons &ndash;
+returned as-is, i.e., with unchanged markings.
+A similar behavior is observed when calling <code><a href="../../base/html/Encoding.html">enc2utf8</a></code>.
+</p>
+<p>For <code>is_unknown_8bit=TRUE</code>, if a string is declared to be neither
+in ASCII nor in UTF-8, then all byte codes &gt; 127 are replaced with
+the Unicode REPLACEMENT CHARACTER (\Ufffd).
+Note that the REPLACEMENT CHARACTER may be interpreted as Unicode
+missing value for single characters.
+Here a <code>bytes</code>-marked string is assumed to use an 8-bit encoding
+that extends the ASCII map.
+</p>
+<p>What is more, setting <code>validate</code> to <code>TRUE</code>
+or <code>NA</code> in both cases validates the resulting UTF-8 byte stream.
+If <code>validate=TRUE</code>, then
+in case of any incorrect byte sequences, they will be
+replaced with the REPLACEMENT CHARACTER.
+This option may be used in a case
+where you want to fix an invalid UTF-8 byte sequence.
+For <code>NA</code>, a bogus string will be replaced with a missing value.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a character vector.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p><a href="https://www.gagolewski.com/">Marek Gagolewski</a> and other contributors
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The official online manual of <span class="pkg">stringi</span> at <a href="https://stringi.gagolewski.com/">https://stringi.gagolewski.com/</a>
+</p>
+<p>Gagolewski M., <span class="pkg">stringi</span>: Fast and portable character string processing in R, <em>Journal of Statistical Software</em> 103(2), 2022, 1-59, <a href="https://doi.org/10.18637/jss.v103.i02">doi:10.18637/jss.v103.i02</a>
+</p>
+<p>Other encoding_conversion: 
+<code><a href="../../stringi/help/about_encoding.html">about_encoding</a></code>,
+<code><a href="../../stringi/help/stri_enc_fromutf32.html">stri_enc_fromutf32</a>()</code>,
+<code><a href="../../stringi/help/stri_enc_toascii.html">stri_enc_toascii</a>()</code>,
+<code><a href="../../stringi/help/stri_enc_tonative.html">stri_enc_tonative</a>()</code>,
+<code><a href="../../stringi/help/stri_enc_toutf32.html">stri_enc_toutf32</a>()</code>,
+<code><a href="../../stringi/help/stri_encode.html">stri_encode</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.7.12 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

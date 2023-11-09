@@ -1,0 +1,127 @@
+<!DOCTYPE html><html><head><title>R: Get and set substrings using their positions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_sub {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_sub'>Get and set substrings using their positions</h2>
+
+<h3>Description</h3>
+
+<p><code>str_sub()</code> extracts or replaces the elements at a single position in each
+string. <code>str_sub_all()</code> allows you to extract strings at multiple elements
+in every string.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_sub(string, start = 1L, end = -1L)
+
+str_sub(string, start = 1L, end = -1L, omit_na = FALSE) &lt;- value
+
+str_sub_all(string, start = 1L, end = -1L)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_sub_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_sub_:_start">start</code>, <code id="str_sub_:_end">end</code></td>
+<td>
+<p>A pair of integer vectors defining the range of characters
+to extract (inclusive).
+</p>
+<p>Alternatively, instead of a pair of vectors, you can pass a matrix to
+<code>start</code>. The matrix should have two columns, either labelled <code>start</code>
+and <code>end</code>, or <code>start</code> and <code>length</code>.</p>
+</td></tr>
+<tr><td><code id="str_sub_:_omit_na">omit_na</code></td>
+<td>
+<p>Single logical value. If <code>TRUE</code>, missing values in any of the
+arguments provided will result in an unchanged input.</p>
+</td></tr>
+<tr><td><code id="str_sub_:_value">value</code></td>
+<td>
+<p>replacement string</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+
+<ul>
+<li> <p><code>str_sub()</code>: A character vector the same length as <code>string</code>/<code>start</code>/<code>end</code>.
+</p>
+</li>
+<li> <p><code>str_sub_all()</code>: A list the same length as <code>string</code>. Each element is
+a character vector the same length as <code>start</code>/<code>end</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>The underlying implementation in <code><a href="../../stringi/help/stri_sub.html">stringi::stri_sub()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>hw &lt;- "Hadley Wickham"
+
+str_sub(hw, 1, 6)
+str_sub(hw, end = 6)
+str_sub(hw, 8, 14)
+str_sub(hw, 8)
+
+# Negative indices index from end of string
+str_sub(hw, -1)
+str_sub(hw, -7)
+str_sub(hw, end = -7)
+
+# str_sub() is vectorised by both string and position
+str_sub(hw, c(1, 8), c(6, 14))
+
+# if you want to extract multiple positions from multiple strings,
+# use str_sub_all()
+x &lt;- c("abcde", "ghifgh")
+str_sub(x, c(1, 2), c(2, 4))
+str_sub_all(x, start = c(1, 2), end = c(2, 4))
+
+# Alternatively, you can pass in a two column matrix, as in the
+# output from str_locate_all
+pos &lt;- str_locate_all(hw, "[aeio]")[[1]]
+pos
+str_sub(hw, pos)
+
+# You can also use `str_sub()` to modify strings:
+x &lt;- "BBCDEF"
+str_sub(x, 1, 1) &lt;- "A"; x
+str_sub(x, -1, -1) &lt;- "K"; x
+str_sub(x, -2, -2) &lt;- "GHIJ"; x
+str_sub(x, 2, -2) &lt;- ""; x
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

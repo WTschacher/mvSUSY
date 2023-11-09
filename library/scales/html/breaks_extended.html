@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Automatic breaks for numeric axes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>breaks_extended {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='breaks_extended'>Automatic breaks for numeric axes</h2>
+
+<h3>Description</h3>
+
+<p>Uses Wilkinson's extended breaks algorithm as implemented in the
+<span class="pkg">labeling</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>breaks_extended(n = 5, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="breaks_extended_:_n">n</code></td>
+<td>
+<p>Desired number of breaks. You may get slightly more or fewer
+breaks that requested.</p>
+</td></tr>
+<tr><td><code id="breaks_extended_:_...">...</code></td>
+<td>
+<p>other arguments passed on to <code><a href="../../labeling/help/extended.html">labeling::extended()</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>Talbot, J., Lin, S., Hanrahan, P. (2010) An Extension of
+Wilkinson's Algorithm for Positioning Tick Labels on Axes, InfoVis
+2010 <a href="http://vis.stanford.edu/files/2010-TickLabels-InfoVis.pdf">http://vis.stanford.edu/files/2010-TickLabels-InfoVis.pdf</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>demo_continuous(c(0, 10))
+demo_continuous(c(0, 10), breaks = breaks_extended(3))
+demo_continuous(c(0, 10), breaks = breaks_extended(10))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

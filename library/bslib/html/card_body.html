@@ -1,0 +1,193 @@
+<!DOCTYPE html><html><head><title>R: Card items</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>card_body {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='card_body'>Card items</h2>
+
+<h3>Description</h3>
+
+<p>Components designed to be provided as direct children of a <code><a href="../../bslib/help/card.html">card()</a></code>. For a
+general overview of the <code><a href="../../bslib/help/card.html">card()</a></code> API, see <a href="https://rstudio.github.io/bslib/articles/cards.html">this article</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>card_body(
+  ...,
+  fillable = TRUE,
+  min_height = NULL,
+  max_height = NULL,
+  max_height_full_screen = max_height,
+  height = NULL,
+  padding = NULL,
+  gap = NULL,
+  fill = TRUE,
+  class = NULL
+)
+
+card_title(..., container = htmltools::h5)
+
+card_header(..., class = NULL, container = htmltools::div)
+
+card_footer(..., class = NULL)
+
+card_image(
+  file,
+  ...,
+  href = NULL,
+  border_radius = c("top", "bottom", "all", "none"),
+  mime_type = NULL,
+  class = NULL,
+  height = NULL,
+  fill = TRUE,
+  width = NULL,
+  container = card_body
+)
+
+as.card_item(x)
+
+is.card_item(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="card_body_:_...">...</code></td>
+<td>
+<p>Unnamed arguments can be any valid child of an <a href="../../htmltools/help/builder.html">htmltools tag</a>. Named arguments become HTML attributes on returned
+UI element.</p>
+</td></tr>
+<tr><td><code id="card_body_:_fillable">fillable</code></td>
+<td>
+<p>Whether or not the card item should be a fillable (i.e.
+flexbox) container.</p>
+</td></tr>
+<tr><td><code id="card_body_:_min_height">min_height</code>, <code id="card_body_:_max_height">max_height</code>, <code id="card_body_:_max_height_full_screen">max_height_full_screen</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS length unit</a>.</p>
+</td></tr>
+<tr><td><code id="card_body_:_height">height</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g.,
+<code>height="200px"</code>). Doesn't apply when a card is made <code>full_screen</code>
+(in this case, consider setting a <code>height</code> in <code><a href="../../bslib/help/card_body.html">card_body()</a></code>).</p>
+</td></tr>
+<tr><td><code id="card_body_:_padding">padding</code></td>
+<td>
+<p>Padding to use for the body. This can be a numeric vector
+(which will be interpreted as pixels) or a character vector with valid CSS
+lengths. The length can be between one and four. If one, then that value
+will be used for all four sides. If two, then the first value will be used
+for the top and bottom, while the second value will be used for left and
+right. If three, then the first will be used for top, the second will be
+left and right, and the third will be bottom. If four, then the values will
+be interpreted as top, right, bottom, and left respectively.</p>
+</td></tr>
+<tr><td><code id="card_body_:_gap">gap</code></td>
+<td>
+<p>A <a href="../../htmltools/help/validateCssUnit.html">CSS length unit</a> defining the
+<code>gap</code> (i.e., spacing) between elements provided to <code>...</code>. This argument is only applicable when <code>fillable = TRUE</code></p>
+</td></tr>
+<tr><td><code id="card_body_:_fill">fill</code></td>
+<td>
+<p>Whether to allow this element to grow/shrink to fit its <code>card()</code>
+container.</p>
+</td></tr>
+<tr><td><code id="card_body_:_class">class</code></td>
+<td>
+<p>Additional CSS classes for the returned UI element.</p>
+</td></tr>
+<tr><td><code id="card_body_:_container">container</code></td>
+<td>
+<p>a function to generate an HTML element to contain the image.</p>
+</td></tr>
+<tr><td><code id="card_body_:_file">file</code></td>
+<td>
+<p>a file path pointing an image. The image will be base64 encoded
+and provided to the <code>src</code> attribute of the <code style="white-space: pre;">&#8288;&lt;img&gt;&#8288;</code>. Alternatively, you may
+set this value to <code>NULL</code> and provide the <code>src</code> yourself.</p>
+</td></tr>
+<tr><td><code id="card_body_:_href">href</code></td>
+<td>
+<p>an optional URL to link to.</p>
+</td></tr>
+<tr><td><code id="card_body_:_border_radius">border_radius</code></td>
+<td>
+<p>where to apply <code>border-radius</code> on the image.</p>
+</td></tr>
+<tr><td><code id="card_body_:_mime_type">mime_type</code></td>
+<td>
+<p>the mime type of the <code>file</code>.</p>
+</td></tr>
+<tr><td><code id="card_body_:_width">width</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g., <code>width="100%"</code>).</p>
+</td></tr>
+<tr><td><code id="card_body_:_x">x</code></td>
+<td>
+<p>an object to test (or coerce to) a card item.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <code><a href="../../htmltools/help/builder.html">htmltools::div()</a></code> tag.
+</p>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>card_body()</code>: A general container for the &quot;main content&quot; of a <code><a href="../../bslib/help/card.html">card()</a></code>.
+</p>
+</li>
+<li> <p><code>card_title()</code>: Similar to <code>card_header()</code> but without the border and background color.
+</p>
+</li>
+<li> <p><code>card_header()</code>: A header (with border and background color) for the <code>card()</code>. Typically appears before a <code>card_body()</code>.
+</p>
+</li>
+<li> <p><code>card_footer()</code>: A header (with border and background color) for the <code>card()</code>. Typically appears after a <code>card_body()</code>.
+</p>
+</li>
+<li> <p><code>card_image()</code>: Include static (i.e., pre-generated) images.
+</p>
+</li>
+<li> <p><code>as.card_item()</code>: Mark an object as a card item. This will prevent the
+<code><a href="../../bslib/help/card.html">card()</a></code> from putting the object inside a <code>wrapper</code> (i.e., a
+<code>card_body()</code>).
+</p>
+</li></ul>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/card.html">card()</a></code> for creating a card component.
+</p>
+<p><code><a href="../../bslib/help/navset_card_tab.html">navset_card_tab()</a></code> for cards with multiple tabs.
+</p>
+<p><code><a href="../../bslib/help/layout_column_wrap.html">layout_column_wrap()</a></code> for laying out multiple cards (or multiple
+columns inside a card).
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

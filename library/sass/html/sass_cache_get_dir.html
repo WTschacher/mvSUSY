@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><title>R: Get and set the cache object registered for a specific...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_cache_get_dir {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_cache_get_dir'>Get and set the cache object registered for a specific directory</h2>
+
+<h3>Description</h3>
+
+<p>Get and set the cache object registered for a specific directory
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_cache_get_dir(dir, create = FALSE)
+
+sass_cache_set_dir(dir, cache)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_cache_get_dir_:_dir">dir</code></td>
+<td>
+<p>A directory. An error will be thrown if the directory does not
+exist.</p>
+</td></tr>
+<tr><td><code id="sass_cache_get_dir_:_create">create</code></td>
+<td>
+<p>If <code>TRUE</code>, then if the cache directory doesn't exist, or if
+there is not a registered cache object for the directory, create them as
+needed.</p>
+</td></tr>
+<tr><td><code id="sass_cache_get_dir_:_cache">cache</code></td>
+<td>
+<p>A <code><a href="../../sass/help/sass_file_cache.html">sass_file_cache()</a></code> object, or <code>NULL</code> if you don't want to
+unset the cache for a directory.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>sass_cache_get_dir()</code> is called for a given directory, before
+<code>sass_cache_set_dir()</code> has been called for that directory, then it will
+return <code>NULL</code>.
+</p>
+<p>After <code>sass_cache_set_dir()</code> is called for a directory, any future calls to
+<code>sass_cache_get_dir()</code> with that directory will return that specific cache
+object. This can be useful if you customize parameters for the cache object,
+like maximum size or age.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../sass/help/sass_cache_get.html">sass_cache_get()</a></code>, <code><a href="../../sass/help/sass_file_cache.html">sass_file_cache()</a></code>, <code><a href="../../sass/help/sass.html">sass()</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

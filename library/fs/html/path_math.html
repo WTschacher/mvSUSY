@@ -1,0 +1,159 @@
+<!DOCTYPE html><html><head><title>R: Path computations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>path_math {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='path_math'>Path computations</h2>
+
+<h3>Description</h3>
+
+<p>All functions apart from <code>path_real()</code> are purely path computations, so the
+files in question do not need to exist on the filesystem.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>path_real(path)
+
+path_split(path)
+
+path_join(parts)
+
+path_abs(path, start = ".")
+
+path_norm(path)
+
+path_rel(path, start = ".")
+
+path_common(path)
+
+path_has_parent(path, parent)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="path_math_:_path">path</code></td>
+<td>
+<p>A character vector of one or more paths.</p>
+</td></tr>
+<tr><td><code id="path_math_:_parts">parts</code></td>
+<td>
+<p>A character vector or a list of character vectors, corresponding
+to split paths.</p>
+</td></tr>
+<tr><td><code id="path_math_:_start">start</code></td>
+<td>
+<p>A starting directory to compute the path relative to.</p>
+</td></tr>
+<tr><td><code id="path_math_:_parent">parent</code></td>
+<td>
+<p>The parent path.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The new path(s) in an <code>fs_path</code> object, which is a character vector
+that also has class <code>fs_path</code>. Except <code>path_split()</code>, which returns a list
+of character vectors of path components.
+</p>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>path_real()</code>: returns the canonical path, eliminating any symbolic
+links and the special references <code>~</code>, <code>~user</code>, <code>.</code>, and <code>..</code>, , i.e. it
+calls <code>path_expand()</code> (literally) and <code>path_norm()</code> (effectively).
+</p>
+</li>
+<li> <p><code>path_split()</code>: splits paths into parts.
+</p>
+</li>
+<li> <p><code>path_join()</code>: joins parts together. The inverse of <code><a href="../../fs/help/path_split.html">path_split()</a></code>.
+See <code><a href="../../fs/help/path.html">path()</a></code> to concatenate vectorized strings into a path.
+</p>
+</li>
+<li> <p><code>path_abs()</code>: returns a normalized, absolute version of a path.
+</p>
+</li>
+<li> <p><code>path_norm()</code>: eliminates <code>.</code> references and rationalizes up-level
+<code>..</code> references, so <code>A/./B</code> and <code>A/foo/../B</code> both become <code>A/B</code>, but <code>../B</code>
+is not changed. If one of the paths is a symbolic link, this may change the
+meaning of the path, so consider using <code>path_real()</code> instead.
+</p>
+</li>
+<li> <p><code>path_rel()</code>: computes the path relative to the <code>start</code> path,
+which can be either an absolute or relative path.
+</p>
+</li>
+<li> <p><code>path_common()</code>: finds the common parts of two (or more) paths.
+</p>
+</li>
+<li> <p><code>path_has_parent()</code>: determine if a path has a given parent.
+</p>
+</li></ul>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../fs/help/path_expand.html">path_expand()</a></code> for expansion of user's home directory.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+dir_create("a")
+file_create("a/b")
+link_create(path_abs("a"), "c")
+
+# Realize the path
+path_real("c/b")
+
+# Split a path
+parts &lt;- path_split("a/b")
+parts
+
+# Join it together
+path_join(parts)
+
+# Find the absolute path
+path_abs("..")
+
+# Normalize a path
+path_norm("a/../b\\c/.")
+
+# Compute a relative path
+path_rel("/foo/abc", "/foo/bar/baz")
+
+# Find the common path between multiple paths
+path_common(c("/foo/bar/baz", "/foo/bar/abc", "/foo/xyz/123"))
+
+# Cleanup
+dir_delete("a")
+link_delete("c")
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

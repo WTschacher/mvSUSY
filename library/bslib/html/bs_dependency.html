@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><title>R: Themeable HTML components</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bs_dependency {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bs_dependency'>Themeable HTML components</h2>
+
+<h3>Description</h3>
+
+<p>Themeable HTML components use Sass to generate CSS rules from Bootstrap Sass
+variables, functions, and/or mixins (i.e., stuff inside of <code>theme</code>).
+<code>bs_dependencies()</code> makes it a bit easier to create themeable components by
+compiling <code><a href="../../sass/help/sass.html">sass::sass()</a></code> (<code>input</code>) together with Bootstrap Sass inside of a
+<code>theme</code>, and packaging up the result into an <code><a href="../../htmltools/html/htmlDependency.html">htmlDependency()</a></code>.
+</p>
+<p>Themable components can also be  <em>dynamically</em> themed inside of Shiny (i.e.,
+they may be themed in 'real-time' via <code><a href="../../bslib/help/bs_themer.html">bs_themer()</a></code>, and more generally,
+update their styles in response to <a href="../../shiny/help/session.html">shiny::session</a>'s <code>setCurrentTheme()</code>
+method). Dynamically themeable components provide a &quot;recipe&quot; (i.e., a
+function) to <code>bs_dependency_defer()</code>, describing how to generate new CSS
+stylesheet(s) from a new <code>theme</code>. This function is called when the HTML page
+is first rendered, and may be invoked again with a new <code>theme</code> whenever
+<a href="../../shiny/help/session.html">shiny::session</a>'s <code>setCurrentTheme()</code> is called.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bs_dependency(
+  input = list(),
+  theme,
+  name,
+  version,
+  cache_key_extra = NULL,
+  .dep_args = list(),
+  .sass_args = list()
+)
+
+bs_dependency_defer(func, memoise = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bs_dependency_:_input">input</code></td>
+<td>
+<p>Sass rules to compile, using <code>theme</code>.</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_theme">theme</code></td>
+<td>
+<p>A <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_name">name</code></td>
+<td>
+<p>Library name</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_version">version</code></td>
+<td>
+<p>Library version</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_cache_key_extra">cache_key_extra</code></td>
+<td>
+<p>Extra information to add to the sass cache key. It is
+useful to add the version of your package.</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_.dep_args">.dep_args</code></td>
+<td>
+<p>A list of additional arguments to pass to
+<code><a href="../../htmltools/help/htmlDependency.html">htmltools::htmlDependency()</a></code>. Note that <code>package</code> has no effect and
+<code>script</code> must be absolute path(s).</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_.sass_args">.sass_args</code></td>
+<td>
+<p>A list of additional arguments to pass to
+<code><a href="../../sass/help/sass_partial.html">sass::sass_partial()</a></code>.</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_func">func</code></td>
+<td>
+<p>a <em>non-anonymous</em> function, with a <em>single</em> argument.
+This function should accept a <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object and return a single
+<code><a href="../../htmltools/html/htmlDependency.html">htmlDependency()</a></code>, a list of them, or <code>NULL</code>.</p>
+</td></tr>
+<tr><td><code id="bs_dependency_:_memoise">memoise</code></td>
+<td>
+<p>whether or not to memoise (i.e., cache) <code>func</code> results for a
+short period of time. The default, <code>TRUE</code>, can have large performance
+benefits when many instances of the same themable widget are rendered. Note
+that you may want to avoid memoisation if <code>func</code> relies on side-effects
+(e.g., files on-disk) that need to change for each themable widget
+instance.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>bs_dependency()</code> returns an <code><a href="../../htmltools/help/htmlDependency.html">htmltools::htmlDependency()</a></code> and
+<code>bs_dependency_defer()</code> returns an <code><a href="../../htmltools/help/tagFunction.html">htmltools::tagFunction()</a></code>
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://rstudio.github.io/bslib/articles/custom-components.html">https://rstudio.github.io/bslib/articles/custom-components.html</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+## Not run: 
+
+myWidgetVersion &lt;- "1.2.3"
+
+myWidgetDependency &lt;- function() {
+  list(
+    bs_dependency_defer(myWidgetCss),
+    htmlDependency(
+      name = "mywidget-js",
+      version = myWidgetVersion,
+      src = system.file(package = "mypackage", "js"),
+      script = "mywidget.js"
+    )
+  )
+}
+
+myWidgetCSS &lt;- function(theme) {
+  if (!is_bs_theme(theme)) {
+    return(
+      htmlDependency(
+        name = "mywidget-css",
+        version = myWidgetVersion,
+        src = system.file(package = "mypackage", "css"),
+        stylesheet = "mywidget.css"
+      )
+    )
+  }
+
+  # Compile mywidget.scss using the variables and defaults from the theme
+  # object.
+  sass_input &lt;- sass::sass_file(system.file(package = "mypackage", "scss/mywidget.scss"))
+
+  bs_dependency(
+    input = sass_input,
+    theme = theme,
+    name = "mywidget",
+    version = myWidgetVersion,
+    cache_key_extra = utils::packageVersion("mypackage")
+  )
+}
+
+# Note that myWidgetDependency is not defined inside of myWidget. This is so
+# that, if `myWidget()` is called multiple times, Shiny can tell that the
+# function objects are identical and deduplicate them.
+myWidget &lt;- function(id) {
+  div(
+    id = id,
+    span("myWidget"),
+    myWidgetDependency()
+  )
+}
+
+## End(Not run)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

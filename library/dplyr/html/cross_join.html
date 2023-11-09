@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><title>R: Cross join</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>cross_join {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='cross_join'>Cross join</h2>
+
+<h3>Description</h3>
+
+<p>Cross joins match each row in <code>x</code> to every row in <code>y</code>, resulting in a data
+frame with <code>nrow(x) * nrow(y)</code> rows.
+</p>
+<p>Since cross joins result in all possible matches between <code>x</code> and <code>y</code>, they
+technically serve as the basis for all <a href="../../dplyr/help/mutate-joins.html">mutating joins</a>, which
+can generally be thought of as cross joins followed by a filter. In practice,
+a more specialized procedure is used for better performance.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>cross_join(x, y, ..., copy = FALSE, suffix = c(".x", ".y"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="cross_join_:_x">x</code>, <code id="cross_join_:_y">y</code></td>
+<td>
+<p>A pair of data frames, data frame extensions (e.g. a tibble), or
+lazy data frames (e.g. from dbplyr or dtplyr). See <em>Methods</em>, below, for
+more details.</p>
+</td></tr>
+<tr><td><code id="cross_join_:_...">...</code></td>
+<td>
+<p>Other parameters passed onto methods.</p>
+</td></tr>
+<tr><td><code id="cross_join_:_copy">copy</code></td>
+<td>
+<p>If <code>x</code> and <code>y</code> are not from the same data source,
+and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
+same src as <code>x</code>.  This allows you to join tables across srcs, but
+it is a potentially expensive operation so you must opt into it.</p>
+</td></tr>
+<tr><td><code id="cross_join_:_suffix">suffix</code></td>
+<td>
+<p>If there are non-joined duplicate variables in <code>x</code> and
+<code>y</code>, these suffixes will be added to the output to disambiguate them.
+Should be a character vector of length 2.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the same type as <code>x</code> (including the same groups). The output has
+the following properties:
+</p>
+
+<ul>
+<li><p> There are <code>nrow(x) * nrow(y)</code> rows returned.
+</p>
+</li>
+<li><p> Output columns include all columns from both <code>x</code> and <code>y</code>. Column name
+collisions are resolved using <code>suffix</code>.
+</p>
+</li>
+<li><p> The order of the rows and columns of <code>x</code> is preserved as much as possible.
+</p>
+</li></ul>
+
+
+
+<h3>Methods</h3>
+
+<p>This function is a <strong>generic</strong>, which means that packages can provide
+implementations (methods) for other classes. See the documentation of
+individual methods for extra arguments and differences in behaviour.
+</p>
+<p>The following methods are currently available in loaded packages:
+no methods found.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other joins: 
+<code><a href="../../dplyr/help/filter-joins.html">filter-joins</a></code>,
+<code><a href="../../dplyr/help/mutate-joins.html">mutate-joins</a></code>,
+<code><a href="../../dplyr/help/nest_join.html">nest_join</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Cross joins match each row in `x` to every row in `y`.
+# Data within the columns is not used in the matching process.
+cross_join(band_instruments, band_members)
+
+# Control the suffix added to variables duplicated in
+# `x` and `y` with `suffix`.
+cross_join(band_instruments, band_members, suffix = c("", "_y"))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

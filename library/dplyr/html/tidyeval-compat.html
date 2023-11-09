@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><title>R: Other tidy eval tools</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>tidyeval-compat {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='tidyeval-compat'>Other tidy eval tools</h2>
+
+<h3>Description</h3>
+
+<p>These tidy eval functions are no longer for normal usage, but are still
+exported from dplyr for backward compatibility.
+See <code><a href="../../rlang/help/args_data_masking.html">?rlang::args_data_masking</a></code> and
+<code>vignette("programming")</code> for the latest recommendations.
+</p>
+
+<ul>
+<li> <p><a href="../../rlang/help/expr.html">expr()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/enquo.html">enquo()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/enquo.html">enquos()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/sym.html">sym()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/sym.html">syms()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/as_label.html">as_label()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/defusing-advanced.html">quo()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/defusing-advanced.html">quos()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/quo_label.html">quo_name()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/defusing-advanced.html">ensym()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/defusing-advanced.html">ensyms()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/defusing-advanced.html">enexpr()</a>
+</p>
+</li>
+<li> <p><a href="../../rlang/help/defusing-advanced.html">enexprs()</a>
+</p>
+</li></ul>
+
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

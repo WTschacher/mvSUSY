@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><title>R: List available options.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>httr_options {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='httr_options'>List available options.</h2>
+
+<h3>Description</h3>
+
+<p>This function lists all available options for <code><a href="../../httr/help/config.html">config()</a></code>.
+It provides both the short R name which you use with httr, and the longer
+Curl name, which is useful when searching the documentation. <code>curl_doc</code>
+opens a link to the libcurl documentation for an option in your browser.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>httr_options(matches)
+
+curl_docs(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="httr_options_:_matches">matches</code></td>
+<td>
+<p>If not missing, this restricts the output so that either
+the httr or curl option matches this regular expression.</p>
+</td></tr>
+<tr><td><code id="httr_options_:_x">x</code></td>
+<td>
+<p>An option name (either short or full).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>RCurl and httr use slightly different names to libcurl: the initial
+<code>CURLOPT_</code> is removed, all underscores are converted to periods and
+the option is given in lower case.  Thus &quot;CURLOPT_SSLENGINE_DEFAULT&quot;
+becomes &quot;sslengine.default&quot;.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data frame with three columns:
+</p>
+<table>
+<tr><td><code>httr</code></td>
+<td>
+<p>The short name used in httr</p>
+</td></tr>
+<tr><td><code>libcurl</code></td>
+<td>
+<p>The full name used by libcurl</p>
+</td></tr>
+<tr><td><code>type</code></td>
+<td>
+<p>The type of R object that the option accepts</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>httr_options()
+httr_options("post")
+
+# Use curl_docs to read the curl documentation for each option.
+# You can use either the httr or curl option name.
+curl_docs("userpwd")
+curl_docs("CURLOPT_USERPWD")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

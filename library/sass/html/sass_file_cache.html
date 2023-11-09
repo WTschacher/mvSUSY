@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><title>R: Create a file cache object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_file_cache {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_file_cache'>Create a file cache object</h2>
+
+<h3>Description</h3>
+
+<p>This creates a file cache which is to be used by sass for caching generated
+.css files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_file_cache(dir, max_size = 40 * 1024^2, max_age = Inf)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_file_cache_:_dir">dir</code></td>
+<td>
+<p>The directory in which to store the cached files.</p>
+</td></tr>
+<tr><td><code id="sass_file_cache_:_max_size">max_size</code></td>
+<td>
+<p>The maximum size of the cache, in bytes. If the cache grows
+past this size, the least-recently-used objects will be removed until it
+fits within this size.</p>
+</td></tr>
+<tr><td><code id="sass_file_cache_:_max_age">max_age</code></td>
+<td>
+<p>The maximum age of objects in the cache, in seconds. The
+default is one week.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <a href="../../sass/help/FileCache.html">FileCache</a> object.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../sass/help/sass_cache_get.html">sass_cache_get()</a></code>, <code><a href="../../sass/help/sass_cache_context_dir.html">sass_cache_context_dir()</a></code>, <a href="../../sass/help/FileCache.html">FileCache</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+# Create a cache with the default settings
+cache &lt;- sass_file_cache(sass_cache_context_dir())
+
+# Clear the cache
+cache$reset()
+
+## End(Not run)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

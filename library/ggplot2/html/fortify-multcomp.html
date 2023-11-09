@@ -1,0 +1,85 @@
+<!DOCTYPE html><html><head><title>R: Fortify methods for objects produced by 'multcomp'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>fortify-multcomp {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='fortify-multcomp'>Fortify methods for objects produced by <span class="pkg">multcomp</span></h2>
+
+<h3>Description</h3>
+
+<p>Fortify methods for objects produced by <span class="pkg">multcomp</span>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'glht'
+fortify(model, data, ...)
+
+## S3 method for class 'confint.glht'
+fortify(model, data, ...)
+
+## S3 method for class 'summary.glht'
+fortify(model, data, ...)
+
+## S3 method for class 'cld'
+fortify(model, data, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="fortify-multcomp_:_model">model</code></td>
+<td>
+<p>an object of class <code>glht</code>, <code>confint.glht</code>,
+<code>summary.glht</code> or <code><a href="../../multcomp/help/cld.html">multcomp::cld()</a></code></p>
+</td></tr>
+<tr><td><code id="fortify-multcomp_:_data">data</code>, <code id="fortify-multcomp_:_...">...</code></td>
+<td>
+<p>other arguments to the generic ignored in this method.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>if (require("multcomp")) {
+amod &lt;- aov(breaks ~ wool + tension, data = warpbreaks)
+wht &lt;- glht(amod, linfct = mcp(tension = "Tukey"))
+
+fortify(wht)
+ggplot(wht, aes(lhs, estimate)) + geom_point()
+
+CI &lt;- confint(wht)
+fortify(CI)
+ggplot(CI, aes(lhs, estimate, ymin = lwr, ymax = upr)) +
+   geom_pointrange()
+
+fortify(summary(wht))
+ggplot(mapping = aes(lhs, estimate)) +
+   geom_linerange(aes(ymin = lwr, ymax = upr), data = CI) +
+   geom_point(aes(size = p), data = summary(wht)) +
+   scale_size(trans = "reverse")
+
+cld &lt;- cld(wht)
+fortify(cld)
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

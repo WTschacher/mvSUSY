@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Extract knit parameters from YAML text</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knit_params_yaml {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knit_params_yaml'>Extract knit parameters from YAML text</h2>
+
+<h3>Description</h3>
+
+<p>This function reads the YAML front-matter that has already been extracted
+from a document and returns a list of any parameters declared there.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knit_params_yaml(yaml, evaluate = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="knit_params_yaml_:_yaml">yaml</code></td>
+<td>
+<p>Character vector containing the YAML text.</p>
+</td></tr>
+<tr><td><code id="knit_params_yaml_:_evaluate">evaluate</code></td>
+<td>
+<p>If <code>TRUE</code> (the default) expression values
+embedded within the YAML will be evaluated. If <code>FALSE</code>, parameters
+defined with an expression will have the parsed but unevaluated expression
+in their <code>value</code> field.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>List of objects of class <code>knit_param</code> that correspond to the
+parameters declared in the <code>params</code> section of the YAML. See
+<code><a href="../../knitr/help/knit_params.html">knit_params</a></code> for a full description of these objects.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../knitr/help/knit_params.html">knit_params</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

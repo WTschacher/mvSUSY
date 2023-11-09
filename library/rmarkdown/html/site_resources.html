@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Determine website resource files for a directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>site_resources {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='site_resources'>Determine website resource files for a directory</h2>
+
+<h3>Description</h3>
+
+<p>Determine which files within a given directory should be copied in
+order to serve a website from the directory. Attempts to automatically
+exclude source, data, hidden, and other files not required to serve
+website content.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>site_resources(site_dir, include = NULL, exclude = NULL, recursive = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="site_resources_:_site_dir">site_dir</code></td>
+<td>
+<p>Site directory to analyze</p>
+</td></tr>
+<tr><td><code id="site_resources_:_include">include</code></td>
+<td>
+<p>Additional files to include (glob wildcards supported)</p>
+</td></tr>
+<tr><td><code id="site_resources_:_exclude">exclude</code></td>
+<td>
+<p>Files to exclude  (glob wildcards supported)</p>
+</td></tr>
+<tr><td><code id="site_resources_:_recursive">recursive</code></td>
+<td>
+<p><code>TRUE</code> to return a full recursive file listing;
+<code>FALSE</code> to just provide top-level files and directories.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Character vector of files and directories to copy
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

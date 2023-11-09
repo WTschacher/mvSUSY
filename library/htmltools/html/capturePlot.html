@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><title>R: Capture a plot as a saved file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>capturePlot {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='capturePlot'>Capture a plot as a saved file</h2>
+
+<h3>Description</h3>
+
+<p>Easily generates a .png file (or other graphics file) from a plotting
+expression.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>capturePlot(
+  expr,
+  filename = tempfile(fileext = ".png"),
+  device = defaultPngDevice(),
+  width = 400,
+  height = 400,
+  res = 72,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="capturePlot_:_expr">expr</code></td>
+<td>
+<p>A plotting expression that generates a plot (or yields an object
+that generates a plot when printed, like a ggplot2). We evaluate this
+expression after activating the graphics device (<code>device</code>).</p>
+</td></tr>
+<tr><td><code id="capturePlot_:_filename">filename</code></td>
+<td>
+<p>The output filename. By default, a temp file with <code>.png</code>
+extension will be used; you should provide a filename with a different
+extension if you provide a non-PNG graphics device function.</p>
+</td></tr>
+<tr><td><code id="capturePlot_:_device">device</code></td>
+<td>
+<p>A graphics device function; by default, this will be either
+<code><a href="../../grDevices/help/png.html">grDevices::png()</a></code>, <code><a href="../../ragg/help/agg_png.html">ragg::agg_png()</a></code>, or <code><a href="../../Cairo/help/Cairo.html">Cairo::CairoPNG()</a></code>, depending on
+your system and configuration. See <code><a href="../../htmltools/help/defaultPngDevice.html">defaultPngDevice()</a></code>.</p>
+</td></tr>
+<tr><td><code id="capturePlot_:_width">width</code>, <code id="capturePlot_:_height">height</code>, <code id="capturePlot_:_res">res</code>, <code id="capturePlot_:_...">...</code></td>
+<td>
+<p>Additional arguments to the <code>device</code> function.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../htmltools/help/plotTag.html">plotTag()</a></code> saves plots as a self-contained <code style="white-space: pre;">&#8288;&lt;img&gt;&#8288;</code>
+tag.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Default settings
+res &lt;- capturePlot(plot(cars))
+
+# View result
+if (interactive()) browseURL(res)
+
+# Clean up
+unlink(res)
+
+# Custom width/height
+pngpath &lt;- tempfile(fileext = ".png")
+capturePlot(plot(pressure), pngpath, width = 800, height = 375)
+if (interactive()) browseURL(pngpath)
+unlink(pngpath)
+
+# Use a custom graphics device (e.g., SVG)
+if (capabilities("cairo")) {
+  svgpath &lt;- capturePlot(
+    plot(pressure),
+    tempfile(fileext = ".svg"),
+    grDevices::svg,
+    width = 8, height = 3.75
+  )
+  if (interactive()) browseURL(svgpath)
+  unlink(svgpath)
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

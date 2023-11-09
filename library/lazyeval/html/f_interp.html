@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><title>R: Interpolate a formula</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>f_interp {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='f_interp'>Interpolate a formula</h2>
+
+<h3>Description</h3>
+
+<p>Interpolation replaces sub-expressions of the form <code>uq(x)</code> with
+the evaluated value of <code>x</code>, and inlines sub-expressions of
+the form <code>uqs(x)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>f_interp(f, data = NULL)
+
+uq(x, data = NULL)
+
+uqf(x)
+
+uqs(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="f_interp_:_f">f</code></td>
+<td>
+<p>A one-sided formula.</p>
+</td></tr>
+<tr><td><code id="f_interp_:_data">data</code></td>
+<td>
+<p>When called from inside <code>f_eval</code>, this is used to pass on
+the data so that nested formulas are evaluated in the correct environment.</p>
+</td></tr>
+<tr><td><code id="f_interp_:_x">x</code></td>
+<td>
+<p>For <code>uq</code> and <code>uqf</code>, a formula. For <code>uqs</code>, a
+a vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Theory</h3>
+
+<p>Formally, <code>f_interp</code> is a quasiquote function, <code>uq()</code> is the
+unquote operator, and <code>uqs()</code> is the unquote splice operator.
+These terms have a rich history in LISP, and live on in modern languages
+like <a href="Julia">http://docs.julialang.org/en/release-0.1/manual/metaprogramming/</a>
+and <a href="Racket">https://docs.racket-lang.org/reference/quasiquote.html</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>f_interp(x ~ 1 + uq(1 + 2 + 3) + 10)
+
+# Use uqs() if you want to add multiple arguments to a function
+# It must evaluate to a list
+args &lt;- list(1:10, na.rm = TRUE)
+f_interp(~ mean( uqs(args) ))
+
+# You can combine the two
+var &lt;- quote(xyz)
+extra_args &lt;- list(trim = 0.9)
+f_interp(~ mean( uq(var) , uqs(extra_args) ))
+
+foo &lt;- function(n) {
+  ~ 1 + uq(n)
+}
+f &lt;- foo(10)
+f
+f_interp(f)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

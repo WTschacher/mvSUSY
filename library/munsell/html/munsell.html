@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><title>R: Munsell colour system.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>munsell {munsell}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='munsell'>Munsell colour system.</h2>
+
+<h3>Description</h3>
+
+<p>This package makes it easy to access and manipulate the colours in the 
+munsell colour system. The conversion from munsell specifications to sRGB based on the renotation data from  <a href="http://www.cis.rit.edu/mcsl/online/munsell.php">http://www.cis.rit.edu/mcsl/online/munsell.php</a> which is a digitization of Table 1 in Newhall, Nickerson &amp; Judd (1943).  The code for conversion can be found in the package directory in inst/raw/getmunsellmap.r
+</p>
+
+
+<h3>References</h3>
+
+<p>S. M. Newhall, D. Nickerson, and D. B. Judd. Final report of the O.S.A. subcommittee on the spacing of the munsell colors. J. Opt. Soc. Am., 33(7):385-411, 07 1943.
+</p>
+<p>Munsell Renotation Data, RIT Munsell Color Science Laboratory.  <a href="http://www.cis.rit.edu/mcsl/online/munsell.php">http://www.cis.rit.edu/mcsl/online/munsell.php</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>munsell</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

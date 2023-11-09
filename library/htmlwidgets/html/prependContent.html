@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><title>R: Prepend/append extra HTML content to a widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>prependContent {htmlwidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='prependContent'>Prepend/append extra HTML content to a widget</h2>
+
+<h3>Description</h3>
+
+<p>Use these functions to attach extra HTML content (primarily JavaScript and/or
+CSS styles) to a widget, for rendering in standalone mode (i.e. printing at
+the R console) or in a knitr document. These functions are NOT supported when
+running in a Shiny widget rendering function, and will result in a warning if
+used in that context. Multiple calls are allowed, and later calls do not undo
+the effects of previous calls.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>prependContent(x, ...)
+
+appendContent(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="prependContent_:_x">x</code></td>
+<td>
+<p>An HTML Widget object</p>
+</td></tr>
+<tr><td><code id="prependContent_:_...">...</code></td>
+<td>
+<p>Valid <a href="../../htmltools/help/tags.html">tags</a>, text, and/or
+<code><a href="../../htmltools/help/HTML.html">HTML</a></code>, or lists thereof.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A modified HTML Widget object.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmlwidgets</em> version 1.6.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

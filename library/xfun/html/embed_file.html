@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><title>R: Embed a file, multiple files, or directory on an HTML page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>embed_file {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='embed_file'>Embed a file, multiple files, or directory on an HTML page</h2>
+
+<h3>Description</h3>
+
+<p>For a file, first encode it into base64 data (a character string). Then
+generate a hyperlink of the form &lsquo;<span class="samp">&#8288;&lt;a href="base64 data"
+download="filename"&gt;Download filename&lt;/a&gt;&#8288;</span>&rsquo;. The file can be downloaded when
+the link is clicked in modern web browsers. For a directory, it will be
+compressed as a zip archive first, and the zip file is passed to
+<code>embed_file()</code>. For multiple files, they are also compressed to a zip
+file first.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>embed_file(path, name = basename(path), text = paste("Download", name), ...)
+
+embed_dir(path, name = paste0(normalize_path(path), ".zip"), ...)
+
+embed_files(path, name = with_ext(basename(path[1]), ".zip"), ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="embed_file_:_path">path</code></td>
+<td>
+<p>Path to the file(s) or directory.</p>
+</td></tr>
+<tr><td><code id="embed_file_:_name">name</code></td>
+<td>
+<p>The default filename to use when downloading the file. Note that
+for <code>embed_dir()</code>, only the base name (of the zip filename) will be
+used.</p>
+</td></tr>
+<tr><td><code id="embed_file_:_text">text</code></td>
+<td>
+<p>The text for the hyperlink.</p>
+</td></tr>
+<tr><td><code id="embed_file_:_...">...</code></td>
+<td>
+<p>For <code>embed_file()</code>, additional arguments to be passed to
+<code>htmltools::a()</code> (e.g., <code>class = 'foo'</code>). For <code>embed_dir()</code>
+and <code>embed_files()</code>, arguments passed to <code>embed_file()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions can be called in R code chunks in R Markdown documents with
+HTML output formats. You may embed an arbitrary file or directory in the HTML
+output file, so that readers of the HTML page can download it from the
+browser. A common use case is to embed data files for readers to download.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An HTML tag &lsquo;<span class="samp">&#8288;&lt;a&gt;&#8288;</span>&rsquo; with the appropriate attributes.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Windows users may need to install Rtools to obtain the <code>zip</code>
+command to use <code>embed_dir()</code> and <code>embed_files()</code>.
+</p>
+<p>These functions require R packages <span class="pkg">mime</span> and <span class="pkg">htmltools</span>. If you
+have installed the <span class="pkg">rmarkdown</span> package, these packages should be
+available, otherwise you need to install them separately.
+</p>
+<p>Currently Internet Explorer does not support downloading embedded files
+(<a href="https://caniuse.com/#feat=download">https://caniuse.com/#feat=download</a>). Chrome has a 2MB limit on the
+file size.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>logo = xfun:::R_logo()
+link = xfun::embed_file(logo, text = "Download R logo")
+link
+if (interactive()) htmltools::browsable(link)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

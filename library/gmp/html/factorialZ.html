@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><title>R: Factorial and Binomial Coefficient as Big Integer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>factorialZ {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='factorialZ'>Factorial and Binomial Coefficient as Big Integer</h2>
+
+<h3>Description</h3>
+
+<p>Efficiently compute the factorial <code class="reqn">n!</code> or a binomial coefficient
+<code class="reqn">{n\choose k}</code> as big integer (class <code><a href="../../gmp/help/bigz.html">bigz</a></code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>factorialZ(n)
+chooseZ(n, k)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="factorialZ_:_n">n</code></td>
+<td>
+<p>non-negative integer (vector), for
+<code>factorialZ</code>.  For <code>chooseZ</code>, may be a <code>bigz</code> big
+integer, also negative.</p>
+</td></tr>
+<tr><td><code id="factorialZ_:_k">k</code></td>
+<td>
+<p>non-negative integer vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a vector of big integers, i.e., of class <code><a href="../../gmp/help/bigz.html">bigz</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Special.html">factorial</a></code> and <code><a href="../../base/html/Special.html">gamma</a></code> in base <span class="rlang"><b>R</b></span>;
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>factorialZ(0:10)# 1 1 2 6 ... 3628800
+factorialZ(0:40)# larger
+factorialZ(200)
+
+n &lt;- 1000
+f1000 &lt;- factorialZ(n)
+stopifnot(1e-15 &gt; abs(as.numeric(1 - lfactorial(n)/log(f1000))))
+
+system.time(replicate(8, f1e4 &lt;&lt;- factorialZ(10000)))
+nchar(as.character(f1e4))# 35660 ... (too many to even look at ..)
+
+chooseZ(1000, 100:102)# vectorizes
+chooseZ(as.bigz(2)^120, 10)
+n &lt;- c(50,80,100)
+k &lt;- c(20,30,40)
+## currently with an undesirable warning: % from methods/src/eval.c  _FIXME_
+stopifnot(chooseZ(n,k) == factorialZ(n) / (factorialZ(k)*factorialZ(n-k)))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

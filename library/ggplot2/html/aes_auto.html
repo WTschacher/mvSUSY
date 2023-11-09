@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head><title>R: Automatic aesthetic mapping</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>aes_auto {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='aes_auto'>Automatic aesthetic mapping</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>aes_auto(data = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="aes_auto_:_data">data</code></td>
+<td>
+<p>data.frame or names of variables</p>
+</td></tr>
+<tr><td><code id="aes_auto_:_...">...</code></td>
+<td>
+<p>aesthetics that need to be explicitly mapped.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

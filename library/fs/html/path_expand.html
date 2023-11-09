@@ -1,0 +1,117 @@
+<!DOCTYPE html><html><head><title>R: Finding the User Home Directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>path_expand {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='path_expand'>Finding the User Home Directory</h2>
+
+<h3>Description</h3>
+
+
+<ul>
+<li> <p><code>path_expand()</code> performs tilde expansion on a path, replacing instances of
+<code>~</code> or <code>~user</code> with the user's home directory.
+</p>
+</li>
+<li> <p><code>path_home()</code> constructs a path within the expanded users home directory,
+calling it with <em>no</em> arguments can be useful to verify what fs considers the
+home directory.
+</p>
+</li>
+<li> <p><code>path_expand_r()</code> and <code>path_home_r()</code> are equivalents which always use R's
+definition of the home directory.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>path_expand(path)
+
+path_expand_r(path)
+
+path_home(...)
+
+path_home_r(...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="path_expand_:_path">path</code></td>
+<td>
+<p>A character vector of one or more paths.</p>
+</td></tr>
+<tr><td><code id="path_expand_:_...">...</code></td>
+<td>
+<p>Additional paths appended to the home directory by <code><a href="../../fs/help/path.html">path()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>path_expand()</code> differs from <code><a href="../../base/help/path.expand.html">base::path.expand()</a></code> in the interpretation of
+the home directory of Windows. In particular <code>path_expand()</code> uses the path
+set in the <code>USERPROFILE</code> environment variable and, if unset, then uses
+<code>HOMEDRIVE</code>/<code>HOMEPATH</code>.
+</p>
+<p>In contrast <code><a href="../../base/help/path.expand.html">base::path.expand()</a></code> first checks for <code>R_USER</code> then <code>HOME</code>,
+which in the default configuration of R on Windows are both set to the user's
+document directory, e.g. <code style="white-space: pre;">&#8288;C:\\Users\\username\\Documents&#8288;</code>.
+<code><a href="../../base/help/path.expand.html">base::path.expand()</a></code> also does not support <code>~otheruser</code> syntax on Windows,
+whereas <code>path_expand()</code> does support this syntax on all systems.
+</p>
+<p>This definition makes fs more consistent with the definition of home
+directory used on Windows in other languages, such as
+<a href="https://docs.python.org/3/library/os.path.html#os.path.expanduser">python</a>
+and <a href="https://doc.rust-lang.org/std/env/fn.home_dir.html#windows">rust</a>. This
+is also more compatible with external tools such as git and ssh, both of
+which put user-level files in <code>USERPROFILE</code> by default. It also allows you to
+write portable paths, such as <code style="white-space: pre;">&#8288;~/Desktop&#8288;</code> that points to the Desktop location
+on Windows, macOS and (most) Linux systems.
+</p>
+<p>Users can set the <code>R_FS_HOME</code> environment variable to override the
+definitions on any platform.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f">R for Windows FAQ - 2.14</a>
+for behavior of <code><a href="../../base/help/path.expand.html">base::path.expand()</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Expand a path
+path_expand("~/bin")
+
+# You can use `path_home()` without arguments to see what is being used as
+# the home diretory.
+path_home()
+path_home("R")
+
+# This will likely differ from the above on Windows
+path_home_r()
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

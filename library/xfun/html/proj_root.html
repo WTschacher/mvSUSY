@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><title>R: Return the (possible) root directory of a project</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>proj_root {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='proj_root'>Return the (possible) root directory of a project</h2>
+
+<h3>Description</h3>
+
+<p>Given a path of a file (or dir) in a potential project (e.g., an R package or
+an RStudio project), return the path to the project root directory.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>proj_root(path = "./", rules = root_rules)
+
+root_rules
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="proj_root_:_path">path</code></td>
+<td>
+<p>The initial path to start the search. If it is a file path, its
+parent directory will be used.</p>
+</td></tr>
+<tr><td><code id="proj_root_:_rules">rules</code></td>
+<td>
+<p>A matrix of character strings of two columns: the first column
+contains regular expressions to look for filenames that match the patterns,
+and the second column contains regular expressions to match the content of
+the matched files. The regular expression can be an empty string, meaning
+that it will match anything.</p>
+</td></tr>
+</table>
+
+
+<h3>Format</h3>
+
+<p>An object of class <code>matrix</code> (inherits from <code>array</code>) with 2 rows and 2 columns.
+</p>
+
+
+<h3>Details</h3>
+
+<p>The search for the root directory is performed by a series of tests,
+currently including looking for a &lsquo;<span class="file">DESCRIPTION</span>&rsquo; file that contains
+<code style="white-space: pre;">&#8288;Package: *&#8288;</code> (which usually indicates an R package), and a
+&lsquo;<span class="file">*.Rproj</span>&rsquo; file that contains <code style="white-space: pre;">&#8288;Version: *&#8288;</code> (which usually indicates
+an RStudio project). If files with the expected patterns are not found in the
+initial directory, the search will be performed recursively in upper-level
+directories.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Path to the root directory if found, otherwise <code>NULL</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function was inspired by the <span class="pkg">rprojroot</span> package, but is much
+less sophisticated. It is a rather simple function designed to be used in
+some of packages that I maintain, and may not meet the need of general
+users until this note is removed in the future (which should be unlikely).
+If you are sure that you are working on the types of projects mentioned in
+the &lsquo;Details&rsquo; section, this function may be helpful to you,
+otherwise please consider using <span class="pkg">rprojroot</span> instead.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

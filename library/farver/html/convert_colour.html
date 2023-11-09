@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><title>R: Convert between colour spaces</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>convert_colour {farver}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='convert_colour'>Convert between colour spaces</h2>
+
+<h3>Description</h3>
+
+<p>This function lets you convert between different representations of colours.
+The API is reminiscent of <code><a href="../../grDevices/help/convertColor.html">grDevices::convertColor()</a></code>, but the performance is
+much better. It is not assured that <code>grDevices::convertColor()</code> and
+<code>convert_colour()</code> provide numerically equivalent conversion at 16bit level as
+the formula used are potentially slightly different. For all intend and
+purpose, the resulting colours will be equivalent though.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>convert_colour(colour, from, to, white_from = "D65", white_to = white_from)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="convert_colour_:_colour">colour</code></td>
+<td>
+<p>A numeric matrix (or an object coercible to one) with colours
+encoded in the rows and the different colour space values in the columns. For
+all colourspaces except <code>'cmyk'</code> this will mean a matrix with three columns -
+for <code>'cmyk'</code> it means four columns.</p>
+</td></tr>
+<tr><td><code id="convert_colour_:_from">from</code>, <code id="convert_colour_:_to">to</code></td>
+<td>
+<p>The input and output colour space. Allowed values are: <code>"cmy"</code>,
+<code>"cmyk"</code>, <code>"hsl"</code>, <code>"hsb"</code>, <code>"hsv"</code>, <code>"lab"</code> (CIE L*ab), <code>"hunterlab"</code>
+(Hunter Lab), <code>"oklab"</code>, <code>"lch"</code> (CIE Lch(ab) / polarLAB), <code>"luv"</code>,
+<code>"rgb"</code> (sRGB), <code>"xyz"</code>, <code>"yxy"</code> (CIE xyY), <code>"hcl"</code> (CIE Lch(uv) / polarLuv),
+or <code>"oklch"</code> (Polar form of oklab)</p>
+</td></tr>
+<tr><td><code id="convert_colour_:_white_from">white_from</code>, <code id="convert_colour_:_white_to">white_to</code></td>
+<td>
+<p>The white reference of the from and to colour
+space. Will only have an effect for relative colour spaces such as Lab and
+luv. Any value accepted by <code><a href="../../farver/help/as_white_ref.html">as_white_ref()</a></code> allowed.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix with the same number of rows as <code>colour</code> and either
+3 or 4 columns depending on the value of <code>to</code>. If <code>colour</code> is given as a
+<code>data.frame</code> the output will be a data.frame as well
+</p>
+
+
+<h3>Handling of non-finite and out of bounds values</h3>
+
+<p><code>NA</code>, <code>NaN</code>, <code>-Inf</code>, and <code>Inf</code> are treated as invalid input and will result
+in <code>NA</code> values for the colour. If a given colourspace has finite bounds in
+some of their channels, the input will be capped before conversion, and the
+output will be capped before returning, so that both input and output colours
+are valid colours in their respective space. This means that converting back
+and forth between two colourspaces may result in a change in the colour if
+the gamut of one of the spaces is less than the other.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function and <code><a href="../../grDevices/html/convertColor.html">convertColor()</a></code> are not
+numerically equivalent due to rounding errors, but for all intend and purpose
+they give the same results.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../grDevices/help/convertColor.html">grDevices::convertColor()</a></code>, <code><a href="../../grDevices/help/col2rgb.html">grDevices::col2rgb()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>spectrum &lt;- decode_colour(rainbow(10))
+spec_lab &lt;- convert_colour(spectrum, 'rgb', 'lab')
+spec_lab
+
+# Convert between different white references
+convert_colour(spec_lab, 'lab', 'lab', white_from = 'D65', white_to = 'F10')
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>farver</em> version 2.1.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

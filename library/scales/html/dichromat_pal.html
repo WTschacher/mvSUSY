@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><title>R: Dichromat (colour-blind) palette (discrete)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>dichromat_pal {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='dichromat_pal'>Dichromat (colour-blind) palette (discrete)</h2>
+
+<h3>Description</h3>
+
+<p>Dichromat (colour-blind) palette (discrete)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>dichromat_pal(name)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="dichromat_pal_:_name">name</code></td>
+<td>
+<p>Name of colour palette.  One of:
+<code>BrowntoBlue.10</code>, <code>BrowntoBlue.12</code>, <code>BluetoDarkOrange.12</code>, <code>BluetoDarkOrange.18</code>, <code>DarkRedtoBlue.12</code>, <code>DarkRedtoBlue.18</code>, <code>BluetoGreen.14</code>, <code>BluetoGray.8</code>, <code>BluetoOrangeRed.14</code>, <code>BluetoOrange.10</code>, <code>BluetoOrange.12</code>, <code>BluetoOrange.8</code>, <code>LightBluetoDarkBlue.10</code>, <code>LightBluetoDarkBlue.7</code>, <code>Categorical.12</code>, <code>GreentoMagenta.16</code>, <code>SteppedSequential.5</code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>if (requireNamespace("dichromat", quietly = TRUE)) {
+  show_col(dichromat_pal("BluetoOrange.10")(10))
+  show_col(dichromat_pal("BluetoOrange.10")(5))
+
+  # Can use with gradient_n to create a continous gradient
+  cols &lt;- dichromat_pal("DarkRedtoBlue.12")(12)
+  show_col(gradient_n_pal(cols)(seq(0, 1, length.out = 30)))
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

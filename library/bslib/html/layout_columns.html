@@ -1,0 +1,179 @@
+<!DOCTYPE html><html><head><title>R: Responsive column-based grid layouts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>layout_columns {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='layout_columns'>Responsive column-based grid layouts</h2>
+
+<h3>Description</h3>
+
+<p>Create responsive, column-based grid layouts, based on a 12-column grid.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>layout_columns(
+  ...,
+  col_widths = NA,
+  row_heights = NULL,
+  fill = TRUE,
+  fillable = TRUE,
+  gap = NULL,
+  class = NULL,
+  height = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="layout_columns_:_...">...</code></td>
+<td>
+<p>Unnamed arguments should be UI elements (e.g., <code><a href="../../bslib/help/card.html">card()</a></code>)
+Named arguments become attributes on the containing <a href="../../htmltools/help/builder.html">htmltools::tag</a> element.</p>
+</td></tr>
+<tr><td><code id="layout_columns_:_col_widths">col_widths</code></td>
+<td>
+<p>One of the following:
+</p>
+
+<ul>
+<li> <p><code>NA</code> (the default): Automatically determines a sensible number of columns
+based on the number of children.
+</p>
+</li>
+<li><p> A numeric vector of integers between 1 and 12, where each element
+represents the number of columns for the relevant UI element. Elements
+that happen to go beyond 12 columns wrap onto the next row. For example,
+<code>col_widths = c(4, 8, 12)</code> allocates 4 columns to the first element, 8
+columns to the second element, and 12 columns to the third element (which
+wraps to the next row). Negative values are also allowed, and are treated
+as empty columns. For example, <code>col_widths = c(-2, 8, -2)</code> would allocate
+8 columns to an element (with 2 empty columns on either side).
+</p>
+</li>
+<li><p> A <code><a href="../../bslib/help/breakpoints.html">breakpoints()</a></code> object, where each breakpoint may be either of the
+above.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="layout_columns_:_row_heights">row_heights</code></td>
+<td>
+<p>One of the following:
+</p>
+
+<ul>
+<li><p> A numeric vector, where each value represents the
+<a href="https://css-tricks.com/introduction-fr-css-unit/">fractional unit</a> (<code>fr</code>)
+height of the relevant row. If there are more rows than values provided,
+the pattern will repeat. For example, <code>row_heights = c(1, 2)</code> allows even
+rows to take up twice as much space as odd rows.
+</p>
+</li>
+<li><p> A list of numeric and <a href="../../htmltools/help/validateCssUnit.html">CSS length units</a>,
+where each value represents the height of the relevant row. If more rows
+are needed than values provided, the pattern will repeat. For example,
+<code>row_heights = list("auto", 1)</code> allows the height of odd rows to be
+driven my it's contents and even rows to be
+<a href="https://css-tricks.com/introduction-fr-css-unit/"><code style="white-space: pre;">&#8288;1fr&#8288;</code></a>.
+</p>
+</li>
+<li><p> A character vector/string of <a href="../../htmltools/help/validateCssUnit.html">CSS length units</a>.
+In this case, the value is supplied directly to <code>grid-auto-rows</code>.
+</p>
+</li>
+<li><p> A <code><a href="../../bslib/help/breakpoints.html">breakpoints()</a></code> object, where each breakpoint may be either of the above.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="layout_columns_:_fill">fill</code></td>
+<td>
+<p>Whether or not to allow the layout to grow/shrink to fit a
+fillable container with an opinionated height (e.g., <code>page_fillable()</code>).</p>
+</td></tr>
+<tr><td><code id="layout_columns_:_fillable">fillable</code></td>
+<td>
+<p>Whether or not each element is wrapped in a fillable container.</p>
+</td></tr>
+<tr><td><code id="layout_columns_:_gap">gap</code></td>
+<td>
+<p>A <a href="../../htmltools/help/validateCssUnit.html">CSS length unit</a> defining the
+<code>gap</code> (i.e., spacing) between elements provided to <code>...</code>. This argument is only applicable when <code>fillable = TRUE</code></p>
+</td></tr>
+<tr><td><code id="layout_columns_:_class">class</code></td>
+<td>
+<p>Additional CSS classes for the returned UI element.</p>
+</td></tr>
+<tr><td><code id="layout_columns_:_height">height</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g.,
+<code>height="200px"</code>). Doesn't apply when a card is made <code>full_screen</code>
+(in this case, consider setting a <code>height</code> in <code><a href="../../bslib/help/card_body.html">card_body()</a></code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/breakpoints.html">breakpoints()</a></code> for more information on breakpoints.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+
+x &lt;- card("A simple card")
+
+page_fillable(
+  layout_columns(x, x, x, x)
+)
+
+page_fillable(
+  layout_columns(
+    col_widths = c(6, 6, 12),
+    x, x, x
+  )
+)
+
+page_fillable(
+  layout_columns(
+    col_widths = c(6, 6, -2, 8),
+    row_heights = c(1, 3),
+    x, x, x
+  )
+)
+
+page_fillable(
+  fillable_mobile = TRUE,
+  layout_columns(
+    col_widths = breakpoints(
+      sm = c(12, 12, 12),
+      md = c(6, 6, 12),
+      lg = c(4, 4, 4)
+    ),
+    x, x, x
+  )
+)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html><html><head><title>R: Concatenate Strings in a List</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>stri_join_list {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='stri_join_list'>Concatenate Strings in a List</h2>
+
+<h3>Description</h3>
+
+<p>These functions concatenate all the strings in each character vector
+in a given list.
+<code>stri_c_list</code> and <code>stri_paste_list</code> are aliases for
+<code>stri_join_list</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stri_join_list(x, sep = "", collapse = NULL)
+
+stri_c_list(x, sep = "", collapse = NULL)
+
+stri_paste_list(x, sep = "", collapse = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="stri_join_list_:_x">x</code></td>
+<td>
+<p>a list consisting of character vectors</p>
+</td></tr>
+<tr><td><code id="stri_join_list_:_sep">sep</code></td>
+<td>
+<p>a single string; separates strings in each of the character
+vectors in <code>x</code></p>
+</td></tr>
+<tr><td><code id="stri_join_list_:_collapse">collapse</code></td>
+<td>
+<p>a single string or <code>NULL</code>; an optional
+results separator</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Unless <code>collapse</code> is <code>NULL</code>, the result will be a single string.
+Otherwise, you get a character vector of length equal
+to the length of <code>x</code>.
+</p>
+<p>Vectors in <code>x</code> of length 0 are silently ignored.
+</p>
+<p>If <code>collapse</code> or <code>sep</code> has length greater than 1,
+then only the first string will be used.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a character vector.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p><a href="https://www.gagolewski.com/">Marek Gagolewski</a> and other contributors
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The official online manual of <span class="pkg">stringi</span> at <a href="https://stringi.gagolewski.com/">https://stringi.gagolewski.com/</a>
+</p>
+<p>Gagolewski M., <span class="pkg">stringi</span>: Fast and portable character string processing in R, <em>Journal of Statistical Software</em> 103(2), 2022, 1-59, <a href="https://doi.org/10.18637/jss.v103.i02">doi:10.18637/jss.v103.i02</a>
+</p>
+<p>Other join: 
+<code><a href="../../stringi/help/+25s+2B+25.html">%s+%</a>()</code>,
+<code><a href="../../stringi/help/stri_dup.html">stri_dup</a>()</code>,
+<code><a href="../../stringi/help/stri_flatten.html">stri_flatten</a>()</code>,
+<code><a href="../../stringi/help/stri_join.html">stri_join</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>stri_join_list(
+   stri_extract_all_words(c('Lorem ipsum dolor sit amet.',
+   'Spam spam bacon sausage and spam.')),
+sep=', ')
+
+stri_join_list(
+   stri_extract_all_words(c('Lorem ipsum dolor sit amet.',
+   'Spam spam bacon sausage and spam.')),
+sep=', ', collapse='. ')
+
+stri_join_list(
+   stri_extract_all_regex(
+      c('spam spam bacon', '123 456', 'spam 789 sausage'), '\\p{L}+'
+   ),
+sep=',')
+
+stri_join_list(
+   stri_extract_all_regex(
+      c('spam spam bacon', '123 456', 'spam 789 sausage'), '\\p{L}+',
+      omit_no_match=TRUE
+   ),
+sep=',', collapse='; ')
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.7.12 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

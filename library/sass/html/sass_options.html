@@ -1,0 +1,181 @@
+<!DOCTYPE html><html><head><title>R: Compiler Options for Sass</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sass_options {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sass_options'>Compiler Options for Sass</h2>
+
+<h3>Description</h3>
+
+<p>Specify compiler <code>options</code> for <code><a href="../../sass/help/sass.html">sass()</a></code>. To customize options, either provide
+<code>sass_options()</code> directly to a <code><a href="../../sass/help/sass.html">sass()</a></code> call or set options globally via
+<code>sass_options_set()</code>. When <code>shiny::devmode()</code> is enabled,
+<code>sass_options_get()</code> defaults <code>source_map_embed</code> and <code>source_map_contents</code> to
+<code>TRUE</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sass_options(
+  precision = 5,
+  output_style = "expanded",
+  indented_syntax = FALSE,
+  include_path = "",
+  source_comments = FALSE,
+  indent_type = "space",
+  indent_width = 2,
+  linefeed = "lf",
+  output_path = "",
+  source_map_file = "",
+  source_map_root = "",
+  source_map_embed = FALSE,
+  source_map_contents = FALSE,
+  omit_source_map_url = FALSE
+)
+
+sass_options_get(...)
+
+sass_options_set(...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sass_options_:_precision">precision</code></td>
+<td>
+<p>Number of decimal places.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_output_style">output_style</code></td>
+<td>
+<p>Bracketing and formatting style of the CSS output.
+Possible styles: <code>"nested"</code>, <code>"expanded"</code>, <code>"compact"</code>, and
+<code>"compressed"</code>.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_indented_syntax">indented_syntax</code></td>
+<td>
+<p>Enables the compiler to parse Sass Indented Syntax in
+strings. Note that the compiler automatically overrides this option to
+<code>TRUE</code> or <code>FALSE</code> for files with .sass and .scss file extensions
+respectively.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_include_path">include_path</code></td>
+<td>
+<p>Vector of paths used to resolve <code style="white-space: pre;">&#8288;@import&#8288;</code>. Multiple
+paths are possible using a character vector of paths.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_source_comments">source_comments</code></td>
+<td>
+<p>Annotates CSS output with line and file comments from
+Sass file for debugging.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_indent_type">indent_type</code></td>
+<td>
+<p>Specifies the indent type as <code>"space"</code> or
+<code>"tab"</code>.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_indent_width">indent_width</code></td>
+<td>
+<p>Number of tabs or spaces used for indentation. Maximum
+10.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_linefeed">linefeed</code></td>
+<td>
+<p>Specifies how new lines should be delimited. Possible values:
+<code>"lf"</code>, <code>"cr"</code>, <code>"lfcr"</code>, and <code>"crlf"</code>.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_output_path">output_path</code></td>
+<td>
+<p>Specifies the location of the output file. Note: this
+option will not write the file on disk. It is only for internal reference
+with the source map.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_source_map_file">source_map_file</code></td>
+<td>
+<p>Specifies the location for Sass to write the source
+map.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_source_map_root">source_map_root</code></td>
+<td>
+<p>Value will be included as source root in the source
+map information.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_source_map_embed">source_map_embed</code></td>
+<td>
+<p>Embeds the source map as a data URI.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_source_map_contents">source_map_contents</code></td>
+<td>
+<p>Includes the contents in the source map
+information.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_omit_source_map_url">omit_source_map_url</code></td>
+<td>
+<p>Disable the inclusion of source map information in
+the output file. Note: must specify <code>output_path</code> when <code>TRUE</code>.</p>
+</td></tr>
+<tr><td><code id="sass_options_:_...">...</code></td>
+<td>
+<p>arguments to <code><a href="../../sass/help/sass_options.html">sass_options()</a></code>. For <code>sass_options_set()</code>, the
+following values are also acceptable:
+</p>
+
+<ul>
+<li> <p><code>NULL</code>, clearing the global options.
+</p>
+</li>
+<li><p> Return value of <code>sass_options_get()</code>.
+</p>
+</li>
+<li><p> Return value of <code>sass_options_set()</code>.
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>List of Sass compiler options to be used with <code><a href="../../sass/help/sass.html">sass()</a></code>. For
+<code>sass_options_set()</code>, any previously set global options are returned.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+x &lt;- "foo { margin: 122px * .001; }"
+sass(x)
+
+# Provide options directly to sass()
+sass(x, options = sass_options(precision = 1, output_style = "compact"))
+
+# Or set some option(s) globally
+old_options &lt;- sass_options_set(precision = 1)
+sass(x)
+
+# Specify local options  while also respecting global options
+sass(x, options = sass_options_get(output_style = "compact"))
+
+# Restore original state
+sass_options_set(old_options)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

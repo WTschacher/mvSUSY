@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><title>R: Metadata about objects to be printed</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knit_meta {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knit_meta'>Metadata about objects to be printed</h2>
+
+<h3>Description</h3>
+
+<p>As an object is printed, <span class="pkg">knitr</span> will collect metadata about it (if
+available). After knitting is done, all the metadata is accessible via this
+function. You can manually add metadata to the <span class="pkg">knitr</span> session via
+<code>knit_meta_add()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knit_meta(class = NULL, clean = TRUE)
+
+knit_meta_add(meta, label = "")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="knit_meta_:_class">class</code></td>
+<td>
+<p>Optionally return only metadata entries that inherit from the
+specified class. The default, <code>NULL</code>, returns all entries.</p>
+</td></tr>
+<tr><td><code id="knit_meta_:_clean">clean</code></td>
+<td>
+<p>Whether to clean the collected metadata. By default, the
+metadata stored in <span class="pkg">knitr</span> is cleaned up once retrieved, because we may
+not want the metadata to be passed to the next <code>knit()</code> call; to be
+defensive (i.e. not to have carryover metadata), you can call
+<code>knit_meta()</code> before <code>knit()</code>.</p>
+</td></tr>
+<tr><td><code id="knit_meta_:_meta">meta</code></td>
+<td>
+<p>A metadata object to be added to the session.</p>
+</td></tr>
+<tr><td><code id="knit_meta_:_label">label</code></td>
+<td>
+<p>A chunk label to indicate which chunk the metadata belongs to.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>knit_meta()</code> returns the matched metadata specified by
+<code>class</code>; <code>knit_meta_add()</code> returns all current metadata.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

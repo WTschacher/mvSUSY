@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>R: Print contents of directories in a tree-like format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>dir_tree {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='dir_tree'>Print contents of directories in a tree-like format</h2>
+
+<h3>Description</h3>
+
+<p>Print contents of directories in a tree-like format
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>dir_tree(path = ".", recurse = TRUE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="dir_tree_:_path">path</code></td>
+<td>
+<p>A path to print the tree from</p>
+</td></tr>
+<tr><td><code id="dir_tree_:_recurse">recurse</code></td>
+<td>
+<p>If <code>TRUE</code> recurse fully, if a positive number the number of levels
+to recurse.</p>
+</td></tr>
+<tr><td><code id="dir_tree_:_...">...</code></td>
+<td>
+
+<p>Arguments passed on to <code><a href="../../fs/help/dir_ls.html">dir_ls</a></code>
+</p>
+
+<dl>
+<dt><code>type</code></dt><dd><p>File type(s) to return, one or more of &quot;any&quot;, &quot;file&quot;, &quot;directory&quot;,
+&quot;symlink&quot;, &quot;FIFO&quot;, &quot;socket&quot;, &quot;character_device&quot; or &quot;block_device&quot;.</p>
+</dd>
+<dt><code>recursive</code></dt><dd><p>(Deprecated) If <code>TRUE</code> recurse fully.</p>
+</dd>
+<dt><code>all</code></dt><dd><p>If <code>TRUE</code> hidden files are also returned.</p>
+</dd>
+<dt><code>fail</code></dt><dd><p>Should the call fail (the default) or warn if a file cannot be
+accessed.</p>
+</dd>
+<dt><code>glob</code></dt><dd><p>A wildcard aka globbing pattern (e.g. <code style="white-space: pre;">&#8288;*.csv&#8288;</code>) passed on to <code><a href="../../base/html/grep.html">grep()</a></code> to filter paths.</p>
+</dd>
+<dt><code>regexp</code></dt><dd><p>A regular expression (e.g. <code style="white-space: pre;">&#8288;[.]csv$&#8288;</code>) passed on to <code><a href="../../base/html/grep.html">grep()</a></code> to filter paths.</p>
+</dd>
+<dt><code>invert</code></dt><dd><p>If <code>TRUE</code> return files which do <em>not</em> match</p>
+</dd>
+</dl>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

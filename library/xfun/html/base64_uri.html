@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><title>R: Generate the Data URI for a file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>base64_uri {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='base64_uri'>Generate the Data URI for a file</h2>
+
+<h3>Description</h3>
+
+<p>Encode the file in the base64 encoding, and add the media type. The data URI
+can be used to embed data in HTML documents, e.g., in the <code>src</code> attribute of
+the <code style="white-space: pre;">&#8288;&lt;img /&gt;&#8288;</code> tag.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>base64_uri(x, type = mime::guess_type(x))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="base64_uri_:_x">x</code></td>
+<td>
+<p>A file path.</p>
+</td></tr>
+<tr><td><code id="base64_uri_:_type">type</code></td>
+<td>
+<p>The MIME type of the file, e.g., <code>"image/png"</code> for a PNG image
+file.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A string of the form <code style="white-space: pre;">&#8288;data:&lt;media type&gt;;base64,&lt;data&gt;&#8288;</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function requires the <span class="pkg">mime</span> package to determine the MIME
+type of the file except for a few common MIME types.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>logo = xfun:::R_logo()
+img = htmltools::img(src = xfun::base64_uri(logo), alt = "R logo")
+if (interactive()) htmltools::browsable(img)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><title>R: Create, modify, and delete columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>transmute {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='transmute'>Create, modify, and delete columns</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p><code>transmute()</code> creates a new data frame containing only the specified
+computations. It's superseded because you can perform the same job
+with <code>mutate(.keep = "none")</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>transmute(.data, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="transmute_:_.data">.data</code></td>
+<td>
+<p>A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See <em>Methods</em>, below, for
+more details.</p>
+</td></tr>
+<tr><td><code id="transmute_:_...">...</code></td>
+<td>
+<p>&lt;<code><a href="../../rlang/help/args_data_masking.html">data-masking</a></code>&gt; Name-value pairs.
+The name gives the name of the column in the output.
+</p>
+<p>The value can be:
+</p>
+
+<ul>
+<li><p> A vector of length 1, which will be recycled to the correct length.
+</p>
+</li>
+<li><p> A vector the same length as the current group (or the whole data frame
+if ungrouped).
+</p>
+</li>
+<li> <p><code>NULL</code>, to remove the column.
+</p>
+</li>
+<li><p> A data frame or tibble, to create multiple columns in the output.
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the same type as <code>.data</code>. The output has the following
+properties:
+</p>
+
+<ul>
+<li><p> Columns created or modified through <code>...</code> will be returned in the order
+specified by <code>...</code>.
+</p>
+</li>
+<li><p> Unmodified grouping columns will be placed at the front.
+</p>
+</li>
+<li><p> The number of rows is not affected.
+</p>
+</li>
+<li><p> Columns given the value <code>NULL</code> will be removed.
+</p>
+</li>
+<li><p> Groups will be recomputed if a grouping variable is mutated.
+</p>
+</li>
+<li><p> Data frame attributes are preserved.
+</p>
+</li></ul>
+
+
+
+<h3>Methods</h3>
+
+<p>This function is a <strong>generic</strong>, which means that packages can provide
+implementations (methods) for other classes. See the documentation of
+individual methods for extra arguments and differences in behaviour.
+</p>
+<p>Methods available in currently loaded packages:
+no methods found.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

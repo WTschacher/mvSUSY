@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><title>R: Render tags into HTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>renderTags {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='renderTags'>Render tags into HTML</h2>
+
+<h3>Description</h3>
+
+<p>Renders tags (and objects that can be converted into tags using
+<code><a href="../../htmltools/help/as.tags.html">as.tags()</a></code>) into HTML. (Generally intended to be called from web
+framework libraries, not directly by most users&ndash;see
+<code><a href="../../htmltools/help/print.html.html">print.html()</a></code> for higher level rendering.)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>renderTags(x, singletons = character(0), indent = 0)
+
+doRenderTags(x, indent = 0)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="renderTags_:_x">x</code></td>
+<td>
+<p>Tag object(s) to render</p>
+</td></tr>
+<tr><td><code id="renderTags_:_singletons">singletons</code></td>
+<td>
+<p>A list of <a href="../../htmltools/help/singleton.html">singleton</a> signatures to consider already
+rendered; any matching singletons will be dropped instead of rendered.
+(This is useful (only?) for incremental rendering.)</p>
+</td></tr>
+<tr><td><code id="renderTags_:_indent">indent</code></td>
+<td>
+<p>Initial indent level, or <code>FALSE</code> if no indentation should
+be used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>doRenderTags</code> is intended for very low-level use; it ignores
+render hooks, singletons, head, and dependency handling, and simply renders the given tag
+objects as HTML. Please use <code>renderTags()</code> if <code>x</code> has not already handled its dependencies
+and render hooks.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>renderTags</code> returns a list with the following variables:
+</p>
+
+<ul>
+<li> <p><code>head</code>: An <code><a href="../../htmltools/help/HTML.html">HTML()</a></code> string that should be included in <code style="white-space: pre;">&#8288;&lt;head&gt;&#8288;</code>.
+</p>
+</li>
+<li> <p><code>singletons</code>: Character vector of singleton signatures that are
+known after rendering.
+</p>
+</li>
+<li> <p><code>dependencies</code>: A list of <a href="../../htmltools/help/resolveDependencies.html">resolved</a> <code><a href="../../htmltools/help/htmlDependency.html">htmlDependency()</a></code> objects.
+</p>
+</li>
+<li> <p><code>html</code>: An <code><a href="../../htmltools/help/HTML.html">HTML()</a></code> string that represents the main HTML that was rendered.
+</p>
+</li></ul>
+
+<p><code>doRenderTags</code> returns a simple <code><a href="../../htmltools/help/HTML.html">HTML()</a></code> string.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

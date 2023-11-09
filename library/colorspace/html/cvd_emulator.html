@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>R: Graphical User Interface to Check Images for Color...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>cvd_emulator {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='cvd_emulator'>Graphical User Interface to Check Images for Color Constraints</h2>
+
+<h3>Description</h3>
+
+<p>A graphical user interface (GUI) to check an existing jpg/png image for (possible)
+color constraints. The image will be converted to protanope vision, deuteranope vision,
+and a desaturated version (monochromatic vision).
+Allows a rapid check whether the colors used in the image show some
+constraints with respect to color deficiency or color blindness.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>cvd_emulator(file, overwrite = FALSE, shiny.trace = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="cvd_emulator_:_file">file</code></td>
+<td>
+<p>If not set, an interactive GUI will be started. If <code>x</code> is of type
+<code>character</code> it has to be the full path to an image of type png or jpg/jpeg.
+The image will be converted and stored on disc, no GUI.</p>
+</td></tr>
+<tr><td><code id="cvd_emulator_:_overwrite">overwrite</code></td>
+<td>
+<p><code>logical</code>. Only used if <code>file</code> is provided. Allow the
+function to overwrite files on disc if they exist.</p>
+</td></tr>
+<tr><td><code id="cvd_emulator_:_shiny.trace">shiny.trace</code></td>
+<td>
+<p><code>logical</code>. Can be set to <code>TRUE</code> for more verbose
+output when the GUI is started (development flag).</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Reto Stauffer, Claus O. Wilke, Achim Zeileis
+</p>
+
+
+<h3>References</h3>
+
+<p>Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
+&ldquo;colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.&rdquo;
+<em>Journal of Statistical Software</em>, <b>96</b>(1), 1&ndash;49. <a href="https://doi.org/10.18637/jss.v096.i01">doi:10.18637/jss.v096.i01</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

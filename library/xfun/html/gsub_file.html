@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><title>R: Search and replace strings in files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>gsub_file {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='gsub_file'>Search and replace strings in files</h2>
+
+<h3>Description</h3>
+
+<p>These functions provide the &quot;file&quot; version of <code><a href="../../base/html/grep.html">gsub()</a></code>, i.e.,
+they perform searching and replacement in files via <code>gsub()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>gsub_file(file, ..., rw_error = TRUE)
+
+gsub_files(files, ...)
+
+gsub_dir(..., dir = ".", recursive = TRUE, ext = NULL, mimetype = ".*")
+
+gsub_ext(ext, ..., dir = ".", recursive = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="gsub_file_:_file">file</code></td>
+<td>
+<p>Path of a single file.</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_...">...</code></td>
+<td>
+<p>For <code>gsub_file()</code>, arguments passed to <code>gsub()</code>. For
+other functions, arguments passed to <code>gsub_file()</code>. Note that the
+argument <code>x</code> of <code>gsub()</code> is the content of the file.</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_rw_error">rw_error</code></td>
+<td>
+<p>Whether to signal an error if the file cannot be read or
+written. If <code>FALSE</code>, the file will be ignored (with a warning).</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_files">files</code></td>
+<td>
+<p>A vector of file paths.</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_dir">dir</code></td>
+<td>
+<p>Path to a directory (all files under this directory will be
+replaced).</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_recursive">recursive</code></td>
+<td>
+<p>Whether to find files recursively under a directory.</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_ext">ext</code></td>
+<td>
+<p>A vector of filename extensions (without the leading periods).</p>
+</td></tr>
+<tr><td><code id="gsub_file_:_mimetype">mimetype</code></td>
+<td>
+<p>A regular expression to filter files based on their MIME
+types, e.g., <code>'^text/'</code> for plain text files. This requires the
+<span class="pkg">mime</span> package.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>These functions perform in-place replacement, i.e., the files will be
+overwritten. Make sure you backup your files in advance, or use version
+control!
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(xfun)
+f = tempfile()
+writeLines(c("hello", "world"), f)
+gsub_file(f, "world", "woRld", fixed = TRUE)
+readLines(f)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

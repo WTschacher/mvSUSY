@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><title>R: Try to evaluate an expression silently</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>try_silent {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='try_silent'>Try to evaluate an expression silently</h2>
+
+<h3>Description</h3>
+
+<p>An abbreviation of <code>try(silent = TRUE)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>try_silent(expr)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="try_silent_:_expr">expr</code></td>
+<td>
+<p>An R expression.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(xfun)
+z = try_silent(stop("Wrong!"))
+inherits(z, "try-error")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

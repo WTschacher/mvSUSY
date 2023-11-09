@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><title>R: Locale used by 'arrange()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>dplyr-locale {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='dplyr-locale'>Locale used by <code>arrange()</code></h2>
+
+<h3>Description</h3>
+
+<p>This page documents details about the locale used by <code><a href="../../dplyr/help/arrange.html">arrange()</a></code> when
+ordering character vectors.
+</p>
+
+
+<h4>Default locale</h4>
+
+<p>The default locale used by <code>arrange()</code> is the C locale. This is used when
+<code>.locale = NULL</code> unless the <code>dplyr.legacy_locale</code> global option is set to
+<code>TRUE</code>. You can also force the C locale to be used unconditionally with
+<code>.locale = "C"</code>.
+</p>
+<p>The C locale is not exactly the same as English locales, such as <code>"en"</code>. The
+main difference is that the C locale groups the English alphabet by <em>case</em>,
+while most English locales group the alphabet by <em>letter</em>. For example,
+<code>c("a", "b", "C", "B", "c")</code> will sort as <code>c("B", "C", "a", "b", "c")</code> in the
+C locale, with all uppercase letters coming before lowercase letters, but
+will sort as <code>c("a", "b", "B", "c", "C")</code> in an English locale. This often
+makes little practical difference during data analysis, because both return
+identical results when case is consistent between observations.
+</p>
+
+
+
+<h4>Reproducibility</h4>
+
+<p>The C locale has the benefit of being completely reproducible across all
+supported R versions and operating systems with no extra effort.
+</p>
+<p>If you set <code>.locale</code> to an option from <code><a href="../../stringi/help/stri_locale_list.html">stringi::stri_locale_list()</a></code>, then
+stringi must be installed by anyone who wants to run your code. If you
+utilize this in a package, then stringi should be placed in <code>Imports</code>.
+</p>
+
+
+
+<h4>Legacy behavior</h4>
+
+<p>Prior to dplyr 1.1.0, character columns were ordered in the system locale. If
+you need to temporarily revert to this behavior, you can set the global
+option <code>dplyr.legacy_locale</code> to <code>TRUE</code>, but this should be used sparingly and
+you should expect this option to be removed in a future version of dplyr. It
+is better to update existing code to explicitly use <code>.locale</code> instead. Note
+that setting <code>dplyr.legacy_locale</code> will also force calls to <code><a href="../../dplyr/help/group_by.html">group_by()</a></code> to
+use the system locale when internally ordering the groups.
+</p>
+<p>Setting <code>.locale</code> will override any usage of <code>dplyr.legacy_locale</code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+df &lt;- tibble(x = c("a", "b", "C", "B", "c"))
+df
+
+# Default locale is C, which groups the English alphabet by case, placing
+# uppercase letters before lowercase letters.
+arrange(df, x)
+
+# The American English locale groups the alphabet by letter.
+# Explicitly override `.locale` with `"en"` for this ordering.
+arrange(df, x, .locale = "en")
+
+# This Danish letter is expected to sort after `z`
+df &lt;- tibble(x = c("o", "p", "\u00F8", "z"))
+df
+
+# The American English locale sorts it right after `o`
+arrange(df, x, .locale = "en")
+
+# Using `"da"` for Danish ordering gives the expected result
+arrange(df, x, .locale = "da")
+
+# If you need the legacy behavior of `arrange()`, which respected the
+# system locale, then you can set the global option `dplyr.legacy_locale`,
+# but expect this to be removed in the future. We recommend that you use
+# the `.locale` argument instead.
+rlang::with_options(dplyr.legacy_locale = TRUE, {
+  arrange(df, x)
+})
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

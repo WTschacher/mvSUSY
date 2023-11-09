@@ -1,0 +1,205 @@
+<!DOCTYPE html><html><head><title>R: A general vectorised if-else</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>case_when {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='case_when'>A general vectorised if-else</h2>
+
+<h3>Description</h3>
+
+<p>This function allows you to vectorise multiple <code><a href="../../dplyr/help/if_else.html">if_else()</a></code> statements. Each
+case is evaluated sequentially and the first match for each element
+determines the corresponding value in the output vector. If no cases match,
+the <code>.default</code> is used as a final &quot;else&quot; statment.
+</p>
+<p><code>case_when()</code> is an R equivalent of the SQL &quot;searched&quot; <code style="white-space: pre;">&#8288;CASE WHEN&#8288;</code> statement.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>case_when(..., .default = NULL, .ptype = NULL, .size = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="case_when_:_...">...</code></td>
+<td>
+<p>&lt;<code><a href="../../rlang/help/dyn-dots.html">dynamic-dots</a></code>&gt; A sequence of two-sided
+formulas. The left hand side (LHS) determines which values match this case.
+The right hand side (RHS) provides the replacement value.
+</p>
+<p>The LHS inputs must evaluate to logical vectors.
+</p>
+<p>The RHS inputs will be coerced to their common type.
+</p>
+<p>All inputs will be recycled to their common size. That said, we encourage
+all LHS inputs to be the same size. Recycling is mainly useful for RHS
+inputs, where you might supply a size 1 input that will be recycled to the
+size of the LHS inputs.
+</p>
+<p><code>NULL</code> inputs are ignored.</p>
+</td></tr>
+<tr><td><code id="case_when_:_.default">.default</code></td>
+<td>
+<p>The value used when all of the LHS inputs return either
+<code>FALSE</code> or <code>NA</code>.
+</p>
+<p><code>.default</code> must be size 1 or the same size as the common size computed
+from <code>...</code>.
+</p>
+<p><code>.default</code> participates in the computation of the common type with the RHS
+inputs.
+</p>
+<p><code>NA</code> values in the LHS conditions are treated like <code>FALSE</code>, meaning that
+the result at those locations will be assigned the <code>.default</code> value. To
+handle missing values in the conditions differently, you must explicitly
+catch them with another condition before they fall through to the
+<code>.default</code>. This typically involves some variation of <code>is.na(x) ~ value</code>
+tailored to your usage of <code>case_when()</code>.
+</p>
+<p>If <code>NULL</code>, the default, a missing value will be used.</p>
+</td></tr>
+<tr><td><code id="case_when_:_.ptype">.ptype</code></td>
+<td>
+<p>An optional prototype declaring the desired output type. If
+supplied, this overrides the common type of the RHS inputs.</p>
+</td></tr>
+<tr><td><code id="case_when_:_.size">.size</code></td>
+<td>
+<p>An optional size declaring the desired output size. If supplied,
+this overrides the common size computed from <code>...</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector with the same size as the common size computed from the
+inputs in <code>...</code> and the same type as the common type of the RHS inputs
+in <code>...</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/case_match.html">case_match()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- 1:70
+case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz",
+  .default = as.character(x)
+)
+
+# Like an if statement, the arguments are evaluated in order, so you must
+# proceed from the most specific to the most general. This won't work:
+case_when(
+  x %%  5 == 0 ~ "fizz",
+  x %%  7 == 0 ~ "buzz",
+  x %% 35 == 0 ~ "fizz buzz",
+  .default = as.character(x)
+)
+
+# If none of the cases match and no `.default` is supplied, NA is used:
+case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz",
+)
+
+# Note that `NA` values on the LHS are treated like `FALSE` and will be
+# assigned the `.default` value. You must handle them explicitly if you
+# want to use a different value. The exact way to handle missing values is
+# dependent on the set of LHS conditions you use.
+x[2:4] &lt;- NA_real_
+case_when(
+  x %% 35 == 0 ~ "fizz buzz",
+  x %% 5 == 0 ~ "fizz",
+  x %% 7 == 0 ~ "buzz",
+  is.na(x) ~ "nope",
+  .default = as.character(x)
+)
+
+# `case_when()` evaluates all RHS expressions, and then constructs its
+# result by extracting the selected (via the LHS expressions) parts.
+# In particular `NaN`s are produced in this case:
+y &lt;- seq(-2, 2, by = .5)
+case_when(
+  y &gt;= 0 ~ sqrt(y),
+  .default = y
+)
+
+# `case_when()` is particularly useful inside `mutate()` when you want to
+# create a new variable that relies on a complex combination of existing
+# variables
+starwars %&gt;%
+  select(name:mass, gender, species) %&gt;%
+  mutate(
+    type = case_when(
+      height &gt; 200 | mass &gt; 200 ~ "large",
+      species == "Droid" ~ "robot",
+      .default = "other"
+    )
+  )
+
+
+# `case_when()` is not a tidy eval function. If you'd like to reuse
+# the same patterns, extract the `case_when()` call in a normal
+# function:
+case_character_type &lt;- function(height, mass, species) {
+  case_when(
+    height &gt; 200 | mass &gt; 200 ~ "large",
+    species == "Droid" ~ "robot",
+    .default = "other"
+  )
+}
+
+case_character_type(150, 250, "Droid")
+case_character_type(150, 150, "Droid")
+
+# Such functions can be used inside `mutate()` as well:
+starwars %&gt;%
+  mutate(type = case_character_type(height, mass, species)) %&gt;%
+  pull(type)
+
+# `case_when()` ignores `NULL` inputs. This is useful when you'd
+# like to use a pattern only under certain conditions. Here we'll
+# take advantage of the fact that `if` returns `NULL` when there is
+# no `else` clause:
+case_character_type &lt;- function(height, mass, species, robots = TRUE) {
+  case_when(
+    height &gt; 200 | mass &gt; 200 ~ "large",
+    if (robots) species == "Droid" ~ "robot",
+    .default = "other"
+  )
+}
+
+starwars %&gt;%
+  mutate(type = case_character_type(height, mass, species, robots = FALSE)) %&gt;%
+  pull(type)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

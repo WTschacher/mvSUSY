@@ -1,0 +1,154 @@
+<!DOCTYPE html><html><head><title>R: Add a tooltip to a UI element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>tooltip {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='tooltip'>Add a tooltip to a UI element</h2>
+
+<h3>Description</h3>
+
+<p>Display additional information when focusing (or hovering over) a UI element.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>tooltip(
+  trigger,
+  ...,
+  id = NULL,
+  placement = c("auto", "top", "right", "bottom", "left"),
+  options = list()
+)
+
+toggle_tooltip(id, show = NULL, session = get_current_session())
+
+update_tooltip(id, ..., session = get_current_session())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="tooltip_:_trigger">trigger</code></td>
+<td>
+<p>A UI element (i.e., <a href="../../htmltools/help/builder.html">htmltools tag</a>) to serve
+as the tooltip trigger. If <code>trigger</code> renders as multiple HTML
+elements (e.g., it's a <code>tagList()</code>), the last HTML element is used for the
+trigger. If the <code>trigger</code> should contain all of those elements, wrap the
+object in a <code><a href="../../htmltools/html/builder.html">div()</a></code> or <code><a href="../../htmltools/html/builder.html">span()</a></code>.</p>
+</td></tr>
+<tr><td><code id="tooltip_:_...">...</code></td>
+<td>
+<p>UI elements for the tooltip. Character strings are <a href="../../htmltools/html/htmlEscape.html">automatically escaped</a> unless marked as <code><a href="../../htmltools/html/HTML.html">HTML()</a></code>.</p>
+</td></tr>
+<tr><td><code id="tooltip_:_id">id</code></td>
+<td>
+<p>a character string that matches an existing tooltip id.</p>
+</td></tr>
+<tr><td><code id="tooltip_:_placement">placement</code></td>
+<td>
+<p>The placement of the tooltip relative to its trigger.</p>
+</td></tr>
+<tr><td><code id="tooltip_:_options">options</code></td>
+<td>
+<p>A list of additional <a href="https://getbootstrap.com/docs/5.3/components/tooltips/#options">options</a>.</p>
+</td></tr>
+<tr><td><code id="tooltip_:_show">show</code></td>
+<td>
+<p>Whether to show (<code>TRUE</code>) or hide (<code>FALSE</code>) the tooltip. The
+default (<code>NULL</code>) will show if currently hidden and hide if currently shown.
+Note that a tooltip will not be shown if the trigger is not visible (e.g.,
+it's hidden behind a tab).</p>
+</td></tr>
+<tr><td><code id="tooltip_:_session">session</code></td>
+<td>
+<p>A Shiny session object (the default should almost always be
+used).</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>tooltip()</code>: Add a tooltip to a UI element
+</p>
+</li>
+<li> <p><code>toggle_tooltip()</code>: Programmatically show/hide a tooltip.
+</p>
+</li>
+<li> <p><code>update_tooltip()</code>: Update the contents of a tooltip.
+</p>
+</li></ul>
+
+
+<h3>Theming/Styling</h3>
+
+<p>Like other bslib components, tooltips can be themed by supplying <a href="https://rstudio.github.io/bslib/articles/bs5-variables/index.html#tooltip-bg">relevant theming variables</a>
+to <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code>, which effects styling of every popover on the page. To
+style a <em>specific</em> popover differently from other popovers, utilize the
+<code>customClass</code> option:
+</p>
+<div class="sourceCode"><pre>tooltip(
+  "Trigger", "Tooltip message",
+  options = list(customClass = "my-tip")
+)
+</pre></div>
+<p>And then add relevant rules to <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> via <code><a href="../../bslib/help/bs_add_rules.html">bs_add_rules()</a></code>:
+</p>
+<div class="sourceCode"><pre>bs_theme() |&gt; bs_add_rules(".my-tip { max-width: none; }")
+</pre></div>
+
+
+<h3>References</h3>
+
+<p><a href="https://getbootstrap.com/docs/5.3/components/tooltips/">https://getbootstrap.com/docs/5.3/components/tooltips/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/popover.html">popover()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+tooltip(
+  shiny::actionButton("btn", "A button"),
+  "A message"
+)
+
+card(
+  card_header(
+    tooltip(
+      span("Card title ", bsicons::bs_icon("question-circle-fill")),
+      "Additional info",
+      placement = "right"
+    )
+  ),
+  "Card body content..."
+)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

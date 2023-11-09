@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><title>R: Create a call by &quot;hand&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>call_new {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='call_new'>Create a call by &quot;hand&quot;</h2>
+
+<h3>Description</h3>
+
+<p>Create a call by &quot;hand&quot;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>call_new(f, ..., .args = list())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="call_new_:_f">f</code></td>
+<td>
+<p>Function to call. For <code>make_call</code>, either a string, a symbol
+or a quoted call. For <code>do_call</code>, a bare function name or call.</p>
+</td></tr>
+<tr><td><code id="call_new_:_...">...</code>, <code id="call_new_:_.args">.args</code></td>
+<td>
+<p>Arguments to the call either in or out of a list</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># f can either be a string, a symbol or a call
+call_new("f", a = 1)
+call_new(quote(f), a = 1)
+call_new(quote(f()), a = 1)
+
+#' Can supply arguments individually or in a list
+call_new(quote(f), a = 1, b = 2)
+call_new(quote(f), .args = list(a = 1, b = 2))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

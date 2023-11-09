@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><title>R: Compare two recorded plots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>is_low_change {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='is_low_change'>Compare two recorded plots</h2>
+
+<h3>Description</h3>
+
+<p>Check if one plot only contains a low-level update of another plot.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>is_low_change(p1, p2)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="is_low_change_:_p1">p1</code>, <code id="is_low_change_:_p2">p2</code></td>
+<td>
+<p>Plot objects.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Logical value indicating whether <code>p2</code> is a low-level update of
+<code>p1</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>pdf(NULL)
+dev.control("enable")  # enable plot recording
+plot(1:10)
+p1 = recordPlot()
+abline(0, 1)  # add a line (a low-level change)
+p2 = recordPlot()
+plot(rnorm(100))
+p3 = recordPlot()  # draw a completely new plot
+dev.off()
+knitr::is_low_change(p1, p2)  # true
+knitr::is_low_change(p1, p3)  # false
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

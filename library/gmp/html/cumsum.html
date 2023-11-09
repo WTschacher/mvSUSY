@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: (Cumulative) Sums, Products of Large Integers and Rationals</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>cumsum {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='cumsum'>(Cumulative) Sums, Products of Large Integers and Rationals</h2>
+
+<h3>Description</h3>
+
+<p>Theses are methods to &lsquo;overload&rsquo; the <code><a href="../../base/html/sum.html">sum</a>()</code>,
+<code><a href="../../base/html/cumsum.html">cumsum</a>()</code> and <code><a href="../../base/html/prod.html">prod</a>()</code> functions for big
+rationals and big integers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'bigz'
+cumsum(x)
+## S3 method for class 'bigq'
+cumsum(x)
+## S3 method for class 'bigz'
+sum(..., na.rm = FALSE)
+## S3 method for class 'bigq'
+sum(..., na.rm = FALSE)
+## S3 method for class 'bigz'
+prod(..., na.rm = FALSE)
+## S3 method for class 'bigq'
+prod(..., na.rm = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="cumsum_:_x">x</code>, <code id="cumsum_:_...">...</code></td>
+<td>
+<p><span class="rlang"><b>R</b></span> objects of class <code>bigz</code> or <code>bigq</code> or
+&lsquo;simple&rsquo; numbers.</p>
+</td></tr>
+<tr><td><code id="cumsum_:_na.rm">na.rm</code></td>
+<td>
+<p>logical indicating if missing values (<code><a href="../../base/html/NA.html">NA</a></code>)
+should be removed before the computation.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>return an element of class bigz or bigq.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Antoine Lucas</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gmp/help/apply.html">apply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'> x &lt;- as.bigz(1:12)
+ cumsum(x)
+ prod(x)
+ sum(x)
+
+ x &lt;- as.bigq(1:12)
+ cumsum(x)
+ prod(x)
+ sum(x)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

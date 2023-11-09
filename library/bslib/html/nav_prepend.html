@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><title>R: Append or prepend nav item to a dropdown menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>nav_prepend {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='nav_prepend'>Append or prepend nav item to a dropdown menu</h2>
+
+<h3>Description</h3>
+
+<p>Exported for use by <code><a href="../../shiny/help/insertTab.html">shiny::prependTab()</a></code>/<code><a href="../../shiny/help/insertTab.html">shiny::appendTab()</a></code>. These
+functions have been superseded by <code><a href="../../bslib/help/nav_insert.html">nav_insert()</a></code> (i.e.,
+<code><a href="../../shiny/help/insertTab.html">shiny::insertTab()</a></code>), since it can do everything these functions do (i.e.,
+add a <code><a href="../../bslib/help/nav_panel.html">nav_panel()</a></code> to the start or end of a <code><a href="../../bslib/help/nav_menu.html">nav_menu()</a></code>) and more (i.e., insert a
+<code><a href="../../bslib/help/nav_panel.html">nav_panel()</a></code> anywhere inside a nav container).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>nav_prepend(
+  id,
+  nav,
+  menu_title,
+  select = FALSE,
+  session = get_current_session()
+)
+
+nav_append(
+  id,
+  nav,
+  menu_title,
+  select = FALSE,
+  session = get_current_session()
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="nav_prepend_:_id">id</code></td>
+<td>
+<p>a character string used to identify the nav container.</p>
+</td></tr>
+<tr><td><code id="nav_prepend_:_nav">nav</code></td>
+<td>
+<p>a <code><a href="../../bslib/help/nav_panel.html">nav_panel()</a></code> item.</p>
+</td></tr>
+<tr><td><code id="nav_prepend_:_menu_title">menu_title</code></td>
+<td>
+<p>The title of a <code><a href="../../bslib/help/nav_menu.html">nav_menu()</a></code>.</p>
+</td></tr>
+<tr><td><code id="nav_prepend_:_select">select</code></td>
+<td>
+<p>Should <code>nav</code> be selected upon being inserted?</p>
+</td></tr>
+<tr><td><code id="nav_prepend_:_session">session</code></td>
+<td>
+<p>a shiny session object (the default should almost always be used).</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

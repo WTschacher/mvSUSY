@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><title>R: Functions for generating pandoc command line arguments</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pandoc_args {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pandoc_args'>Functions for generating pandoc command line arguments</h2>
+
+<h3>Description</h3>
+
+<p>Functions that assist in creating various types of pandoc command line
+arguments (e.g. for templates, table of contents, highlighting, and content
+includes).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pandoc_variable_arg(name, value)
+
+pandoc_metadata_arg(name, value)
+
+pandoc_metadata_file_arg(file)
+
+pandoc_include_args(in_header = NULL, before_body = NULL, after_body = NULL)
+
+pandoc_highlight_args(highlight, default = "tango")
+
+pandoc_latex_engine_args(latex_engine)
+
+pandoc_toc_args(toc, toc_depth = 3)
+
+pandoc_citeproc_args()
+
+pandoc_lua_filter_args(lua_files)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pandoc_args_:_name">name</code></td>
+<td>
+<p>Name of template variable to set.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_value">value</code></td>
+<td>
+<p>Value of template variable (defaults to <code>true</code> if missing).</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_file">file</code></td>
+<td>
+<p>string. Path to a file</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_in_header">in_header</code></td>
+<td>
+<p>One or more files with content to be included in the
+header of the document.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_before_body">before_body</code></td>
+<td>
+<p>One or more files with content to be included before
+the document body.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_after_body">after_body</code></td>
+<td>
+<p>One or more files with content to be included after the
+document body.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_highlight">highlight</code></td>
+<td>
+<p>The name of a pandoc syntax highlighting theme.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_default">default</code></td>
+<td>
+<p>The highlighting theme to use if &quot;default&quot;
+is specified.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_latex_engine">latex_engine</code></td>
+<td>
+<p>LaTeX engine for producing PDF output. Options are
+&quot;pdflatex&quot;, &quot;lualatex&quot;, &quot;xelatex&quot;, and &quot;tectonic&quot;.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_toc">toc</code></td>
+<td>
+<p><code>TRUE</code> to include a table of contents in the output.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_toc_depth">toc_depth</code></td>
+<td>
+<p>Depth of headers to include in table of contents.</p>
+</td></tr>
+<tr><td><code id="pandoc_args_:_lua_files">lua_files</code></td>
+<td>
+<p>Character vector of file paths to Lua filter files. Paths
+will be transformed by <code><a href="../../rmarkdown/help/pandoc_path_arg.html">pandoc_path_arg</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Non-absolute paths for resources referenced from the
+<code>in_header</code>, <code>before_body</code>, and <code>after_body</code>
+parameters are resolved relative to the directory of the input document.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character vector with pandoc command line arguments.
+</p>
+
+
+<h3>About Pandoc citeproc</h3>
+
+<p>For Pandoc version before 2.11, a pandoc filter &lsquo;<span class="samp">&#8288;pandoc-citeproc&#8288;</span>&rsquo; is
+used. Since Pandoc 2.11, the feature is built-in and activated using
+&lsquo;<span class="samp">&#8288;--citeproc&#8288;</span>&rsquo; flag. &lsquo;<span class="samp">&#8288;pandoc_citeproc_arg&#8288;</span>&rsquo; will return the correct
+switches depending on the Pandoc version in use.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+library(rmarkdown)
+
+pandoc_include_args(before_body = "header.htm")
+pandoc_include_args(before_body = "header.tex")
+
+pandoc_highlight_args("kate")
+
+pandoc_latex_engine_args("pdflatex")
+
+pandoc_toc_args(toc = TRUE, toc_depth = 2)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

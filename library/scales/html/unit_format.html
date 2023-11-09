@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><title>R: Unit labels</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>unit_format {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='unit_format'>Unit labels</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>This function is kept for backward compatiblity; you should either use
+<code><a href="../../scales/help/label_number.html">label_number()</a></code> or <code><a href="../../scales/help/label_number_si.html">label_number_si()</a></code> instead.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>unit_format(
+  accuracy = NULL,
+  scale = 1,
+  prefix = "",
+  unit = "m",
+  sep = " ",
+  suffix = paste0(sep, unit),
+  big.mark = " ",
+  decimal.mark = ".",
+  trim = TRUE,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="unit_format_:_accuracy">accuracy</code></td>
+<td>
+<p>A number to round to. Use (e.g.) <code>0.01</code> to show 2 decimal
+places of precision. If <code>NULL</code>, the default, uses a heuristic that should
+ensure breaks have the minimum number of digits needed to show the
+difference between adjacent values.
+</p>
+<p>Applied to rescaled data.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_scale">scale</code></td>
+<td>
+<p>A scaling factor: <code>x</code> will be multiplied by <code>scale</code> before
+formatting. This is useful if the underlying data is very small or very
+large.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_prefix">prefix</code></td>
+<td>
+<p>Additional text to display before the number. The suffix is
+applied to absolute value before <code>style_positive</code> and <code>style_negative</code> are
+processed so that <code>prefix = "$"</code> will yield (e.g.) <code style="white-space: pre;">&#8288;-$1&#8288;</code> and <code style="white-space: pre;">&#8288;($1)&#8288;</code>.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_unit">unit</code></td>
+<td>
+<p>The units to append.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_sep">sep</code></td>
+<td>
+<p>The separator between the number and the unit label.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_suffix">suffix</code></td>
+<td>
+<p>Additional text to display after the number.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_big.mark">big.mark</code></td>
+<td>
+<p>Character used between every 3 digits to separate thousands.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_decimal.mark">decimal.mark</code></td>
+<td>
+<p>The character to be used to indicate the numeric
+decimal point.</p>
+</td></tr>
+<tr><td><code id="unit_format_:_trim">trim</code></td>
+<td>
+<p>Logical, if <code>FALSE</code>, values are right-justified to a common
+width (see <code><a href="../../base/help/format.html">base::format()</a></code>).</p>
+</td></tr>
+<tr><td><code id="unit_format_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../base/help/format.html">base::format()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Label with units
+demo_continuous(c(0, 1), labels = unit_format(unit = "m"))
+# Labels in kg, but original data in g
+km &lt;- unit_format(unit = "km", scale = 1e-3, digits = 2)
+demo_continuous(c(0, 2500), labels = km)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

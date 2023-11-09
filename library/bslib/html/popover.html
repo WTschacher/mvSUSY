@@ -1,0 +1,185 @@
+<!DOCTYPE html><html><head><title>R: Add a popover to a UI element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>popover {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='popover'>Add a popover to a UI element</h2>
+
+<h3>Description</h3>
+
+<p>Display additional information when clicking on a UI element (typically a
+button).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>popover(
+  trigger,
+  ...,
+  title = NULL,
+  id = NULL,
+  placement = c("auto", "top", "right", "bottom", "left"),
+  options = list()
+)
+
+toggle_popover(id, show = NULL, session = get_current_session())
+
+update_popover(id, ..., title = NULL, session = get_current_session())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="popover_:_trigger">trigger</code></td>
+<td>
+<p>The UI element to serve as the popover trigger (typically a
+<code><a href="../../shiny/help/actionButton.html">shiny::actionButton()</a></code> or similar). If <code>trigger</code> renders as multiple HTML
+elements (e.g., it's a <code>tagList()</code>), the last HTML element is used for the
+trigger. If the <code>trigger</code> should contain all of those elements, wrap the
+object in a <code><a href="../../htmltools/html/builder.html">div()</a></code> or <code><a href="../../htmltools/html/builder.html">span()</a></code>.</p>
+</td></tr>
+<tr><td><code id="popover_:_...">...</code></td>
+<td>
+<p>UI elements for the popover's body. Character strings are
+<a href="../../htmltools/html/htmlEscape.html">automatically escaped</a> unless marked as <code><a href="../../htmltools/html/HTML.html">HTML()</a></code>.</p>
+</td></tr>
+<tr><td><code id="popover_:_title">title</code></td>
+<td>
+<p>A title (header) for the popover.</p>
+</td></tr>
+<tr><td><code id="popover_:_id">id</code></td>
+<td>
+<p>A character string. Required to re-actively respond to the
+visibility of the popover (via the <code>input[[id]]</code> value) and/or update the
+visibility/contents of the popover.</p>
+</td></tr>
+<tr><td><code id="popover_:_placement">placement</code></td>
+<td>
+<p>The placement of the popover relative to its trigger.</p>
+</td></tr>
+<tr><td><code id="popover_:_options">options</code></td>
+<td>
+<p>A list of additional
+<a href="https://getbootstrap.com/docs/5.3/components/popovers/#options">options</a>.</p>
+</td></tr>
+<tr><td><code id="popover_:_show">show</code></td>
+<td>
+<p>Whether to show (<code>TRUE</code>) or hide (<code>FALSE</code>) the popover. The
+default (<code>NULL</code>) will show if currently hidden and hide if currently shown.
+Note that a popover will not be shown if the trigger is not visible (e.g.,
+it's hidden behind a tab).</p>
+</td></tr>
+<tr><td><code id="popover_:_session">session</code></td>
+<td>
+<p>A Shiny session object (the default should almost always be
+used).</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>popover()</code>: Add a popover to a UI element
+</p>
+</li>
+<li> <p><code>toggle_popover()</code>: Programmatically show/hide a popover.
+</p>
+</li>
+<li> <p><code>update_popover()</code>: Update the contents of a popover.
+</p>
+</li></ul>
+
+
+<h3>Closing popovers</h3>
+
+<p>In addition to clicking the <code>close_button</code>, popovers can be closed by
+pressing the Esc/Space key when the popover (and/or its trigger) is
+focused.
+</p>
+
+
+<h3>Theming/Styling</h3>
+
+<p>Like other bslib components, popovers can be themed by supplying <a href="https://rstudio.github.io/bslib/articles/bs5-variables/index.html#popover-bg">relevant theming variables</a>
+to <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code>, which effects styling of every popover on the page. To
+style a <em>specific</em> popover differently from other popovers, utilize the
+<code>customClass</code> option:
+</p>
+<div class="sourceCode"><pre>popover(
+  "Trigger", "Popover message",
+  options = list(customClass = "my-pop")
+)
+</pre></div>
+<p>And then add relevant rules to <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> via <code><a href="../../bslib/help/bs_add_rules.html">bs_add_rules()</a></code>:
+</p>
+<div class="sourceCode"><pre>bs_theme() |&gt; bs_add_rules(".my-pop { max-width: none; }")
+</pre></div>
+
+
+<h3>References</h3>
+
+<p><a href="https://getbootstrap.com/docs/5.3/components/popovers/">https://getbootstrap.com/docs/5.3/components/popovers/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/tooltip.html">tooltip()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+popover(
+  shiny::actionButton("btn", "A button"),
+  "Popover body content...",
+  title = "Popover title"
+)
+
+library(shiny)
+
+ui &lt;- page_fixed(
+  card(class = "mt-5",
+    card_header(
+      popover(
+        uiOutput("card_title", inline = TRUE),
+        title = "Provide a new title",
+        textInput("card_title", NULL, "An editable title")
+      )
+    ),
+    "The card body..."
+  )
+)
+
+server &lt;- function(input, output) {
+  output$card_title &lt;- renderUI({
+    list(input$card_title, bsicons::bs_icon("pencil-square"))
+  })
+}
+
+shinyApp(ui, server)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

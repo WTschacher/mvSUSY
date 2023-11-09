@@ -1,0 +1,216 @@
+<!DOCTYPE html><html><head><title>R: Static image exporting via orca</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>orca {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='orca'>Static image exporting via orca</h2>
+
+<h3>Description</h3>
+
+<p>Superseded by <code><a href="../../plotly/help/kaleido.html">kaleido()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>orca(
+  p,
+  file = "plot.png",
+  format = tools::file_ext(file),
+  scale = NULL,
+  width = NULL,
+  height = NULL,
+  mathjax = FALSE,
+  parallel_limit = NULL,
+  verbose = FALSE,
+  debug = FALSE,
+  safe = FALSE,
+  more_args = NULL,
+  ...
+)
+
+orca_serve(
+  port = 5151,
+  mathjax = FALSE,
+  safe = FALSE,
+  request_limit = NULL,
+  keep_alive = TRUE,
+  window_max_number = NULL,
+  quiet = FALSE,
+  debug = FALSE,
+  more_args = NULL,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="orca_:_p">p</code></td>
+<td>
+<p>a plotly object.</p>
+</td></tr>
+<tr><td><code id="orca_:_file">file</code></td>
+<td>
+<p>output filename.</p>
+</td></tr>
+<tr><td><code id="orca_:_format">format</code></td>
+<td>
+<p>the output format (png, jpeg, webp, svg, pdf, eps).</p>
+</td></tr>
+<tr><td><code id="orca_:_scale">scale</code></td>
+<td>
+<p>Sets the image scale. Applies to all output images.</p>
+</td></tr>
+<tr><td><code id="orca_:_width">width</code></td>
+<td>
+<p>Sets the image width. If not set, defaults to <code>layout.width</code> value.
+Applies to all output images.</p>
+</td></tr>
+<tr><td><code id="orca_:_height">height</code></td>
+<td>
+<p>Sets the image height. If not set, defaults to <code>layout.height</code> value.
+Applies to all output images.</p>
+</td></tr>
+<tr><td><code id="orca_:_mathjax">mathjax</code></td>
+<td>
+<p>whether or not to include MathJax (required to render <a href="../../plotly/help/TeX.html">TeX</a>).
+If <code>TRUE</code>, the PLOTLY_MATHJAX_PATH environment variable must be set and point
+to the location of MathJax (this variable is also used to render <a href="../../plotly/help/TeX.html">TeX</a> in
+interactive graphs, see <a href="../../plotly/help/config.html">config</a>).</p>
+</td></tr>
+<tr><td><code id="orca_:_parallel_limit">parallel_limit</code></td>
+<td>
+<p>Sets the limit of parallel tasks run.</p>
+</td></tr>
+<tr><td><code id="orca_:_verbose">verbose</code></td>
+<td>
+<p>Turn on verbose logging on stdout.</p>
+</td></tr>
+<tr><td><code id="orca_:_debug">debug</code></td>
+<td>
+<p>Starts app in debug mode and turn on verbose logs on stdout.</p>
+</td></tr>
+<tr><td><code id="orca_:_safe">safe</code></td>
+<td>
+<p>Turns on safe mode: where figures likely to make browser window
+hang during image generating are skipped.</p>
+</td></tr>
+<tr><td><code id="orca_:_more_args">more_args</code></td>
+<td>
+<p>additional arguments to pass along to system command. This is useful
+for specifying display and/or electron options, such as <code>--enable-webgl</code> or <code>--disable-gpu</code>.</p>
+</td></tr>
+<tr><td><code id="orca_:_...">...</code></td>
+<td>
+<p>for <code>orca()</code>, additional arguments passed along to <code>processx::run</code>. For
+<code>orca_serve()</code>, additional arguments passed along to <code>processx::process</code>.</p>
+</td></tr>
+<tr><td><code id="orca_:_port">port</code></td>
+<td>
+<p>Sets the server's port number.</p>
+</td></tr>
+<tr><td><code id="orca_:_request_limit">request_limit</code></td>
+<td>
+<p>Sets a request limit that makes orca exit when reached.</p>
+</td></tr>
+<tr><td><code id="orca_:_keep_alive">keep_alive</code></td>
+<td>
+<p>Turn on keep alive mode where orca will (try to) relaunch server if process unexpectedly exits.</p>
+</td></tr>
+<tr><td><code id="orca_:_window_max_number">window_max_number</code></td>
+<td>
+<p>Sets maximum number of browser windows the server can keep open at a given time.</p>
+</td></tr>
+<tr><td><code id="orca_:_quiet">quiet</code></td>
+<td>
+<p>Suppress all logging info.</p>
+</td></tr>
+</table>
+
+
+<h3>Methods</h3>
+
+<p>The <code>orca_serve()</code> function returns an object with two methods:
+</p>
+
+<dl>
+<dt><code>export(p, file = "plot.png", format = tools::file_ext(file), scale = NULL, width = NULL, height = NULL)</code></dt><dd>
+<p>Export a static image of a plotly graph. Arguments found here are the same as those found in <code>orca()</code>
+</p>
+</dd>
+<dt><code>close()</code></dt><dd><p>Close down the orca server and kill the underlying node process.</p>
+</dd>
+</dl>
+
+
+
+<h3>Fields</h3>
+
+<p>The <code>orca_serve()</code> function returns an object with two fields:
+</p>
+
+<dl>
+<dt><code>port</code></dt><dd><p>The port number that the server is listening to.</p>
+</dd>
+<dt><code>process</code></dt><dd><p>An R6 class for controlling and querying the underlying node process.</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+## Not run: 
+# NOTE: in a headless environment, you may need to set `more_args="--enable-webgl"`
+# to export webgl correctly
+p &lt;- plot_ly(z = ~volcano) %&gt;% add_surface()
+orca(p, "surface-plot.svg")
+
+#' # launch the server
+server &lt;- orca_serve()
+
+# export as many graphs as you'd like
+server$export(qplot(1:10), "test1.pdf")
+server$export(plot_ly(x = 1:10, y = 1:10), "test2.pdf")
+
+# the underlying process is exposed as a field, so you
+# have full control over the external process
+server$process$is_alive()
+
+# convenience method for closing down the server
+server$close()
+
+# remove the exported files from disk
+unlink("test1.pdf")
+unlink("test2.pdf")
+
+## End(Not run)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

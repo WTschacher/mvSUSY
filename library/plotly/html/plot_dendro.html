@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: Plot an interactive dendrogram</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>plot_dendro {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='plot_dendro'>Plot an interactive dendrogram</h2>
+
+<h3>Description</h3>
+
+<p>This function takes advantage of nested key selections to implement an
+interactive dendrogram. Selecting a node selects all the labels (i.e. leafs)
+under that node.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>plot_dendro(d, set = "A", xmin = -50, height = 500, width = 500, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="plot_dendro_:_d">d</code></td>
+<td>
+<p>a dendrogram object</p>
+</td></tr>
+<tr><td><code id="plot_dendro_:_set">set</code></td>
+<td>
+<p>defines a crosstalk group</p>
+</td></tr>
+<tr><td><code id="plot_dendro_:_xmin">xmin</code></td>
+<td>
+<p>minimum of the range of the x-scale</p>
+</td></tr>
+<tr><td><code id="plot_dendro_:_height">height</code></td>
+<td>
+<p>height</p>
+</td></tr>
+<tr><td><code id="plot_dendro_:_width">width</code></td>
+<td>
+<p>width</p>
+</td></tr>
+<tr><td><code id="plot_dendro_:_...">...</code></td>
+<td>
+<p>arguments supplied to <code><a href="../../plotly/help/subplot.html">subplot()</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../plotly/help/plot_ly.html">plot_ly()</a></code>, <code><a href="../../plotly/help/plot_mapbox.html">plot_mapbox()</a></code>, <code><a href="../../plotly/help/ggplotly.html">ggplotly()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+## Not run: 
+hc &lt;- hclust(dist(USArrests), "ave")
+dend1 &lt;- as.dendrogram(hc)
+plot_dendro(dend1, height = 600) %&gt;% 
+  hide_legend() %&gt;% 
+  highlight(persistent = TRUE, dynamic = TRUE)
+
+## End(Not run)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

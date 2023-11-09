@@ -1,0 +1,135 @@
+<!DOCTYPE html><html><head><title>R: Evaluate a C++ Expression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>evalCpp {Rcpp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='evalCpp'>
+Evaluate a C++ Expression
+</h2>
+
+<h3>Description</h3>
+
+<p>Evaluates a C++ expression. This creates a C++ function using 
+<code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code> and calls it to get the result. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>evalCpp(code, depends = character(), plugins = character(), includes = character(), 
+        rebuild = FALSE, cacheDir = getOption("rcpp.cache.dir", tempdir()),
+        showOutput = verbose, verbose = getOption("verbose"))
+
+areMacrosDefined(names, depends = character(), includes = character(), 
+        rebuild = FALSE, showOutput = verbose, 
+        verbose = getOption("verbose"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="evalCpp_:_code">code</code></td>
+<td>
+
+<p>C++ expression to evaluate
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_names">names</code></td>
+<td>
+
+<p>names of the macros we want to test
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_plugins">plugins</code></td>
+<td>
+
+<p>see <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_depends">depends</code></td>
+<td>
+
+<p>see <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_includes">includes</code></td>
+<td>
+
+<p>see <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_rebuild">rebuild</code></td>
+<td>
+
+<p>see <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_cacheDir">cacheDir</code></td>
+<td>
+
+<p>Directory to use for caching shared libraries. If the underlying code passed to <code>sourceCpp</code> has not changed since the last invocation then a cached version of the shared library is used. The default value of <code>tempdir()</code> results in the cache being valid only for the current R session. Pass an alternate directory to preserve the cache across R sessions.
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_showOutput">showOutput</code></td>
+<td>
+
+<p>see <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+</td></tr>
+<tr><td><code id="evalCpp_:_verbose">verbose</code></td>
+<td>
+
+<p>see <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The result of the evaluated C++ expression. 
+</p>
+
+
+<h3>Note</h3>
+
+<p>The result type of the C++ expression must be compatible with <code>Rcpp::wrap</code>.     
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Rcpp/help/sourceCpp.html">sourceCpp</a></code>, <code><a href="../../Rcpp/help/cppFunction.html">cppFunction</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+
+evalCpp( "__cplusplus" )
+evalCpp( "std::numeric_limits&lt;double&gt;::max()" )
+    
+areMacrosDefined( c("__cplusplus", "HAS_TR1" ) )
+
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>Rcpp</em> version 1.0.11 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

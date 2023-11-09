@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><title>R: Format or print a ggproto object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>print.ggproto {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='print.ggproto'>Format or print a ggproto object</h2>
+
+<h3>Description</h3>
+
+<p>If a ggproto object has a <code style="white-space: pre;">&#8288;$print&#8288;</code> method, this will call that method.
+Otherwise, it will print out the members of the object, and optionally, the
+members of the inherited objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'ggproto'
+print(x, ..., flat = TRUE)
+
+## S3 method for class 'ggproto'
+format(x, ..., flat = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="print.ggproto_:_x">x</code></td>
+<td>
+<p>A ggproto object to print.</p>
+</td></tr>
+<tr><td><code id="print.ggproto_:_...">...</code></td>
+<td>
+<p>If the ggproto object has a <code>print</code> method, further arguments
+will be passed to it. Otherwise, these arguments are unused.</p>
+</td></tr>
+<tr><td><code id="print.ggproto_:_flat">flat</code></td>
+<td>
+<p>If <code>TRUE</code> (the default), show a flattened list of all local
+and inherited members. If <code>FALSE</code>, show the inheritance hierarchy.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>Dog &lt;- ggproto(
+  print = function(self, n) {
+    cat("Woof!\n")
+  }
+ )
+Dog
+cat(format(Dog), "\n")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

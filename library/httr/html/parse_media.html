@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><title>R: Parse a media type.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>parse_media {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='parse_media'>Parse a media type.</h2>
+
+<h3>Description</h3>
+
+<p>Parsed according to RFC 2616, as at
+<a href="https://www.rfc-editor.org/rfc/rfc2616#section-3.7">https://www.rfc-editor.org/rfc/rfc2616#section-3.7</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>parse_media(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="parse_media_:_x">x</code></td>
+<td>
+<p>String to parse</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A simplified minimal EBNF is:
+</p>
+
+<ul>
+<li><p> media-type     = <code style="white-space: pre;">&#8288;type "/" subtype *( ";" parameter )&#8288;</code>
+</p>
+</li>
+<li><p> type           = <code>token</code>
+</p>
+</li>
+<li><p> subtype        = <code>token</code>
+</p>
+</li>
+<li><p> parameter      = <code style="white-space: pre;">&#8288;attribute "=" value&#8288;</code>
+</p>
+</li>
+<li><p> attribute      = <code>token</code>
+</p>
+</li>
+<li><p> value          = <code>token | quoted-string</code>
+</p>
+</li>
+<li><p> token          = <code style="white-space: pre;">&#8288;1*&lt;any CHAR except CTLs or ()&lt;&gt;@,;:\"/[]?=\{\}&#8288;</code>
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>parse_media("text/plain")
+parse_media("text/plain; charset=utf-8")
+parse_media("text/plain; charset=\"utf-8\"")
+parse_media("text/plain; randomparam=\";=;=\"")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

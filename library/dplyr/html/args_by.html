@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><title>R: Helper for consistent documentation of '.by'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>args_by {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='args_by'>Helper for consistent documentation of <code>.by</code></h2>
+
+<h3>Description</h3>
+
+<p>Use <code style="white-space: pre;">&#8288;@inheritParams args_by&#8288;</code> to consistently document <code>.by</code>.
+</p>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="args_by_:_.by">.by</code></td>
+<td>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="../help/figures/lifecycle-experimental.svg" alt='[Experimental]' /></a>
+</p>
+<p>&lt;<code><a href="../../dplyr/help/dplyr_tidy_select.html">tidy-select</a></code>&gt; Optionally, a selection of columns to
+group by for just this operation, functioning as an alternative to <code><a href="../../dplyr/help/group_by.html">group_by()</a></code>. For
+details and examples, see <a href="../../dplyr/help/dplyr_by.html">?dplyr_by</a>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

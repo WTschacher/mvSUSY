@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>Cartesian Products and Partitions of Groups</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Cartesian Products and Partitions of
+Groups</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#cartesian-product-where-order-does-not-matter" id="toc-cartesian-product-where-order-does-not-matter">Cartesian Product
+where Order does not Matter</a>
+<ul>
+<li><a href="#in-the-wild" id="toc-in-the-wild">In the Wild</a></li>
+</ul></li>
+<li><a href="#partitions-of-groups-with-combogroups" id="toc-partitions-of-groups-with-combogroups">Partitions of Groups with
+<code>comboGroups</code></a>
+<ul>
+<li><a href="#partitions-of-groups-of-varying-sizes" id="toc-partitions-of-groups-of-varying-sizes">Partitions of Groups of
+Varying Sizes</a></li>
+<li><a href="#relevant-posts-on-stackoverflow-as-well-as-oeis." id="toc-relevant-posts-on-stackoverflow-as-well-as-oeis.">Relevant Posts
+on Stackoverflow as well as OEIS.</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>In combinatorics, sometimes it can be difficult to figure out exactly
+which tool/method we need to attack our problem. Do we need
+combinations? permutations? Cartesian product? partitions? compositions?
+What about repetition or multiplicity? The list goes on. Oftentimes the
+solution ends up being overly complicated and prone to error, or more
+commonly, a simple brute force solution is employed. The latter is okay
+in some situations, but in many real world problems, this approach
+becomes untenable very quickly. The two types of problems addressed
+below fall into this category.</p>
+<div id="cartesian-product-where-order-does-not-matter" class="section level2">
+<h2>Cartesian Product where Order does not Matter</h2>
+<p>Given a list of vectors, <em>v<sub>1</sub></em>,
+<em>v<sub>2</sub></em>, … , <em>v<sub>n</sub></em>, where the
+intersection of two or more vectors in non-empty, find all unique
+combinations (order does not matter) of elements of the Cartesian
+product of all of the vectors.</p>
+<p>For example, lets say we have: <code>v1 = 1:4</code> and
+<code>v2 = 2:5</code>. The Cartesian product is given by
+<code>expand.grid(v1, v2)</code> (We continue to use the <code>ht</code>
+function defined in the <a href="https://jwood000.github.io/RcppAlgos/articles/GeneralCombinatorics.html">Combination
+and Permutation Basics</a> vignette):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>ht <span class="ot">&lt;-</span> <span class="cf">function</span>(d, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">n =</span> m) {</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="do">## print the head and tail together</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;head --&gt;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">head</span>(d, m))</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;--------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;tail --&gt;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">tail</span>(d, n))</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="fu">expand.grid</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;    Var1 Var2</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt; 1     1    2</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt; 2     2    2</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt; 3     3    2  </span><span class="al">###</span><span class="co"> &lt;-- Same as row 6</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt; 4     4    2  </span><span class="al">###</span><span class="co"> &lt;-- Same as row 10</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt; 5     1    3</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt; 6     2    3  </span><span class="al">###</span><span class="co"> &lt;-- Same as row 3</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt; 7     3    3</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; 8     4    3  </span><span class="al">###</span><span class="co"> &lt;-- Same as row 11</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; 9     1    4</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; 10    2    4  </span><span class="al">###</span><span class="co"> &lt;-- Same as row 4</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; 11    3    4  </span><span class="al">###</span><span class="co"> &lt;-- Same as row 8</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="co">#&gt; 12    4    4</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co">#&gt; 13    1    5</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; 14    2    5</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#&gt; 15    3    5</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; 16    4    5</span></span></code></pre></div>
+<p>If we don’t care about order, the following row pairs are considered
+equal and can therefore be pruned to obtain our desired results:</p>
+<ul>
+<li>(r3, r6)</li>
+<li>(r4, r10)</li>
+<li>(r8, r11)</li>
+</ul>
+<p>With <code>comboGrid</code> no duplicates are generated:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">comboGrid</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;       Var1 Var2</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    2</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    3</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    4</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  [4,]    1    5</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  [5,]    2    2</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  [6,]    2    3</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  [7,]    2    4</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  [8,]    2    5</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;  [9,]    3    3</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; [10,]    3    4</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; [11,]    3    5</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; [12,]    4    4</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; [13,]    4    5</span></span></code></pre></div>
+<p>Note that the order of <code>expand.grid</code> and
+<code>comboGrid</code> differ. The order of <code>comboGrid</code> is
+lexicographical meaning that the last column will vary the fastest
+whereas with <code>expand.grid</code>, the first column will vary the
+fastest.</p>
+<p>You will also note that the output of <code>expand.grid</code> is a
+<code>data.frame</code> whereas with <code>comboGrid</code>, we get a
+<code>matrix</code>. With <code>comboGrid</code>, we only get a
+<code>data.frame</code> when the classes of each vector are different as
+generally speaking, working with matrices is preferable.</p>
+<p>With the small example above, we only had to filter out 3 out of 16
+total results (less than 20%). That isn’t that bad. If this was the
+general case, we might as well just stick with <code>expand.grid</code>
+as it is very efficient. Unfortunately, this is not the general case and
+as the number of vectors with overlap increases, filtering will become
+impractical.</p>
+<p>Consider the following example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>pools <span class="ot">=</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">6</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">11</span>, <span class="dv">12</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">3</span>, <span class="dv">13</span>, <span class="dv">4</span>, <span class="dv">15</span>, <span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">5</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">5</span>,  <span class="dv">7</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">14</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">6</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">14</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">15</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">4</span>),</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">6</span>,  <span class="dv">3</span>,  <span class="dv">2</span>, <span class="dv">14</span>,  <span class="dv">7</span>, <span class="dv">12</span>,  <span class="dv">9</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">11</span>,  <span class="dv">2</span>,  <span class="dv">5</span>, <span class="dv">15</span>,  <span class="dv">7</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="do">## If we used expand.grid, we would have to filter</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="do">## more than 100 million results</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">lengths</span>(pools))</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [1] 101154816</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="do">## With comboGrid, this is no problem</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="fu">system.time</span>(myCombs <span class="ot">&lt;-</span> <span class="fu">comboGrid</span>(pools))</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;   0.259   0.024   0.283</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">object.size</span>(myCombs), <span class="at">unit =</span> <span class="st">&quot;Mb&quot;</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; 92 Mb</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="fu">ht</span>(myCombs)</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt;      Var1 Var2 Var3 Var4 Var5 Var6 Var7 Var8 Var9 Var10</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    1    1    3    9    4    2     2</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    3    1    1    3    9    4    2     5</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    3    1    1    3    9    4    2     6</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    3    1    1    3    9    4    2     7</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    3    1    1    3    9    4    2    11</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt;            Var1 Var2 Var3 Var4 Var5 Var6 Var7 Var8 Var9 Var10</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; [1205736,]   14   12   15   10   14   15   15   11   12    15</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; [1205737,]   14   12   15   10   14   15   15   13   12    15</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; [1205738,]   14   12   15   10   14   15   15   13   14    15</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; [1205739,]   14   12   15   10   14   15   15   14   12    15</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; [1205740,]   14   12   15   10   14   15   15   14   14    15</span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="do">## This is just the time to create the cartesian product</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="do">## Generating keys, then filtering will take much more time</span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="fu">system.time</span>(cartProd <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(pools))</span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a><span class="co">#&gt;   3.575   0.817   4.393</span></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a><span class="do">## Creates huge object</span></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">object.size</span>(cartProd), <span class="at">unit =</span> <span class="st">&quot;Mb&quot;</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="co">#&gt; 7717.5 Mb</span></span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a><span class="do">## What if we want results with unique values...</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a><span class="do">## Simply set repetition = FALSE</span></span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a><span class="fu">system.time</span>(myCombsNoRep <span class="ot">&lt;-</span> <span class="fu">comboGrid</span>(pools, <span class="at">repetition =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a><span class="co">#&gt;   0.003   0.000   0.003</span></span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a><span class="fu">ht</span>(myCombsNoRep)</span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="co">#&gt;      Var1 Var2 Var3 Var4 Var5 Var6 Var7 Var8 Var9 Var10</span></span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    5    8    4    9    6    7    11</span></span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    3    5    8    4    9    6    7    15</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    3    5    8    4    9    6   12     7</span></span>
+<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    3    5    8    4    9    6   12    11</span></span>
+<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    3    5    8    4    9    6   12    15</span></span>
+<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a><span class="co">#&gt;         Var1 Var2 Var3 Var4 Var5 Var6 Var7 Var8 Var9 Var10</span></span>
+<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a><span class="co">#&gt; [2977,]   14    3    4    5    8   15    9   13   12    11</span></span>
+<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a><span class="co">#&gt; [2978,]   14    3    4    7    5   15    9   13   12    11</span></span>
+<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a><span class="co">#&gt; [2979,]   14    3    4    7    8   15    9   13   12    11</span></span>
+<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a><span class="co">#&gt; [2980,]   14    3    5    7    8   15    9   13   12    11</span></span>
+<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a><span class="co">#&gt; [2981,]   14    4    5    7    8   15    9   13   12    11</span></span></code></pre></div>
+<p>The function <code>comboGrid</code> was highly inspired by the
+following question on stackoverflow:</p>
+<ul>
+<li><a href="https://stackoverflow.com/q/51834467/4408538">Picking
+unordered combinations from pools with overlap</a></li>
+</ul>
+<p>Currenlty, the underlying algorithm is not the gold standard. By
+that, we mean that results are not generated one by one. Efforts are
+underway to achieve this, but up until this point it has proven quite
+difficult (See the comprehensive answer by Tim Peters (yes, that <a href="https://stackoverflow.com/users/2705542/tim-peters">Tim
+Peters</a>)).</p>
+<p>The algorithm in <code>comboGrid</code> leverages <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic">The
+Fundamental Theorem of Arithmetic</a> to efficiently generate keys that
+will be used in a hash function to determine if a particular combination
+of elements have been encountered. For greater efficiency, we make use
+of deduplication as <a href="https://stackoverflow.com/a/51886857/4408538">user2357112</a>
+suggests.</p>
+<div id="in-the-wild" class="section level3">
+<h3>In the Wild</h3>
+<ul>
+<li><a href="https://stackoverflow.com/q/68047141/4408538">R - Expand
+Grid Without Duplicates</a></li>
+<li><a href="https://stackoverflow.com/a/68050873/4408538">Non-redundant
+version of expand.grid</a></li>
+</ul>
+</div>
+</div>
+<div id="partitions-of-groups-with-combogroups" class="section level2">
+<h2>Partitions of Groups with <code>comboGroups</code></h2>
+<p>Given a vector of length <em>n</em> and <em>k</em> groups, where
+<em>k</em> divides <em>n</em>, each group is comprised of a combination
+of the vector chosen <em>g = n / k</em> at a time. As is stated in the
+documentation (see <code>?comboGroups</code>), these can be constructed
+by first generating all permutations of the vector and subsequently
+removing entries with permuted groups. Let us consider the following
+example. Given <code>v = 1:12</code>, generate all partitions
+<code>v</code> into 3 groups each of size 4.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>funBruteGrp <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">myLow =</span> <span class="dv">1</span>, myUp) {</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    mat <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">permuteGeneral</span>(<span class="dv">12</span>, <span class="at">lower =</span> myLow, <span class="at">upper =</span> myUp,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>        <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>        <span class="fu">sapply</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">4</span>), <span class="cf">function</span>(y) {</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>             <span class="fu">paste0</span>(<span class="fu">c</span>(<span class="st">&quot;(&quot;</span>, x[(y <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(y <span class="sc">+</span> <span class="dv">4</span>)], <span class="st">&quot;)&quot;</span>), <span class="at">collapse =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>        })</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    }))</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;Grp&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> myLow<span class="sc">:</span>myUp</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>    mat</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>}</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="do">## All of these are the same as only the 3rd group is being permuted</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="fu">funBruteGrp</span>(<span class="at">myUp =</span> <span class="dv">6</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt;   Grp1          Grp2          Grp3            </span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 1 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 9 10 11 12 )&quot;</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 2 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 9 10 12 11 )&quot;</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 3 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 9 11 10 12 )&quot;</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 4 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 9 11 12 10 )&quot;</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; 5 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 9 12 10 11 )&quot;</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; 6 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 9 12 11 10 )&quot;</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="do">## We found our second distinct partition</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="fu">funBruteGrp</span>(<span class="at">myLow =</span> <span class="dv">23</span>, <span class="at">myUp =</span> <span class="dv">26</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt;    Grp1          Grp2          Grp3            </span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 23 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 12 11 9 10 )&quot;</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 24 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot; &quot;( 12 11 10 9 )&quot;</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 25 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 9 )&quot; &quot;( 8 10 11 12 )&quot;  </span><span class="al">###</span><span class="co"> &lt;-- 2nd distinct partition of groups</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 26 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 9 )&quot; &quot;( 8 10 12 11 )&quot;</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="fu">funBruteGrp</span>(<span class="at">myLow =</span> <span class="dv">48</span>, <span class="at">myUp =</span> <span class="dv">50</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt;    Grp1          Grp2           Grp3            </span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; 48 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 9 )&quot;  &quot;( 12 11 10 8 )&quot;</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; 49 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 10 )&quot; &quot;( 8 9 11 12 )&quot;  </span><span class="al">###</span><span class="co"> &lt;-- 3rd distinct partition of groups</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; 50 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 10 )&quot; &quot;( 8 9 12 11 )&quot;</span></span></code></pre></div>
+<p>We are starting to see a pattern. Each new partition is exactly 24
+spots away. This makes sense as there are <code>factorial(4) = 24</code>
+permutations of size 4. Now, this is an oversimplification as if we
+simply generate every <em>24<sup>th</sup></em> permutation, we will
+still get duplication as they start to carry over to the other groups.
+Observe:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">169</span>, <span class="dv">24</span>), <span class="cf">function</span>(x) {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="fu">funBruteGrp</span>(<span class="at">myLow =</span> x, <span class="at">myUp =</span> x)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>}))</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;     Grp1          Grp2           Grp3            </span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 1   &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 8 )&quot;  &quot;( 9 10 11 12 )&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 25  &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 9 )&quot;  &quot;( 8 10 11 12 )&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; 49  &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 10 )&quot; &quot;( 8 9 11 12 )&quot; </span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 73  &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 11 )&quot; &quot;( 8 9 10 12 )&quot; </span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 97  &quot;( 1 2 3 4 )&quot; &quot;( 5 6 7 12 )&quot; &quot;( 8 9 10 11 )&quot; </span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 121 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 8 7 )&quot;  &quot;( 9 10 11 12 )&quot;  </span><span class="al">###</span><span class="co"> &lt;-- This is the same as the 1st</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 145 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 8 9 )&quot;  &quot;( 7 10 11 12 )&quot;  </span><span class="al">###</span><span class="co"> partition. The only difference is</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 169 &quot;( 1 2 3 4 )&quot; &quot;( 5 6 8 10 )&quot; &quot;( 7 9 11 12 )&quot;   </span><span class="al">###</span><span class="co"> that the 2nd Grp has been permuted</span></span></code></pre></div>
+<p>This only gets more muddled as the number of groups increases. It is
+also very inefficient, however this exercise hopefully serves to better
+illustrate these structures.</p>
+<p>The algorithm in <code>comboGroups</code> avoids all of this
+duplication by implementing a novel algorithm akin to <a href="https://en.cppreference.com/w/cpp/algorithm/next_permutation">std::next_permutation</a>
+from the algorithm library in <code>C++</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">comboGroups</span>(<span class="dv">12</span>, <span class="at">numGroups =</span> <span class="dv">3</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;       0       0       0</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">ht</span>(<span class="fu">comboGroups</span>(<span class="dv">12</span>, <span class="at">numGroups =</span> <span class="dv">3</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp1 Grp1 Grp1 Grp2 Grp2 Grp2 Grp2 Grp3 Grp3 Grp3 Grp3</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    4    5    6    7    8    9   10   11   12</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    3    4    5    6    7    9    8   10   11   12</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    3    4    5    6    7   10    8    9   11   12</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    3    4    5    6    7   11    8    9   10   12</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    3    4    5    6    7   12    8    9   10   11</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;         Grp1 Grp1 Grp1 Grp1 Grp2 Grp2 Grp2 Grp2 Grp3 Grp3 Grp3 Grp3</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; [5771,]    1   10   11   12    2    5    8    9    3    4    6    7</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; [5772,]    1   10   11   12    2    6    7    8    3    4    5    9</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; [5773,]    1   10   11   12    2    6    7    9    3    4    5    8</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; [5774,]    1   10   11   12    2    6    8    9    3    4    5    7</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; [5775,]    1   10   11   12    2    7    8    9    3    4    5    6</span></span></code></pre></div>
+<p>Just as in <code>{combo|permute}General</code>, we can utilize the
+arguments <code>lower</code>, <code>upper</code>, <code>Parallel</code>,
+and <code>nThreads</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">comboGroupsCount</span>(<span class="dv">30</span>, <span class="dv">6</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; Big Integer (&#39;bigz&#39;) :</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; [1] 123378675083039376</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">system.time</span>(a1 <span class="ot">&lt;-</span> <span class="fu">comboGroups</span>(<span class="dv">30</span>, <span class="at">numGroups =</span> <span class="dv">6</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="st">&quot;123378675000000000&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="st">&quot;123378675005000000&quot;</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;   0.115   0.034   0.149</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="do">## Use specific number of threads</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="fu">system.time</span>(a2 <span class="ot">&lt;-</span> <span class="fu">comboGroups</span>(<span class="dv">30</span>, <span class="at">numGroups =</span> <span class="dv">6</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="st">&quot;123378675000000000&quot;</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="st">&quot;123378675005000000&quot;</span>, <span class="at">nThreads =</span> <span class="dv">4</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt;   0.125   0.044   0.044</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="do">## Use n - 1 number of threads (in this case, there are 7)</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="fu">system.time</span>(a3 <span class="ot">&lt;-</span> <span class="fu">comboGroups</span>(<span class="dv">30</span>, <span class="at">numGroups =</span> <span class="dv">6</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="st">&quot;123378675000000000&quot;</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="st">&quot;123378675005000000&quot;</span>, <span class="at">Parallel =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt;   0.179   0.071   0.043</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="fu">identical</span>(a1, a2)</span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="fu">identical</span>(a1, a3)</span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<div id="partitions-of-groups-of-varying-sizes" class="section level3">
+<h3>Partitions of Groups of Varying Sizes</h3>
+<p>As of <code>2.8.+</code> we can generate partitions of groups of
+varying sizes. For example, say we want to generate all partitions of
+the vector <code>v = 1:15</code> into 2 groups of 3, 1 groups of 4, and
+1 group of 5:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">system.time</span>(a4 <span class="ot">&lt;-</span> <span class="fu">comboGroups</span>(<span class="dv">15</span>, <span class="at">grpSizes =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)))</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   0.119   0.020   0.138</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">ht</span>(a4)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp1 Grp1 Grp2 Grp2 Grp2 Grp3 Grp3 Grp3 Grp3 Grp4 Grp4 Grp4 Grp4 Grp4</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; [1,]    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    3    4    5    6    7    8    9   11   10   12   13   14   15</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    3    4    5    6    7    8    9   12   10   11   13   14   15</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; [4,]    1    2    3    4    5    6    7    8    9   13   10   11   12   14   15</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; [5,]    1    2    3    4    5    6    7    8    9   14   10   11   12   13   15</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;            Grp1 Grp1 Grp1 Grp2 Grp2 Grp2 Grp3 Grp3 Grp3 Grp3 Grp4 Grp4 Grp4</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; [6306296,]   10   14   15   11   12   13    5    6    7    8    1    2    3</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; [6306297,]   10   14   15   11   12   13    5    6    7    9    1    2    3</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; [6306298,]   10   14   15   11   12   13    5    6    8    9    1    2    3</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; [6306299,]   10   14   15   11   12   13    5    7    8    9    1    2    3</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; [6306300,]   10   14   15   11   12   13    6    7    8    9    1    2    3</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt;            Grp4 Grp4</span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; [6306296,]    4    9</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; [6306297,]    4    8</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; [6306298,]    4    7</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; [6306299,]    4    6</span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt; [6306300,]    4    5</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="fu">dim</span>(a4)</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt; [1] 6306300      15</span></span></code></pre></div>
+<p>All of the flexibility offered with groups of equal size are present
+with groups of varying sizes as well. For example, we can generate
+groups of varying sizes in parallel:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">system.time</span>(a5 <span class="ot">&lt;-</span> <span class="fu">comboGroups</span>(<span class="dv">15</span>, <span class="at">grpSizes =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>), <span class="at">nThreads =</span> <span class="dv">4</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt;   0.128   0.030   0.040</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">identical</span>(a4, a5)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>There is one additional argument (i.e. <code>retType</code>) not
+present in the other two general functions that allows the user to
+specify the type of object returned. The user can select between
+<code>&quot;matrix&quot;</code> (the default) and <code>&quot;3Darray&quot;</code>. This
+structure has a natural connection to 3D space when the size of each
+group is uniform. We have a particular result (<em>1<sup>st</sup></em>
+dimension) broken down into groups (<em>2<sup>nd</sup></em> dimension)
+of a certain size (<em>3<sup>rd</sup></em> dimension).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>my3D <span class="ot">&lt;-</span> <span class="fu">comboGroups</span>(<span class="fu">factor</span>(month.abb), <span class="dv">4</span>, <span class="at">retType =</span> <span class="st">&quot;3Darray&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>my3D[<span class="dv">1</span>, , ]</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2 Grp3 Grp4</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; [1,] Jan  Apr  Jul  Oct </span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; [2,] Feb  May  Aug  Nov </span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; [3,] Mar  Jun  Sep  Dec </span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; Levels: Apr Aug Dec Feb Jan Jul Jun Mar May Nov Oct Sep</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="fu">comboGroupsCount</span>(<span class="dv">12</span>, <span class="dv">4</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; [1] 15400</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>my3D[<span class="dv">15400</span>, , ]</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp2 Grp3 Grp4</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; [1,] Jan  Feb  Mar  Apr </span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; [2,] Nov  Sep  Jul  May </span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; [3,] Dec  Oct  Aug  Jun </span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; Levels: Apr Aug Dec Feb Jan Jul Jun Mar May Nov Oct Sep</span></span></code></pre></div>
+</div>
+<div id="relevant-posts-on-stackoverflow-as-well-as-oeis." class="section level3">
+<h3>Relevant Posts on Stackoverflow as well as OEIS.</h3>
+<ul>
+<li><a href="https://stackoverflow.com/a/51754958/4408538">Iterating
+through combinations of groups of 4 within a group of 16</a></li>
+<li><a href="https://stackoverflow.com/q/57732672/4408538">Create
+Combinations in R by Groups</a></li>
+<li><a href="https://stackoverflow.com/q/39126712/4408538">Algorithm
+that can create all combinations and all groups of those
+combinations</a></li>
+<li><a href="https://stackoverflow.com/q/74160916/4408538">R expand.grid
+for repeated combinations of a vector in groups</a></li>
+<li><a href="https://stackoverflow.com/q/76064565/4408538">Find all
+possible teams in R</a></li>
+<li><a href="https://oeis.org/A025035" class="uri">https://oeis.org/A025035</a> (See also sequences
+A025036-A025042)</li>
+</ul>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

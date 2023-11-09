@@ -1,0 +1,669 @@
+<!DOCTYPE html><html><head><title>R: Create a file cache object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>FileCache {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='FileCache'>Create a file cache object</h2>
+
+<h3>Description</h3>
+
+<p>Create a file cache object
+</p>
+<p>Create a file cache object
+</p>
+
+
+<h3>Details</h3>
+
+<p>A file cache object is a key-file store that saves the values as files in a
+directory on disk. The objects are files on disk. They are stored and
+retrieved using the <code>get_file()</code>, <code>get_content()</code>, <code>set_file()</code>, and
+<code>set_content()</code> methods. Objects are automatically pruned from the cache
+according to the parameters <code>max_size</code>, <code>max_age</code>, <code>max_n</code>, and <code>evict</code>.
+</p>
+
+
+<h3>Cache pruning</h3>
+
+<p>Cache pruning occurs when <code>set_file()</code> or <code>set_content()</code> is called, or it
+can be invoked manually by calling <code>prune()</code>.
+</p>
+<p>The disk cache will throttle the pruning so that it does not happen on
+every call to <code>set_file()</code> or <code>set_content()</code>, because the filesystem
+operations for checking the status of files can be slow. Instead, it will
+prune once in every 20 calls to <code>set_file()</code> or <code>set_content()</code>, or if at
+least 5 seconds have elapsed since the last prune occurred, whichever is
+first. These parameters are currently not customizable, but may be in the
+future.
+</p>
+<p>When a pruning occurs, if there are any objects that are older than
+<code>max_age</code>, they will be removed.
+</p>
+<p>The <code>max_size</code> and <code>max_n</code> parameters are applied to the cache as a whole,
+in contrast to <code>max_age</code>, which is applied to each object individually.
+</p>
+<p>If the number of objects in the cache exceeds <code>max_n</code>, then objects will be
+removed from the cache according to the eviction policy, which is set with
+the <code>evict</code> parameter. Objects will be removed so that the number of items
+is <code>max_n</code>.
+</p>
+<p>If the size of the objects in the cache exceeds <code>max_size</code>, then objects
+will be removed from the cache. Objects will be removed from the cache so
+that the total size remains under <code>max_size</code>. Note that the size is
+calculated using the size of the files, not the size of disk space used by
+the files &mdash; these two values can differ because of files are stored in
+blocks on disk. For example, if the block size is 4096 bytes, then a file
+that is one byte in size will take 4096 bytes on disk.
+</p>
+<p>Another time that objects can be removed from the cache is when
+<code>get_file()</code> or <code>get_content()</code> is called. If the target object is older
+than <code>max_age</code>, it will be removed and the cache will report it as a
+missing value.
+</p>
+
+
+<h3>Eviction policies</h3>
+
+<p>If <code>max_n</code> or <code>max_size</code> are used, then objects will be removed from the
+cache according to an eviction policy. The available eviction policies are:
+</p>
+ <dl>
+<dt><code>"lru"</code></dt><dd><p> Least Recently Used. The least recently used
+objects will be removed. This uses the filesystem's mtime property. When
+&quot;lru&quot; is used, each time <code>get_file()</code> or <code>get_content()</code> is called, it will
+update the file's mtime. </p>
+</dd> <dt><code>"fifo"</code></dt><dd><p> First-in-first-out. The oldest
+objects will be removed. </p>
+</dd> </dl>
+
+<p>Both of these policies use files' mtime. Note that some filesystems
+(notably FAT) have poor mtime resolution. (atime is not used because
+support for atime is worse than mtime.)
+</p>
+
+
+<h3>Sharing among multiple processes</h3>
+
+<p>The directory for a FileCache can be shared among multiple R processes. To
+do this, each R process should have a FileCache object that uses the same
+directory. Each FileCache will do pruning independently of the others, so
+if they have different pruning parameters, then one FileCache may remove
+cached objects before another FileCache would do so.
+</p>
+<p>Even though it is possible for multiple processes to share a FileCache
+directory, this should not be done on networked file systems, because of
+slow performance of networked file systems can cause problems. If you need
+a high-performance shared cache, you can use one built on a database like
+Redis, SQLite, mySQL, or similar.
+</p>
+<p>When multiple processes share a cache directory, there are some potential
+race conditions. For example, if your code calls <code>exists(key)</code> to check if
+an object is in the cache, and then call <code>get_file(key)</code>, the object may be
+removed from the cache in between those two calls, and <code>get_file(key)</code> will
+throw an error. Instead of calling the two functions, it is better to
+simply call <code>get_file(key)</code>, and use <code>tryCatch()</code> to handle the error that
+is thrown if the object is not in the cache. This effectively tests for
+existence and gets the object in one operation.
+</p>
+<p>It is also possible for one processes to prune objects at the same time
+that another processes is trying to prune objects. If this happens, you may
+see a warning from <code>file.remove()</code> failing to remove a file that has
+already been deleted.
+</p>
+
+
+<h3>Methods</h3>
+
+
+
+<h4>Public methods</h4>
+
+
+<ul>
+<li> <p><a href="#method-FileCache-new"><code>FileCache$new()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-get_file"><code>FileCache$get_file()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-get_content"><code>FileCache$get_content()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-set_file"><code>FileCache$set_file()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-set_content"><code>FileCache$set_content()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-exists"><code>FileCache$exists()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-keys"><code>FileCache$keys()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-remove"><code>FileCache$remove()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-reset"><code>FileCache$reset()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-dir"><code>FileCache$dir()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-prune"><code>FileCache$prune()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-size"><code>FileCache$size()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-destroy"><code>FileCache$destroy()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-is_destroyed"><code>FileCache$is_destroyed()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-finalize"><code>FileCache$finalize()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-FileCache-clone"><code>FileCache$clone()</code></a>
+</p>
+</li></ul>
+
+
+<hr>
+<a id="method-FileCache-new"></a>
+
+
+
+<h4>Method <code>new()</code></h4>
+
+<p>Create a FileCache object.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$new(
+  dir = NULL,
+  max_size = 40 * 1024^2,
+  max_age = Inf,
+  max_n = Inf,
+  evict = c("lru", "fifo"),
+  destroy_on_finalize = FALSE,
+  logfile = NULL
+)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>dir</code></dt><dd><p>Directory to store files for the cache. If <code>NULL</code> (the default) it
+will create and use a temporary directory.</p>
+</dd>
+<dt><code>max_size</code></dt><dd><p>Maximum size of the cache, in bytes. If the cache exceeds
+this size, cached objects will be removed according to the value of the
+<code>evict</code>. Use <code>Inf</code> for no size limit.</p>
+</dd>
+<dt><code>max_age</code></dt><dd><p>Maximum age of files in cache before they are evicted, in
+seconds. Use <code>Inf</code> for no age limit.</p>
+</dd>
+<dt><code>max_n</code></dt><dd><p>Maximum number of objects in the cache. If the number of objects
+exceeds this value, then cached objects will be removed according to the
+value of <code>evict</code>. Use <code>Inf</code> for no limit of number of items.</p>
+</dd>
+<dt><code>evict</code></dt><dd><p>The eviction policy to use to decide which objects are removed
+when a cache pruning occurs. Currently, <code>"lru"</code> and <code>"fifo"</code> are supported.</p>
+</dd>
+<dt><code>destroy_on_finalize</code></dt><dd><p>If <code>TRUE</code>, then when the FileCache object is
+garbage collected, the cache directory and all objects inside of it will be
+deleted from disk. If <code>FALSE</code> (the default), it will do nothing when
+finalized.</p>
+</dd>
+<dt><code>logfile</code></dt><dd><p>An optional filename or connection object to where logging
+information will be written. To log to the console, use <code>stdout()</code>.</p>
+</dd>
+</dl>
+
+</div>
+
+
+<hr>
+<a id="method-FileCache-get_file"></a>
+
+
+
+<h4>Method <code>get_file()</code></h4>
+
+<p>Get the content associated with <code>key</code>, and save in a file
+named <code>outfile</code>.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$get_file(key, outfile, overwrite = TRUE)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>key</code></dt><dd><p>Key. Must be lowercase numbers and letters.</p>
+</dd>
+<dt><code>outfile</code></dt><dd><p>Name of output file. If <code>NULL</code>, return the content as</p>
+</dd>
+<dt><code>overwrite</code></dt><dd><p>If the output file already exists, should it be
+overwritten?</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<h5>Returns</h5>
+
+<p><code>TRUE</code> if the object is found in the cache and copying succeeds,
+<code>FALSE</code> otherwise.
+</p>
+
+
+<hr>
+<a id="method-FileCache-get_content"></a>
+
+
+
+<h4>Method <code>get_content()</code></h4>
+
+<p>Get the content associated with <code>key</code>, and return as either
+string or a raw vector.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$get_content(key, mode = c("text", "raw"))</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>key</code></dt><dd><p>Key. Must be lowercase numbers and letters.</p>
+</dd>
+<dt><code>mode</code></dt><dd><p>If <code>"text"</code>, return the content as a UTF-8-encoded text
+string (a one element char vector). If <code>"raw"</code>, return the content as a
+raw vector.</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<h5>Returns</h5>
+
+<p>A character or raw vector if the object is found in the cache,
+<code>NULL</code> otherwise.
+</p>
+
+
+<hr>
+<a id="method-FileCache-set_file"></a>
+
+
+
+<h4>Method <code>set_file()</code></h4>
+
+<p>Sets content associated with <code>key</code>, from a file named
+<code>infile</code>.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$set_file(key, infile)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>key</code></dt><dd><p>Key. Must be lowercase numbers and letters.</p>
+</dd>
+<dt><code>infile</code></dt><dd><p>Name of input file.</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<h5>Returns</h5>
+
+<p><code>TRUE</code> if copying the file into the cache succeeds, <code>FALSE</code>
+otherwise.
+</p>
+
+
+<hr>
+<a id="method-FileCache-set_content"></a>
+
+
+
+<h4>Method <code>set_content()</code></h4>
+
+<p>Sets content associated with <code>key</code>, from a single-element
+vector.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$set_content(key, content)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>key</code></dt><dd><p>Key. Must be lowercase numbers and letters.</p>
+</dd>
+<dt><code>content</code></dt><dd><p>A character or raw vector. If it is a character vector,
+it will be written with UTF-8 encoding, with with elements collapsed
+with <code style="white-space: pre;">&#8288;\\n&#8288;</code> (consistent across platforms).</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<h5>Returns</h5>
+
+<p><code>TRUE</code> if setting the content in the cache succeeds, <code>FALSE</code>
+otherwise.
+</p>
+
+
+<hr>
+<a id="method-FileCache-exists"></a>
+
+
+
+<h4>Method <code>exists()</code></h4>
+
+<p>Check if content associated with <code>key</code> exists in cache
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$exists(key)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>key</code></dt><dd><p>Key. Must be lowercase numbers and letters.</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<h5>Returns</h5>
+
+<p><code>TRUE</code> if the object is in the cache, <code>FALSE</code> otherwise.
+</p>
+
+
+<hr>
+<a id="method-FileCache-keys"></a>
+
+
+
+<h4>Method <code>keys()</code></h4>
+
+<p>Get all keys
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$keys()</pre></div>
+
+
+
+<h5>Returns</h5>
+
+<p>A character vector of all keys currently in the cache.
+</p>
+
+
+<hr>
+<a id="method-FileCache-remove"></a>
+
+
+
+<h4>Method <code>remove()</code></h4>
+
+<p>Remove an object
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$remove(key)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>key</code></dt><dd><p>Key. Must be lowercase numbers and letters.</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<h5>Returns</h5>
+
+<p><code>TRUE</code> if the object was found and successfully removed, <code>FALSE</code>
+otherwise.
+</p>
+
+
+<hr>
+<a id="method-FileCache-reset"></a>
+
+
+
+<h4>Method <code>reset()</code></h4>
+
+<p>Clear all objects from the cache.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$reset()</pre></div>
+
+
+<hr>
+<a id="method-FileCache-dir"></a>
+
+
+
+<h4>Method <code>dir()</code></h4>
+
+<p>Returns the directory used for the cache.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$dir()</pre></div>
+
+
+<hr>
+<a id="method-FileCache-prune"></a>
+
+
+
+<h4>Method <code>prune()</code></h4>
+
+<p>Prune the cache, using the parameters specified by
+<code>max_size</code>,   <code>max_age</code>, <code>max_n</code>, and <code>evict</code>.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$prune()</pre></div>
+
+
+<hr>
+<a id="method-FileCache-size"></a>
+
+
+
+<h4>Method <code>size()</code></h4>
+
+<p>Return the number of items currently in the cache.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$size()</pre></div>
+
+
+<hr>
+<a id="method-FileCache-destroy"></a>
+
+
+
+<h4>Method <code>destroy()</code></h4>
+
+<p>Clears all objects in the cache, and removes the cache
+directory from disk.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$destroy()</pre></div>
+
+
+<hr>
+<a id="method-FileCache-is_destroyed"></a>
+
+
+
+<h4>Method <code>is_destroyed()</code></h4>
+
+<p>Reports whether the cache has been destroyed.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$is_destroyed(throw = FALSE)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>throw</code></dt><dd><p>Should this function throw an error if the cache has been
+destroyed?</p>
+</dd>
+</dl>
+
+</div>
+
+
+<hr>
+<a id="method-FileCache-finalize"></a>
+
+
+
+<h4>Method <code>finalize()</code></h4>
+
+<p>A finalizer for the cache.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$finalize()</pre></div>
+
+
+<hr>
+<a id="method-FileCache-clone"></a>
+
+
+
+<h4>Method <code>clone()</code></h4>
+
+<p>The objects of this class are cloneable with this method.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>FileCache$clone(deep = FALSE)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

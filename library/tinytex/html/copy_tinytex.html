@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>R: Copy TinyTeX to another location and use it in another system</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>copy_tinytex {tinytex}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='copy_tinytex'>Copy TinyTeX to another location and use it in another system</h2>
+
+<h3>Description</h3>
+
+<p>The function <code>copy_tinytex()</code> copies the existing TinyTeX installation
+to another directory (e.g., a portable device like a USB stick). The function
+<code>use_tinytex()</code> runs <code>tlmgr path add</code> to add the copy of TinyTeX
+in an existing folder to the <code>PATH</code> variable of the current system, so
+that you can use utilities such as <code>tlmgr</code> and <code>pdflatex</code>,
+etc.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>copy_tinytex(
+  from = tinytex_root(),
+  to = select_dir("Select Destination Directory")
+)
+
+use_tinytex(from = select_dir("Select TinyTeX Directory"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="copy_tinytex_:_from">from</code></td>
+<td>
+<p>The root directory of the TinyTeX installation. For
+<code>copy_tinytex()</code>, the default value <code>tinytex_root()</code> should be a
+reasonable guess if you installed TinyTeX via <code>install_tinytex()</code>. For
+<code>use_tinytex()</code>, if <code>from</code> is not provided, a dialog for choosing
+the directory interactively will pop up.</p>
+</td></tr>
+<tr><td><code id="copy_tinytex_:_to">to</code></td>
+<td>
+<p>The destination directory where you want to make a copy of TinyTeX.
+Like <code>from</code> in <code>use_tinytex()</code>, a dialog will pop up if <code>to</code>
+is not provided in <code>copy_tinytex()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>You can only copy TinyTeX and use it in the same system, e.g., the
+Windows version of TinyTeX only works on Windows.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tinytex</em> version 0.48 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><title>R: Convert numbers to English words</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>numbers_to_words {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='numbers_to_words'>Convert numbers to English words</h2>
+
+<h3>Description</h3>
+
+<p>This can be helpful when writing reports with <span class="pkg">knitr</span>/<span class="pkg">rmarkdown</span> if
+we want to print numbers as English words in the output. The function <code>n2w()</code>
+is an alias of <code>numbers_to_words()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>numbers_to_words(x, cap = FALSE, hyphen = TRUE, and = FALSE)
+
+n2w(x, cap = FALSE, hyphen = TRUE, and = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="numbers_to_words_:_x">x</code></td>
+<td>
+<p>A numeric vector. The absolute values should be less than <code>1e15</code>.</p>
+</td></tr>
+<tr><td><code id="numbers_to_words_:_cap">cap</code></td>
+<td>
+<p>Whether to capitalize the first letter of the word. This can be
+useful when the word is at the beginning of a sentence. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="numbers_to_words_:_hyphen">hyphen</code></td>
+<td>
+<p>Whether to insert hyphen (-) when the number is between 21 and
+99 (except 30, 40, etc.).</p>
+</td></tr>
+<tr><td><code id="numbers_to_words_:_and">and</code></td>
+<td>
+<p>Whether to insert <code>and</code> between hundreds and tens, e.g., write 110
+as &ldquo;one hundred and ten&rdquo; if <code>TRUE</code> instead of &ldquo;one hundred
+ten&rdquo;.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Daijiang Li
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(xfun)
+n2w(0, cap = TRUE)
+n2w(0:121, and = TRUE)
+n2w(1e+06)
+n2w(1e+11 + 12345678)
+n2w(-987654321)
+n2w(1e+15 - 1)
+n2w(123.456)
+n2w(123.45678901)
+n2w(123.456789098765)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

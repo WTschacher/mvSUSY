@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Rescale vector to have specified minimum, midpoint, and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>rescale_mid {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='rescale_mid'>Rescale vector to have specified minimum, midpoint, and maximum</h2>
+
+<h3>Description</h3>
+
+<p>Rescale vector to have specified minimum, midpoint, and maximum
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>rescale_mid(x, to, from, mid, ...)
+
+## S3 method for class 'numeric'
+rescale_mid(x, to = c(0, 1), from = range(x, na.rm = TRUE), mid = 0, ...)
+
+## S3 method for class 'logical'
+rescale_mid(x, to = c(0, 1), from = range(x, na.rm = TRUE), mid = 0, ...)
+
+## S3 method for class 'dist'
+rescale_mid(x, to = c(0, 1), from = range(x, na.rm = TRUE), mid = 0, ...)
+
+## S3 method for class 'POSIXt'
+rescale_mid(x, to = c(0, 1), from = range(x, na.rm = TRUE), mid, ...)
+
+## S3 method for class 'Date'
+rescale_mid(x, to = c(0, 1), from = range(x, na.rm = TRUE), mid, ...)
+
+## S3 method for class 'integer64'
+rescale_mid(x, to = c(0, 1), from = range(x, na.rm = TRUE), mid = 0, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="rescale_mid_:_x">x</code></td>
+<td>
+<p>vector of values to manipulate.</p>
+</td></tr>
+<tr><td><code id="rescale_mid_:_to">to</code></td>
+<td>
+<p>output range (numeric vector of length two)</p>
+</td></tr>
+<tr><td><code id="rescale_mid_:_from">from</code></td>
+<td>
+<p>input range (vector of length two).  If not given, is
+calculated from the range of <code>x</code></p>
+</td></tr>
+<tr><td><code id="rescale_mid_:_mid">mid</code></td>
+<td>
+<p>mid-point of input range</p>
+</td></tr>
+<tr><td><code id="rescale_mid_:_...">...</code></td>
+<td>
+<p>other arguments passed on to methods</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>rescale_mid(1:100, mid = 50.5)
+rescale_mid(runif(50), mid = 0.5)
+rescale_mid(1)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

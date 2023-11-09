@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><title>R: Retrieve OAuth 1.0 access token.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>init_oauth1.0 {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='init_oauth1.0'>Retrieve OAuth 1.0 access token.</h2>
+
+<h3>Description</h3>
+
+<p>See demos for use.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>init_oauth1.0(
+  endpoint,
+  app,
+  permission = NULL,
+  is_interactive = interactive(),
+  private_key = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="init_oauth1.0_:_endpoint">endpoint</code></td>
+<td>
+<p>An OAuth endpoint, created by <code><a href="../../httr/help/oauth_endpoint.html">oauth_endpoint()</a></code></p>
+</td></tr>
+<tr><td><code id="init_oauth1.0_:_app">app</code></td>
+<td>
+<p>An OAuth consumer application, created by
+<code><a href="../../httr/help/oauth_app.html">oauth_app()</a></code></p>
+</td></tr>
+<tr><td><code id="init_oauth1.0_:_permission">permission</code></td>
+<td>
+<p>optional, a string of permissions to ask for.</p>
+</td></tr>
+<tr><td><code id="init_oauth1.0_:_is_interactive">is_interactive</code></td>
+<td>
+<p>DEPRECATED</p>
+</td></tr>
+<tr><td><code id="init_oauth1.0_:_private_key">private_key</code></td>
+<td>
+<p>Optional, a key provided by <code><a href="../../openssl/help/read_key.html">openssl::read_key()</a></code>.
+Used for signed OAuth 1.0.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

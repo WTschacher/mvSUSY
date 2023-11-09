@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><title>R: Convenience function to transform all position variables.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>transform_position {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='transform_position'>Convenience function to transform all position variables.</h2>
+
+<h3>Description</h3>
+
+<p>Convenience function to transform all position variables.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>transform_position(df, trans_x = NULL, trans_y = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="transform_position_:_trans_x">trans_x</code>, <code id="transform_position_:_trans_y">trans_y</code></td>
+<td>
+<p>Transformation functions for x and y aesthetics.
+(will transform x, xmin, xmax, xend etc)</p>
+</td></tr>
+<tr><td><code id="transform_position_:_...">...</code></td>
+<td>
+<p>Additional arguments passed to <code>trans_x</code> and <code>trans_y</code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

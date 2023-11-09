@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><title>R: Create a vertically collapsing accordion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>accordion {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='accordion'>Create a vertically collapsing accordion</h2>
+
+<h3>Description</h3>
+
+<p>Create a vertically collapsing accordion
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>accordion(
+  ...,
+  id = NULL,
+  open = NULL,
+  multiple = TRUE,
+  class = NULL,
+  width = NULL,
+  height = NULL
+)
+
+accordion_panel(title, ..., value = title, icon = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="accordion_:_...">...</code></td>
+<td>
+<p>Named arguments become attributes on the <code style="white-space: pre;">&#8288;&lt;div class="accordion"&gt;&#8288;</code>
+element. Unnamed arguments should be <code>accordion_panel()</code>s.</p>
+</td></tr>
+<tr><td><code id="accordion_:_id">id</code></td>
+<td>
+<p>If provided, you can use <code>input$id</code> in your server logic to
+determine which of the <code>accordion_panel()</code>s are currently active. The value
+will correspond to the <code>accordion_panel()</code>'s <code>value</code> argument.</p>
+</td></tr>
+<tr><td><code id="accordion_:_open">open</code></td>
+<td>
+<p>A character vector of <code>accordion_panel()</code> <code>value</code>s to open
+(i.e., show) by default. The default value of <code>NULL</code> will open the first
+<code>accordion_panel()</code>. Use a value of <code>TRUE</code> to open all (or <code>FALSE</code> to
+open none) of the items. It's only possible to open more than one panel
+when <code>multiple=TRUE</code>.</p>
+</td></tr>
+<tr><td><code id="accordion_:_multiple">multiple</code></td>
+<td>
+<p>Whether multiple <code>accordion_panel()</code> can be <code>open</code> at once.</p>
+</td></tr>
+<tr><td><code id="accordion_:_class">class</code></td>
+<td>
+<p>Additional CSS classes to include on the accordion div.</p>
+</td></tr>
+<tr><td><code id="accordion_:_width">width</code>, <code id="accordion_:_height">height</code></td>
+<td>
+<p>Any valid CSS unit; for example, height=&quot;100%&quot;.</p>
+</td></tr>
+<tr><td><code id="accordion_:_title">title</code></td>
+<td>
+<p>A title to appear in the <code>accordion_panel()</code>'s header.</p>
+</td></tr>
+<tr><td><code id="accordion_:_value">value</code></td>
+<td>
+<p>A character string that uniquely identifies this panel.</p>
+</td></tr>
+<tr><td><code id="accordion_:_icon">icon</code></td>
+<td>
+<p>A <a href="../../htmltools/help/builder.html">htmltools::tag</a> child (e.g., <code><a href="../../bsicons/help/bs_icon.html">bsicons::bs_icon()</a></code>) which is positioned just before the <code>title</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p><a href="https://getbootstrap.com/docs/5.2/components/accordion/">https://getbootstrap.com/docs/5.2/components/accordion/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/accordion_panel_set.html">accordion_panel_set()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+items &lt;- lapply(LETTERS, function(x) {
+  accordion_panel(paste("Section", x), paste("Some narrative for section", x))
+})
+
+# First shown by default
+accordion(!!!items)
+# Nothing shown by default
+accordion(!!!items, open = FALSE)
+# Everything shown by default
+accordion(!!!items, open = TRUE)
+
+# Show particular sections
+accordion(!!!items, open = "Section B")
+accordion(!!!items, open = c("Section A", "Section B"))
+
+# Provide an id to create a shiny input binding
+library(shiny)
+
+ui &lt;- page_fluid(
+  accordion(!!!items, id = "acc")
+)
+
+server &lt;- function(input, output) {
+  observe(print(input$acc))
+}
+
+shinyApp(ui, server)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

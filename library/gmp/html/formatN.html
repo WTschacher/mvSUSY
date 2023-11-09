@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>R: Format Numbers Keeping Classes Distinguishable</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>formatN {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='formatN'>Format Numbers Keeping Classes Distinguishable</h2>
+
+<h3>Description</h3>
+
+<p>Format (generalized) numbers in a way that their <code><a href="../../base/html/class.html">class</a></code>es
+are distinguishable.  Contrary to <code><a href="../../base/html/format.html">format</a>()</code> which uses a
+common format for all elements of <code>x</code>, here, each entry is
+formatted individually.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>formatN(x, ...)
+## Default S3 method:
+formatN(x, ...)
+## S3 method for class 'integer'
+formatN(x, ...)
+## S3 method for class 'double'
+formatN(x, ...)
+## S3 method for class 'bigz'
+formatN(x, ...)
+## S3 method for class 'bigq'
+formatN(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="formatN_:_x">x</code></td>
+<td>
+<p>any <span class="rlang"><b>R</b></span> object, typically &ldquo;number-like&rdquo;.</p>
+</td></tr>
+<tr><td><code id="formatN_:_...">...</code></td>
+<td>
+<p>potentially further arguments passed to methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a character vector of the same <code><a href="../../base/html/length.html">length</a></code> as <code>x</code>,
+each entry a representation of the corresponding entry in <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/format.html">format</a></code>, including its (sophisticated) default method;
+<code><a href="../../base/html/character.html">as.character</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Note that each class is uniquely recognizable from its output:
+formatN(    -2:5)# integer
+formatN(0 + -2:5)# double precision
+formatN(as.bigz(-2:5))
+formatN(as.bigq(-2:5, 4))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

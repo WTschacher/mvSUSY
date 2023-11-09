@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><title>R: COSMIC Color Palettes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pal_cosmic {ggsci}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pal_cosmic'>COSMIC Color Palettes</h2>
+
+<h3>Description</h3>
+
+<p>Color palettes inspired by the colors used in projects from the
+<a href="https://cancer.sanger.ac.uk/cosmic">Catalogue Of
+Somatic Mutations in Cancers (COSMIC)</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pal_cosmic(
+  palette = c("hallmarks_light", "hallmarks_dark", "signature_substitutions"),
+  alpha = 1
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pal_cosmic_:_palette">palette</code></td>
+<td>
+<p>Palette type. Currently there are three available options:
+<code>"signature_substitutions"</code> (6-color palette),
+<code>"hallmarks_light"</code> (10-color palette), and <code>"hallmarks_dark"</code>
+(10-color palette). The <code>"hallmarks_light"</code> option is from
+<a href="https://pubmed.ncbi.nlm.nih.gov/21376230/">Hanahan and Weinberg (2011)</a>.</p>
+</td></tr>
+<tr><td><code id="pal_cosmic_:_alpha">alpha</code></td>
+<td>
+<p>Transparency level, a real number in (0, 1].
+See <code>alpha</code> in <code><a href="../../grDevices/help/rgb.html">rgb</a></code> for details.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Joshua H. Cook &lt;<a href="mailto:joshuacook0023@gmail.com">joshuacook0023@gmail.com</a>&gt; |
+&lt;<a href="https://github.com/jhrcook">GitHub/jhrcook</a>&gt;
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library("scales")
+show_col(pal_cosmic("hallmarks_light")(10))
+show_col(pal_cosmic("hallmarks_light", alpha = 0.6)(10))
+show_col(pal_cosmic("hallmarks_dark")(10))
+show_col(pal_cosmic("hallmarks_dark", alpha = 0.6)(10))
+show_col(pal_cosmic("signature_substitutions")(6))
+show_col(pal_cosmic("signature_substitutions", alpha = 0.6)(6))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggsci</em> version 3.0.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

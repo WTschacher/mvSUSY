@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><title>R: Convert Hexadecimal Color Specifications to sRGB Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>hex2RGB {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='hex2RGB'>Convert Hexadecimal Color Specifications to sRGB Objects</h2>
+
+<h3>Description</h3>
+
+<p>This function takes a vector of strings of the form <code>"#RRGGBB"</code>
+(hexadecimal color descriptions) into <code><a href="../../colorspace/help/sRGB.html">sRGB</a></code> objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>hex2RGB(x, gamma = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="hex2RGB_:_x">x</code></td>
+<td>
+<p>a vector of hexadecimal color descriptions.</p>
+</td></tr>
+<tr><td><code id="hex2RGB_:_gamma">gamma</code></td>
+<td>
+<p>Whether to apply gamma-correction.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function converts device-dependent color descriptions of the form
+<code>"#RRGGBB"</code> into sRGB color descriptions (linearized if <code>gamma</code> is
+<code>TRUE</code>).  The alpha channel will be ignored if given
+(<code>"#RRGGBBAA"</code>).
+</p>
+
+
+<h3>Value</h3>
+
+<p>An sRGB object describing the colors.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Ross Ihaka
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../colorspace/help/hex.html">hex</a></code>, <code><a href="../../colorspace/help/RGB.html">RGB</a></code>, <code><a href="../../colorspace/help/sRGB.html">sRGB</a></code>,
+<code><a href="../../colorspace/help/HSV.html">HSV</a></code>, <code><a href="../../colorspace/help/XYZ.html">XYZ</a></code>, <code><a href="../../colorspace/help/polarLAB.html">polarLAB</a></code>,
+<code><a href="../../colorspace/help/LUV.html">LUV</a></code>, <code><a href="../../colorspace/help/polarLUV.html">polarLUV</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>hex2RGB(c("#FF0000","#00FF00", "#0000FF50"))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

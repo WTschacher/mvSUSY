@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><title>R: Label strings by wrapping across multiple lines</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>label_wrap {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='label_wrap'>Label strings by wrapping across multiple lines</h2>
+
+<h3>Description</h3>
+
+<p>Uses <code><a href="../../base/html/strwrap.html">strwrap()</a></code> to split long labels across multiple lines.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>label_wrap(width)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="label_wrap_:_width">width</code></td>
+<td>
+<p>Number of characters per line.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>All <code>label_()</code> functions return a &quot;labelling&quot; function, i.e. a function that
+takes a vector <code>x</code> and returns a character vector of <code>length(x)</code> giving a
+label for each input value.
+</p>
+<p>Labelling functions are designed to be used with the <code>labels</code> argument of
+ggplot2 scales. The examples demonstrate their use with x scales, but
+they work similarly for all scales, including those that generate legends
+rather than axes.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other labels for discrete scales: 
+<code><a href="../../scales/help/label_parse.html">label_parse</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(
+  "this is a long label",
+  "this is another long label",
+  "this a label this is even longer"
+)
+demo_discrete(x)
+demo_discrete(x, labels = label_wrap(10))
+demo_discrete(x, labels = label_wrap(20))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html><html><head><title>R: Capture a plot as a self-contained &lt;img&gt; tag</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>plotTag {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='plotTag'>Capture a plot as a self-contained <code style="white-space: pre;">&#8288;&lt;img&gt;&#8288;</code> tag</h2>
+
+<h3>Description</h3>
+
+<p>Capture a plot as a self-contained <code style="white-space: pre;">&#8288;&lt;img&gt;&#8288;</code> tag
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>plotTag(
+  expr,
+  alt,
+  device = defaultPngDevice(),
+  width = 400,
+  height = 400,
+  pixelratio = 2,
+  mimeType = "image/png",
+  deviceArgs = list(),
+  attribs = list(),
+  suppressSize = c("none", "x", "y", "xy")
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="plotTag_:_expr">expr</code></td>
+<td>
+<p>A plotting expression that generates a plot (or yields an object
+that generates a plot when printed, like a ggplot2).</p>
+</td></tr>
+<tr><td><code id="plotTag_:_alt">alt</code></td>
+<td>
+<p>A single-element character vector that contains a text description
+of the image. This is used by accessibility tools, such as screen readers
+for vision impaired users.</p>
+</td></tr>
+<tr><td><code id="plotTag_:_device">device</code></td>
+<td>
+<p>A graphics device function; by default, this will be either
+<code><a href="../../grDevices/help/png.html">grDevices::png()</a></code>, <code><a href="../../ragg/help/agg_png.html">ragg::agg_png()</a></code>, or <code><a href="../../Cairo/help/Cairo.html">Cairo::CairoPNG()</a></code>, depending on
+your system and configuration. See <code><a href="../../htmltools/help/defaultPngDevice.html">defaultPngDevice()</a></code>.</p>
+</td></tr>
+<tr><td><code id="plotTag_:_width">width</code>, <code id="plotTag_:_height">height</code></td>
+<td>
+<p>The width/height that the generated tag should be
+displayed at, in logical (browser) pixels.</p>
+</td></tr>
+<tr><td><code id="plotTag_:_pixelratio">pixelratio</code></td>
+<td>
+<p>Indicates the ratio between physical and logical units of
+length. For PNGs that may be displayed on high-DPI screens, use <code>2</code>;
+for graphics devices that express width/height in inches (like
+<code><a href="../../grDevices/help/cairo.html">grDevices::svg()</a></code>, try <code>1/72</code> or <code>1/96</code>.</p>
+</td></tr>
+<tr><td><code id="plotTag_:_mimeType">mimeType</code></td>
+<td>
+<p>The MIME type associated with the <code>device</code>. Examples are
+<code>image/png</code>, <code>image/tiff</code>, <code>image/svg+xml</code>.</p>
+</td></tr>
+<tr><td><code id="plotTag_:_deviceArgs">deviceArgs</code></td>
+<td>
+<p>A list of additional arguments that should be included when
+the <code>device</code> function is invoked.</p>
+</td></tr>
+<tr><td><code id="plotTag_:_attribs">attribs</code></td>
+<td>
+<p>A list of additional attributes that should be included on the
+generated <code style="white-space: pre;">&#8288;&lt;img&gt;&#8288;</code> (e.g. <code>id</code>, <code>class</code>).</p>
+</td></tr>
+<tr><td><code id="plotTag_:_suppressSize">suppressSize</code></td>
+<td>
+<p>By default, <code>plotTag</code> will include a <code>style</code>
+attribute with <code>width</code> and <code>height</code> properties specified in
+pixels. If you'd rather specify the image size using other methods (like
+responsive CSS rules) you can use this argument to suppress width
+(<code>"x"</code>), height (<code>"y"</code>), or both (<code>"xy"</code>) properties.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="../../htmltools/help/browsable.html">browsable()</a></code> HTML <code style="white-space: pre;">&#8288;&lt;img&gt;&#8288;</code> tag object. Print it at
+the console to preview, or call <code><a href="../../base/html/character.html">as.character()</a></code> on it to view the HTML
+source.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../htmltools/help/capturePlot.html">capturePlot()</a></code> saves plots as an image file.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>img &lt;- plotTag({
+  plot(cars)
+}, "A plot of the 'cars' dataset", width = 375, height = 275)
+
+if (interactive()) img
+
+if (interactive() &amp;&amp; capabilities("cairo")) {
+  plotTag(
+    plot(pressure), "A plot of the 'pressure' dataset",
+    device = grDevices::svg, width = 375, height = 275, pixelratio = 1/72,
+    mimeType = "image/svg+xml"
+  )
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

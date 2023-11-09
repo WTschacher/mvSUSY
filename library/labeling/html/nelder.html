@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><title>R: Nelder's labeling algorithm</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>nelder {labeling}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='nelder'>Nelder's labeling algorithm</h2>
+
+<h3>Description</h3>
+
+<p>Nelder's labeling algorithm
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>  nelder(dmin, dmax, m,
+    Q = c(1, 1.2, 1.6, 2, 2.5, 3, 4, 5, 6, 8, 10))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="nelder_:_dmin">dmin</code></td>
+<td>
+<p>minimum of the data range</p>
+</td></tr>
+<tr><td><code id="nelder_:_dmax">dmax</code></td>
+<td>
+<p>maximum of the data range</p>
+</td></tr>
+<tr><td><code id="nelder_:_m">m</code></td>
+<td>
+<p>number of axis labels</p>
+</td></tr>
+<tr><td><code id="nelder_:_Q">Q</code></td>
+<td>
+<p>set of nice numbers</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>vector of axis label locations
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Justin Talbot <a href="mailto:justintalbot@gmail.com">justintalbot@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Nelder, J. A. (1976) AS 96. A Simple Algorithm for
+Scaling Graphs, Journal of the Royal Statistical Society.
+Series C., pp. 94-96.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>labeling</em> version 0.4.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

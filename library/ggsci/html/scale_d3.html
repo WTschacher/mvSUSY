@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><title>R: D3.js Color Scales</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>scale_color_d3 {ggsci}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='scale_color_d3'>D3.js Color Scales</h2>
+
+<h3>Description</h3>
+
+<p>See <code><a href="../../ggsci/help/pal_d3.html">pal_d3</a></code> for details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>scale_color_d3(
+  palette = c("category10", "category20", "category20b", "category20c"),
+  alpha = 1,
+  ...
+)
+
+scale_colour_d3(
+  palette = c("category10", "category20", "category20b", "category20c"),
+  alpha = 1,
+  ...
+)
+
+scale_fill_d3(
+  palette = c("category10", "category20", "category20b", "category20c"),
+  alpha = 1,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="scale_color_d3_:_palette">palette</code></td>
+<td>
+<p>Palette type.
+There are 4 available options:
+<code>"category10"</code> (10-color palette);
+<code>"category20"</code> (20-color palette);
+<code>"category20b"</code> (20-color palette);
+<code>"category20c"</code> (20-color palette).</p>
+</td></tr>
+<tr><td><code id="scale_color_d3_:_alpha">alpha</code></td>
+<td>
+<p>Transparency level, a real number in (0, 1].
+See <code>alpha</code> in <code><a href="../../grDevices/help/rgb.html">rgb</a></code> for details.</p>
+</td></tr>
+<tr><td><code id="scale_color_d3_:_...">...</code></td>
+<td>
+<p>additional parameters for <code><a href="../../ggplot2/help/discrete_scale.html">discrete_scale</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Nan Xiao &lt;<a href="mailto:me@nanx.me">me@nanx.me</a>&gt; |
+&lt;<a href="https://nanx.me">https://nanx.me</a>&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://github.com/d3/d3-3.x-api-reference/blob/master/Ordinal-Scales.md">https://github.com/d3/d3-3.x-api-reference/blob/master/Ordinal-Scales.md</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library("ggplot2")
+data("diamonds")
+
+p1 &lt;- ggplot(
+  subset(diamonds, carat &gt;= 2.2),
+  aes(x = table, y = price, colour = cut)
+) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "loess", alpha = 0.1, size = 1, span = 1) +
+  theme_bw()
+
+p2 &lt;- ggplot(
+  subset(diamonds, carat &gt; 2.2 &amp; depth &gt; 55 &amp; depth &lt; 70),
+  aes(x = depth, fill = cut)
+) +
+  geom_histogram(colour = "black", binwidth = 1, position = "dodge") +
+  theme_bw()
+
+p1 + scale_color_d3()
+p2 + scale_fill_d3()
+
+p1 + scale_color_d3(palette = "category20")
+p2 + scale_fill_d3(palette = "category20")
+
+p1 + scale_color_d3(palette = "category20b")
+p2 + scale_fill_d3(palette = "category20b")
+
+p1 + scale_color_d3(palette = "category20c")
+p2 + scale_fill_d3(palette = "category20c")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggsci</em> version 3.0.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

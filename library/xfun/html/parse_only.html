@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>R: Parse R code and do not keep the source</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>parse_only {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='parse_only'>Parse R code and do not keep the source</h2>
+
+<h3>Description</h3>
+
+<p>An abbreviation of <code>parse(keep.source = FALSE)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>parse_only(code)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="parse_only_:_code">code</code></td>
+<td>
+<p>A character vector of the R source code.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>R <code><a href="../../base/html/expression.html">expression()</a></code>s.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(xfun)
+parse_only("1+1")
+parse_only(c("y~x", "1:5 # a comment"))
+parse_only(character(0))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><title>R: Frame HTML in a Web Page And Display</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>in_html {fansi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='in_html'>Frame HTML in a Web Page And Display</h2>
+
+<h3>Description</h3>
+
+<p>Helper function that assembles user provided HTML and CSS into a temporary
+text file, and by default displays it in the browser.  Intended for use in
+examples.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>in_html(x, css = character(), pre = TRUE, display = TRUE, clean = display)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="in_html_:_x">x</code></td>
+<td>
+<p>character vector of html encoded strings.</p>
+</td></tr>
+<tr><td><code id="in_html_:_css">css</code></td>
+<td>
+<p>character vector of css styles.</p>
+</td></tr>
+<tr><td><code id="in_html_:_pre">pre</code></td>
+<td>
+<p>TRUE (default) or FALSE, whether to wrap <code>x</code> in PRE tags.</p>
+</td></tr>
+<tr><td><code id="in_html_:_display">display</code></td>
+<td>
+<p>TRUE or FALSE, whether to display the resulting page in a
+browser window.  If TRUE, will sleep for one second before returning, and
+will delete the temporary file used to store the HTML.</p>
+</td></tr>
+<tr><td><code id="in_html_:_clean">clean</code></td>
+<td>
+<p>TRUE or FALSE, if TRUE and <code>display == TRUE</code>, will delete the
+temporary file used for the web page, otherwise will leave it.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>character(1L) the file location of the page, invisibly, but keep in
+mind it will have been deleted if <code>clean=TRUE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../fansi/help/make_styles.html">make_styles()</a></code>.
+</p>
+<p>Other HTML functions: 
+<code><a href="../../fansi/help/html_esc.html">html_esc</a>()</code>,
+<code><a href="../../fansi/help/make_styles.html">make_styles</a>()</code>,
+<code><a href="../../fansi/help/to_html.html">to_html</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>txt &lt;- "\033[31;42mHello \033[7mWorld\033[m"
+writeLines(txt)
+html &lt;- to_html(txt)
+## Not run: 
+in_html(html) # spawns a browser window
+
+## End(Not run)
+writeLines(readLines(in_html(html, display=FALSE)))
+css &lt;- "SPAN {text-decoration: underline;}"
+writeLines(readLines(in_html(html, css=css, display=FALSE)))
+## Not run: 
+in_html(html, css)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>fansi</em> version 1.0.5 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

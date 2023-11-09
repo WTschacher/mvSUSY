@@ -1,0 +1,147 @@
+<!DOCTYPE html><html><head><title>R: Eulerian and Stirling Numbers of First and Second Kind</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>Stirling {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='Stirling'>Eulerian and Stirling Numbers of First and Second Kind</h2>
+
+<h3>Description</h3>
+
+<p>Compute Eulerian numbers and Stirling numbers of the first and second
+kind, possibly vectorized for all <code class="reqn">k</code> &ldquo;at once&rdquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>Stirling1(n, k)
+Stirling2(n, k, method = c("lookup.or.store", "direct"))
+Eulerian (n, k, method = c("lookup.or.store", "direct"))
+
+Stirling1.all(n)
+Stirling2.all(n)
+Eulerian.all (n)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="Stirling_:_n">n</code></td>
+<td>
+<p>positive integer (<code>0</code> is allowed for <code>Eulerian()</code>).</p>
+</td></tr>
+<tr><td><code id="Stirling_:_k">k</code></td>
+<td>
+<p>integer in <code>0:n</code>.</p>
+</td></tr>
+<tr><td><code id="Stirling_:_method">method</code></td>
+<td>
+<p>for <code>Eulerian()</code> and <code>Stirling2()</code>, string
+specifying the method to be used.  <code>"direct"</code> uses the explicit
+formula (which may suffer from some cancelation for &ldquo;large&rdquo;
+<code>n</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Eulerian numbers:<br />
+<code class="reqn">A(n,k) =</code> the number of permutations of 1,2,...,n with exactly <code class="reqn">k</code>
+ascents (or exactly <code class="reqn">k</code> descents).
+</p>
+<p>Stirling numbers of the first kind:<br />
+s(n,k) = (-1)^n-k times
+the number of permutations of 1,2,...,n with exactly k cycles.
+</p>
+<p>Stirling numbers of the second kind:<br />
+<code class="reqn">S^{(k)}_n</code> is the number of ways of partitioning a set
+of <code class="reqn">n</code> elements into <code class="reqn">k</code> non-empty subsets.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code class="reqn">A(n,k)</code>, <code class="reqn">s(n,k)</code> or <code class="reqn">S(n,k) = S^{(k)}_n</code>, respectively.
+</p>
+<p><code>Eulerian.all(n)</code> is the same as <code>sapply(0:(n-1), Eulerian, n=n)</code>
+(for <code class="reqn">n &gt; 0</code>), <br />
+<code>Stirling1.all(n)</code> is the same as <code>sapply(1:n, Stirling1, n=n)</code>,
+and<br />
+<code>Stirling2.all(n)</code> is the same as <code>sapply(1:n, Stirling2, n=n)</code>,
+but more efficient.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For typical double precision arithmetic,<br />
+<code>Eulerian*(n, *)</code> overflow (to <code>Inf</code>) for <code class="reqn">n \ge 172</code>,<br />
+<code>Stirling1*(n, *)</code> overflow (to <code class="reqn">\pm</code><code>Inf</code>) for <code class="reqn">n \ge 171</code>, and<br />
+<code>Stirling2*(n, *)</code> overflow (to <code>Inf</code>) for <code class="reqn">n \ge 220</code>.
+
+
+
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler (&quot;direct&quot;: May 1992)</p>
+
+
+<h3>References</h3>
+
+<p><b>Eulerians:</b>
+</p>
+<p>NIST Digital Library of Mathematical Functions,
+26.14: <a href="https://dlmf.nist.gov/26.14">https://dlmf.nist.gov/26.14</a>
+</p>
+<p><b>Stirling numbers:</b>
+</p>
+<p>Abramowitz and Stegun
+24,1,4 (p. 824-5 ; Table 24.4, p.835);
+Closed Form : p.824 &quot;C.&quot;
+</p>
+<p>NIST Digital Library of Mathematical Functions,
+26.8: <a href="https://dlmf.nist.gov/26.8">https://dlmf.nist.gov/26.8</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gmp/help/chooseZ.html">chooseZ</a></code> for the binomial coefficients.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>Stirling1(7,2)
+Stirling2(7,3)
+
+stopifnot(
+ Stirling1.all(9) == c(40320, -109584, 118124, -67284, 22449, -4536, 546, -36, 1)
+ ,
+ Stirling2.all(9) == c(1, 255, 3025, 7770, 6951, 2646, 462, 36, 1)
+ ,
+ Eulerian.all(7) == c(1, 120, 1191, 2416, 1191, 120, 1)
+)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

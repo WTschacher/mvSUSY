@@ -1,0 +1,149 @@
+<!DOCTYPE html><html><head><title>R: A grid-like, column-first, layout</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>layout_column_wrap {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='layout_column_wrap'>A grid-like, column-first, layout</h2>
+
+<h3>Description</h3>
+
+<p>Wraps a 1d sequence of UI elements into a 2d grid. The number of columns (and
+rows) in the grid dependent on the column <code>width</code> as well as the size of the
+display. For more explanation and illustrative examples, see <a href="https://rstudio.github.io/bslib/articles/cards.html#multiple-cards">here</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>layout_column_wrap(
+  width,
+  ...,
+  fixed_width = FALSE,
+  heights_equal = c("all", "row"),
+  fill = TRUE,
+  fillable = TRUE,
+  height = NULL,
+  height_mobile = NULL,
+  gap = NULL,
+  class = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="layout_column_wrap_:_width">width</code></td>
+<td>
+<p>The desired width of each card, which can be any of the
+following:
+</p>
+
+<ul>
+<li><p> A (unit-less) number between 0 and 1.
+</p>
+
+<ul>
+<li><p> This should be specified as <code>1/num</code>, where <code>num</code> represents the number
+of desired columns.
+</p>
+</li></ul>
+
+</li>
+<li><p> A <a href="../../htmltools/help/validateCssUnit.html">CSS length unit</a>
+</p>
+
+<ul>
+<li><p> Either the minimum (when <code>fixed_width=FALSE</code>) or fixed width
+(<code>fixed_width=TRUE</code>).
+</p>
+</li></ul>
+
+</li>
+<li> <p><code>NULL</code>
+</p>
+
+<ul>
+<li><p> Allows power users to set the <code>grid-template-columns</code> CSS property
+manually, either via a <code>style</code> attribute or a CSS stylesheet.
+</p>
+</li></ul>
+
+</li></ul>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_...">...</code></td>
+<td>
+<p>Unnamed arguments should be UI elements (e.g., <code><a href="../../bslib/help/card.html">card()</a></code>)
+Named arguments become attributes on the containing <a href="../../htmltools/help/builder.html">htmltools::tag</a> element.</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_fixed_width">fixed_width</code></td>
+<td>
+<p>Whether or not to interpret the <code>width</code> as a minimum
+(<code>fixed_width=FALSE</code>) or fixed (<code>fixed_width=TRUE</code>) width when it is a CSS
+length unit.</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_heights_equal">heights_equal</code></td>
+<td>
+<p>If <code>"all"</code> (the default), every card in every row of the
+grid will have the same height. If <code>"row"</code>, then every card in <em>each</em> row
+of the grid will have the same height, but heights may vary between rows.</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_fill">fill</code></td>
+<td>
+<p>Whether or not to allow the layout to grow/shrink to fit a
+fillable container with an opinionated height (e.g., <code>page_fillable()</code>).</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_fillable">fillable</code></td>
+<td>
+<p>Whether or not each element is wrapped in a fillable container.</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_height">height</code></td>
+<td>
+<p>Any valid <a href="../../htmltools/help/validateCssUnit.html">CSS unit</a> (e.g.,
+<code>height="200px"</code>). Doesn't apply when a card is made <code>full_screen</code>
+(in this case, consider setting a <code>height</code> in <code><a href="../../bslib/help/card_body.html">card_body()</a></code>).</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_height_mobile">height_mobile</code></td>
+<td>
+<p>Any valid CSS unit to use for the height when on mobile
+devices (or narrow windows).</p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_gap">gap</code></td>
+<td>
+<p>A <a href="../../htmltools/help/validateCssUnit.html">CSS length unit</a> defining the
+<code>gap</code> (i.e., spacing) between elements provided to <code>...</code>. This argument is only applicable when <code>fillable = TRUE</code></p>
+</td></tr>
+<tr><td><code id="layout_column_wrap_:_class">class</code></td>
+<td>
+<p>Additional CSS classes for the returned UI element.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+x &lt;- card("A simple card")
+# Always has 2 columns (on non-mobile)
+layout_column_wrap(1/2, x, x, x)
+# Has three columns when viewport is wider than 750px
+layout_column_wrap("250px", x, x, x)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><title>R: Apply Functions Over Matrix Margins (Rows or Columns)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>apply {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='apply'>Apply Functions Over Matrix Margins (Rows or Columns)</h2>
+
+<h3>Description</h3>
+
+<p>These are S3 <code><a href="../../utils/html/methods.html">methods</a></code> for <code><a href="../../gmp/help/apply.html">apply</a>()</code> which we
+re-export as S3 generic function.
+They &ldquo;overload&rdquo; the <code>apply()</code> function for big rationals (<code>"bigq"</code>)
+and big integers (<code>"bigz"</code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'bigz'
+apply(X, MARGIN, FUN, ...)
+## S3 method for class 'bigq'
+apply(X, MARGIN, FUN, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="apply_:_X">X</code></td>
+<td>
+<p>a matrix of class bigz or bigq, see e.g.,
+<code><a href="../../gmp/help/matrix.bigz.html">matrix.bigz</a></code>.</p>
+</td></tr>
+<tr><td><code id="apply_:_MARGIN">MARGIN</code></td>
+<td>
+<p>1: apply function to rows; 2: apply function to columns</p>
+</td></tr>
+<tr><td><code id="apply_:_FUN">FUN</code></td>
+<td>
+<p><code><a href="../../base/html/function.html">function</a></code> to be applied</p>
+</td></tr>
+<tr><td><code id="apply_:_...">...</code></td>
+<td>
+<p>(optional) extra arguments for <code>FUN()</code>, as e.g., in
+<code><a href="../../base/html/lapply.html">lapply</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The <code>bigz</code> and <code>bigq</code> methods return a vector of class
+<code>"bigz"</code> or <code>"bigq"</code>, respectively.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Antoine Lucas</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gmp/help/apply.html">apply</a></code>; <code><a href="../../base/html/lapply.html">lapply</a></code> is used by our
+<code>apply()</code> method.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'> x &lt;- as.bigz(matrix(1:12,3))
+ apply(x,1,min)
+ apply(x,2,max)
+
+ x &lt;- as.bigq(x ^ 3, d = (x + 3)^2)
+ apply(x,1, min)
+ apply(x,2, sum)
+ ## now use the "..." to pass  na.rm=TRUE :
+ x[2,3] &lt;- NA
+ apply(x,1, sum)
+ apply(x,1, sum, na.rm = TRUE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><title>R: Create HLS Colors</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>HLS {colorspace}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='HLS'>Create HLS Colors</h2>
+
+<h3>Description</h3>
+
+<p>This function creates colors of class HLS; a subclass of the virtual
+<code><a href="../../colorspace/help/color-class.html">color-class</a></code> class.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>HLS(H, L, S, names)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="HLS_:_H">H</code>, <code id="HLS_:_L">L</code>, <code id="HLS_:_S">S</code></td>
+<td>
+<p>These arguments give the hue, lightness, and saturation of the
+colors. The values can be provided in separate <code>H</code>, <code>L</code> and
+<code>S</code> vectors or in a three-column matrix passed as <code>H</code>.</p>
+</td></tr>
+<tr><td><code id="HLS_:_names">names</code></td>
+<td>
+<p>A vector of names for the colors (by default the row names of
+<code>H</code> are used).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function creates colors in an HLS color space.  The hues should
+lie between between 0 and 360, and the lightness and saturations
+should lie between 0 and 1.
+</p>
+<p>HLS is a relative color space; it is a transformation of an RGB color
+space.  Conversion of HLS colors to any other color space must first
+involve a conversion to a specific RGB color space, for example the
+standard <code><a href="../../colorspace/help/sRGB.html">sRGB</a></code> color space (IEC standard 61966).
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>HLS</code> which inherits from class <code>color</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Ross Ihaka
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../colorspace/help/sRGB.html">sRGB</a></code>, <code><a href="../../colorspace/help/RGB.html">RGB</a></code>, <code><a href="../../colorspace/help/XYZ.html">XYZ</a></code>, <code><a href="../../colorspace/help/LAB.html">LAB</a></code>,
+<code><a href="../../colorspace/help/polarLAB.html">polarLAB</a></code>, <code><a href="../../colorspace/help/LUV.html">LUV</a></code>, <code><a href="../../colorspace/help/polarLUV.html">polarLUV</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># A rainbow of full-intensity hues
+HLS(seq(0, 360, length.out = 13)[-13], 0.5, 1)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>colorspace</em> version 2.1-0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: Knit a child document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knit_child {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knit_child'>Knit a child document</h2>
+
+<h3>Description</h3>
+
+<p>This function knits a child document and returns a character string to input
+the result into the main document. It is designed to be used in the chunk
+option <code>child</code> and serves as the alternative to the
+<code>SweaveInput</code> command in Sweave.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knit_child(..., options = NULL, envir = knit_global())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="knit_child_:_...">...</code></td>
+<td>
+<p>Arguments passed to <code><a href="../../knitr/help/knit.html">knit</a></code>.</p>
+</td></tr>
+<tr><td><code id="knit_child_:_options">options</code></td>
+<td>
+<p>A list of chunk options to be used as global options inside
+the child document. When one uses the <code>child</code>
+option in a parent chunk, the chunk options of the parent chunk will be
+passed to the <code>options</code> argument here.  Ignored if not a list.</p>
+</td></tr>
+<tr><td><code id="knit_child_:_envir">envir</code></td>
+<td>
+<p>Environment in which code chunks are to be evaluated, for
+example, <code><a href="../../base/html/sys.parent.html">parent.frame</a>()</code>, <code><a href="../../base/html/environment.html">new.env</a>()</code>, or
+<code><a href="../../base/html/environment.html">globalenv</a>()</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character string of the content of the compiled child document is
+returned as a character string so it can be written back to the parent
+document directly.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is not supposed be called directly like
+<code><a href="../../knitr/help/knit.html">knit</a>()</code>; instead it must be placed in a parent document to let
+<code><a href="../../knitr/help/knit.html">knit</a>()</code> call it indirectly.
+</p>
+<p>The path of the child document is determined relative to the parent document.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://yihui.org/knitr/demo/child/">https://yihui.org/knitr/demo/child/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># you can write \Sexpr{knit_child('child-doc.Rnw')} in an Rnw file 'main.Rnw'
+# to input results from child-doc.Rnw in main.tex
+
+# comment out the child doc by \Sexpr{knit_child('child-doc.Rnw', eval =
+# FALSE)}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

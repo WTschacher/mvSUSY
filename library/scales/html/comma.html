@@ -1,0 +1,184 @@
+<!DOCTYPE html><html><head><title>R: Superseded interface to 'label_number()'/'label_comma()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>comma {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='comma'>Superseded interface to <code>label_number()</code>/<code>label_comma()</code></h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>These functions are kept for backward compatibility; you should switch
+to <code><a href="../../scales/help/label_number.html">label_number()</a></code>/<code><a href="../../scales/help/label_comma.html">label_comma()</a></code> for new code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>comma(
+  x,
+  accuracy = NULL,
+  scale = 1,
+  prefix = "",
+  suffix = "",
+  big.mark = ",",
+  decimal.mark = ".",
+  trim = TRUE,
+  digits,
+  ...
+)
+
+number_format(
+  accuracy = NULL,
+  scale = 1,
+  prefix = "",
+  suffix = "",
+  big.mark = " ",
+  decimal.mark = ".",
+  style_positive = c("none", "plus"),
+  style_negative = c("hyphen", "minus", "parens"),
+  scale_cut = NULL,
+  trim = TRUE,
+  ...
+)
+
+comma_format(
+  accuracy = NULL,
+  scale = 1,
+  prefix = "",
+  suffix = "",
+  big.mark = ",",
+  decimal.mark = ".",
+  trim = TRUE,
+  digits,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="comma_:_x">x</code></td>
+<td>
+<p>A numeric vector to format.</p>
+</td></tr>
+<tr><td><code id="comma_:_accuracy">accuracy</code></td>
+<td>
+<p>A number to round to. Use (e.g.) <code>0.01</code> to show 2 decimal
+places of precision. If <code>NULL</code>, the default, uses a heuristic that should
+ensure breaks have the minimum number of digits needed to show the
+difference between adjacent values.
+</p>
+<p>Applied to rescaled data.</p>
+</td></tr>
+<tr><td><code id="comma_:_scale">scale</code></td>
+<td>
+<p>A scaling factor: <code>x</code> will be multiplied by <code>scale</code> before
+formatting. This is useful if the underlying data is very small or very
+large.</p>
+</td></tr>
+<tr><td><code id="comma_:_prefix">prefix</code></td>
+<td>
+<p>Additional text to display before the number. The suffix is
+applied to absolute value before <code>style_positive</code> and <code>style_negative</code> are
+processed so that <code>prefix = "$"</code> will yield (e.g.) <code style="white-space: pre;">&#8288;-$1&#8288;</code> and <code style="white-space: pre;">&#8288;($1)&#8288;</code>.</p>
+</td></tr>
+<tr><td><code id="comma_:_suffix">suffix</code></td>
+<td>
+<p>Additional text to display after the number.</p>
+</td></tr>
+<tr><td><code id="comma_:_big.mark">big.mark</code></td>
+<td>
+<p>Character used between every 3 digits to separate thousands.</p>
+</td></tr>
+<tr><td><code id="comma_:_decimal.mark">decimal.mark</code></td>
+<td>
+<p>The character to be used to indicate the numeric
+decimal point.</p>
+</td></tr>
+<tr><td><code id="comma_:_trim">trim</code></td>
+<td>
+<p>Logical, if <code>FALSE</code>, values are right-justified to a common
+width (see <code><a href="../../base/help/format.html">base::format()</a></code>).</p>
+</td></tr>
+<tr><td><code id="comma_:_digits">digits</code></td>
+<td>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a> Use <code>accuracy</code> instead.</p>
+</td></tr>
+<tr><td><code id="comma_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../base/help/format.html">base::format()</a></code>.</p>
+</td></tr>
+<tr><td><code id="comma_:_style_positive">style_positive</code></td>
+<td>
+<p>A string that determines the style of positive numbers:
+</p>
+
+<ul>
+<li> <p><code>"none"</code> (the default): no change, e.g. <code>1</code>.
+</p>
+</li>
+<li> <p><code>"plus"</code>: preceded by <code>+</code>, e.g. <code>+1</code>.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="comma_:_style_negative">style_negative</code></td>
+<td>
+<p>A string that determines the style of negative numbers:
+</p>
+
+<ul>
+<li> <p><code>"hyphen"</code> (the default): preceded by a standard hypen <code>-</code>, e.g. <code>-1</code>.
+</p>
+</li>
+<li> <p><code>"minus"</code>, uses a proper Unicode minus symbol. This is a typographical
+nicety that ensures <code>-</code> aligns with the horizontal bar of the
+the horizontal bar of <code>+</code>.
+</p>
+</li>
+<li> <p><code>"parens"</code>, wrapped in parentheses, e.g. <code>(1)</code>.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="comma_:_scale_cut">scale_cut</code></td>
+<td>
+<p>Named numeric vector that allows you to rescale large
+(or small) numbers and add a prefix. Built-in helpers include:
+</p>
+
+<ul>
+<li> <p><code>cut_short_scale()</code>: [10^3, 10^6) = K, [10^6, 10^9) = M, [10^9, 10^12) = B, [10^12, Inf) = T.
+</p>
+</li>
+<li> <p><code>cut_long_scale()</code>: [10^3, 10^6) = K, [10^6, 10^12) = M, [10^12, 10^18) = B, [10^18, Inf) = T.
+</p>
+</li>
+<li> <p><code>cut_si(unit)</code>: uses standard SI units.
+</p>
+</li></ul>
+
+<p>If you supply a vector <code>c(a = 100, b = 1000)</code>, absolute values in the
+range <code style="white-space: pre;">&#8288;[0, 100)&#8288;</code> will not be rescaled, absolute values in the range <code style="white-space: pre;">&#8288;[100, 1000)&#8288;</code>
+will be divided by 100 and given the suffix &quot;a&quot;, and absolute values in
+the range <code style="white-space: pre;">&#8288;[1000, Inf)&#8288;</code> will be divided by 1000 and given the suffix &quot;b&quot;.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

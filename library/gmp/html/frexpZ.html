@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><title>R: Split Number into Fractional and Exponent of 2 Parts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>frexpZ {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='frexpZ'>Split Number into Fractional and Exponent of 2 Parts</h2>
+
+<h3>Description</h3>
+
+<p>Breaks the number <code>x</code> into its binary significand
+(&ldquo;fraction&rdquo;) <code class="reqn">d \in [0.5, 1)</code>
+and <code class="reqn">ex</code>, the integral exponent for 2, such that
+<code class="reqn">x = d \cdot 2^{ex}.</code>
+</p>
+<p>If <code>x</code> is zero, both parts (significand and exponent) are zero.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>frexpZ(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="frexpZ_:_x">x</code></td>
+<td>
+<p>integer or big integer (<code><a href="../../gmp/help/bigz.html">bigz</a></code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../base/html/list.html">list</a></code> with the two components
+</p>
+<table>
+<tr><td><code>d</code></td>
+<td>
+<p>a numeric vector whose absolute values are either zero, or in
+<code class="reqn">[\frac{1}{2}, 1)</code>.</p>
+</td></tr>
+<tr><td><code>exp</code></td>
+<td>
+<p>an integer vector of the same length;
+note that <code>exp == 1 + floor(log2(x))</code>, and hence always
+<code>exp &gt; log2(x)</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Log.html">log2</a></code>, etc; for <code><a href="../../gmp/help/bigz.html">bigz</a></code> objects built on
+(the C++ equivalent of) <code>frexp()</code>, actually GMP's
+&lsquo;<span class="samp">&#8288;mpz_get_d_2exp()&#8288;</span>&rsquo;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>frexpZ(1:10)
+## and confirm :
+with(frexpZ(1:10),  d * 2^exp)
+x &lt;- rpois(1000, lambda=100) * (1 + rpois(1000, lambda=16))
+X &lt;- as.bigz(x)
+stopifnot(all.equal(x, with(frexpZ(x), d* 2^exp)),
+          1+floor(log2(x)) == (fx &lt;- frexpZ(x)$exp),
+          fx == frexpZ(X)$exp,
+          1+floor(log2(X)) == fx
+)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

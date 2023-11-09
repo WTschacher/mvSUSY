@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><title>R: Argument type: data-masking</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>tidyr_data_masking {tidyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='tidyr_data_masking'>Argument type: data-masking</h2>
+
+<h3>Description</h3>
+
+<p>This page describes the <code style="white-space: pre;">&#8288;&lt;data-masking&gt;&#8288;</code> argument modifier which
+indicates that the argument uses <strong>data masking</strong>, a sub-type of
+tidy evaluation. If you've never heard of tidy evaluation before,
+start with the practical introduction in
+<a href="https://r4ds.hadley.nz/functions.html#data-frame-functions">https://r4ds.hadley.nz/functions.html#data-frame-functions</a> then
+then read more about the underlying theory in
+<a href="https://rlang.r-lib.org/reference/topic-data-mask.html">https://rlang.r-lib.org/reference/topic-data-mask.html</a>.
+</p>
+
+
+<h3>Key techniques</h3>
+
+
+<ul>
+<li><p> To allow the user to supply the column name in a function argument,
+embrace the argument, e.g. <code>filter(df, {{ var }})</code>.
+</p>
+<div class="sourceCode R"><pre>dist_summary &lt;- function(df, var) {
+  df %&gt;%
+    summarise(n = n(), min = min({{ var }}), max = max({{ var }}))
+}
+mtcars %&gt;% dist_summary(mpg)
+mtcars %&gt;% group_by(cyl) %&gt;% dist_summary(mpg)
+</pre></div>
+</li>
+<li><p> To work with a column name recorded as a string, use the <code>.data</code>
+pronoun, e.g. <code>summarise(df, mean = mean(.data[[var]]))</code>.
+</p>
+<div class="sourceCode R"><pre>for (var in names(mtcars)) {
+  mtcars %&gt;% count(.data[[var]]) %&gt;% print()
+}
+
+lapply(names(mtcars), function(var) mtcars %&gt;% count(.data[[var]]))
+</pre></div>
+</li>
+<li><p> To suppress <code style="white-space: pre;">&#8288;R CMD check&#8288;</code> <code>NOTE</code>s about unknown variables
+use <code>.data$var</code> instead of <code>var</code>:
+</p>
+<div class="sourceCode R"><pre># has NOTE
+df %&gt;% mutate(z = x + y)
+
+# no NOTE
+df %&gt;% mutate(z = .data$x + .data$y)
+</pre></div>
+<p>You'll also need to import <code>.data</code> from rlang with (e.g.)
+<code style="white-space: pre;">&#8288;@importFrom rlang .data&#8288;</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Dot-dot-dot (...)</h3>
+
+<p><code>...</code> automatically provides indirection, so you can use it as is
+(i.e. without embracing) inside a function:
+</p>
+<div class="sourceCode"><pre>grouped_mean &lt;- function(df, var, ...) {
+  df %&gt;%
+    group_by(...) %&gt;%
+    summarise(mean = mean({{ var }}))
+}
+</pre></div>
+<p>You can also use <code style="white-space: pre;">&#8288;:=&#8288;</code> instead of <code>=</code> to enable a glue-like syntax for
+creating variables from user supplied data:
+</p>
+<div class="sourceCode"><pre>var_name &lt;- "l100km"
+mtcars %&gt;% mutate("{var_name}" := 235 / mpg)
+
+summarise_mean &lt;- function(df, var) {
+  df %&gt;%
+    summarise("mean_of_{{var}}" := mean({{ var }}))
+}
+mtcars %&gt;% group_by(cyl) %&gt;% summarise_mean(mpg)
+</pre></div>
+<p>Learn more in <a href="https://rlang.r-lib.org/reference/topic-data-mask-programming.html">https://rlang.r-lib.org/reference/topic-data-mask-programming.html</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tidyr</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

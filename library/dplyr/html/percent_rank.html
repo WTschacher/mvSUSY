@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><title>R: Proportional ranking functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>percent_rank {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='percent_rank'>Proportional ranking functions</h2>
+
+<h3>Description</h3>
+
+<p>These two ranking functions implement two slightly different ways to
+compute a percentile. For each <code>x_i</code> in <code>x</code>:
+</p>
+
+<ul>
+<li> <p><code>cume_dist(x)</code> counts the total number of values less than
+or equal to <code>x_i</code>, and divides it by the number of observations.
+</p>
+</li>
+<li> <p><code>percent_rank(x)</code> counts the total number of values less than
+<code>x_i</code>, and divides it by the number of observations minus 1.
+</p>
+</li></ul>
+
+<p>In both cases, missing values are ignored when counting the number
+of observations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>percent_rank(x)
+
+cume_dist(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="percent_rank_:_x">x</code></td>
+<td>
+<p>A vector to rank
+</p>
+<p>By default, the smallest values will get the smallest ranks. Use <code><a href="../../dplyr/help/desc.html">desc()</a></code>
+to reverse the direction so the largest values get the smallest ranks.
+</p>
+<p>Missing values will be given rank <code>NA</code>. Use <code>coalesce(x, Inf)</code> or
+<code>coalesce(x, -Inf)</code> if you want to treat them as the largest or smallest
+values respectively.
+</p>
+<p>To rank by multiple columns at once, supply a data frame.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A numeric vector containing a proportion.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other ranking functions: 
+<code><a href="../../dplyr/help/ntile.html">ntile</a>()</code>,
+<code><a href="../../dplyr/help/row_number.html">row_number</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(5, 1, 3, 2, 2)
+
+cume_dist(x)
+percent_rank(x)
+
+# You can understand what's going on by computing it by hand
+sapply(x, function(xi) sum(x &lt;= xi) / length(x))
+sapply(x, function(xi) sum(x &lt; xi)  / (length(x) - 1))
+# The real computations are a little more complex in order to
+# correctly deal with missing values
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

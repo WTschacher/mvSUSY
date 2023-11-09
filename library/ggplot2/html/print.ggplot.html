@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Explicitly draw plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>print.ggplot {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='print.ggplot'>Explicitly draw plot</h2>
+
+<h3>Description</h3>
+
+<p>Generally, you do not need to print or plot a ggplot2 plot explicitly: the
+default top-level print method will do it for you. You will, however, need
+to call <code>print()</code> explicitly if you want to draw a plot inside a
+function or for loop.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'ggplot'
+print(x, newpage = is.null(vp), vp = NULL, ...)
+
+## S3 method for class 'ggplot'
+plot(x, newpage = is.null(vp), vp = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="print.ggplot_:_x">x</code></td>
+<td>
+<p>plot to display</p>
+</td></tr>
+<tr><td><code id="print.ggplot_:_newpage">newpage</code></td>
+<td>
+<p>draw new (empty) page first?</p>
+</td></tr>
+<tr><td><code id="print.ggplot_:_vp">vp</code></td>
+<td>
+<p>viewport to draw plot in</p>
+</td></tr>
+<tr><td><code id="print.ggplot_:_...">...</code></td>
+<td>
+<p>other arguments not used by this method</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Invisibly returns the original plot.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>colours &lt;- list(~class, ~drv, ~fl)
+
+# Doesn't seem to do anything!
+for (colour in colours) {
+  ggplot(mpg, aes_(~ displ, ~ hwy, colour = colour)) +
+    geom_point()
+}
+
+# Works when we explicitly print the plots
+for (colour in colours) {
+  print(ggplot(mpg, aes_(~ displ, ~ hwy, colour = colour)) +
+    geom_point())
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

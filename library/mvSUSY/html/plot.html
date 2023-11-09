@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head><title>R: mvsusy plot method</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>plot.mvsusy {mvSUSY}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='plot.mvsusy'> mvsusy plot method </h2>
+
+<h3>Description</h3>
+
+<p>Generate plot for a <code>mvsusy</code> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>  ## S3 method for class 'mvsusy'
+plot(x,
+    type=c("eigenvalue","density","free scale","segment-wise","time series"),
+    ...,
+    bins,
+    plotly)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="plot.mvsusy_:_x">x</code></td>
+<td>
+<p> A <code>mvsusy</code> object. </p>
+</td></tr>
+<tr><td><code id="plot.mvsusy_:_type">type</code></td>
+<td>
+<p> Character to specify type of the plot, one of <em>eigenvalue, density, free scale, segment-wise, time series</em>. </p>
+</td></tr>
+<tr><td><code id="plot.mvsusy_:_...">...</code></td>
+<td>
+<p> Ignored. </p>
+</td></tr>
+<tr><td><code id="plot.mvsusy_:_bins">bins</code></td>
+<td>
+<p> Numeric. Number of <em>bins</em> used in <em>free scale</em> plot type, by default number of segments divided by 2. </p>
+</td></tr>
+<tr><td><code id="plot.mvsusy_:_plotly">plotly</code></td>
+<td>
+<p> Logical. Passing <code>FALSE</code> will force <em>time series</em> plot not to use <code>plotly</code> even if installed. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Eigenvalue plot type works only for mvSUSY computed using <em>lambda_max</em> method. Time series plot will by default use <code>plotly</code> package, if installed, to provide interactive plot.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns <code>NULL</code> invisibly. Generate plot as a side effect.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../mvSUSY/help/mvsusy.html">mvsusy</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+set.seed(1)
+data = as.data.frame(replicate(5, sample(10, 5000, TRUE)))
+res = mvsusy(data, segment=10, Hz=10)
+plot(res, type="eigenvalue")
+plot(res, type="density")
+plot(res, type="free scale")
+plot(res, type="segment-wise")
+plot(res, type="time series")
+plot(res, type="time series", plotly=FALSE)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>mvSUSY</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

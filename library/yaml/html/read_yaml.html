@@ -1,0 +1,131 @@
+<!DOCTYPE html><html><head><title>R: Read a YAML file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>read_yaml {yaml}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='read_yaml'>Read a YAML file</h2>
+
+<h3>Description</h3>
+
+<p>Read a YAML document from a file and create an R object from it
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>  read_yaml(file, fileEncoding = "UTF-8", text, error.label, readLines.warn=TRUE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="read_yaml_:_file">file</code></td>
+<td>
+<p>either a character string naming a file or a <a href="../../base/html/connections.html">connection</a>
+open for writing</p>
+</td></tr>
+<tr><td><code id="read_yaml_:_fileEncoding">fileEncoding</code></td>
+<td>
+<p>character string: if non-empty declares the
+encoding used on a file (not a connection) so the character data can
+be re-encoded.  See <code><a href="../../base/html/connections.html">file</a></code>.</p>
+</td></tr>
+<tr><td><code id="read_yaml_:_text">text</code></td>
+<td>
+<p>character string: if <code>file</code> is not supplied and this is,
+then data are read from the value of <code>text</code> via a text connection.
+Notice that a literal string can be used to include (small) data sets
+within R code.</p>
+</td></tr>
+<tr><td><code id="read_yaml_:_error.label">error.label</code></td>
+<td>
+<p>a label to prepend to error messages (see Details).</p>
+</td></tr>
+<tr><td><code id="read_yaml_:_readLines.warn">readLines.warn</code></td>
+<td>
+<p>logical (default:TRUE) suppress warnings from readLines used inside read_yaml</p>
+</td></tr>
+<tr><td><code id="read_yaml_:_...">...</code></td>
+<td>
+<p>arguments to pass to <code><a href="../../yaml/help/yaml.load.html">yaml.load</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is a convenient wrapper for <code><a href="../../yaml/help/yaml.load.html">yaml.load</a></code> and is a
+nicer alternative to <code><a href="../../yaml/help/yaml.load_file.html">yaml.load_file</a></code>.
+</p>
+<p>You can specify a label to be prepended to error messages via the
+<code>error.label</code> argument.  If <code>error.label</code> is missing,
+<code>read_yaml</code> will make an educated guess for the value of
+<code>error.label</code> by either using the specified filename (when <code>file</code>
+is a character vector) or using the description of the supplied connection
+object (via the <code>summary</code> function).  If <code>text</code> is used, the
+default value of <code>error.label</code> will be <code>NULL</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If the root YAML object is a map, a named list or list with an attribute of 'keys' is
+returned.  If the root object is a sequence, a list or vector is returned, depending
+on the contents of the sequence.  A vector of length 1 is returned for single objects.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Jeremy Stephens &lt;jeremy.f.stephens@vumc.org&gt;</p>
+
+
+<h3>References</h3>
+
+<p>YAML: http://yaml.org
+</p>
+<p>libyaml: https://pyyaml.org/wiki/LibYAML
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../yaml/help/yaml.load.html">yaml.load</a></code>, <code><a href="../../yaml/help/write_yaml.html">write_yaml</a></code>, <code><a href="../../yaml/help/yaml.load_file.html">yaml.load_file</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+  # reading from a file connection
+  filename &lt;- tempfile()
+  cat("test: data\n", file = filename)
+  con &lt;- file(filename, "r")
+  read_yaml(con)
+  close(con)
+
+  # using a filename to specify input file
+  read_yaml(filename)
+
+## End(Not run)
+
+  # reading from a character vector
+  read_yaml(text="- hey\n- hi\n- hello")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>yaml</em> version 2.3.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

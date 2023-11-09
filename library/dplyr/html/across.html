@@ -1,0 +1,292 @@
+<!DOCTYPE html><html><head><title>R: Apply a function (or functions) across multiple columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>across {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='across'>Apply a function (or functions) across multiple columns</h2>
+
+<h3>Description</h3>
+
+<p><code>across()</code> makes it easy to apply the same transformation to multiple
+columns, allowing you to use <code><a href="../../dplyr/help/select.html">select()</a></code> semantics inside in &quot;data-masking&quot;
+functions like <code><a href="../../dplyr/help/summarise.html">summarise()</a></code> and <code><a href="../../dplyr/help/mutate.html">mutate()</a></code>. See <code>vignette("colwise")</code> for
+more details.
+</p>
+<p><code>if_any()</code> and <code>if_all()</code> apply the same
+predicate function to a selection of columns and combine the
+results into a single logical vector: <code>if_any()</code> is <code>TRUE</code> when
+the predicate is <code>TRUE</code> for <em>any</em> of the selected columns, <code>if_all()</code>
+is <code>TRUE</code> when the predicate is <code>TRUE</code> for <em>all</em> selected columns.
+</p>
+<p>If you just need to select columns without applying a transformation to each
+of them, then you probably want to use <code><a href="../../dplyr/help/pick.html">pick()</a></code> instead.
+</p>
+<p><code>across()</code> supersedes the family of &quot;scoped variants&quot; like
+<code>summarise_at()</code>, <code>summarise_if()</code>, and <code>summarise_all()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>across(.cols, .fns, ..., .names = NULL, .unpack = FALSE)
+
+if_any(.cols, .fns, ..., .names = NULL)
+
+if_all(.cols, .fns, ..., .names = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="across_:_.cols">.cols</code></td>
+<td>
+<p>&lt;<code><a href="../../dplyr/help/dplyr_tidy_select.html">tidy-select</a></code>&gt; Columns to transform.
+You can't select grouping columns because they are already automatically
+handled by the verb (i.e. <code><a href="../../dplyr/help/summarise.html">summarise()</a></code> or <code><a href="../../dplyr/help/mutate.html">mutate()</a></code>).</p>
+</td></tr>
+<tr><td><code id="across_:_.fns">.fns</code></td>
+<td>
+<p>Functions to apply to each of the selected columns.
+Possible values are:
+</p>
+
+<ul>
+<li><p> A function, e.g. <code>mean</code>.
+</p>
+</li>
+<li><p> A purrr-style lambda, e.g. <code>~ mean(.x, na.rm = TRUE)</code>
+</p>
+</li>
+<li><p> A named list of functions or lambdas, e.g.
+<code style="white-space: pre;">&#8288;list(mean = mean, n_miss = ~ sum(is.na(.x))&#8288;</code>. Each function is applied
+to each column, and the output is named by combining the function name
+and the column name using the glue specification in <code>.names</code>.
+</p>
+</li></ul>
+
+<p>Within these functions you can use <code><a href="../../dplyr/help/cur_column.html">cur_column()</a></code> and <code><a href="../../dplyr/help/cur_group.html">cur_group()</a></code>
+to access the current column and grouping keys respectively.</p>
+</td></tr>
+<tr><td><code id="across_:_...">...</code></td>
+<td>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>
+</p>
+<p>Additional arguments for the function calls in <code>.fns</code> are no longer
+accepted in <code>...</code> because it's not clear when they should be evaluated:
+once per <code>across()</code> or once per group? Instead supply additional arguments
+directly in <code>.fns</code> by using a lambda. For example, instead of
+<code>across(a:b, mean, na.rm = TRUE)</code> write
+<code>across(a:b, ~ mean(.x, na.rm = TRUE))</code>.</p>
+</td></tr>
+<tr><td><code id="across_:_.names">.names</code></td>
+<td>
+<p>A glue specification that describes how to name the output
+columns. This can use <code>{.col}</code> to stand for the selected column name, and
+<code>{.fn}</code> to stand for the name of the function being applied. The default
+(<code>NULL</code>) is equivalent to <code>"{.col}"</code> for the single function case and
+<code>"{.col}_{.fn}"</code> for the case where a list is used for <code>.fns</code>.</p>
+</td></tr>
+<tr><td><code id="across_:_.unpack">.unpack</code></td>
+<td>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="../help/figures/lifecycle-experimental.svg" alt='[Experimental]' /></a>
+</p>
+<p>Optionally <a href="../../tidyr/help/pack.html">unpack</a> data frames returned by functions in
+<code>.fns</code>, which expands the df-columns out into individual columns, retaining
+the number of rows in the data frame.
+</p>
+
+<ul>
+<li><p> If <code>FALSE</code>, the default, no unpacking is done.
+</p>
+</li>
+<li><p> If <code>TRUE</code>, unpacking is done with a default glue specification of
+<code>"{outer}_{inner}"</code>.
+</p>
+</li>
+<li><p> Otherwise, a single glue specification can be supplied to describe how to
+name the unpacked columns. This can use <code>{outer}</code> to refer to the name
+originally generated by <code>.names</code>, and <code>{inner}</code> to refer to the names of
+the data frame you are unpacking.
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>across()</code> typically returns a tibble with one column for each column in
+<code>.cols</code> and each function in <code>.fns</code>. If <code>.unpack</code> is used, more columns may
+be returned depending on how the results of <code>.fns</code> are unpacked.
+</p>
+<p><code>if_any()</code> and <code>if_all()</code> return a logical vector.
+</p>
+
+
+<h3>Timing of evaluation</h3>
+
+<p>R code in dplyr verbs is generally evaluated once per group.
+Inside <code>across()</code> however, code is evaluated once for each
+combination of columns and groups. If the evaluation timing is
+important, for example if you're generating random variables, think
+about when it should happen and place your code in consequence.
+</p>
+<div class="sourceCode r"><pre>gdf &lt;-
+  tibble(g = c(1, 1, 2, 3), v1 = 10:13, v2 = 20:23) %&gt;%
+  group_by(g)
+
+set.seed(1)
+
+# Outside: 1 normal variate
+n &lt;- rnorm(1)
+gdf %&gt;% mutate(across(v1:v2, ~ .x + n))
+#&gt; # A tibble: 4 x 3
+#&gt; # Groups:   g [3]
+#&gt;       g    v1    v2
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1     1  9.37  19.4
+#&gt; 2     1 10.4   20.4
+#&gt; 3     2 11.4   21.4
+#&gt; 4     3 12.4   22.4
+
+# Inside a verb: 3 normal variates (ngroup)
+gdf %&gt;% mutate(n = rnorm(1), across(v1:v2, ~ .x + n))
+#&gt; # A tibble: 4 x 4
+#&gt; # Groups:   g [3]
+#&gt;       g    v1    v2      n
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1     1  10.2  20.2  0.184
+#&gt; 2     1  11.2  21.2  0.184
+#&gt; 3     2  11.2  21.2 -0.836
+#&gt; 4     3  14.6  24.6  1.60
+
+# Inside `across()`: 6 normal variates (ncol * ngroup)
+gdf %&gt;% mutate(across(v1:v2, ~ .x + rnorm(1)))
+#&gt; # A tibble: 4 x 3
+#&gt; # Groups:   g [3]
+#&gt;       g    v1    v2
+#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1     1  10.3  20.7
+#&gt; 2     1  11.3  21.7
+#&gt; 3     2  11.2  22.6
+#&gt; 4     3  13.5  22.7
+</pre></div>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/c_across.html">c_across()</a></code> for a function that returns a vector
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># For better printing
+iris &lt;- as_tibble(iris)
+
+# across() -----------------------------------------------------------------
+# Different ways to select the same set of columns
+# See &lt;https://tidyselect.r-lib.org/articles/syntax.html&gt; for details
+iris %&gt;%
+  mutate(across(c(Sepal.Length, Sepal.Width), round))
+iris %&gt;%
+  mutate(across(c(1, 2), round))
+iris %&gt;%
+  mutate(across(1:Sepal.Width, round))
+iris %&gt;%
+  mutate(across(where(is.double) &amp; !c(Petal.Length, Petal.Width), round))
+
+# Using an external vector of names
+cols &lt;- c("Sepal.Length", "Petal.Width")
+iris %&gt;%
+  mutate(across(all_of(cols), round))
+
+# If the external vector is named, the output columns will be named according
+# to those names
+names(cols) &lt;- tolower(cols)
+iris %&gt;%
+  mutate(across(all_of(cols), round))
+
+# A purrr-style formula
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), ~ mean(.x, na.rm = TRUE)))
+
+# A named list of functions
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd)))
+
+# Use the .names argument to control the output names
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), mean, .names = "mean_{.col}"))
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd), .names = "{.col}.{.fn}"))
+
+# If a named external vector is used for column selection, .names will use
+# those names when constructing the output names
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(all_of(cols), mean, .names = "mean_{.col}"))
+
+# When the list is not named, .fn is replaced by the function's position
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), list(mean, sd), .names = "{.col}.fn{.fn}"))
+
+# When the functions in .fns return a data frame, you typically get a
+# "packed" data frame back
+quantile_df &lt;- function(x, probs = c(0.25, 0.5, 0.75)) {
+  tibble(quantile = probs, value = quantile(x, probs))
+}
+
+iris %&gt;%
+  reframe(across(starts_with("Sepal"), quantile_df))
+
+# Use .unpack to automatically expand these packed data frames into their
+# individual columns
+iris %&gt;%
+  reframe(across(starts_with("Sepal"), quantile_df, .unpack = TRUE))
+
+# .unpack can utilize a glue specification if you don't like the defaults
+iris %&gt;%
+  reframe(across(starts_with("Sepal"), quantile_df, .unpack = "{outer}.{inner}"))
+
+# This is also useful inside mutate(), for example, with a multi-lag helper
+multilag &lt;- function(x, lags = 1:3) {
+  names(lags) &lt;- as.character(lags)
+  purrr::map_dfr(lags, lag, x = x)
+}
+
+iris %&gt;%
+  group_by(Species) %&gt;%
+  mutate(across(starts_with("Sepal"), multilag, .unpack = TRUE)) %&gt;%
+  select(Species, starts_with("Sepal"))
+
+# if_any() and if_all() ----------------------------------------------------
+iris %&gt;%
+  filter(if_any(ends_with("Width"), ~ . &gt; 4))
+iris %&gt;%
+  filter(if_all(ends_with("Width"), ~ . &gt; 2))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

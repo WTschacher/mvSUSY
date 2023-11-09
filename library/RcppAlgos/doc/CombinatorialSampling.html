@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>Combinatorial Sampling and Ranking</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Combinatorial Sampling and Ranking</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#sampling" id="toc-sampling">Sampling</a>
+<ul>
+<li><a href="#base-r" id="toc-base-r">Base R</a></li>
+<li><a href="#rcppalgos-solutions" id="toc-rcppalgos-solutions">RcppAlgos Solutions</a></li>
+<li><a href="#combosample-and-permutesample" id="toc-combosample-and-permutesample"><code>comboSample</code> and
+<code>permuteSample</code></a>
+<ul>
+<li><a href="#samples-of-results-with-repetition" id="toc-samples-of-results-with-repetition">Samples of Results with
+Repetition</a></li>
+<li><a href="#specific-results-with-samplevec" id="toc-specific-results-with-samplevec">Specific Results with
+<code>sampleVec</code></a></li>
+<li><a href="#using-namedsample" id="toc-using-namedsample">Using
+<code>namedSample</code></a></li>
+<li><a href="#parallel-computing-and-gmp-support" id="toc-parallel-computing-and-gmp-support">Parallel Computing and GMP
+Support</a></li>
+<li><a href="#efficiency" id="toc-efficiency">Efficiency</a></li>
+<li><a href="#user-defined-functions" id="toc-user-defined-functions">User Defined Functions</a></li>
+</ul></li>
+<li><a href="#partitionssample" id="toc-partitionssample"><code>partitionsSample</code></a></li>
+<li><a href="#compositionssample" id="toc-compositionssample"><code>compositionsSample</code></a></li>
+<li><a href="#sampling-partitions-of-groups-with-combogroupssample" id="toc-sampling-partitions-of-groups-with-combogroupssample">Sampling
+Partitions of Groups with <code>comboGroupsSample</code></a></li>
+</ul></li>
+<li><a href="#ranking" id="toc-ranking">Ranking</a>
+<ul>
+<li><a href="#base-r-1" id="toc-base-r-1">Base R</a></li>
+<li><a href="#rcppalgos-solutions-1" id="toc-rcppalgos-solutions-1">RcppAlgos Solutions</a></li>
+<li><a href="#rank-multiple-inputs" id="toc-rank-multiple-inputs">Rank
+Multiple Inputs</a></li>
+<li><a href="#comborank" id="toc-comborank"><code>comboRank</code></a></li>
+<li><a href="#permuterank" id="toc-permuterank"><code>permuteRank</code></a></li>
+<li><a href="#partitionsrank" id="toc-partitionsrank"><code>partitionsRank</code></a></li>
+<li><a href="#compositionsrank" id="toc-compositionsrank"><code>compositionsRank</code></a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This document covers topics in generating random samples of
+combinations, permutations, partitions, compositions and partition of
+groups. It is encouraged to read <a href="https://jwood000.github.io/RcppAlgos/articles/GeneralCombinatorics.html">General
+Combinatorics</a> first.</p>
+<hr />
+<div id="sampling" class="section level1">
+<h1>Sampling</h1>
+<p>At the heart of sampling is the ability to efficiently generate the
+<em>n<sup>th</sup></em> <a href="https://en.wikipedia.org/wiki/Lexicographic_order">lexicographical</a>
+result. The algorithms in <code>RcppAlgos</code> are flexible and
+optimized, allowing for tackling this task with ease.</p>
+<div id="base-r" class="section level2">
+<h2>Base R</h2>
+<p>To illustrate this in base R, let us consider getting 5 random
+combinations of the vector <code>1:20</code> of length 10. How should we
+proceed?</p>
+<p>A naive approach would be to generate all of the combinations using
+<code>combn</code> and then call <code>sample</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">90</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>naive <span class="ot">&lt;-</span> <span class="cf">function</span>(v, m, n, s) {</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    allCombs <span class="ot">&lt;-</span> <span class="fu">combn</span>(v, m)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="fu">set.seed</span>(s)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    allCombs[, <span class="fu">sample</span>(<span class="fu">ncol</span>(allCombs), n)]</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>}</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>fiveRndCombs <span class="ot">&lt;-</span> <span class="fu">naive</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">42</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">t</span>(fiveRndCombs)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3    5   10   11   14   15   16   18    20</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    4    9   10   11   12   13   18    19</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt; [3,]    2    3    4    6    9   10   12   13   15    19</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt; [4,]    1    4    5   10   13   14   15   17   18    19</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt; [5,]    1    3    4    5    7    8   13   15   18    19</span></span></code></pre></div>
+<p>This is okay for this small example (there are only
+<code>choose(20, 10) = 184756</code> results), however what if we wanted
+to find one hundred thousand random combinations from the vector
+<code>1:100</code> of length 20? Clearly, the approach above will not be
+feasible as there are far too many results to generate
+(<code>choose(100, 20) = 5.359834e+20</code>). Furthermore, there are
+internal limitations on <code>sample</code>. If we try to pass
+<code>choose(100, 20)</code>, we will get an error:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">choose</span>(<span class="dv">100</span>, <span class="dv">20</span>), <span class="dv">5</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; Error in sample.int(x, size, replace, prob): invalid first argument</span></span></code></pre></div>
+<p>We could also try calling <code>sample(100, 20)</code> a bunch of
+times and hope we don’t get duplicate combinations. This is neither
+promising nor elegant.</p>
+<hr />
+</div>
+<div id="rcppalgos-solutions" class="section level2">
+<h2>RcppAlgos Solutions</h2>
+<p><code>RcppAlgos</code> provides five functions:
+<code>comboSample</code>, <code>permuteSample</code>,
+<code>partitionsSample</code>, <code>compositionsSample</code>, and
+<code>comboGroupsSample</code> for seamlessly attacking these types of
+problems. All functions provide the following:</p>
+<ul>
+<li>Easily generate random samples in parallel using the
+<code>nThreads</code> or the <code>Parallel</code> parameters.</li>
+<li>You can pass a vector of specific indices via <code>sampleVec</code>
+or rely on the internal sampling functions. We call <code>sample</code>
+when the total number of results is small and for larger cases, the
+sampling is done in a very similar fashion to <code>urand.bigz</code>
+from the <code>gmp</code> package.</li>
+<li>Consistent interface to their respective general functions
+(e.g. <code>partitionsGeneral</code>)</li>
+<li>The <code>seed</code> parameter allows for generating reproducible
+samples.</li>
+<li>If the gmp library is needed, the <code>seed</code> parameter must
+be set in order to have reproducible results (<em>E.g.</em>
+<code>set.seed()</code>) has no effect in these cases).</li>
+</ul>
+</div>
+<div id="combosample-and-permutesample" class="section level2">
+<h2><code>comboSample</code> and <code>permuteSample</code></h2>
+<p>Let’s first look at the first problem above (i.e. getting 5 random
+combinations of the vector <code>1:20</code> of length 10):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">comboSample</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="dv">5</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3    5   10   11   14   15   16   18    20</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    4    9   10   11   12   13   18    19</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; [3,]    2    3    4    6    9   10   12   13   15    19</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; [4,]    1    4    5   10   13   14   15   17   18    19</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; [5,]    1    3    4    5    7    8   13   15   18    19</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="do">## Use the seed argument directly to produce the same output</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">comboSample</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">seed =</span> <span class="dv">42</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; [1,]    1    3    5   10   11   14   15   16   18    20</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [2,]    1    3    4    9   10   11   12   13   18    19</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; [3,]    2    3    4    6    9   10   12   13   15    19</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; [4,]    1    4    5   10   13   14   15   17   18    19</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; [5,]    1    3    4    5    7    8   13   15   18    19</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="do">## fiveRndCombs produced above</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">t</span>(fiveRndCombs),</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>          <span class="fu">comboSample</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">seed =</span> <span class="dv">42</span>))</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<div id="samples-of-results-with-repetition" class="section level3">
+<h3>Samples of Results with Repetition</h3>
+<p>Just like with <code>comboGeneral</code> and
+<code>permuteGeneral</code>, we can explore results with repetition.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">comboSample</span>(<span class="dv">10</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">84</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; [1,]    2    5    5    7    9    9    9    9</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; [2,]    4    5    8    8    8   10   10   10</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; [3,]    2    6    6    6    6    6    9    9</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="fu">permuteSample</span>(<span class="dv">10</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [1,]    4   10    4    4   10    2    2   10</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; [2,]    1    4    5   10    5    5    2    2</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; [3,]    4    1    7    9    1    5    6    5</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="fu">comboSample</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="at">freqs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">n =</span> <span class="dv">3</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [1,]    2    2    3    5    5    6    6    6    7     8     9    10</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; [2,]    1    2    3    3    5    5    6    7    9     9     9     9</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; [3,]    1    2    5    5    5    6    6    9   10    10    10    10</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="fu">permuteSample</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="at">freqs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [1,]    2    8    7    4    8    9   10   10    7     1     8     2</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; [2,]    5    5    9    8    1    8    3    2    6     4     3    10</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; [3,]   10    3    8    8    4    8    8    6   10     6     3     8</span></span></code></pre></div>
+</div>
+<div id="specific-results-with-samplevec" class="section level3">
+<h3>Specific Results with <code>sampleVec</code></h3>
+<p>We can also utilize <code>sampleVec</code> to generate specific
+results.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## E.g. the below generates the 1st, 5th, 25th, 125th, and</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## 625th lexicographical combinations</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">comboSample</span>(<span class="dv">10</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">sampleVec =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">25</span>, <span class="dv">125</span>, <span class="dv">625</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    1    1    1    1    1    1</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; [2,]    1    1    1    1    1    1    1    5</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; [3,]    1    1    1    1    1    1    3    8</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; [4,]    1    1    1    1    1    3    6    9</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; [5,]    1    1    1    1    5    6   10   10</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="do">## Is the same as:</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="fu">comboGeneral</span>(<span class="dv">10</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>)[<span class="dv">5</span><span class="sc">^</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>), ]</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    1    1    1    1    1    1</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; [2,]    1    1    1    1    1    1    1    5</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; [3,]    1    1    1    1    1    1    3    8</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; [4,]    1    1    1    1    1    3    6    9</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; [5,]    1    1    1    1    5    6   10   10</span></span></code></pre></div>
+</div>
+<div id="using-namedsample" class="section level3">
+<h3>Using <code>namedSample</code></h3>
+<p>Have you ever wondered which lexicographical
+combinations/permutations are returned when sampling? No worries, simply
+set <code>namedSample = TRUE</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>testInd <span class="ot">&lt;-</span> <span class="fu">permuteSample</span>(<span class="dv">30</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>testInd</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;                [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; 86626302070118   24   26    7   29    3   21   20    9   16    28</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; 15871916538841    5   12   21    9    6    3   14   23    4    20</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; 87932455980012   25    6   20   23   18   10   27   30   19    29</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="do">## Same output as above</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="fu">permuteSample</span>(<span class="dv">30</span>, <span class="dv">10</span>, <span class="at">sampleVec =</span> <span class="fu">row.names</span>(testInd))</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; [1,]   24   26    7   29    3   21   20    9   16    28</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; [2,]    5   12   21    9    6    3   14   23    4    20</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; [3,]   25    6   20   23   18   10   27   30   19    29</span></span></code></pre></div>
+</div>
+<div id="parallel-computing-and-gmp-support" class="section level3">
+<h3>Parallel Computing and GMP Support</h3>
+<p>Just like the <code>General</code> counterparts, the sampling
+functions utilize GMP to allow for exploration of
+combinations/permutations of large vectors where the total number of
+results is enormous. They also offer parallel options using
+<code>Parallel</code> or <code>nThreads</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## Uses min(stdThreadMax() - 1, 5) threads (in this case)</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">permuteSample</span>(<span class="dv">500</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">seed =</span> <span class="dv">123</span>, <span class="at">Parallel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; [1,]   55  435  274  324  200  152    6  313  121   377</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; [2,]  196  166  331  154  443  329  155  233  354   442</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; [3,]  235  325   94   27  370  117  302   86  229   126</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; [4,]  284  104  464  104  207  127  117    9  390   414</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; [5,]  456   76  381  456  219   23  376  187   11   123</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="fu">permuteSample</span>(<span class="fu">factor</span>(state.abb), <span class="dv">15</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">50</span>, <span class="at">nThreads =</span> <span class="dv">3</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14] [,15]</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; [1,] ME   FL   DE   OK   ND   CA   PA   AL   ID   MO    NM    HI    KY    MT    NJ   </span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; [2,] AZ   CA   AL   CT   ME   SD   ID   SC   OK   NH    HI    TN    ND    IA    MT   </span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; [3,] MD   MO   NC   MT   NH   AL   VA   MA   VT   WV    NJ    NE    MN    MS    MI   </span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 50 Levels: AK AL AR AZ CA CO CT DE FL GA HI IA ID IL IN KS KY LA MA MD ME MI MN MO ... WY</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="fu">permuteCount</span>(<span class="fu">factor</span>(state.abb), <span class="dv">15</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; Big Integer (&#39;bigz&#39;) :</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; [1] 2943352142120754524160000</span></span></code></pre></div>
+</div>
+<div id="efficiency" class="section level3">
+<h3>Efficiency</h3>
+<p>The algorithms are incredibly efficient and offer tremendous gains
+over the naive approach above:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="do">## the function &quot;naive&quot; is defined above</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">naive</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">15</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;   1.462   0.019   1.482</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">comboSample</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">seed =</span> <span class="dv">15</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;   0.000   0.000   0.001</span></span></code></pre></div>
+<p>Even when dealing with extremely large numbers, these algorithms are
+very fast. And using the parallel options have even greater effects than
+we saw with the general counterparts (typically around ~2-3 times faster
+with the general functions, whereas with the last example below with
+sampling we see a nearly 5x improvement).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="do">## Lightning fast even with examples involving many results</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">comboSample</span>(<span class="dv">2500</span>, <span class="dv">100</span>, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">seed =</span> <span class="dv">15</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt;   0.001   0.000   0.000</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="do">## The total number of combinations has ~180 digits</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>gmp<span class="sc">::</span><span class="fu">log10.bigz</span>(<span class="fu">comboCount</span>(<span class="dv">2500</span>, <span class="dv">100</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; [1] 180.9525</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="do">## Still fast with larger samples</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">comboSample</span>(<span class="dv">2500</span>, <span class="dv">100</span>, <span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">seed =</span> <span class="dv">157</span>))</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;   0.648   0.005   0.653</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="do">## Using Parallel/nThreads in these cases has an even greater effect</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">comboSample</span>(<span class="dv">2500</span>, <span class="dv">100</span>, <span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">seed =</span> <span class="dv">157</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt;   0.899   0.004   0.122</span></span></code></pre></div>
+</div>
+<div id="user-defined-functions" class="section level3">
+<h3>User Defined Functions</h3>
+<p>Again, just as with the general functions, you can pass a custom
+function to <code>{combo|permute}Sample</code> using the
+<code>FUN</code> argument.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">permuteSample</span>(<span class="dv">5000</span>, <span class="dv">1000</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">101</span>, <span class="at">FUN =</span> sd)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; [1] 1431.949</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; [1] 1446.859</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; [1] 1449.272</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="do">## Example using complex numbers</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>myCplx <span class="ot">&lt;-</span> <span class="fu">as.complex</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span> <span class="sc">+</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dv">50</span>) <span class="sc">*</span> 1i)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="fu">permuteSample</span>(myCplx, <span class="dv">10</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>              <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">101</span>, <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>                  <span class="fu">sqrt</span>(<span class="fu">sum</span>(x))</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>              })</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; [1] 24.83948+0i</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt; [1] 20.9285+0.04778i</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt; [1] 22.20379+0.09007i</span></span></code></pre></div>
+</div>
+</div>
+<div id="partitionssample" class="section level2">
+<h2><code>partitionsSample</code></h2>
+<p>The <code>partitionsSample</code> function allows one to draw a
+random sample of partitions of a number. Many of the features present in
+<code>comboSample</code> and <code>permuteSample</code> are available in
+<code>partitionsSample</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">## Use the seed parameter to obtain reproducible results</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">42</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    3    3    4   20   23   45</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; [2,]    1    1    2    7   14   14   29   32</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; [3,]    2   10   11   11   16   16   16   18</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="do">## Used namedSample to obtain the lexicographical indices</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">42</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; 61413     1    1    3    3    4   20   23   45</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; 54425     1    1    2    7   14   14   29   32</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; 623844    2   10   11   11   16   16   16   18</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="do">## Use sampleVec to obtain specific results</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">sampleVec =</span> <span class="fu">c</span>(<span class="dv">61413</span>, <span class="dv">54425</span>, <span class="dv">623844</span>))</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; [1,]    1    1    3    3    4   20   23   45</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; [2,]    1    1    2    7   14   14   29   32</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; [3,]    2   10   11   11   16   16   16   18</span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="fu">partitionsCount</span>(<span class="dv">2500</span>, <span class="dv">10</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; Big Integer (&#39;bigz&#39;) :</span></span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; [1] 2621914835336941325</span></span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="do">## Algorithms are very efficient</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="fu">system.time</span>(serial <span class="ot">&lt;-</span> <span class="fu">partitionsSample</span>(<span class="dv">2500</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="fl">1e3</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a>                                       <span class="at">seed =</span> <span class="dv">8128</span>))</span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt;   2.993   0.016   3.010</span></span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="do">## Use nThreads for greater efficiency</span></span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="fu">system.time</span>(multi <span class="ot">&lt;-</span> <span class="fu">partitionsSample</span>(<span class="dv">2500</span>, <span class="dv">10</span>, <span class="at">n =</span> <span class="fl">1e3</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a>                                      <span class="at">seed =</span> <span class="dv">8128</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="co">#&gt;   4.289   0.029   0.591</span></span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a></span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a><span class="fu">identical</span>(multi, serial)</span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="do">## Even works with non-standard setup</span></span>
+<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">17</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">*</span> <span class="dv">3</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a>                 <span class="at">target =</span> <span class="dv">320</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">111</span>)</span>
+<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a><span class="co">#&gt; [1,]   23   23   26   26   29   29   38   38   41    47</span></span>
+<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a><span class="co">#&gt; [2,]   26   26   26   29   29   29   32   41   41    41</span></span>
+<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co">#&gt; [3,]   20   23   23   26   26   35   38   41   44    44</span></span></code></pre></div>
+<p>There are sampling algorithms available for most partition cases, but
+some cases are not covered. For example, with standard multisets, we are
+currently unable to <em>efficiently</em> generate the
+<em>n<sup>th</sup></em> lexicographical result. Another example is when
+the source vector is not uniform (<em>e.g.</em> when the distance
+between each element is irregular).</p>
+<p>Observe the following:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="do">## No sampling algorithm available when the source vector is not uniform</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="fu">seq</span>(<span class="dv">11</span>, <span class="dv">100</span>, <span class="dv">7</span>)), <span class="dv">10</span>, <span class="at">n =</span> <span class="dv">1</span>, <span class="at">target =</span> <span class="dv">340</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; Error: Partition sampling not available for this case.</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="do">## As stated above, the standard multiset case doesn&#39;t work either</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">50</span>, <span class="dv">6</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">17</span>), <span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; Error: Partition sampling not available for this case.</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="do">## If we use freqs to indicate that zeros can repeat,</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="do">## then we can obtain random samples</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">50</span>, <span class="dv">6</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">50</span>)), <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">222</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    1    4    9   36</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    0   17   33</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; [3,]    2    4    5    6    8   25</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="do">## Even works when the vector is restricted in regards to the target</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="fu">partitionsSample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">50</span>, <span class="dv">6</span>, <span class="at">freqs =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">50</span>)),</span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>                 <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">222</span>, <span class="at">target =</span> <span class="dv">100</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; [1,]    0    1    6   15   29   49</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    8   43   49</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; [3,]    4    7   17   19   22   31</span></span></code></pre></div>
+<p>There is ongoing research in this area and our goal is to eventually
+be able to cover the standard multiset case.</p>
+</div>
+<div id="compositionssample" class="section level2">
+<h2><code>compositionsSample</code></h2>
+<p>The <code>compositionsSample</code> function allows one to draw a
+random sample of compositions of a number. Many of the features present
+in <code>comboSample</code> and <code>permuteSample</code> are available
+in <code>compositionsSample</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="do">## Use the seed parameter to obtain reproducible results</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">compositionsSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">42</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt; [1,]    5    4   34   31    7    3    1   15</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; [2,]    3   21    8    6   12   43    6    1</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; [3,]    6    6    1   36   17   18   10    6</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="do">## Used namedSample to obtain the lexicographical indices</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="fu">compositionsSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">42</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt;            [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 4024715585    5    4   34   31    7    3    1   15</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; 2756281572    3   21    8    6   12   43    6    1</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; 4873365553    6    6    1   36   17   18   10    6</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="do">## Use sampleVec to obtain specific results</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="fu">compositionsSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>                   <span class="at">sampleVec =</span> <span class="fu">c</span>(<span class="dv">4024715585</span>, <span class="dv">2756281572</span>, <span class="dv">4873365553</span>))</span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="co">#&gt; [1,]    5    4   34   31    7    3    1   15</span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co">#&gt; [2,]    3   21    8    6   12   43    6    1</span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt; [3,]    6    6    1   36   17   18   10    6</span></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a><span class="fu">compositionsCount</span>(<span class="dv">2500</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a><span class="co">#&gt; Big Integer (&#39;bigz&#39;) :</span></span>
+<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a><span class="co">#&gt; [1] 10324518903611974891453624</span></span>
+<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a><span class="do">## Algorithms are very efficient...</span></span>
+<span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a><span class="do">## The below retrieves 10,000 compositions in under a second</span></span>
+<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a><span class="fu">system.time</span>(serial <span class="ot">&lt;-</span> <span class="fu">compositionsSample</span>(<span class="dv">2500</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>,</span>
+<span id="cb13-30"><a href="#cb13-30" tabindex="-1"></a>                                         <span class="at">n =</span> <span class="fl">1e4</span>, <span class="at">seed =</span> <span class="dv">8128</span>))</span>
+<span id="cb13-31"><a href="#cb13-31" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb13-32"><a href="#cb13-32" tabindex="-1"></a><span class="co">#&gt;   0.263   0.002   0.265</span></span>
+<span id="cb13-33"><a href="#cb13-33" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" tabindex="-1"></a><span class="do">## Use nThreads for greater efficiency</span></span>
+<span id="cb13-35"><a href="#cb13-35" tabindex="-1"></a><span class="fu">system.time</span>(multi <span class="ot">&lt;-</span> <span class="fu">compositionsSample</span>(<span class="dv">2500</span>, <span class="dv">10</span>, <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="fl">1e4</span>,</span>
+<span id="cb13-36"><a href="#cb13-36" tabindex="-1"></a>                                        <span class="at">seed =</span> <span class="dv">8128</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb13-37"><a href="#cb13-37" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb13-38"><a href="#cb13-38" tabindex="-1"></a><span class="co">#&gt;   0.361   0.002   0.053</span></span>
+<span id="cb13-39"><a href="#cb13-39" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" tabindex="-1"></a><span class="fu">identical</span>(multi, serial)</span>
+<span id="cb13-41"><a href="#cb13-41" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb13-42"><a href="#cb13-42" tabindex="-1"></a></span>
+<span id="cb13-43"><a href="#cb13-43" tabindex="-1"></a><span class="do">## Sample weak compositions</span></span>
+<span id="cb13-44"><a href="#cb13-44" tabindex="-1"></a><span class="fu">compositionsSample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">8</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>, <span class="at">weak =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb13-45"><a href="#cb13-45" tabindex="-1"></a>                   <span class="at">seed =</span> <span class="dv">245659</span>, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-46"><a href="#cb13-46" tabindex="-1"></a><span class="co">#&gt;             [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb13-47"><a href="#cb13-47" tabindex="-1"></a><span class="co">#&gt; 21547195040   23    0    0    8    5   22   25   17</span></span>
+<span id="cb13-48"><a href="#cb13-48" tabindex="-1"></a><span class="co">#&gt; 7649268748     5    0   13   36   42    4    0    0</span></span>
+<span id="cb13-49"><a href="#cb13-49" tabindex="-1"></a><span class="co">#&gt; 7598223523     4   54   21    4    6    0    8    3</span></span></code></pre></div>
+<p>Currently, there are only sampling algorithms for most cases of
+compositions with repetition. There is ongoing work to expand these
+algorithms in the future.</p>
+</div>
+<div id="sampling-partitions-of-groups-with-combogroupssample" class="section level2">
+<h2>Sampling Partitions of Groups with
+<code>comboGroupsSample</code></h2>
+<p>Just as we can generate random samples of combinations and
+permutations, we are also able to generate random samples of partitions
+of groups as well. There are many problems that present in this manner.
+Below, we examine one involving playing cards.</p>
+<p>Let’s say we have 4 players and each player is to have 3 cards a
+piece. Given that the deck is shuffled, the dealer then distributes 12
+cards.</p>
+<blockquote>
+<p>What possible hands can each player have?</p>
+</blockquote>
+<p>See <a href="https://stackoverflow.com/a/36903806/4408538">Creating A
+Deck Of Cards In R Without Using While And Double For Loop</a> (Credit
+to <span class="citation">@MichaelChirico</span>)</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>cards <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>, <span class="st">&quot;J&quot;</span>, <span class="st">&quot;Q&quot;</span>, <span class="st">&quot;K&quot;</span>, <span class="st">&quot;A&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>suits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;♠&quot;</span>, <span class="st">&quot;♥&quot;</span>, <span class="st">&quot;♦&quot;</span>, <span class="st">&quot;♣&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>deck <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(cards, <span class="fu">length</span>(suits)),  <span class="co"># card values</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>               <span class="fu">rep</span>(suits, <span class="at">each =</span> <span class="fu">length</span>(cards))) <span class="co"># suits</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1738</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>shuffled <span class="ot">&lt;-</span> <span class="fu">factor</span>(deck[<span class="fu">sample</span>(<span class="dv">52</span>)], <span class="at">levels =</span> deck)</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="do">## Here are 2 possibilities</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="fu">comboGroupsSample</span>(shuffled[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">numGroups =</span> <span class="dv">4</span>, <span class="at">n =</span> <span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">13</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt;      Grp1 Grp1 Grp1 Grp2 Grp2 Grp2 Grp3 Grp3 Grp3 Grp4 Grp4 Grp4</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; [1,] 8♦   3♥   5♦   9♦   J♠   7♥   8♠   K♦   10♦  A♦   J♥   3♦  </span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; [2,] 8♦   K♦   10♦  9♦   J♥   3♥   J♠   8♠   3♦   A♦   5♦   7♥  </span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; 52 Levels: 2♠ 3♠ 4♠ 5♠ 6♠ 7♠ 8♠ 9♠ 10♠ J♠ Q♠ K♠ A♠ 2♥ 3♥ 4♥ 5♥ 6♥ 7♥ 8♥ 9♥ 10♥ J♥ ... A♣</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="fu">comboGroupsSample</span>(shuffled[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">numGroups =</span> <span class="dv">4</span>, <span class="at">retType =</span> <span class="st">&quot;3Darray&quot;</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>                  <span class="at">n =</span> <span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">13</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a><span class="co">#&gt; , , Grp1</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a><span class="co">#&gt; 13784 8♦   3♥   5♦  </span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a><span class="co">#&gt; 9152  8♦   K♦   10♦ </span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a><span class="co">#&gt; , , Grp2</span></span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a><span class="co">#&gt; 13784 9♦   J♠   7♥  </span></span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a><span class="co">#&gt; 9152  9♦   J♥   3♥  </span></span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a><span class="co">#&gt; , , Grp3</span></span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a><span class="co">#&gt; 13784 8♠   K♦   10♦ </span></span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a><span class="co">#&gt; 9152  J♠   8♠   3♦  </span></span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a><span class="co">#&gt; , , Grp4</span></span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb14-40"><a href="#cb14-40" tabindex="-1"></a><span class="co">#&gt; 13784 A♦   J♥   3♦  </span></span>
+<span id="cb14-41"><a href="#cb14-41" tabindex="-1"></a><span class="co">#&gt; 9152  A♦   5♦   7♥  </span></span>
+<span id="cb14-42"><a href="#cb14-42" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-43"><a href="#cb14-43" tabindex="-1"></a><span class="co">#&gt; 52 Levels: 2♠ 3♠ 4♠ 5♠ 6♠ 7♠ 8♠ 9♠ 10♠ J♠ Q♠ K♠ A♠ 2♥ 3♥ 4♥ 5♥ 6♥ 7♥ 8♥ 9♥ 10♥ J♥ ... A♣</span></span></code></pre></div>
+<p>What if we add a twist on the problem above. What if instead we want
+to deal players 1 &amp; 2 two cards, player 3 three cards, and player 4
+five cards. How might we do this?</p>
+<p>For this, we make use of the <code>grpSizes</code> parameter:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="do">## Again, here are 2 possibilities</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">comboGroupsSample</span>(shuffled[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>], <span class="at">grpSizes =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>                  <span class="at">n =</span> <span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">13</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt;       Grp1 Grp1 Grp2 Grp2 Grp3 Grp3 Grp3 Grp4 Grp4 Grp4 Grp4 Grp4</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; 81667 J♥   10♦  3♦   3♥   8♦   A♦   5♦   9♦   J♠   8♠   K♦   7♥  </span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; 71525 K♦   A♦   J♥   5♦   8♦   8♠   3♥   9♦   J♠   3♦   10♦  7♥  </span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt; 52 Levels: 2♠ 3♠ 4♠ 5♠ 6♠ 7♠ 8♠ 9♠ 10♠ J♠ Q♠ K♠ A♠ 2♥ 3♥ 4♥ 5♥ 6♥ 7♥ 8♥ 9♥ 10♥ J♥ ... A♣</span></span></code></pre></div>
+</div>
+</div>
+<div id="ranking" class="section level1">
+<h1>Ranking</h1>
+<p>Ranking is the complement of sampling. That is, given a combination
+(or permutation/partition), determine which lexicographical result it
+is. As an example, consider all of the combinations of 5 choose 3:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">comboGeneral</span>(<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt;  [1,]    1    2    3</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt;  [2,]    1    2    4</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt;  [3,]    1    2    5</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt;  [4,]    1    3    4</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt;  [5,]    1    3    5</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt;  [6,]    1    4    5</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt;  [7,]    2    3    4</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt;  [8,]    2    3    5</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt;  [9,]    2    4    5</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; [10,]    3    4    5</span></span></code></pre></div>
+<p>We can see that the rank of the combination: <code>c(2, 3, 4)</code>
+is 7. That is, <code>c(2, 3, 4)</code> is the 7<sup>th</sup> combination
+of 5 choose 3.</p>
+<div id="base-r-1" class="section level2">
+<h2>Base R</h2>
+<p>Just as we saw before, we could easily produce a brute force approach
+that would work well with small cases, but would become unmanageable
+very quickly. For example:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>naive_rank <span class="ot">&lt;-</span> <span class="cf">function</span>(v, m, comb) {</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    comb <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(comb)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    <span class="fu">which</span>(<span class="fu">apply</span>(<span class="fu">combn</span>(v, m), <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">identical</span>(x, comb)))</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>}</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="fu">naive_rank</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; [1] 7</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="do">## Larger example</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>comb <span class="ot">=</span> <span class="fu">comboSample</span>(<span class="dv">25</span>, <span class="dv">12</span>, <span class="at">sampleVec =</span> <span class="fl">2e6</span>)[<span class="dv">1</span>, ]</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">print</span>(<span class="fu">naive_rank</span>(<span class="dv">25</span>, <span class="dv">12</span>, comb)))</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt; [1] 2000000</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt;   6.045   0.088   6.134</span></span></code></pre></div>
+</div>
+<div id="rcppalgos-solutions-1" class="section level2">
+<h2>RcppAlgos Solutions</h2>
+<p>Similar to the sampling problem, <code>RcppAlgos</code> provides four
+functions: <code>comboRank</code>, <code>permuteRank</code>,
+<code>partitionsRank</code>, and <code>compositionsRank</code>
+(currently there is not a ranking function for
+<code>comboGroups</code>). These functions are very similar to their
+sampling counterparts.</p>
+<p>For both problems presented above, here is how you would attack them
+with <code>comboRank</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">comboRank</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">v =</span> <span class="dv">5</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co">#&gt; [1] 7</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## Since order doesn&#39;t matter with combinations, 4:2 should return 7 as well</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">comboRank</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">v =</span> <span class="dv">5</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; [1] 7</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="do">## comb was provided above</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">print</span>(<span class="fu">comboRank</span>(comb, <span class="at">v =</span> <span class="dv">25</span>)))</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; [1] 2000000</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt;       0       0       0</span></span></code></pre></div>
+<p>All that is needed is the original vector that was used to produce
+the results and whether or not repetition is used via the
+<code>repetition</code> or <code>freqs</code> arguments. The width is
+determined automatically by the input.</p>
+</div>
+<div id="rank-multiple-inputs" class="section level2">
+<h2>Rank Multiple Inputs</h2>
+<p>A neat feature of the ranking functions is the ability to rank
+multiple inputs at once. We can either pass a single vector, multiple
+vectors, and we can even pass matrices.</p>
+</div>
+<div id="comborank" class="section level2">
+<h2><code>comboRank</code></h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>combs <span class="ot">=</span> <span class="fu">comboSample</span>(<span class="dv">50</span>, <span class="dv">8</span>, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">seed =</span> <span class="dv">123</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>combs</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co">#&gt;           [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="co">#&gt; 161401295    3    4    6   13   40   44   48   50</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co">#&gt; 120710262    2    6   21   29   32   36   42   45</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co">#&gt; 220886245    3   22   23   25   35   36   48   50</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt; 442099291   10   11   13   20   21   24   36   45</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt; 334689371    6    9   13   20   28   41   43   48</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt; 189241370    3    7   18   26   29   31   43   50</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; 168175018    3    4   20   21   27   42   44   49</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; 105740881    2    4   24   27   40   46   48   49</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt; 36321127     1    5   10   15   18   32   40   46</span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt; 292830028    5    8   16   19   34   35   46   47</span></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="fu">comboRank</span>(combs, <span class="at">v =</span> <span class="dv">50</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt;  [1] 161401295 120710262 220886245 442099291 334689371 189241370 168175018 105740881</span></span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co">#&gt;  [9]  36321127 292830028</span></span></code></pre></div>
+</div>
+<div id="permuterank" class="section level2">
+<h2><code>permuteRank</code></h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>perms_len_5 <span class="ot">=</span> <span class="fu">permuteSample</span>(<span class="dv">100</span>, <span class="dv">5</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">987</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>perms_len_5</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">#&gt;            [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt; 3474930553   36   47   93    7   32</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="co">#&gt; 5793832271   60   12   27   39   99</span></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt; 797663634     9   16   23    3   35</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>perms_len_8 <span class="ot">=</span> <span class="fu">permuteSample</span>(<span class="dv">100</span>, <span class="dv">8</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">123</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>perms_len_8</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt;                  [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="co">#&gt; 6897937625624040   73   96   48   62   19   39   60   31</span></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a><span class="co">#&gt; 6937176899580966   74   37   42   44   34   80   18   94</span></span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a><span class="co">#&gt; 5771073522599470   62    7   60   69   14   60    7   30</span></span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a><span class="do">## Note you can name the inputs</span></span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="fu">permuteRank</span>(<span class="at">p5 =</span> perms_len_5, <span class="at">p8 =</span> perms_len_8,</span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a>            <span class="at">v =</span> <span class="dv">100</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">20</span>))</span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="co">#&gt; $p5</span></span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a><span class="co">#&gt; [1] 3474930553 5793832271  797663634</span></span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a><span class="co">#&gt; $p8</span></span>
+<span id="cb20-24"><a href="#cb20-24" tabindex="-1"></a><span class="co">#&gt; Big Integer (&#39;bigz&#39;) object of length 3:</span></span>
+<span id="cb20-25"><a href="#cb20-25" tabindex="-1"></a><span class="co">#&gt; [1] 6897937625624040 6937176899580966 5771073522599470</span></span></code></pre></div>
+</div>
+<div id="partitionsrank" class="section level2">
+<h2><code>partitionsRank</code></h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>parts <span class="ot">=</span> <span class="fu">partitionsSample</span>(<span class="dv">50</span>, <span class="dv">8</span>, <span class="at">target =</span> <span class="dv">100</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">42</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>parts</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="co">#&gt; 61413     1    1    3   11   12   21   23   28</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="co">#&gt; 54425     1    1    3    6    7   13   29   40</span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="co">#&gt; 623844    3    4    4    7    7   15   28   32</span></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="fu">partitionsRank</span>(parts, <span class="at">v =</span> <span class="dv">50</span>, <span class="at">target =</span> <span class="dv">100</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="co">#&gt; [1]  61413  54425 623844</span></span></code></pre></div>
+</div>
+<div id="compositionsrank" class="section level2">
+<h2><code>compositionsRank</code></h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>comps <span class="ot">=</span> <span class="fu">compositionsSample</span>(<span class="dv">50</span>, <span class="dv">8</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>                           <span class="at">n =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">42</span>, <span class="at">namedSample =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>comps</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="co">#&gt;          [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co">#&gt; 36761573    4    6    2    1   13    3   15    6</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co">#&gt; 21025945    2   11   13    8    2    3    7    4</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="co">#&gt; 71927012   11    4   17    1    2    5    5    5</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="fu">compositionsRank</span>(comps, <span class="at">v =</span> <span class="dv">50</span>, <span class="at">repetition =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="co">#&gt; [1] 36761573 21025945 71927012</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

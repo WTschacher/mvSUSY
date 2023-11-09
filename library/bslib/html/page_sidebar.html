@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><title>R: A sidebar page (i.e., dashboard)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>page_sidebar {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='page_sidebar'>A sidebar page (i.e., dashboard)</h2>
+
+<h3>Description</h3>
+
+<p>Create a dashboard layout with a full-bleed header (<code>title</code>) and <code><a href="../../bslib/help/sidebar.html">sidebar()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>page_sidebar(
+  ...,
+  sidebar = NULL,
+  title = NULL,
+  fillable = TRUE,
+  fillable_mobile = FALSE,
+  theme = bs_theme(),
+  window_title = NA,
+  lang = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="page_sidebar_:_...">...</code></td>
+<td>
+<p>UI elements to display in the 'main' content area (i.e., next to
+the <code>sidebar</code>). These arguments are passed to <code>layout_sidebar()</code>, which has
+more details.</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_sidebar">sidebar</code></td>
+<td>
+<p>A <code><a href="../../bslib/help/sidebar.html">sidebar()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_title">title</code></td>
+<td>
+<p>A string, number, or <code><a href="../../htmltools/help/builder.html">htmltools::tag()</a></code> child to display as the
+title (just above the <code>sidebar</code>).</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_fillable">fillable</code></td>
+<td>
+<p>Whether or not the <code>main</code> content area should be considered a
+fillable (i.e., flexbox) container.</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_fillable_mobile">fillable_mobile</code></td>
+<td>
+<p>Whether or not <code>fillable</code> pages should fill the viewport's
+height on mobile devices (i.e., narrow windows).</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_theme">theme</code></td>
+<td>
+<p>A <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_window_title">window_title</code></td>
+<td>
+<p>the browser window title. The default value, <code>NA</code>, means
+to use any character strings that appear in <code>title</code> (if none are found, the
+host URL of the page is displayed by default).</p>
+</td></tr>
+<tr><td><code id="page_sidebar_:_lang">lang</code></td>
+<td>
+<p>ISO 639-1 language code for the HTML page, such as &quot;en&quot; or &quot;ko&quot;.
+This will be used as the lang in the <code>&lt;html&gt;</code> tag, as in <code>&lt;html lang="en"&gt;</code>.
+The default (NULL) results in an empty string.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/layout_sidebar.html">layout_sidebar()</a></code> for 'floating' sidebar layouts.
+</p>
+<p><code><a href="../../bslib/help/accordion.html">accordion()</a></code> for grouping related input controls in the <code>sidebar</code>.
+</p>
+<p><code><a href="../../bslib/help/card.html">card()</a></code> for wrapping outputs in the 'main' content area.
+</p>
+<p><code><a href="../../bslib/help/value_box.html">value_box()</a></code> for highlighting values.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+library(shiny)
+library(ggplot2)
+
+ui &lt;- page_sidebar(
+  title = "Example dashboard",
+  sidebar = sidebar(
+    varSelectInput("var", "Select variable", mtcars)
+  ),
+  card(
+    full_screen = TRUE,
+    card_header("My plot"),
+    plotOutput("p")
+  )
+)
+
+server &lt;- function(input, output) {
+  output$p &lt;- renderPlot({
+    ggplot(mtcars) + geom_histogram(aes(!!input$var))
+  })
+}
+
+shinyApp(ui, server)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

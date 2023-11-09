@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Fast colour interpolation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>colour_ramp {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='colour_ramp'>Fast colour interpolation</h2>
+
+<h3>Description</h3>
+
+<p>Returns a function that maps the interval [0,1] to a set of colours.
+Interpolation is performed in the CIELAB colour space. Similar to
+<code><a href="../../grDevices/help/colorRamp.html">colorRamp</a>(space = 'Lab')</code>, but hundreds of
+times faster, and provides results in <code>"#RRGGBB"</code> (or
+<code>"#RRGGBBAA"</code>) character form instead of RGB colour matrices.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>colour_ramp(colors, na.color = NA, alpha = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="colour_ramp_:_colors">colors</code></td>
+<td>
+<p>Colours to interpolate; must be a valid argument to
+<code><a href="../../grDevices/help/col2rgb.html">grDevices::col2rgb()</a></code>. This can be a character vector of
+<code>"#RRGGBB"</code> or  <code>"#RRGGBBAA"</code>, colour names from
+<code><a href="../../grDevices/help/colors.html">grDevices::colors()</a></code>, or a positive integer that indexes into
+<code><a href="../../grDevices/help/palette.html">grDevices::palette()</a></code>.</p>
+</td></tr>
+<tr><td><code id="colour_ramp_:_na.color">na.color</code></td>
+<td>
+<p>The colour to map to <code>NA</code> values (for example,
+<code>"#606060"</code> for dark grey, or <code>"#00000000"</code> for transparent) and
+values outside of [0,1]. Can itself by <code>NA</code>, which will simply cause
+an <code>NA</code> to be inserted into the output.</p>
+</td></tr>
+<tr><td><code id="colour_ramp_:_alpha">alpha</code></td>
+<td>
+<p>Whether to include alpha transparency channels in interpolation.
+If <code>TRUE</code> then the alpha information is included in the interpolation.
+The returned colours will be provided in <code>"#RRGGBBAA"</code> format when needed,
+i.e., in cases where the colour is not fully opaque, so that the <code>"AA"</code>
+part is not equal to <code>"FF"</code>. Fully opaque colours will be returned in
+<code>"#RRGGBB"</code> format. If <code>FALSE</code>, the alpha information is discarded
+before interpolation and colours are always returned as <code>"#RRGGBB"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A function that takes a numeric vector and returns a character vector
+of the same length with RGB or RGBA hex colours.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../grDevices/help/colorRamp.html">colorRamp</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>ramp &lt;- colour_ramp(c("red", "green", "blue"))
+show_col(ramp(seq(0, 1, length = 12)))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

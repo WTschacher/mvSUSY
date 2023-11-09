@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>R: Coerce to 'numeric', not Loosing Dimensions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>asNumeric {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='asNumeric'>Coerce to 'numeric', not Loosing Dimensions</h2>
+
+<h3>Description</h3>
+
+<p>a number-like object is coerced to type (<a href="../../base/html/typeof.html">typeof</a>)
+<code>"numeric"</code>, keeping <code><a href="../../base/html/dim.html">dim</a></code> (and maybe
+<code><a href="../../base/html/dimnames.html">dimnames</a></code>) when present.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>asNumeric(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="asNumeric_:_x">x</code></td>
+<td>
+<p>a &ldquo;number-like&rdquo; object, e.g., big integer
+(<code><a href="../../gmp/help/bigz.html">bigz</a></code>), or <code><a href="../../Rmpfr/help/mpfr.html">mpfr</a></code>, notably
+including matrices and arrays of such numbers.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>an <span class="rlang"><b>R</b></span> object of type (<code><a href="../../base/html/typeof.html">typeof</a></code>) <code>"numeric"</code>, a <code><a href="../../gmp/help/matrix.html">matrix</a></code>
+or <code><a href="../../base/html/array.html">array</a></code> if <code>x</code> had non-NULL dimension <code><a href="../../base/html/dim.html">dim</a>()</code>.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt><code>signature(x = "ANY")</code></dt><dd><p>the default method, which is the
+identity for <code><a href="../../base/html/numeric.html">numeric</a></code> array.</p>
+</dd>
+<dt><code>signature(x = "bigq")</code></dt><dd><p>the method for big rationals.</p>
+</dd>
+<dt><code>signature(x = "bigq")</code></dt><dd><p>the method for big integers.</p>
+</dd>
+</dl>
+
+<p>Note that package <span class="pkg">Rmpfr</span> provides methods for its own number-like objects.
+
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/numeric.html">as.numeric</a></code> coerces to both <code>"numeric"</code> and to a
+<code><a href="../../base/html/vector.html">vector</a></code>, whereas <code>asNumeric()</code> should keep
+<code><a href="../../base/html/dim.html">dim</a></code> (and other) attributes.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>m &lt;- matrix(1:6, 2,3)
+stopifnot(identical(m, asNumeric(m)))# remains matrix
+
+(M &lt;- as.bigz(m) / 5) ##-&gt; "bigq" matrix
+asNumeric(M) # numeric matrix
+stopifnot(all.equal(asNumeric(M), m/5))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html><html><head><title>R: Use http authentication.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>authenticate {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='authenticate'>Use http authentication.</h2>
+
+<h3>Description</h3>
+
+<p>It's not obvious how to turn authentication off after using it, so
+I recommend using custom handles with authentication.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>authenticate(user, password, type = "basic")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="authenticate_:_user">user</code></td>
+<td>
+<p>user name</p>
+</td></tr>
+<tr><td><code id="authenticate_:_password">password</code></td>
+<td>
+<p>password</p>
+</td></tr>
+<tr><td><code id="authenticate_:_type">type</code></td>
+<td>
+<p>type of HTTP authentication.  Should be one of the following
+types supported by Curl: basic, digest, digest_ie, gssnegotiate,
+ntlm, any.  It defaults to &quot;basic&quot;, the most common type.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other config: 
+<code><a href="../../httr/help/add_headers.html">add_headers</a>()</code>,
+<code><a href="../../httr/help/config.html">config</a>()</code>,
+<code><a href="../../httr/help/set_cookies.html">set_cookies</a>()</code>,
+<code><a href="../../httr/help/timeout.html">timeout</a>()</code>,
+<code><a href="../../httr/help/use_proxy.html">use_proxy</a>()</code>,
+<code><a href="../../httr/help/user_agent.html">user_agent</a>()</code>,
+<code><a href="../../httr/help/verbose.html">verbose</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+GET("http://httpbin.org/basic-auth/user/passwd")
+GET(
+  "http://httpbin.org/basic-auth/user/passwd",
+  authenticate("user", "passwd")
+)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

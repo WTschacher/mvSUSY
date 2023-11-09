@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><title>R: Create a resolved or rejected promise</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>promise_resolve {promises}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='promise_resolve'>Create a resolved or rejected promise</h2>
+
+<h3>Description</h3>
+
+<p>Helper functions to conveniently create a promise that is resolved to the
+given value (or rejected with the given reason).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>promise_resolve(value)
+
+promise_reject(reason)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="promise_resolve_:_value">value</code></td>
+<td>
+<p>A value, or promise, that the new promise should be resolved to.
+This expression will be lazily evaluated, and if evaluating the expression
+raises an error, then the new promise will be rejected with that error as
+the reason.</p>
+</td></tr>
+<tr><td><code id="promise_resolve_:_reason">reason</code></td>
+<td>
+<p>An error message string, or error object.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>promise_resolve(mtcars) %...&gt;%
+  head() %...&gt;%
+  print()
+
+promise_reject("Something went wrong") %...T!%
+  { message(conditionMessage(.)) }
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>promises</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

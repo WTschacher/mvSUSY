@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><title>R: Evaluate a formula</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>f_eval_rhs {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='f_eval_rhs'>Evaluate a formula</h2>
+
+<h3>Description</h3>
+
+<p><code>f_eval_rhs</code> evaluates the RHS of a formula and <code>f_eval_lhs</code>
+evaluates the LHS. <code>f_eval</code> is a shortcut for <code>f_eval_rhs</code> since
+that is what you most commonly need.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>f_eval_rhs(f, data = NULL)
+
+f_eval_lhs(f, data = NULL)
+
+f_eval(f, data = NULL)
+
+find_data(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="f_eval_rhs_:_f">f</code></td>
+<td>
+<p>A formula. Any expressions wrapped in <code> uq() </code> will
+will be &quot;unquoted&quot;, i.e. they will be evaluated, and the results inserted
+back into the formula. See <code><a href="../../lazyeval/help/f_interp.html">f_interp</a></code> for more details.</p>
+</td></tr>
+<tr><td><code id="f_eval_rhs_:_data">data</code></td>
+<td>
+<p>A list (or data frame). <code>find_data</code> is a generic used to
+find the data associated with a given object. If you want to make
+<code>f_eval</code> work for your own objects, you can define a method for this
+generic.</p>
+</td></tr>
+<tr><td><code id="f_eval_rhs_:_x">x</code></td>
+<td>
+<p>An object for which you want to find associated data.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>data</code> is specified, variables will be looked for first in this
+object, and if not found in the environment of the formula.
+</p>
+
+
+<h3>Pronouns</h3>
+
+<p>When used with <code>data</code>, <code>f_eval</code> provides two pronouns to make it
+possible to be explicit about where you want values to come from:
+<code>.env</code> and <code>.data</code>. These are thin wrappers around <code>.data</code>
+and <code>.env</code> that throw errors if you try to access non-existent values.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>f_eval(~ 1 + 2 + 3)
+
+# formulas automatically capture their enclosing environment
+foo &lt;- function(x) {
+  y &lt;- 10
+  ~ x + y
+}
+f &lt;- foo(1)
+f
+f_eval(f)
+
+# If you supply data, f_eval will look their first:
+f_eval(~ cyl, mtcars)
+
+# To avoid ambiguity, you can use .env and .data pronouns to be
+# explicit:
+cyl &lt;- 10
+f_eval(~ .data$cyl, mtcars)
+f_eval(~ .env$cyl, mtcars)
+
+# Imagine you are computing the mean of a variable:
+f_eval(~ mean(cyl), mtcars)
+# How can you change the variable that's being computed?
+# The easiest way is "unquote" with uq()
+# See ?f_interp for more details
+var &lt;- ~ cyl
+f_eval(~ mean( uq(var) ), mtcars)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

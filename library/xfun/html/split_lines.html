@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><title>R: Split a character vector by line breaks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>split_lines {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='split_lines'>Split a character vector by line breaks</h2>
+
+<h3>Description</h3>
+
+<p>Call <code>unlist(strsplit(x, '\n'))</code> on the character vector <code>x</code> and
+make sure it works in a few edge cases: <code>split_lines('')</code> returns
+<code>''</code> instead of <code>character(0)</code> (which is the returned value of
+<code>strsplit('', '\n')</code>); <code>split_lines('a\n')</code> returns <code>c('a', '')</code> instead of <code>c('a')</code> (which is the returned value of
+<code>strsplit('a\n', '\n')</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>split_lines(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="split_lines_:_x">x</code></td>
+<td>
+<p>A character vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>All elements of the character vector are split by <code>'\n'</code> into
+lines.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>xfun::split_lines(c("a", "b\nc"))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

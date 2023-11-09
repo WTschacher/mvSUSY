@@ -1,0 +1,178 @@
+<!DOCTYPE html><html><head><title>R: Nest rows into a list-column of data frames</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>nest {tidyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='nest'>Nest rows into a list-column of data frames</h2>
+
+<h3>Description</h3>
+
+<p>Nesting creates a list-column of data frames; unnesting flattens it back out
+into regular columns. Nesting is implicitly a summarising operation: you
+get one row for each group defined by the non-nested columns. This is useful
+in conjunction with other summaries that work with whole datasets, most
+notably models.
+</p>
+<p>Learn more in <code>vignette("nest")</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>nest(.data, ..., .by = NULL, .key = NULL, .names_sep = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="nest_:_.data">.data</code></td>
+<td>
+<p>A data frame.</p>
+</td></tr>
+<tr><td><code id="nest_:_...">...</code></td>
+<td>
+<p>&lt;<code><a href="../../tidyr/help/tidyr_tidy_select.html">tidy-select</a></code>&gt; Columns to nest; these will
+appear in the inner data frames.
+</p>
+<p>Specified using name-variable pairs of the form
+<code>new_col = c(col1, col2, col3)</code>. The right hand side can be any valid
+tidyselect expression.
+</p>
+<p>If not supplied, then <code>...</code> is derived as all columns <em>not</em> selected by
+<code>.by</code>, and will use the column name from <code>.key</code>.
+</p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>:
+previously you could write <code>df %&gt;% nest(x, y, z)</code>.
+Convert to <code>df %&gt;% nest(data = c(x, y, z))</code>.</p>
+</td></tr>
+<tr><td><code id="nest_:_.by">.by</code></td>
+<td>
+<p>&lt;<code><a href="../../tidyr/help/tidyr_tidy_select.html">tidy-select</a></code>&gt; Columns to nest <em>by</em>; these
+will remain in the outer data frame.
+</p>
+<p><code>.by</code> can be used in place of or in conjunction with columns supplied
+through <code>...</code>.
+</p>
+<p>If not supplied, then <code>.by</code> is derived as all columns <em>not</em> selected by
+<code>...</code>.</p>
+</td></tr>
+<tr><td><code id="nest_:_.key">.key</code></td>
+<td>
+<p>The name of the resulting nested column. Only applicable when
+<code>...</code> isn't specified, i.e. in the case of <code>df %&gt;% nest(.by = x)</code>.
+</p>
+<p>If <code>NULL</code>, then <code>"data"</code> will be used by default.</p>
+</td></tr>
+<tr><td><code id="nest_:_.names_sep">.names_sep</code></td>
+<td>
+<p>If <code>NULL</code>, the default, the inner names will come from
+the former outer names. If a string, the  new inner names will use the
+outer names with <code>names_sep</code> automatically stripped. This makes
+<code>names_sep</code> roughly symmetric between nesting and unnesting.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If neither <code>...</code> nor <code>.by</code> are supplied, <code>nest()</code> will nest all variables,
+and will use the column name supplied through <code>.key</code>.
+</p>
+
+
+<h3>New syntax</h3>
+
+<p>tidyr 1.0.0 introduced a new syntax for <code>nest()</code> and <code>unnest()</code> that's
+designed to be more similar to other functions. Converting to the new syntax
+should be straightforward (guided by the message you'll receive) but if
+you just need to run an old analysis, you can easily revert to the previous
+behaviour using <code><a href="../../tidyr/help/nest_legacy.html">nest_legacy()</a></code> and <code><a href="../../tidyr/help/unnest_legacy.html">unnest_legacy()</a></code> as follows:
+</p>
+<div class="sourceCode"><pre>library(tidyr)
+nest &lt;- nest_legacy
+unnest &lt;- unnest_legacy
+</pre></div>
+
+
+<h3>Grouped data frames</h3>
+
+<p><code>df %&gt;% nest(data = c(x, y))</code> specifies the columns to be nested; i.e. the
+columns that will appear in the inner data frame. <code>df %&gt;% nest(.by = c(x, y))</code> specifies the columns to nest <em>by</em>; i.e. the columns that will remain in
+the outer data frame. An alternative way to achieve the latter is to <code>nest()</code>
+a grouped data frame created by <code><a href="../../dplyr/help/group_by.html">dplyr::group_by()</a></code>. The grouping variables
+remain in the outer data frame and the others are nested. The result
+preserves the grouping of the input.
+</p>
+<p>Variables supplied to <code>nest()</code> will override grouping variables so that
+<code>df %&gt;% group_by(x, y) %&gt;% nest(data = !z)</code> will be equivalent to
+<code>df %&gt;% nest(data = !z)</code>.
+</p>
+<p>You can't supply <code>.by</code> with a grouped data frame, as the groups already
+represent what you are nesting by.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(x = c(1, 1, 1, 2, 2, 3), y = 1:6, z = 6:1)
+
+# Specify variables to nest using name-variable pairs.
+# Note that we get one row of output for each unique combination of
+# non-nested variables.
+df %&gt;% nest(data = c(y, z))
+
+# Specify variables to nest by (rather than variables to nest) using `.by`
+df %&gt;% nest(.by = x)
+
+# In this case, since `...` isn't used you can specify the resulting column
+# name with `.key`
+df %&gt;% nest(.by = x, .key = "cols")
+
+# Use tidyselect syntax and helpers, just like in `dplyr::select()`
+df %&gt;% nest(data = any_of(c("y", "z")))
+
+# `...` and `.by` can be used together to drop columns you no longer need,
+# or to include the columns you are nesting by in the inner data frame too.
+# This drops `z`:
+df %&gt;% nest(data = y, .by = x)
+# This includes `x` in the inner data frame:
+df %&gt;% nest(data = everything(), .by = x)
+
+# Multiple nesting structures can be specified at once
+iris %&gt;%
+  nest(petal = starts_with("Petal"), sepal = starts_with("Sepal"))
+iris %&gt;%
+  nest(width = contains("Width"), length = contains("Length"))
+
+# Nesting a grouped data frame nests all variables apart from the group vars
+fish_encounters %&gt;%
+  dplyr::group_by(fish) %&gt;%
+  nest()
+
+# That is similar to `nest(.by = )`, except here the result isn't grouped
+fish_encounters %&gt;%
+  nest(.by = fish)
+
+# Nesting is often useful for creating per group models
+mtcars %&gt;%
+  nest(.by = cyl) %&gt;%
+  dplyr::mutate(models = lapply(data, function(df) lm(mpg ~ wt, data = df)))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidyr</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><title>R: Modify a url.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>modify_url {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='modify_url'>Modify a url.</h2>
+
+<h3>Description</h3>
+
+<p>Modify a url by first parsing it and then replacing components with
+the non-NULL arguments of this function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>modify_url(
+  url,
+  scheme = NULL,
+  hostname = NULL,
+  port = NULL,
+  path = NULL,
+  query = NULL,
+  params = NULL,
+  fragment = NULL,
+  username = NULL,
+  password = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="modify_url_:_url">url</code></td>
+<td>
+<p>the url to modify</p>
+</td></tr>
+<tr><td><code id="modify_url_:_scheme">scheme</code>, <code id="modify_url_:_hostname">hostname</code>, <code id="modify_url_:_port">port</code>, <code id="modify_url_:_path">path</code>, <code id="modify_url_:_query">query</code>, <code id="modify_url_:_params">params</code>, <code id="modify_url_:_fragment">fragment</code>, <code id="modify_url_:_username">username</code>, <code id="modify_url_:_password">password</code></td>
+<td>
+<p>components of the url to change</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

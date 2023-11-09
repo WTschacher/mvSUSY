@@ -1,0 +1,69 @@
+<!DOCTYPE html><html><head><title>R: Creates a list of keys whose values need to be evaluated on...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>JSEvals {htmlwidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='JSEvals'>Creates a list of keys whose values need to be evaluated on the client-side</h2>
+
+<h3>Description</h3>
+
+<p>It works by transforming <code>list(foo = list(1, list(bar =
+I('function(){}')), 2))</code> to <code>list("foo.2.bar")</code>. Later on the JS side,
+the <code>window.HTMLWidgets.evaluateStringMember</code> function is called with
+the JSON object and the &quot;foo.2.bar&quot; string, which is split to <code>['foo',
+'2', 'bar']</code>, and the string at that location is replaced <em>in-situ</em> with
+the results of evaluating it. Note '2' (character) should have been 2
+(integer) but it does not seem to matter in JS: x[2] is the same as x['2']
+when all child members of x are unnamed, and ('2' in x) will be true even if
+x is an array without names. This is a little hackish.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>JSEvals(list)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="JSEvals_:_list">list</code></td>
+<td>
+<p>a list in which the elements that should be evaluated as
+JavaScript are to be identified</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is intended mostly for internal use. There's generally no need
+for widget authors or users to call it, as it's called automatically on the
+widget instance data during rendering. It's exported in case other packages
+want to add support for <code><a href="../../htmlwidgets/help/JS.html">JS</a></code> in contexts outside of widget
+payloads.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yihui Xie
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmlwidgets</em> version 1.6.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

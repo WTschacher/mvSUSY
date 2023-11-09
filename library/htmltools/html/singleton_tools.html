@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><title>R: Singleton manipulation functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>singleton_tools {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='singleton_tools'>Singleton manipulation functions</h2>
+
+<h3>Description</h3>
+
+<p>Functions for manipulating <code><a href="../../htmltools/help/singleton.html">singleton()</a></code> objects in tag
+hierarchies. Intended for framework authors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>surroundSingletons(ui)
+
+takeSingletons(ui, singletons = character(0), desingleton = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="singleton_tools_:_ui">ui</code></td>
+<td>
+<p>Tag object or lists of tag objects. See <a href="../../htmltools/help/builder.html">builder</a> topic.</p>
+</td></tr>
+<tr><td><code id="singleton_tools_:_singletons">singletons</code></td>
+<td>
+<p>Character vector of singleton signatures that have already
+been encountered (i.e. returned from previous calls to
+<code>takeSingletons</code>).</p>
+</td></tr>
+<tr><td><code id="singleton_tools_:_desingleton">desingleton</code></td>
+<td>
+<p>Logical value indicating whether singletons that are
+encountered should have the singleton attribute removed.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>surroundSingletons</code> preprocesses a tag object by changing any
+singleton X into <code style="white-space: pre;">&#8288;&lt;!--SHINY.SINGLETON[sig]--&gt;X'&lt;!--/SHINY.SINGLETON[sig]--&gt;&#8288;</code>
+where sig is the sha1 of X, and X' is X minus the singleton attribute.
+</p>
+<p><code>takeSingletons</code> returns a list with the elements <code>ui</code> (the
+processed tag objects with any duplicate singleton objects removed) and
+<code>singletons</code> (the list of known singleton signatures).
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

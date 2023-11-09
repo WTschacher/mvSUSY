@@ -1,0 +1,117 @@
+<!DOCTYPE html><html><head><title>R: Tidy eval helpers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>tidyeval {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='tidyeval'>Tidy eval helpers</h2>
+
+<h3>Description</h3>
+
+<p>This page lists the tidy eval tools reexported in this package from
+rlang. To learn about using tidy eval in scripts and packages at a
+high level, see the <a href="https://dplyr.tidyverse.org/articles/programming.html">dplyr programming vignette</a>
+and the <a href="https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html">ggplot2 in packages vignette</a>.
+The <a href="https://adv-r.hadley.nz/metaprogramming.html">Metaprogramming section</a> of <a href="https://adv-r.hadley.nz">Advanced R</a> may also be useful for a deeper dive.
+</p>
+
+<ul>
+<li><p> The tidy eval operators <code style="white-space: pre;">&#8288;{{&#8288;</code>, <code style="white-space: pre;">&#8288;!!&#8288;</code>, and <code style="white-space: pre;">&#8288;!!!&#8288;</code> are syntactic
+constructs which are specially interpreted by tidy eval functions.
+You will mostly need <code style="white-space: pre;">&#8288;{{&#8288;</code>, as <code style="white-space: pre;">&#8288;!!&#8288;</code> and <code style="white-space: pre;">&#8288;!!!&#8288;</code> are more advanced
+operators which you should not have to use in simple cases.
+</p>
+<p>The curly-curly operator <code style="white-space: pre;">&#8288;{{&#8288;</code> allows you to tunnel data-variables
+passed from function arguments inside other tidy eval functions.
+<code style="white-space: pre;">&#8288;{{&#8288;</code> is designed for individual arguments. To pass multiple
+arguments contained in dots, use <code>...</code> in the normal way.
+</p>
+<div class="sourceCode"><pre>my_function &lt;- function(data, var, ...) {
+  data %&gt;%
+    group_by(...) %&gt;%
+    summarise(mean = mean({{ var }}))
+}
+</pre></div>
+</li>
+<li> <p><code><a href="../../ggplot2/help/enquo.html">enquo()</a></code> and <code><a href="../../ggplot2/help/enquos.html">enquos()</a></code> delay the execution of one or several
+function arguments. The former returns a single expression, the
+latter returns a list of expressions. Once defused, expressions
+will no longer evaluate on their own. They must be injected back
+into an evaluation context with <code style="white-space: pre;">&#8288;!!&#8288;</code> (for a single expression) and
+<code style="white-space: pre;">&#8288;!!!&#8288;</code> (for a list of expressions).
+</p>
+<div class="sourceCode"><pre>my_function &lt;- function(data, var, ...) {
+  # Defuse
+  var &lt;- enquo(var)
+  dots &lt;- enquos(...)
+
+  # Inject
+  data %&gt;%
+    group_by(!!!dots) %&gt;%
+    summarise(mean = mean(!!var))
+}
+</pre></div>
+<p>In this simple case, the code is equivalent to the usage of <code style="white-space: pre;">&#8288;{{&#8288;</code>
+and <code>...</code> above. Defusing with <code>enquo()</code> or <code>enquos()</code> is only
+needed in more complex cases, for instance if you need to inspect
+or modify the expressions in some way.
+</p>
+</li>
+<li><p> The <code>.data</code> pronoun is an object that represents the current
+slice of data. If you have a variable name in a string, use the
+<code>.data</code> pronoun to subset that variable with <code>[[</code>.
+</p>
+<div class="sourceCode"><pre>my_var &lt;- "disp"
+mtcars %&gt;% summarise(mean = mean(.data[[my_var]]))
+</pre></div>
+</li>
+<li><p> Another tidy eval operator is <code style="white-space: pre;">&#8288;:=&#8288;</code>. It makes it possible to use
+glue and curly-curly syntax on the LHS of <code>=</code>. For technical
+reasons, the R language doesn't support complex expressions on
+the left of <code>=</code>, so we use <code style="white-space: pre;">&#8288;:=&#8288;</code> as a workaround.
+</p>
+<div class="sourceCode"><pre>my_function &lt;- function(data, var, suffix = "foo") {
+  # Use `{{` to tunnel function arguments and the usual glue
+  # operator `{` to interpolate plain strings.
+  data %&gt;%
+    summarise("{{ var }}_mean_{suffix}" := mean({{ var }}))
+}
+</pre></div>
+</li>
+<li><p> Many tidy eval functions like <code>dplyr::mutate()</code> or
+<code>dplyr::summarise()</code> give an automatic name to unnamed inputs. If
+you need to create the same sort of automatic names by yourself,
+use <code>as_label()</code>. For instance, the glue-tunnelling syntax above
+can be reproduced manually with:
+</p>
+<div class="sourceCode"><pre>my_function &lt;- function(data, var, suffix = "foo") {
+  var &lt;- enquo(var)
+  prefix &lt;- as_label(var)
+  data %&gt;%
+    summarise("{prefix}_mean_{suffix}" := mean(!!var))
+}
+</pre></div>
+<p>Expressions defused with <code>enquo()</code> (or tunnelled with <code style="white-space: pre;">&#8288;{{&#8288;</code>) need
+not be simple column names, they can be arbitrarily complex.
+<code>as_label()</code> handles those cases gracefully. If your code assumes
+a simple column name, use <code>as_name()</code> instead. This is safer
+because it throws an error if the input is not a name as expected.
+</p>
+</li></ul>
+
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

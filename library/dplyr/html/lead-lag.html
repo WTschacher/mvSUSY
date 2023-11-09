@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>R: Compute lagged or leading values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>lead-lag {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='lead-lag'>Compute lagged or leading values</h2>
+
+<h3>Description</h3>
+
+<p>Find the &quot;previous&quot; (<code>lag()</code>) or &quot;next&quot; (<code>lead()</code>) values in a vector. Useful
+for comparing values behind of or ahead of the current values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>lag(x, n = 1L, default = NULL, order_by = NULL, ...)
+
+lead(x, n = 1L, default = NULL, order_by = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="lead-lag_:_x">x</code></td>
+<td>
+<p>A vector</p>
+</td></tr>
+<tr><td><code id="lead-lag_:_n">n</code></td>
+<td>
+<p>Positive integer of length 1, giving the number of positions to
+lag or lead by</p>
+</td></tr>
+<tr><td><code id="lead-lag_:_default">default</code></td>
+<td>
+<p>The value used to pad <code>x</code> back to its original size after the
+lag or lead has been applied. The default, <code>NULL</code>, pads with a missing
+value. If supplied, this must be a vector with size 1, which will be cast
+to the type of <code>x</code>.</p>
+</td></tr>
+<tr><td><code id="lead-lag_:_order_by">order_by</code></td>
+<td>
+<p>An optional secondary vector that defines the ordering to use
+when applying the lag or lead to <code>x</code>. If supplied, this must be the same
+size as <code>x</code>.</p>
+</td></tr>
+<tr><td><code id="lead-lag_:_...">...</code></td>
+<td>
+<p>Not used.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector with the same type and size as <code>x</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>lag(1:5)
+lead(1:5)
+
+x &lt;- 1:5
+tibble(behind = lag(x), x, ahead = lead(x))
+
+# If you want to look more rows behind or ahead, use `n`
+lag(1:5, n = 1)
+lag(1:5, n = 2)
+
+lead(1:5, n = 1)
+lead(1:5, n = 2)
+
+# If you want to define a value to pad with, use `default`
+lag(1:5)
+lag(1:5, default = 0)
+
+lead(1:5)
+lead(1:5, default = 6)
+
+# If the data are not already ordered, use `order_by`
+scrambled &lt;- slice_sample(
+  tibble(year = 2000:2005, value = (0:5) ^ 2),
+  prop = 1
+)
+
+wrong &lt;- mutate(scrambled, previous_year_value = lag(value))
+arrange(wrong, year)
+
+right &lt;- mutate(scrambled, previous_year_value = lag(value, order_by = year))
+arrange(right, year)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

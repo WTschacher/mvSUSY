@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><title>R: Write a YAML file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>write_yaml {yaml}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='write_yaml'>Write a YAML file</h2>
+
+<h3>Description</h3>
+
+<p>Write the YAML representation of an R object to a file
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>  write_yaml(x, file, fileEncoding = "UTF-8", ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="write_yaml_:_x">x</code></td>
+<td>
+<p>the object to be converted</p>
+</td></tr>
+<tr><td><code id="write_yaml_:_file">file</code></td>
+<td>
+<p>either a character string naming a file or a <a href="../../base/html/connections.html">connection</a>
+open for writing</p>
+</td></tr>
+<tr><td><code id="write_yaml_:_fileEncoding">fileEncoding</code></td>
+<td>
+<p>character string: if non-empty declares the
+encoding to be used on a file (not a connection) so the character data can
+be re-encoded as they are written.  See <code><a href="../../base/html/connections.html">file</a></code>.</p>
+</td></tr>
+<tr><td><code id="write_yaml_:_...">...</code></td>
+<td>
+<p>arguments to <code><a href="../../yaml/help/as.yaml.html">as.yaml</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>file</code> is a non-open connection, an attempt is made to open it
+and then close it after use.
+</p>
+<p>This function is a convenient wrapper around <code><a href="../../yaml/help/as.yaml.html">as.yaml</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Jeremy Stephens &lt;jeremy.f.stephens@vumc.org&gt;</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../yaml/help/as.yaml.html">as.yaml</a></code>, <code><a href="../../yaml/help/read_yaml.html">read_yaml</a></code>, <code><a href="../../yaml/help/yaml.load_file.html">yaml.load_file</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+  # writing to a file connection
+  filename &lt;- tempfile()
+  con &lt;- file(filename, "w")
+  write_yaml(data.frame(a=1:10, b=letters[1:10], c=11:20), con)
+  close(con)
+
+  # using a filename to specify output file
+  write_yaml(data.frame(a=1:10, b=letters[1:10], c=11:20), filename)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>yaml</em> version 2.3.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

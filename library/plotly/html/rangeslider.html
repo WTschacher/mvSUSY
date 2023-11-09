@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><title>R: Add a range slider to the x-axis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>rangeslider {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='rangeslider'>Add a range slider to the x-axis</h2>
+
+<h3>Description</h3>
+
+<p>Add a range slider to the x-axis
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>rangeslider(p, start = NULL, end = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="rangeslider_:_p">p</code></td>
+<td>
+<p>plotly object.</p>
+</td></tr>
+<tr><td><code id="rangeslider_:_start">start</code></td>
+<td>
+<p>a start date/value.</p>
+</td></tr>
+<tr><td><code id="rangeslider_:_end">end</code></td>
+<td>
+<p>an end date/value.</p>
+</td></tr>
+<tr><td><code id="rangeslider_:_...">...</code></td>
+<td>
+<p>these arguments are documented here
+<a href="https://plotly.com/r/reference/#layout-xaxis-rangeslider">https://plotly.com/r/reference/#layout-xaxis-rangeslider</a></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+plot_ly(x = time(USAccDeaths), y = USAccDeaths) %&gt;% 
+  add_lines() %&gt;%
+  rangeslider()
+  
+d &lt;- tibble::tibble(
+  time = seq(as.Date("2016-01-01"), as.Date("2016-08-31"), by = "days"),
+  y = rnorm(seq_along(time))
+ )
+ 
+plot_ly(d, x = ~time, y = ~y) %&gt;%
+  add_lines() %&gt;%
+  rangeslider(d$time[5], d$time[50])
+  
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

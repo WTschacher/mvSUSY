@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><title>R: Superseded interface to 'label_parse()'/'label_math()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>parse_format {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='parse_format'>Superseded interface to <code>label_parse()</code>/<code>label_math()</code></h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>These functions are kept for backward compatibility; you should switch
+to <code><a href="../../scales/help/label_parse.html">label_parse()</a></code>/<code><a href="../../scales/help/label_math.html">label_math()</a></code> for new code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>parse_format()
+
+math_format(expr = 10^.x, format = force)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="parse_format_:_expr">expr</code></td>
+<td>
+<p>expression to use</p>
+</td></tr>
+<tr><td><code id="parse_format_:_format">format</code></td>
+<td>
+<p>another format function to apply prior to mathematical
+transformation - this makes it easier to use floating point numbers in
+mathematical expressions.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

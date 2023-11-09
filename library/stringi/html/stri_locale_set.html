@@ -1,0 +1,106 @@
+<!DOCTYPE html><html><head><title>R: Set or Get Default Locale in 'stringi'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>stri_locale_set {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='stri_locale_set'>Set or Get Default Locale in <span class="pkg">stringi</span></h2>
+
+<h3>Description</h3>
+
+<p><code>stri_locale_set</code> changes the default locale for all the functions
+in the <span class="pkg">stringi</span> package,
+i.e., establishes the meaning of the &ldquo;<code>NULL</code> locale&rdquo; argument
+of locale-sensitive functions.
+<code>stri_locale_get</code>
+gives the current default locale.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>stri_locale_set(locale)
+
+stri_locale_get()
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="stri_locale_set_:_locale">locale</code></td>
+<td>
+<p>single string of the form <code>Language</code>,
+<code>Language_Country</code>, or <code>Language_Country_Variant</code>, e.g.,
+<code>'en_US'</code>, see <code><a href="../../stringi/help/stri_locale_list.html">stri_locale_list</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="../../stringi/help/stringi-locale.html">stringi-locale</a> for more information on the effect of
+changing the default locale.
+</p>
+<p><code>stri_locale_get</code> is the same as <code><a href="../../stringi/help/stri_locale_info.html">stri_locale_info</a>(NULL)$Name</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>stri_locale_set</code> returns a string with
+previously used locale, invisibly.
+</p>
+<p><code>stri_locale_get</code> returns a string of the form <code>Language</code>,
+<code>Language_Country</code>, or <code>Language_Country_Variant</code>,
+e.g., <code>'en_US'</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p><a href="https://www.gagolewski.com/">Marek Gagolewski</a> and other contributors
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The official online manual of <span class="pkg">stringi</span> at <a href="https://stringi.gagolewski.com/">https://stringi.gagolewski.com/</a>
+</p>
+<p>Gagolewski M., <span class="pkg">stringi</span>: Fast and portable character string processing in R, <em>Journal of Statistical Software</em> 103(2), 2022, 1-59, <a href="https://doi.org/10.18637/jss.v103.i02">doi:10.18637/jss.v103.i02</a>
+</p>
+<p>Other locale_management: 
+<code><a href="../../stringi/help/about_locale.html">about_locale</a></code>,
+<code><a href="../../stringi/help/stri_locale_info.html">stri_locale_info</a>()</code>,
+<code><a href="../../stringi/help/stri_locale_list.html">stri_locale_list</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+oldloc &lt;- stri_locale_set('pt_BR')
+# ... some locale-dependent operations
+# ... note that you may always modify a locale per-call
+# ... changing the default locale is convenient if you perform
+# ... many operations
+stri_locale_set(oldloc) # restore the previous default locale
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.7.12 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

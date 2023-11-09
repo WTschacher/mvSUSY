@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><title>R: A local source</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>src_local {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='src_local'>A local source</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated"><img src="../help/figures/lifecycle-deprecated.svg" alt='[Deprecated]' /></a>
+This function was deprecated since it existed to support a style of testing
+dplyr backends that turned out not to be useful.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>src_local(tbl, pkg = NULL, env = NULL)
+
+src_df(pkg = NULL, env = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="src_local_:_tbl">tbl</code></td>
+<td>
+<p>name of the function used to generate <code>tbl</code> objects</p>
+</td></tr>
+<tr><td><code id="src_local_:_pkg">pkg</code>, <code id="src_local_:_env">env</code></td>
+<td>
+<p>Either the name of a package or an environment object in
+which to look for objects.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Remove duplicated strings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_unique {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_unique'>Remove duplicated strings</h2>
+
+<h3>Description</h3>
+
+<p><code>str_unique()</code> removes duplicated values, with optional control over
+how duplication is measured.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_unique(string, locale = "en", ignore_case = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_unique_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_unique_:_locale">locale</code></td>
+<td>
+<p>Locale to use for comparisons. See
+<code><a href="../../stringi/help/stri_locale_list.html">stringi::stri_locale_list()</a></code> for all possible options.
+Defaults to &quot;en&quot; (English) to ensure that default behaviour is
+consistent across platforms.</p>
+</td></tr>
+<tr><td><code id="str_unique_:_ignore_case">ignore_case</code></td>
+<td>
+<p>Ignore case when comparing strings?</p>
+</td></tr>
+<tr><td><code id="str_unique_:_...">...</code></td>
+<td>
+<p>Other options used to control collation. Passed on to
+<code><a href="../../stringi/help/stri_opts_collator.html">stringi::stri_opts_collator()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector, usually shorter than <code>string</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/unique.html">unique()</a></code>, <code><a href="../../stringi/help/stri_unique.html">stringi::stri_unique()</a></code> which this function wraps.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>str_unique(c("a", "b", "c", "b", "a"))
+
+str_unique(c("a", "b", "c", "B", "A"))
+str_unique(c("a", "b", "c", "B", "A"), ignore_case = TRUE)
+
+# Use ... to pass additional arguments to stri_unique()
+str_unique(c("motley", "mötley", "pinguino", "pingüino"))
+str_unique(c("motley", "mötley", "pinguino", "pingüino"), strength = 1)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

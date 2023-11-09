@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>R: Run OptiPNG on all PNG files under a directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>optipng {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='optipng'>Run OptiPNG on all PNG files under a directory</h2>
+
+<h3>Description</h3>
+
+<p>Call the command <code>optipng</code> via <code>system2()</code> to optimize all PNG
+files under a directory.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>optipng(dir = ".", files = all_files("[.]png$", dir), ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="optipng_:_dir">dir</code></td>
+<td>
+<p>Path to a directory.</p>
+</td></tr>
+<tr><td><code id="optipng_:_files">files</code></td>
+<td>
+<p>Alternatively, you can choose the specific files to optimize.</p>
+</td></tr>
+<tr><td><code id="optipng_:_...">...</code></td>
+<td>
+<p>Arguments to be passed to <code>system2()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>OptiPNG: <a href="https://optipng.sourceforge.net">https://optipng.sourceforge.net</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

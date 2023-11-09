@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Modify the colorbar</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>colorbar {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='colorbar'>Modify the colorbar</h2>
+
+<h3>Description</h3>
+
+<p>Modify the colorbar
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>colorbar(p, ..., limits = NULL, which = 1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="colorbar_:_p">p</code></td>
+<td>
+<p>a plotly object</p>
+</td></tr>
+<tr><td><code id="colorbar_:_...">...</code></td>
+<td>
+<p>arguments are documented here
+<a href="https://plotly.com/r/reference/#scatter-marker-colorbar">https://plotly.com/r/reference/#scatter-marker-colorbar</a>.</p>
+</td></tr>
+<tr><td><code id="colorbar_:_limits">limits</code></td>
+<td>
+<p>numeric vector of length 2. Set the extent of the colorbar scale.</p>
+</td></tr>
+<tr><td><code id="colorbar_:_which">which</code></td>
+<td>
+<p>colorbar to modify? Should only be relevant for subplots with
+multiple colorbars.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+p &lt;- plot_ly(mtcars, x = ~wt, y = ~mpg, color = ~cyl)
+
+# pass any colorbar attribute -- 
+# https://plotly.com/r/reference/#scatter-marker-colorbar
+colorbar(p, len = 0.5)
+
+# Expand the limits of the colorbar
+colorbar(p, limits = c(0, 20))
+# values outside the colorbar limits are considered "missing"
+colorbar(p, limits = c(5, 6))
+
+# also works on colorbars generated via a z value
+corr &lt;- cor(diamonds[vapply(diamonds, is.numeric, logical(1))])
+plot_ly(x = rownames(corr), y = colnames(corr), z = corr) %&gt;%
+ add_heatmap() %&gt;%
+ colorbar(limits = c(-1, 1))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

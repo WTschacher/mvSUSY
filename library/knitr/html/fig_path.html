@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>R: Path for figure files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>fig_path {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='fig_path'>Path for figure files</h2>
+
+<h3>Description</h3>
+
+<p>The filename of figure files is the combination of options <code>fig.path</code>
+and <code>label</code>. This function returns the path of figures for the current
+chunk by default.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>fig_path(suffix = "", options = opts_current$get(), number)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="fig_path_:_suffix">suffix</code></td>
+<td>
+<p>A filename suffix; if it is non-empty and does not
+contain a dot <code>.</code>, it will be treated as the filename extension (e.g.
+<code>png</code> will be used as <code>.png</code>)</p>
+</td></tr>
+<tr><td><code id="fig_path_:_options">options</code></td>
+<td>
+<p>A list of options; by default the options of the current chunk.</p>
+</td></tr>
+<tr><td><code id="fig_path_:_number">number</code></td>
+<td>
+<p>The current figure number. The default is the internal chunk option
+<code>fig.cur</code>, if this is available.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of the form &lsquo;<span class="file">fig.path-label-i.suffix</span>&rsquo;.
+</p>
+
+
+<h3>Note</h3>
+
+<p>When there are special characters (not alphanumeric or &lsquo;<span class="samp">&#8288;-&#8288;</span>&rsquo; or
+&lsquo;<span class="samp">&#8288;_&#8288;</span>&rsquo;) in the path, they will be automatically replaced with &lsquo;<span class="samp">&#8288;_&#8288;</span>&rsquo;.
+For example, &lsquo;<span class="file">a b/c.d-</span>&rsquo; will be sanitized to &lsquo;<span class="file">a_b/c_d-</span>&rsquo;. This
+makes the filenames safe to LaTeX.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>fig_path(".pdf", options = list(fig.path = "figure/abc-", label = "first-plot"))
+fig_path(".png", list(fig.path = "foo-", label = "bar"), 1:10)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

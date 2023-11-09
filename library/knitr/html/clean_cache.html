@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>R: Clean cache files that are probably no longer needed</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>clean_cache {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='clean_cache'>Clean cache files that are probably no longer needed</h2>
+
+<h3>Description</h3>
+
+<p>If you remove or rename some cached code chunks, their original cache files
+will not be automatically cleaned. You can use this function to identify
+these possible files, and clean them if you are sure they are no longer
+needed.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>clean_cache(clean = FALSE, path = opts_chunk$get("cache.path"))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="clean_cache_:_clean">clean</code></td>
+<td>
+<p>Boolean; whether to remove the files.</p>
+</td></tr>
+<tr><td><code id="clean_cache_:_path">path</code></td>
+<td>
+<p>Path to the cache.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The identification is not guaranteed to be correct, especially when
+multiple documents share the same cache directory. You are recommended to
+call <code>clean_cache(FALSE)</code> and carefully check the list of files (if
+any) before you really delete them (<code>clean_cache(TRUE)</code>).
+</p>
+<p>This function must be called within a code chunk in a source document,
+since it needs to know all chunk labels of the current document to
+determine which labels are no longer present, and delete cache
+corresponding to these labels.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

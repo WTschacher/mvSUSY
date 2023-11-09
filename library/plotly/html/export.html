@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>R: Export a plotly graph to a static file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>export {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='export'>Export a plotly graph to a static file</h2>
+
+<h3>Description</h3>
+
+<p>This function is in the process of being deprecated (use <a href="../../plotly/help/orca.html">orca</a> instead).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>export(p = last_plot(), file = "plotly.png", selenium = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="export_:_p">p</code></td>
+<td>
+<p>a plotly or ggplot object.</p>
+</td></tr>
+<tr><td><code id="export_:_file">file</code></td>
+<td>
+<p>a filename. The file type is inferred from the file extension.
+Valid extensions include 'jpeg' | 'png' | 'webp' | 'svg' | 'pdf'</p>
+</td></tr>
+<tr><td><code id="export_:_selenium">selenium</code></td>
+<td>
+<p>used only when <code>p</code> is a WebGL plot or the output
+format is 'webp' or 'svg'. Should be an object of class &quot;rsClientServer&quot;
+returned by <code>RSelenium::rsDriver</code>.</p>
+</td></tr>
+<tr><td><code id="export_:_...">...</code></td>
+<td>
+<p>if <code>p</code> is non-WebGL and the output file format is
+jpeg/png/pdf arguments are passed along to <code>webshot::webshot()</code>.
+Otherwise, they are ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For SVG plots, a screenshot is taken via <code>webshot::webshot()</code>.
+Since <code>phantomjs</code> (and hence <code>webshot</code>) does not support WebGL,
+the RSelenium package is used for exporting WebGL plots.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

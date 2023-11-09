@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><title>R: Extract or Replace Parts of an Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>extract {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='extract'>Extract or Replace Parts of an Object</h2>
+
+<h3>Description</h3>
+
+<p>Operators acting on vectors, arrays and lists to extract or replace subsets.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'bigz'
+x[i=NULL, j=NULL, drop = TRUE]
+## S3 method for class 'bigq'
+x[i=NULL, j=NULL, drop = TRUE]
+
+##_______ In the following, only the bigq method is mentioned: ______
+
+
+
+## S3 method for class 'bigq'
+c(..., recursive = FALSE)
+## S3 method for class 'bigq'
+rep(x, times=1, length.out=NA, each=1, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="extract_:_x">x</code></td>
+<td>
+<p><span class="rlang"><b>R</b></span> object of class <code>"bigz"</code> or <code>"bigq"</code>, respectively.</p>
+</td></tr>
+<tr><td><code id="extract_:_...">...</code></td>
+<td>
+<p>further arguments, notably for <code>c()</code>.</p>
+</td></tr>
+<tr><td><code id="extract_:_i">i</code>, <code id="extract_:_j">j</code></td>
+<td>
+<p>indices, see standard <span class="rlang"><b>R</b></span> subsetting and subassignment.</p>
+</td></tr>
+<tr><td><code id="extract_:_drop">drop</code></td>
+<td>
+<p>logical, unused here.</p>
+</td></tr>
+
+
+<tr><td><code id="extract_:_times">times</code>, <code id="extract_:_length.out">length.out</code>, <code id="extract_:_each">each</code></td>
+<td>
+<p>integer; typically only <em>one</em> is
+specified; for more see <code><a href="../../base/html/rep.html">rep</a></code> (standard <span class="rlang"><b>R</b></span>, package <span class="pkg">base</span>).
+</p>
+</td></tr>
+<tr><td><code id="extract_:_recursive">recursive</code></td>
+<td>
+<p>unused here</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Unlike standard matrices, <code>x[i]</code> and <code>x[i,]</code> do the same.
+
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>  a &lt;- as.bigz(123)
+  ## indexing "outside" --&gt; extends the vectors (filling with NA)
+  a[2] &lt;- a[1]
+  a[4] &lt;- -4
+
+  ## create a vector of 3 a
+  c(a,a,a)
+
+  ## repeate a 5 times
+  rep(a,5)
+
+  ## with matrix
+  m &lt;- matrix.bigz(1:6,3)
+
+  ## these do the same:
+  m[1,]
+  m[1]
+  m[-c(2,3),]
+  m[-c(2,3)]
+  m[c(TRUE,FALSE,FALSE)]
+
+  ##_modification on matrix
+  m[2,-1] &lt;- 11
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

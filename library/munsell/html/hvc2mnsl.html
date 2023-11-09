@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><title>R: Converts a hue, chroma and value to a Munsell colour</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>hvc2mnsl {munsell}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='hvc2mnsl'>Converts a hue, chroma and value to a Munsell colour</h2>
+
+<h3>Description</h3>
+
+<p>Takes separate specifications of hue, value and chroma and returns the 
+text specification of that colour.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>hvc2mnsl(hue, value = NULL, chroma = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="hvc2mnsl_:_hue">hue</code></td>
+<td>
+<p>a character vector of Munsell hues, or a 3 column data frame
+containing the hue value and chroma levels</p>
+</td></tr>
+<tr><td><code id="hvc2mnsl_:_value">value</code></td>
+<td>
+<p>a numeric vector of values</p>
+</td></tr>
+<tr><td><code id="hvc2mnsl_:_chroma">chroma</code></td>
+<td>
+<p>a numeric vector of chromas</p>
+</td></tr>
+<tr><td><code id="hvc2mnsl_:_...">...</code></td>
+<td>
+<p>passed on to <code><a href="../../munsell/help/check_mnsl.html">check_mnsl</a></code>. Use <code>fix = TRUE</code> to
+fix &quot;bad&quot; colours</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Munsell colours are specified by hue, value and chroma.  They 
+take a form like &quot;5PB 5/10&quot; where the first characters represent the
+hue, followed by a space then the value and chroma separated by a &quot;/&quot;. In
+this package value should be an integer in 0:10 and chroma an even number
+at most 24.  Note that not all possible specifications result in 
+representable colours.  Regular recycling rules apply.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a character string specification of a hex colour
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../munsell/help/check_mnsl.html">check_mnsl</a></code>, <code><a href="../../munsell/help/mnsl2hex.html">mnsl2hex</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>hvc2mnsl("5PB", 5, 10)
+# All values of 5PB with chroma 10
+hvc2mnsl("5PB", 1:9, 10) # note some are undefined
+plot_mnsl(hvc2mnsl("5PB", 1:9, 10))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>munsell</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

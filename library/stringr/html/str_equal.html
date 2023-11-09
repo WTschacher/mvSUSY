@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><title>R: Determine if two strings are equivalent</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_equal {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_equal'>Determine if two strings are equivalent</h2>
+
+<h3>Description</h3>
+
+<p>This uses Unicode canonicalisation rules, and optionally ignores case.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_equal(x, y, locale = "en", ignore_case = FALSE, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_equal_:_x">x</code>, <code id="str_equal_:_y">y</code></td>
+<td>
+<p>A pair of character vectors.</p>
+</td></tr>
+<tr><td><code id="str_equal_:_locale">locale</code></td>
+<td>
+<p>Locale to use for comparisons. See
+<code><a href="../../stringi/help/stri_locale_list.html">stringi::stri_locale_list()</a></code> for all possible options.
+Defaults to &quot;en&quot; (English) to ensure that default behaviour is
+consistent across platforms.</p>
+</td></tr>
+<tr><td><code id="str_equal_:_ignore_case">ignore_case</code></td>
+<td>
+<p>Ignore case when comparing strings?</p>
+</td></tr>
+<tr><td><code id="str_equal_:_...">...</code></td>
+<td>
+<p>Other options used to control collation. Passed on to
+<code><a href="../../stringi/help/stri_opts_collator.html">stringi::stri_opts_collator()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An logical vector the same length as <code>x</code>/<code>y</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringi/help/stri_compare.html">stringi::stri_cmp_equiv()</a></code> for the underlying implementation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># These two strings encode "a" with an accent in two different ways
+a1 &lt;- "\u00e1"
+a2 &lt;- "a\u0301"
+c(a1, a2)
+
+a1 == a2
+str_equal(a1, a2)
+
+# ohm and omega use different code points but should always be treated
+# as equal
+ohm &lt;- "\u2126"
+omega &lt;- "\u03A9"
+c(ohm, omega)
+
+ohm == omega
+str_equal(ohm, omega)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

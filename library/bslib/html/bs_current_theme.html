@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>R: Obtain the currently active theme at render time</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bs_current_theme {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bs_current_theme'>Obtain the currently active theme at render time</h2>
+
+<h3>Description</h3>
+
+<p>Intended for advanced use by developers to obtain the currently active theme
+<em>at render time</em> and primarily for implementing themable widgets that can't
+otherwise be themed via <code><a href="../../bslib/help/bs_dependency_defer.html">bs_dependency_defer()</a></code> .
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bs_current_theme(session = get_current_session(FALSE))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bs_current_theme_:_session">session</code></td>
+<td>
+<p>The current Shiny session (if any).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function should generally only be called at print/render time. For
+example:
+</p>
+
+<ul>
+<li><p> Inside the <code>preRenderHook</code> of <code>htmlwidgets::createWidget()</code>.
+</p>
+</li>
+<li><p> Inside of a custom <a href="../../base/html/print.html">print</a> method that generates <a href="../../htmltools/help/builder.html">htmltools::tags</a>.
+</p>
+</li>
+<li><p> Inside of a <code><a href="../../htmltools/help/tagFunction.html">htmltools::tagFunction()</a></code>
+</p>
+</li></ul>
+
+<p>Calling this function at print/render time is important because it does
+different things based on the context in which it's called:
+</p>
+
+<ul>
+<li><p> If a reactive context is active, <code>session$getCurrentTheme()</code> is called
+(which is a reactive read).
+</p>
+</li>
+<li><p> If no reactive context is active, <code>shiny::getCurrentTheme()</code> is called
+(which returns the current app's <code>theme</code>, if relevant).
+</p>
+</li>
+<li><p> If <code>shiny::getCurrentTheme()</code> comes up empty, then <code>bs_global_get()</code>
+is called, which is relevant for <code><a href="../../rmarkdown/help/html_document.html">rmarkdown::html_document()</a></code>, and
+possibly other static rendering contexts.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

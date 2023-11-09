@@ -1,0 +1,144 @@
+<!DOCTYPE html><html><head><title>R: Extract the first, last, or nth value from a vector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>nth {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='nth'>Extract the first, last, or nth value from a vector</h2>
+
+<h3>Description</h3>
+
+<p>These are useful helpers for extracting a single value from a vector. They
+are guaranteed to return a meaningful value, even when the input is shorter
+than expected. You can also provide an optional secondary vector that defines
+the ordering.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>nth(x, n, order_by = NULL, default = NULL, na_rm = FALSE)
+
+first(x, order_by = NULL, default = NULL, na_rm = FALSE)
+
+last(x, order_by = NULL, default = NULL, na_rm = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="nth_:_x">x</code></td>
+<td>
+<p>A vector</p>
+</td></tr>
+<tr><td><code id="nth_:_n">n</code></td>
+<td>
+<p>For <code>nth()</code>, a single integer specifying the position.
+Negative integers index from the end (i.e. <code>-1L</code> will return the
+last value in the vector).</p>
+</td></tr>
+<tr><td><code id="nth_:_order_by">order_by</code></td>
+<td>
+<p>An optional vector the same size as <code>x</code> used to determine the
+order.</p>
+</td></tr>
+<tr><td><code id="nth_:_default">default</code></td>
+<td>
+<p>A default value to use if the position does not exist in <code>x</code>.
+</p>
+<p>If <code>NULL</code>, the default, a missing value is used.
+</p>
+<p>If supplied, this must be a single value, which will be cast to the type of
+<code>x</code>.
+</p>
+<p>When <code>x</code> is a list , <code>default</code> is allowed to be any value. There are no
+type or size restrictions in this case.</p>
+</td></tr>
+<tr><td><code id="nth_:_na_rm">na_rm</code></td>
+<td>
+<p>Should missing values in <code>x</code> be removed before extracting the
+value?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For most vector types, <code>first(x)</code>, <code>last(x)</code>, and <code>nth(x, n)</code> work like
+<code>x[[1]]</code>, <code style="white-space: pre;">&#8288;x[[length(x)]&#8288;</code>, and <code>x[[n]]</code>, respectively. The primary exception
+is data frames, where they instead retrieve rows, i.e. <code>x[1, ]</code>, <code>x[nrow(x), ]</code>, and <code>x[n, ]</code>. This is consistent with the tidyverse/vctrs principle which
+treats data frames as a vector of rows, rather than a vector of columns.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>x</code> is a list, a single element from that list. Otherwise, a vector the
+same type as <code>x</code> with size 1.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- 1:10
+y &lt;- 10:1
+
+first(x)
+last(y)
+
+nth(x, 1)
+nth(x, 5)
+nth(x, -2)
+
+# `first()` and `last()` are often useful in `summarise()`
+df &lt;- tibble(x = x, y = y)
+df %&gt;%
+  summarise(
+    across(x:y, first, .names = "{col}_first"),
+    y_last = last(y)
+  )
+
+# Selecting a position that is out of bounds returns a default value
+nth(x, 11)
+nth(x, 0)
+
+# This out of bounds behavior also applies to empty vectors
+first(integer())
+
+# You can customize the default value with `default`
+nth(x, 11, default = -1L)
+first(integer(), default = 0L)
+
+# `order_by` provides optional ordering
+last(x)
+last(x, order_by = y)
+
+# `na_rm` removes missing values before extracting the value
+z &lt;- c(NA, NA, 1, 3, NA, 5, NA)
+first(z)
+first(z, na_rm = TRUE)
+last(z, na_rm = TRUE)
+nth(z, 3, na_rm = TRUE)
+
+# For data frames, these select entire rows
+df &lt;- tibble(a = 1:5, b = 6:10)
+first(df)
+nth(df, 4)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

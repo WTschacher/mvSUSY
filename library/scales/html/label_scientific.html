@@ -1,0 +1,118 @@
+<!DOCTYPE html><html><head><title>R: Label numbers with scientific notation (e.g. 1e05, 1.5e-02)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>label_scientific {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='label_scientific'>Label numbers with scientific notation (e.g. 1e05, 1.5e-02)</h2>
+
+<h3>Description</h3>
+
+<p>Label numbers with scientific notation (e.g. 1e05, 1.5e-02)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>label_scientific(
+  digits = 3,
+  scale = 1,
+  prefix = "",
+  suffix = "",
+  decimal.mark = ".",
+  trim = TRUE,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="label_scientific_:_digits">digits</code></td>
+<td>
+<p>Number of digits to show before exponent.</p>
+</td></tr>
+<tr><td><code id="label_scientific_:_scale">scale</code></td>
+<td>
+<p>A scaling factor: <code>x</code> will be multiplied by <code>scale</code> before
+formatting. This is useful if the underlying data is very small or very
+large.</p>
+</td></tr>
+<tr><td><code id="label_scientific_:_prefix">prefix</code>, <code id="label_scientific_:_suffix">suffix</code></td>
+<td>
+<p>Symbols to display before and after value.</p>
+</td></tr>
+<tr><td><code id="label_scientific_:_decimal.mark">decimal.mark</code></td>
+<td>
+<p>The character to be used to indicate the numeric
+decimal point.</p>
+</td></tr>
+<tr><td><code id="label_scientific_:_trim">trim</code></td>
+<td>
+<p>Logical, if <code>FALSE</code>, values are right-justified to a common
+width (see <code><a href="../../base/help/format.html">base::format()</a></code>).</p>
+</td></tr>
+<tr><td><code id="label_scientific_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../base/help/format.html">base::format()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>All <code>label_()</code> functions return a &quot;labelling&quot; function, i.e. a function that
+takes a vector <code>x</code> and returns a character vector of <code>length(x)</code> giving a
+label for each input value.
+</p>
+<p>Labelling functions are designed to be used with the <code>labels</code> argument of
+ggplot2 scales. The examples demonstrate their use with x scales, but
+they work similarly for all scales, including those that generate legends
+rather than axes.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other labels for continuous scales: 
+<code><a href="../../scales/help/label_bytes.html">label_bytes</a>()</code>,
+<code><a href="../../scales/help/label_dollar.html">label_dollar</a>()</code>,
+<code><a href="../../scales/help/label_number_auto.html">label_number_auto</a>()</code>,
+<code><a href="../../scales/help/label_number_si.html">label_number_si</a>()</code>,
+<code><a href="../../scales/help/label_ordinal.html">label_ordinal</a>()</code>,
+<code><a href="../../scales/help/label_parse.html">label_parse</a>()</code>,
+<code><a href="../../scales/help/label_percent.html">label_percent</a>()</code>,
+<code><a href="../../scales/help/label_pvalue.html">label_pvalue</a>()</code>
+</p>
+<p>Other labels for log scales: 
+<code><a href="../../scales/help/label_bytes.html">label_bytes</a>()</code>,
+<code><a href="../../scales/help/label_log.html">label_log</a>()</code>,
+<code><a href="../../scales/help/label_number_si.html">label_number_si</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>demo_continuous(c(1, 10))
+demo_continuous(c(1, 10), labels = label_scientific())
+demo_continuous(c(1, 10), labels = label_scientific(digits = 3))
+
+demo_log10(c(1, 1e9))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

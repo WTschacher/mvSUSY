@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><title>R: Whole (&quot;Integer&quot;) Numbers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>is.whole {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='is.whole'>Whole (&quot;Integer&quot;) Numbers</h2>
+
+<h3>Description</h3>
+
+<p>Check which elements of <code>x[]</code> are integer valued aka
+&ldquo;whole&rdquo; numbers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>is.whole(x)
+## Default S3 method:
+is.whole(x)
+## S3 method for class 'bigz'
+is.whole(x)
+## S3 method for class 'bigq'
+is.whole(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="is.whole_:_x">x</code></td>
+<td>
+<p>any <span class="rlang"><b>R</b></span> vector</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>logical vector of the same length as <code>x</code>, indicating where
+<code>x[.]</code> is integer valued.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/integer.html">is.integer</a>(x)</code> (<span class="pkg">base</span> package) checks for the
+<em>internal</em> mode or class; not if <code>x[i]</code> are integer valued.
+</p>
+<p>The <code><a href="../../Rmpfr/help/is.whole.html">is.whole</a>()</code> method for &quot;mpfr&quot; numbers.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'> is.integer(3) # FALSE, it's internally a double
+ is.whole(3)   # TRUE
+ ## integer valued complex numbers  (two FALSE) :
+ is.whole(c(7, 1 + 1i, 1.2, 3.4i, 7i))
+ is.whole(factorialZ(20)^(10:12)) ## "bigz" are *always* whole numbers
+ q &lt;- c(as.bigz(36)^50 / as.bigz(30)^40, 3, factorialZ(30:31), 12.25)
+ is.whole(q) # F T T T F
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

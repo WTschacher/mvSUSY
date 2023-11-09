@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><title>R: Get and set logging level</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>logLevel {later}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='logLevel'>Get and set logging level</h2>
+
+<h3>Description</h3>
+
+<p>The logging level for later can be set to report differing levels of
+information. Possible logging levels (from least to most information
+reported) are: <code>"OFF"</code>, <code>"ERROR"</code>, <code>"WARN"</code>, <code>"INFO"</code>, or
+<code>"DEBUG"</code>. The default level is <code>ERROR</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>logLevel(level = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="logLevel_:_level">level</code></td>
+<td>
+<p>The logging level. Must be one of <code>NULL</code>, <code>"OFF"</code>,
+<code>"ERROR"</code>, <code>"WARN"</code>, <code>"INFO"</code>, or <code>"DEBUG"</code>. If
+<code>NULL</code> (the default), then this function simply returns the current
+logging level.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>If <code>level=NULL</code>, then this returns the current logging level. If
+<code>level</code> is any other value, then this returns the previous logging
+level, from before it is set to the new value.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>later</em> version 1.3.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

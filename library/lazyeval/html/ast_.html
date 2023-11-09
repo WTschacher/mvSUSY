@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>R: Display a call (or expression) as a tree.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>ast_ {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='ast_'>Display a call (or expression) as a tree.</h2>
+
+<h3>Description</h3>
+
+<p><code>ast_</code> takes a quoted expression; <code>ast</code> does the quoting
+for you.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ast_(x, width = getOption("width"))
+
+ast(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="ast__:_x">x</code></td>
+<td>
+<p>Quoted call, list of calls, or expression to display.</p>
+</td></tr>
+<tr><td><code id="ast__:_width">width</code></td>
+<td>
+<p>Display width, defaults to current width as reported by
+<code>getOption("width")</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>ast(f(x, 1, g(), h(i())))
+ast(if (TRUE) 3 else 4)
+ast(function(a = 1, b = 2) {a + b + 10})
+ast(f(x)(y)(z))
+
+ast_(quote(f(x, 1, g(), h(i()))))
+ast_(quote(if (TRUE) 3 else 4))
+ast_(expression(1, 2, 3))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

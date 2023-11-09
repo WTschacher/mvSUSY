@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><title>R: Create a new transformation object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>trans_new {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='trans_new'>Create a new transformation object</h2>
+
+<h3>Description</h3>
+
+<p>A transformation encapsulates a transformation and its inverse, as well
+as the information needed to create pleasing breaks and labels. The breaks
+function is applied on the transformed range of the range, and it's
+expected that the labels function will perform some kind of inverse
+transformation on these breaks to give them labels that are meaningful on
+the original scale.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>trans_new(
+  name,
+  transform,
+  inverse,
+  breaks = extended_breaks(),
+  minor_breaks = regular_minor_breaks(),
+  format = format_format(),
+  domain = c(-Inf, Inf)
+)
+
+is.trans(x)
+
+as.trans(x, arg = deparse(substitute(x)))
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="trans_new_:_name">name</code></td>
+<td>
+<p>transformation name</p>
+</td></tr>
+<tr><td><code id="trans_new_:_transform">transform</code></td>
+<td>
+<p>function, or name of function, that performs the
+transformation</p>
+</td></tr>
+<tr><td><code id="trans_new_:_inverse">inverse</code></td>
+<td>
+<p>function, or name of function, that performs the
+inverse of the transformation</p>
+</td></tr>
+<tr><td><code id="trans_new_:_breaks">breaks</code></td>
+<td>
+<p>default breaks function for this transformation. The breaks
+function is applied to the raw data.</p>
+</td></tr>
+<tr><td><code id="trans_new_:_minor_breaks">minor_breaks</code></td>
+<td>
+<p>default minor breaks function for this transformation.</p>
+</td></tr>
+<tr><td><code id="trans_new_:_format">format</code></td>
+<td>
+<p>default format for this transformation. The format is applied
+to breaks generated to the raw data.</p>
+</td></tr>
+<tr><td><code id="trans_new_:_domain">domain</code></td>
+<td>
+<p>domain, as numeric vector of length 2, over which
+transformation is valued</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../scales/help/asn_trans.html">asn_trans</a></code>, <code><a href="../../scales/help/atanh_trans.html">atanh_trans</a></code>, <code><a href="../../scales/help/boxcox_trans.html">boxcox_trans</a></code>, <code><a href="../../scales/help/compose_trans.html">compose_trans</a></code>, <code><a href="../../scales/help/date_trans.html">date_trans</a></code>, <code><a href="../../scales/help/exp_trans.html">exp_trans</a></code>, <code><a href="../../scales/help/hms_trans.html">hms_trans</a></code>, <code><a href="../../scales/help/identity_trans.html">identity_trans</a></code>, <code><a href="../../scales/help/log10_trans.html">log10_trans</a></code>, <code><a href="../../scales/help/log1p_trans.html">log1p_trans</a></code>, <code><a href="../../scales/help/log2_trans.html">log2_trans</a></code>, <code><a href="../../scales/help/log_trans.html">log_trans</a></code>, <code><a href="../../scales/help/logit_trans.html">logit_trans</a></code>, <code><a href="../../scales/help/modulus_trans.html">modulus_trans</a></code>, <code><a href="../../scales/help/probability_trans.html">probability_trans</a></code>, <code><a href="../../scales/help/probit_trans.html">probit_trans</a></code>, <code><a href="../../scales/help/pseudo_log_trans.html">pseudo_log_trans</a></code>, <code><a href="../../scales/help/reciprocal_trans.html">reciprocal_trans</a></code>, <code><a href="../../scales/help/reverse_trans.html">reverse_trans</a></code>, <code><a href="../../scales/help/sqrt_trans.html">sqrt_trans</a></code>, <code><a href="../../scales/help/time_trans.html">time_trans</a></code>, <code><a href="../../scales/help/yj_trans.html">yj_trans</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

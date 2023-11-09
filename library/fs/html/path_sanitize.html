@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><title>R: Sanitize a filename by removing directory paths and invalid...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>path_sanitize {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='path_sanitize'>Sanitize a filename by removing directory paths and invalid characters</h2>
+
+<h3>Description</h3>
+
+<p><code>path_sanitize()</code> removes the following:
+</p>
+
+<ul>
+<li> <p><a href="https://en.wikipedia.org/wiki/C0_and_C1_control_codes">Control characters</a>
+</p>
+</li>
+<li> <p><a href="https://web.archive.org/web/20230126161942/https://kb.acronis.com/content/39790">Reserved characters</a>
+</p>
+</li>
+<li><p> Unix reserved filenames (<code>.</code> and <code>..</code>)
+</p>
+</li>
+<li><p> Trailing periods and spaces (invalid on Windows)
+</p>
+</li>
+<li><p> Windows reserved filenames (<code>CON</code>, <code>PRN</code>, <code>AUX</code>, <code>NUL</code>, <code>COM1</code>, <code>COM2</code>,
+<code>COM3</code>, COM4, <code>COM5</code>, <code>COM6</code>, <code>COM7</code>, <code>COM8</code>, <code>COM9</code>, <code>LPT1</code>, <code>LPT2</code>,
+<code>LPT3</code>, <code>LPT4</code>, <code>LPT5</code>, <code>LPT6</code>, LPT7, <code>LPT8</code>, and <code>LPT9</code>)
+The resulting string is then truncated to <a href="https://en.wikipedia.org/wiki/Comparison_of_file_systems#Limits">255 bytes in length</a>
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>path_sanitize(filename, replacement = "")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="path_sanitize_:_filename">filename</code></td>
+<td>
+<p>A character vector to be sanitized.</p>
+</td></tr>
+<tr><td><code id="path_sanitize_:_replacement">replacement</code></td>
+<td>
+<p>A character vector used to replace invalid characters.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://www.npmjs.com/package/sanitize-filename">https://www.npmjs.com/package/sanitize-filename</a>, upon which this
+function is based.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># potentially unsafe string
+str &lt;- "~/.\u0001ssh/authorized_keys"
+path_sanitize(str)
+
+path_sanitize("..")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

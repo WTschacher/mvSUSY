@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><title>R: Convert a geom to a &quot;basic&quot; geom.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>to_basic {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='to_basic'>Convert a geom to a &quot;basic&quot; geom.</h2>
+
+<h3>Description</h3>
+
+<p>This function makes it possible to convert ggplot2 geoms that
+are not included with ggplot2 itself. Users shouldn't need to use
+this function. It exists purely to allow other package authors to write
+their own conversion method(s).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>to_basic(data, prestats_data, layout, params, p, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="to_basic_:_data">data</code></td>
+<td>
+<p>the data returned by <code>ggplot2::ggplot_build()</code>.</p>
+</td></tr>
+<tr><td><code id="to_basic_:_prestats_data">prestats_data</code></td>
+<td>
+<p>the data before statistics are computed.</p>
+</td></tr>
+<tr><td><code id="to_basic_:_layout">layout</code></td>
+<td>
+<p>the panel layout.</p>
+</td></tr>
+<tr><td><code id="to_basic_:_params">params</code></td>
+<td>
+<p>parameters for the geom, statistic, and 'constant' aesthetics</p>
+</td></tr>
+<tr><td><code id="to_basic_:_p">p</code></td>
+<td>
+<p>a ggplot2 object (the conversion may depend on scales, for instance).</p>
+</td></tr>
+<tr><td><code id="to_basic_:_...">...</code></td>
+<td>
+<p>currently ignored</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

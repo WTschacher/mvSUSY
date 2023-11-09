@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><title>R: Specify attributes of selection traces</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>attrs_selected {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='attrs_selected'>Specify attributes of selection traces</h2>
+
+<h3>Description</h3>
+
+<p>By default the name of the selection trace derives from the selected values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>attrs_selected(opacity = 1, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="attrs_selected_:_opacity">opacity</code></td>
+<td>
+<p>a number between 0 and 1 specifying the overall opacity of
+the selected trace</p>
+</td></tr>
+<tr><td><code id="attrs_selected_:_...">...</code></td>
+<td>
+<p>other trace attributes attached to the selection trace.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

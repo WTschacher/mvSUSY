@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><title>R: Knitr options for an output format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knitr_options {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knitr_options'>Knitr options for an output format</h2>
+
+<h3>Description</h3>
+
+<p>Define the knitr options for an R Markdown output format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knitr_options(
+  opts_knit = NULL,
+  opts_chunk = NULL,
+  knit_hooks = NULL,
+  opts_hooks = NULL,
+  opts_template = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="knitr_options_:_opts_knit">opts_knit</code></td>
+<td>
+<p>List of package level knitr options (see
+<code><a href="../../knitr/help/opts_knit.html">opts_knit</a></code>)</p>
+</td></tr>
+<tr><td><code id="knitr_options_:_opts_chunk">opts_chunk</code></td>
+<td>
+<p>List of chunk level knitr options (see
+<code><a href="../../knitr/help/opts_chunk.html">opts_chunk</a></code>)</p>
+</td></tr>
+<tr><td><code id="knitr_options_:_knit_hooks">knit_hooks</code></td>
+<td>
+<p>List of hooks for R code chunks, inline R code, and output
+(see <code><a href="../../knitr/help/knit_hooks.html">knit_hooks</a></code>)</p>
+</td></tr>
+<tr><td><code id="knitr_options_:_opts_hooks">opts_hooks</code></td>
+<td>
+<p>List of hooks for code chunk options
+(see <code><a href="../../knitr/help/opts_hooks.html">opts_hooks</a></code>)</p>
+</td></tr>
+<tr><td><code id="knitr_options_:_opts_template">opts_template</code></td>
+<td>
+<p>List of templates for chunk level knitr options (see
+<code><a href="../../knitr/help/opts_template.html">opts_template</a></code>)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An list that can be passed as the <code>knitr</code> argument
+of the <code><a href="../../rmarkdown/help/output_format.html">output_format</a></code> function.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../rmarkdown/help/output_format.html">output_format</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

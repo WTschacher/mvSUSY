@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>R: Main interface to plotly</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>plotly {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='plotly'>Main interface to plotly</h2>
+
+<h3>Description</h3>
+
+<p>This function is now deprecated. It used to provide a way to store plotly
+account credentials, but that can now be done with environment variables.
+For more details and examples, see <a href="https://plotly.com/r/getting-started/">https://plotly.com/r/getting-started/</a>.
+</p>
+<p>If you're here looking for an intro/overview of the package, see the
+<a href="https://github.com/plotly/plotly.R/#getting-started">readme</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>plotly(username, key)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="plotly_:_username">username</code></td>
+<td>
+<p>plotly username</p>
+</td></tr>
+<tr><td><code id="plotly_:_key">key</code></td>
+<td>
+<p>plotly API key</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../plotly/help/ggplotly.html">ggplotly()</a></code>, <code><a href="../../plotly/help/plot_ly.html">plot_ly()</a></code>, <code><a href="../../plotly/help/signup.html">signup()</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

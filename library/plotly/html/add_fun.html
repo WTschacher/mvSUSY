@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><title>R: Apply function to plot, without modifying data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>add_fun {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='add_fun'>Apply function to plot, without modifying data</h2>
+
+<h3>Description</h3>
+
+<p>Useful when you need two or more layers that apply a summary statistic
+to the original data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>add_fun(p, fun, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="add_fun_:_p">p</code></td>
+<td>
+<p>a plotly object.</p>
+</td></tr>
+<tr><td><code id="add_fun_:_fun">fun</code></td>
+<td>
+<p>a function. Should take a plotly object as input and return a
+modified plotly object.</p>
+</td></tr>
+<tr><td><code id="add_fun_:_...">...</code></td>
+<td>
+<p>arguments passed to <code>fun</code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

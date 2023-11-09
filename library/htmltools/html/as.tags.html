@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><title>R: Convert a value to tags</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>as.tags {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='as.tags'>Convert a value to tags</h2>
+
+<h3>Description</h3>
+
+<p>An S3 method for converting arbitrary values to a value that can be used as
+the child of a tag or <code>tagList</code>. The default implementation simply calls
+<code><a href="../../base/html/character.html">as.character()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>as.tags(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="as.tags_:_x">x</code></td>
+<td>
+<p>Object to be converted.</p>
+</td></tr>
+<tr><td><code id="as.tags_:_...">...</code></td>
+<td>
+<p>Any additional parameters.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><title>R: Generate a JWT signature given credentials.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>jwt_signature {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='jwt_signature'>Generate a JWT signature given credentials.</h2>
+
+<h3>Description</h3>
+
+<p>As described in
+<a href="https://developers.google.com/identity/protocols/oauth2/service-account">https://developers.google.com/identity/protocols/oauth2/service-account</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>jwt_signature(
+  credentials,
+  scope,
+  aud,
+  sub = NULL,
+  iat = as.integer(Sys.time()),
+  exp = iat + duration,
+  duration = 60L * 60L
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="jwt_signature_:_credentials">credentials</code></td>
+<td>
+<p>Parsed contents of the credentials file.</p>
+</td></tr>
+<tr><td><code id="jwt_signature_:_scope">scope</code></td>
+<td>
+<p>A space-delimited list of the permissions that the application
+requests.</p>
+</td></tr>
+<tr><td><code id="jwt_signature_:_aud">aud</code></td>
+<td>
+<p>A descriptor of the intended target of the assertion. This
+typically comes from the service auth file.</p>
+</td></tr>
+<tr><td><code id="jwt_signature_:_sub">sub</code></td>
+<td>
+<p>The email address of the user for which the application is
+requesting delegated access.</p>
+</td></tr>
+<tr><td><code id="jwt_signature_:_iat">iat</code></td>
+<td>
+<p>The time the assertion was issued, measured in seconds since
+00:00:00 UTC, January 1, 1970.</p>
+</td></tr>
+<tr><td><code id="jwt_signature_:_exp">exp</code></td>
+<td>
+<p>The expiration time of the assertion, measured in seconds since
+00:00:00 UTC, January 1, 1970. This value has a maximum of 1 hour from
+the issued time.</p>
+</td></tr>
+<tr><td><code id="jwt_signature_:_duration">duration</code></td>
+<td>
+<p>Duration of token, in seconds.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+cred &lt;- jsonlite::fromJSON("~/Desktop/httrtest-45693cbfac92.json")
+jwt_signature(cred, "https://www.googleapis.com/auth/userinfo.profile")
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

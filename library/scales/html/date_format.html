@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>R: Superseded interface to 'label_date()'/'label_time()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>date_format {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='date_format'>Superseded interface to <code>label_date()</code>/<code>label_time()</code></h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>These functions are kept for backward compatibility; you should switch
+to [label_date()/<code><a href="../../scales/help/label_time.html">label_time()</a></code> for new code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>date_format(format = "%Y-%m-%d", tz = "UTC", locale = NULL)
+
+time_format(format = "%H:%M:%S", tz = "UTC", locale = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="date_format_:_format">format</code></td>
+<td>
+<p>For <code>date_format()</code> and <code>time_format()</code> a date/time format
+string using standard POSIX specification.  See <code><a href="../../base/html/strptime.html">strptime()</a></code> for details.
+</p>
+<p>For <code>date_short()</code> a character vector of length 4 giving the format
+components to use for year, month, day, and hour respectively.</p>
+</td></tr>
+<tr><td><code id="date_format_:_tz">tz</code></td>
+<td>
+<p>a time zone name, see <code><a href="../../base/html/timezones.html">timezones()</a></code>. Defaults
+to UTC</p>
+</td></tr>
+<tr><td><code id="date_format_:_locale">locale</code></td>
+<td>
+<p>Locale to use when for day and month names. The default
+uses the current locale. Setting this argument requires stringi, and you
+can see a complete list of supported locales with
+<code><a href="../../stringi/help/stri_locale_list.html">stringi::stri_locale_list()</a></code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

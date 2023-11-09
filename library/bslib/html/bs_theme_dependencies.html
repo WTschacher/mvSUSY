@@ -1,0 +1,125 @@
+<!DOCTYPE html><html><head><title>R: Compile Bootstrap Sass with (optional) theming</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>bs_theme_dependencies {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='bs_theme_dependencies'>Compile Bootstrap Sass with (optional) theming</h2>
+
+<h3>Description</h3>
+
+<p><code>bs_theme_dependencies()</code> compiles Bootstrap Sass into CSS and returns it,
+along with other HTML dependencies, as a list of
+<code><a href="../../htmltools/help/htmlDependency.html">htmltools::htmlDependency()</a></code>s. Most users won't need to call this function
+directly as Shiny &amp; R Markdown will perform this compilation automatically
+when handed a <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code>. If you're here looking to create a themeable
+component, see <code><a href="../../bslib/help/bs_dependency.html">bs_dependency()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>bs_theme_dependencies(
+  theme,
+  sass_options = sass::sass_options_get(output_style = "compressed"),
+  cache = sass::sass_cache_get(),
+  jquery = jquerylib::jquery_core(3),
+  precompiled = get_precompiled_option("bslib.precompiled", default = TRUE)
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="bs_theme_dependencies_:_theme">theme</code></td>
+<td>
+<p>a <code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="bs_theme_dependencies_:_sass_options">sass_options</code></td>
+<td>
+<p>a <code><a href="../../sass/help/sass_options.html">sass::sass_options()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="bs_theme_dependencies_:_cache">cache</code></td>
+<td>
+<p>This can be a directory to use for the cache, a <a href="../../sass/help/FileCache.html">FileCache</a>
+object created by <code><a href="../../sass/help/sass_file_cache.html">sass_file_cache()</a></code>, or <code>FALSE</code> or <code>NULL</code> for no caching.</p>
+</td></tr>
+<tr><td><code id="bs_theme_dependencies_:_jquery">jquery</code></td>
+<td>
+<p>a <code><a href="../../jquerylib/help/jquery_core.html">jquerylib::jquery_core()</a></code> object.</p>
+</td></tr>
+<tr><td><code id="bs_theme_dependencies_:_precompiled">precompiled</code></td>
+<td>
+<p>Before compiling the theme object, first look for a
+precompiled CSS file for the <code><a href="../../bslib/help/theme_version.html">theme_version()</a></code>.  If <code>precompiled = TRUE</code>
+and a precompiled CSS file exists for the theme object, it will be fetched
+immediately and not compiled. At the moment, we only provide precompiled
+CSS for &quot;stock&quot; builds of Bootstrap (i.e., no theming additions, bootswatch
+themes, or non-default <code>sass_options</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a list of HTML dependencies containing Bootstrap CSS, Bootstrap
+JavaScript, and <code>jquery</code>. This list may contain additional HTML
+dependencies if bundled with the <code>theme</code>.
+</p>
+
+
+<h3>Sass caching and precompilation</h3>
+
+<p>If Shiny Developer Mode is enabled (by setting <code>options(shiny.devmode = TRUE)</code> or calling <code>shiny::devmode(TRUE)</code>), both <span class="pkg">sass</span> caching and <span class="pkg">bslib</span>
+precompilation are disabled by default; that is, a call to
+<code>bs_theme_dependencies(theme)</code> expands to <code>bs_theme_dependencies(theme, cache = F, precompiled = F)</code>). This is useful for local development as
+enabling caching/precompilation may produce incorrect results if local
+changes are made to bslib's source files.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/bs_theme.html">bs_theme()</a></code>, <code><a href="../../bslib/help/bs_dependency.html">bs_dependency()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+# Function to preview the styling a (primary) Bootstrap button
+library(htmltools)
+button &lt;- tags$a(class = "btn btn-primary", href = "#", role = "button", "Hello")
+preview_button &lt;- function(theme) {
+  if (interactive()) {
+    browsable(tags$body(bs_theme_dependencies(theme), button))
+  }
+}
+
+# Latest Bootstrap
+preview_button(bs_theme())
+# Bootstrap 3
+preview_button(bs_theme(3))
+# Bootswatch 4 minty theme
+preview_button(bs_theme(4, bootswatch = "minty"))
+# Bootswatch 4 sketchy theme
+preview_button(bs_theme(4, bootswatch = "sketchy"))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

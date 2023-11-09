@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>R: Superseded interface to 'label_ordinal()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>ordinal_format {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='ordinal_format'>Superseded interface to <code>label_ordinal()</code></h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+</p>
+<p>These functions are kept for backward compatibility; you should switch
+to <code><a href="../../scales/help/label_ordinal.html">label_ordinal()</a></code> for new code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ordinal_format(
+  prefix = "",
+  suffix = "",
+  big.mark = " ",
+  rules = ordinal_english(),
+  ...
+)
+
+ordinal(
+  x,
+  prefix = "",
+  suffix = "",
+  big.mark = " ",
+  rules = ordinal_english(),
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="ordinal_format_:_prefix">prefix</code>, <code id="ordinal_format_:_suffix">suffix</code></td>
+<td>
+<p>Symbols to display before and after value.</p>
+</td></tr>
+<tr><td><code id="ordinal_format_:_big.mark">big.mark</code></td>
+<td>
+<p>Character used between every 3 digits to separate thousands.</p>
+</td></tr>
+<tr><td><code id="ordinal_format_:_rules">rules</code></td>
+<td>
+<p>Named list of regular expressions, matched in order.
+Name gives suffix, and value specifies which numbers to match.</p>
+</td></tr>
+<tr><td><code id="ordinal_format_:_...">...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../base/help/format.html">base::format()</a></code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

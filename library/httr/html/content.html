@@ -1,0 +1,156 @@
+<!DOCTYPE html><html><head><title>R: Extract content from a request.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>content {httr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='content'>Extract content from a request.</h2>
+
+<h3>Description</h3>
+
+<p>There are currently three ways to retrieve the contents of a request:
+as a raw object (<code>as = "raw"</code>), as a character vector,
+(<code>as = "text"</code>), and as parsed into an R object where possible,
+(<code>as = "parsed"</code>). If <code>as</code> is not specified, <code>content</code>
+does its best to guess which output is most appropriate.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>content(x, as = NULL, type = NULL, encoding = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="content_:_x">x</code></td>
+<td>
+<p>request object</p>
+</td></tr>
+<tr><td><code id="content_:_as">as</code></td>
+<td>
+<p>desired type of output: <code>raw</code>, <code>text</code> or
+<code>parsed</code>. <code>content</code> attempts to automatically figure out
+which one is most appropriate, based on the content-type.</p>
+</td></tr>
+<tr><td><code id="content_:_type">type</code></td>
+<td>
+<p>MIME type (aka internet media type) used to override
+the content type returned by the server. See
+<a href="https://en.wikipedia.org/wiki/Internet_media_type">https://en.wikipedia.org/wiki/Internet_media_type</a> for a list of
+common types.</p>
+</td></tr>
+<tr><td><code id="content_:_encoding">encoding</code></td>
+<td>
+<p>For text, overrides the charset or the Latin1 (ISO-8859-1)
+default, if you know that the server is returning the incorrect encoding
+as the charset in the content-type. Use for text and parsed outputs.</p>
+</td></tr>
+<tr><td><code id="content_:_...">...</code></td>
+<td>
+<p>Other parameters passed on to the parsing functions, if
+<code>as = "parsed"</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>content</code> currently knows about the following mime types:
+</p>
+
+<ul>
+<li> <p><code>text/html</code>: <code><a href="../../xml2/help/read_xml.html">xml2::read_html()</a></code>
+</p>
+</li>
+<li> <p><code>text/xml</code>: <code><a href="../../xml2/help/read_xml.html">xml2::read_xml()</a></code>
+</p>
+</li>
+<li> <p><code>text/csv</code>: <code><a href="../../readr/help/read_delim.html">readr::read_csv()</a></code>
+</p>
+</li>
+<li> <p><code>text/tab-separated-values</code>: <code><a href="../../readr/help/read_delim.html">readr::read_tsv()</a></code>
+</p>
+</li>
+<li> <p><code>application/json</code>: <code><a href="../../jsonlite/help/fromJSON.html">jsonlite::fromJSON()</a></code>
+</p>
+</li>
+<li> <p><code>application/x-www-form-urlencoded</code>: <code>parse_query</code>
+</p>
+</li>
+<li> <p><code>image/jpeg</code>: <code><a href="../../jpeg/help/readJPEG.html">jpeg::readJPEG()</a></code>
+</p>
+</li>
+<li> <p><code>image/png</code>: <code><a href="../../png/help/readPNG.html">png::readPNG()</a></code>
+</p>
+</li></ul>
+
+<p><code>as = "parsed"</code> is provided as a convenience only: if the type you
+are trying to parse is not available, use <code>as = "text"</code> and parse
+yourself.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For &quot;raw&quot;, a raw vector.
+</p>
+<p>For &quot;text&quot;, a character vector of length 1. The character vector is always
+re-encoded to UTF-8. If this encoding fails (usually because the page
+declares an incorrect encoding), <code>content()</code> will return <code>NA</code>.
+</p>
+<p>For &quot;auto&quot;, a parsed R object.
+</p>
+
+
+<h3>WARNING</h3>
+
+<p>When using <code>content()</code> in a package, DO NOT use on <code>as = "parsed"</code>.
+Instead, check the mime-type is what you expect, and then parse yourself.
+This is safer, as you will fail informatively if the API changes, and
+you will protect yourself against changes to httr.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other response methods: 
+<code><a href="../../httr/help/http_error.html">http_error</a>()</code>,
+<code><a href="../../httr/help/http_status.html">http_status</a>()</code>,
+<code><a href="../../httr/help/response.html">response</a>()</code>,
+<code><a href="../../httr/help/stop_for_status.html">stop_for_status</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+r &lt;- POST("http://httpbin.org/post", body = list(a = 1, b = 2))
+content(r) # automatically parses JSON
+cat(content(r, "text"), "\n") # text content
+content(r, "raw") # raw bytes from server
+
+rlogo &lt;- content(GET("https://httpbin.org/image/png"))
+plot(0:1, 0:1, type = "n")
+rasterImage(rlogo, 0, 0, 1, 1)
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>httr</em> version 1.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><title>R: Sample n rows from a table</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>sample_n {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='sample_n'>Sample n rows from a table</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded"><img src="../help/figures/lifecycle-superseded.svg" alt='[Superseded]' /></a>
+<code>sample_n()</code> and <code>sample_frac()</code> have been superseded in favour of
+<code><a href="../../dplyr/help/slice_sample.html">slice_sample()</a></code>. While they will not be deprecated in the near future,
+retirement means that we will only perform critical bug fixes, so we recommend
+moving to the newer alternative.
+</p>
+<p>These functions were superseded because we realised it was more convenient to
+have two mutually exclusive arguments to one function, rather than two
+separate functions. This also made it to clean up a few other smaller
+design issues with <code>sample_n()</code>/<code>sample_frac</code>:
+</p>
+
+<ul>
+<li><p> The connection to <code>slice()</code> was not obvious.
+</p>
+</li>
+<li><p> The name of the first argument, <code>tbl</code>, is inconsistent with other
+single table verbs which use <code>.data</code>.
+</p>
+</li>
+<li><p> The <code>size</code> argument uses tidy evaluation, which is surprising and
+undocumented.
+</p>
+</li>
+<li><p> It was easier to remove the deprecated <code>.env</code> argument.
+</p>
+</li>
+<li> <p><code>...</code> was in a suboptimal position.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>sample_n(tbl, size, replace = FALSE, weight = NULL, .env = NULL, ...)
+
+sample_frac(tbl, size = 1, replace = FALSE, weight = NULL, .env = NULL, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="sample_n_:_tbl">tbl</code></td>
+<td>
+<p>A data.frame.</p>
+</td></tr>
+<tr><td><code id="sample_n_:_size">size</code></td>
+<td>
+<p>&lt;<code><a href="../../dplyr/help/dplyr_tidy_select.html">tidy-select</a></code>&gt;
+For <code>sample_n()</code>, the number of rows to select.
+For <code>sample_frac()</code>, the fraction of rows to select.
+If <code>tbl</code> is grouped, <code>size</code> applies to each group.</p>
+</td></tr>
+<tr><td><code id="sample_n_:_replace">replace</code></td>
+<td>
+<p>Sample with or without replacement?</p>
+</td></tr>
+<tr><td><code id="sample_n_:_weight">weight</code></td>
+<td>
+<p>&lt;<code><a href="../../dplyr/help/dplyr_tidy_select.html">tidy-select</a></code>&gt; Sampling weights.
+This must evaluate to a vector of non-negative numbers the same length as
+the input. Weights are automatically standardised to sum to 1.</p>
+</td></tr>
+<tr><td><code id="sample_n_:_.env">.env</code></td>
+<td>
+<p>DEPRECATED.</p>
+</td></tr>
+<tr><td><code id="sample_n_:_...">...</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(x = 1:5, w = c(0.1, 0.1, 0.1, 2, 2))
+
+# sample_n() -&gt; slice_sample() ----------------------------------------------
+# Was:
+sample_n(df, 3)
+sample_n(df, 10, replace = TRUE)
+sample_n(df, 3, weight = w)
+
+# Now:
+slice_sample(df, n = 3)
+slice_sample(df, n = 10, replace = TRUE)
+slice_sample(df, n = 3, weight_by = w)
+
+# Note that sample_n() would error if n was bigger than the group size
+# slice_sample() will just use the available rows for consistency with
+# the other slice helpers like slice_head()
+try(sample_n(df, 10))
+slice_sample(df, n = 10)
+
+# sample_frac() -&gt; slice_sample() -------------------------------------------
+# Was:
+sample_frac(df, 0.25)
+sample_frac(df, 2, replace = TRUE)
+
+# Now:
+slice_sample(df, prop = 0.25)
+slice_sample(df, prop = 2, replace = TRUE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

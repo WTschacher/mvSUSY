@@ -1,0 +1,165 @@
+<!DOCTYPE html><html><head><title>R: Modify colour space channels in hex-encoded colour strings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>manip_channel {farver}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='manip_channel'>Modify colour space channels in hex-encoded colour strings</h2>
+
+<h3>Description</h3>
+
+<p>This set of functions allows you to modify colours as given by strings,
+whithout first decoding them. For large vectors of colour values this should
+provide a considerable speedup.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>set_channel(
+  colour,
+  channel,
+  value,
+  space = "rgb",
+  white = "D65",
+  na_value = NA
+)
+
+add_to_channel(
+  colour,
+  channel,
+  value,
+  space = "rgb",
+  white = "D65",
+  na_value = NA
+)
+
+multiply_channel(
+  colour,
+  channel,
+  value,
+  space = "rgb",
+  white = "D65",
+  na_value = NA
+)
+
+raise_channel(
+  colour,
+  channel,
+  value,
+  space = "rgb",
+  white = "D65",
+  na_value = NA
+)
+
+cap_channel(
+  colour,
+  channel,
+  value,
+  space = "rgb",
+  white = "D65",
+  na_value = NA
+)
+
+get_channel(colour, channel, space = "rgb", white = "D65", na_value = NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="manip_channel_:_colour">colour</code></td>
+<td>
+<p>A character string giving colours, either as hexadecimal
+strings or accepted colour names.</p>
+</td></tr>
+<tr><td><code id="manip_channel_:_channel">channel</code></td>
+<td>
+<p>The channel to modify or extract as a single letter, or
+<code>'alpha'</code> for the alpha channel.</p>
+</td></tr>
+<tr><td><code id="manip_channel_:_value">value</code></td>
+<td>
+<p>The value to modify with</p>
+</td></tr>
+<tr><td><code id="manip_channel_:_space">space</code></td>
+<td>
+<p>The colour space the channel pertains to. Allowed values are:
+<code>"cmy"</code>, <code>"cmyk"</code>, <code>"hsl"</code>, <code>"hsb"</code>, <code>"hsv"</code>, <code>"lab"</code> (CIE L*ab), <code>"hunterlab"</code>
+(Hunter Lab), <code>"oklab"</code> , <code>"lch"</code> (CIE Lch(ab) / polarLAB), <code>"luv"</code>,
+<code>"rgb"</code> (sRGB), <code>"xyz"</code>, <code>"yxy"</code> (CIE xyY), <code>"hcl"</code> (CIE Lch(uv) / polarLuv),
+or <code>"oklch"</code> (Polar form of oklab)</p>
+</td></tr>
+<tr><td><code id="manip_channel_:_white">white</code></td>
+<td>
+<p>The white reference of the channel colour space. Will only have
+an effect for relative colour spaces such as Lab and luv. Any value accepted
+by <code><a href="../../farver/help/as_white_ref.html">as_white_ref()</a></code> allowed.</p>
+</td></tr>
+<tr><td><code id="manip_channel_:_na_value">na_value</code></td>
+<td>
+<p>A valid colour string or <code>NA</code> to use when <code>colour</code> contains
+<code>NA</code> elements. The general approach in farver is to carry <code>NA</code> values over,
+but if you want to mimick <code><a href="../../grDevices/html/col2rgb.html">col2rgb()</a></code> you should set
+<code>na_value = 'transparent'</code>, i.e. treat <code>NA</code> as transparent white.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of the same length as <code>colour</code> (or a numeric
+vector in the case of <code>get_channel()</code>)
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other encoding and decoding functions: 
+<code><a href="../../farver/help/decode_colour.html">decode_colour</a>()</code>,
+<code><a href="../../farver/help/encode_colour.html">encode_colour</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>spectrum &lt;- rainbow(10)
+
+# set a specific channel
+set_channel(spectrum, 'r', c(10, 50))
+set_channel(spectrum, 'l', 50, space = 'lab')
+set_channel(spectrum, 'alpha', c(0.5, 1))
+
+# Add value to channel
+add_to_channel(spectrum, 'r', c(10, 50))
+add_to_channel(spectrum, 'l', 50, space = 'lab')
+
+# Multiply a channel
+multiply_channel(spectrum, 'r', c(10, 50))
+multiply_channel(spectrum, 'l', 50, space = 'lab')
+
+# set a lower bound on a channel
+raise_channel(spectrum, 'r', c(10, 50))
+raise_channel(spectrum, 'l', 20, space = 'lab')
+
+# set an upper bound on a channel
+cap_channel(spectrum, 'r', c(100, 50))
+cap_channel(spectrum, 'l', 20, space = 'lab')
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>farver</em> version 2.1.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html><html><head><title>R: An emulation of flush.console() in evaluate()</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>flush_console {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='flush_console'>An emulation of flush.console() in evaluate()</h2>
+
+<h3>Description</h3>
+
+<p>When <code><a href="../../evaluate/help/evaluate.html">evaluate()</a></code> is evaluating code, the text output is diverted into
+an internal connection, and there is no way to flush that connection. This
+function provides a way to &quot;flush&quot; the connection so that any text output can
+be immediately written out, and more importantly, the <code>text</code> handler
+(specified in the <code>output_handler</code> argument of <code>evaluate()</code>) will
+be called, which makes it possible for users to know it when the code
+produces text output using the handler.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>flush_console()
+</code></pre>
+
+
+<h3>Note</h3>
+
+<p>This function is supposed to be called inside <code>evaluate()</code> (e.g.
+either a direct <code>evaluate()</code> call or in <span class="pkg">knitr</span> code chunks).
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.22 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

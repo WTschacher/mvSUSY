@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><title>R: Switch location of matches to location of non-matches</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>invert_match {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='invert_match'>Switch location of matches to location of non-matches</h2>
+
+<h3>Description</h3>
+
+<p>Invert a matrix of match locations to match the opposite of what was
+previously matched.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>invert_match(loc)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="invert_match_:_loc">loc</code></td>
+<td>
+<p>matrix of match locations, as from <code><a href="../../stringr/help/str_locate_all.html">str_locate_all()</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>numeric match giving locations of non-matches
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>numbers &lt;- "1 and 2 and 4 and 456"
+num_loc &lt;- str_locate_all(numbers, "[0-9]+")[[1]]
+str_sub(numbers, num_loc[, "start"], num_loc[, "end"])
+
+text_loc &lt;- invert_match(num_loc)
+str_sub(numbers, text_loc[, "start"], text_loc[, "end"])
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

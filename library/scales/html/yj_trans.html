@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Yeo-Johnson transformation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>yj_trans {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='yj_trans'>Yeo-Johnson transformation</h2>
+
+<h3>Description</h3>
+
+<p>The Yeo-Johnson transformation is a flexible transformation that is similiar
+to Box-Cox, <code><a href="../../scales/help/boxcox_trans.html">boxcox_trans()</a></code>, but does not require input values to be greater
+than zero.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>yj_trans(p)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="yj_trans_:_p">p</code></td>
+<td>
+<p>Transformation exponent, <code class="reqn">\lambda</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The transformation takes one of four forms depending on the values of <code>y</code> and <code class="reqn">\lambda</code>.
+</p>
+
+<ul>
+<li> <p><code class="reqn">y \ge 0</code> and <code class="reqn">\lambda \neq 0</code> :
+<code class="reqn">y^{(\lambda)} = \frac{(y + 1)^\lambda - 1}{\lambda}</code>
+</p>
+</li>
+<li> <p><code class="reqn">y \ge 0</code> and <code class="reqn">\lambda = 0</code>:
+<code class="reqn">y^{(\lambda)} = \ln(y + 1)</code>
+</p>
+</li>
+<li> <p><code class="reqn">y &lt; 0</code> and <code class="reqn">\lambda \neq 2</code>:
+<code class="reqn">y^{(\lambda)} = -\frac{(-y + 1)^{(2 - \lambda)} - 1}{2 - \lambda}</code>
+</p>
+</li>
+<li> <p><code class="reqn">y &lt; 0</code> and <code class="reqn">\lambda = 2</code>:
+<code class="reqn">y^{(\lambda)} = -\ln(-y + 1)</code>
+</p>
+</li></ul>
+
+
+
+<h3>References</h3>
+
+<p>Yeo, I., &amp; Johnson, R. (2000).
+A New Family of Power Transformations to Improve Normality or Symmetry. Biometrika, 87(4), 954-959.
+<a href="http://www.jstor.org/stable/2673623">http://www.jstor.org/stable/2673623</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>plot(yj_trans(-1), xlim = c(-10, 10))
+plot(yj_trans(0), xlim = c(-10, 10))
+plot(yj_trans(1), xlim = c(-10, 10))
+plot(yj_trans(2), xlim = c(-10, 10))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

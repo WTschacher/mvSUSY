@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><title>R: Encode/decode data into/from base64 encoding.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>base64_encode {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='base64_encode'>Encode/decode data into/from base64 encoding.</h2>
+
+<h3>Description</h3>
+
+<p>The function <code>base64_encode()</code> encodes a file or a raw vector into the
+base64 encoding. The function <code>base64_decode()</code> decodes data from the
+base64 encoding.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>base64_encode(x)
+
+base64_decode(x, from = NA)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="base64_encode_:_x">x</code></td>
+<td>
+<p>For <code>base64_encode()</code>, a raw vector. If not raw, it is assumed
+to be a file or a connection to be read via <code>readBin()</code>. For
+<code>base64_decode()</code>, a string.</p>
+</td></tr>
+<tr><td><code id="base64_encode_:_from">from</code></td>
+<td>
+<p>If provided (and <code>x</code> is not provided), a connection or file
+to be read via <code>readChar()</code>, and the result will be passed to the
+argument <code>x</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>base64_encode()</code> returns a character string.
+<code>base64_decode()</code> returns a raw vector.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>xfun::base64_encode(as.raw(1:10))
+logo = xfun:::R_logo()
+xfun::base64_encode(logo)
+xfun::base64_decode("AQIDBAUGBwgJCg==")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

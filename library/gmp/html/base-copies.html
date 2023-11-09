@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>R: Base Functions in 'gmp'-ified Versions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>gmp-ifiworkarounds {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='gmp-ifiworkarounds'>Base Functions in 'gmp'-ified Versions</h2>
+
+<h3>Description</h3>
+
+<p>Functions from <span class="pkg">base</span> etc which need a <em>copy</em> in the
+<span class="pkg">gmp</span> namespace so they correctly dispatch.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>outer(X, Y, FUN = "*", ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="gmp-ifiworkarounds_:_X">X</code>, <code id="gmp-ifiworkarounds_:_Y">Y</code>, <code id="gmp-ifiworkarounds_:_FUN">FUN</code>, <code id="gmp-ifiworkarounds_:_...">...</code></td>
+<td>
+<p>See <span class="pkg">base</span> package help: <code><a href="../../base/help/outer.html">outer</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/help/outer.html">outer</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>twop &lt;- as.bigz(2)^(99:103)
+(mtw &lt;- outer(twop, 0:2))
+stopifnot(
+   identical(dim(mtw), as.integer(c(5,3)))
+ ,
+   mtw[,1] == 0
+ ,
+   identical(as.vector(mtw[,2]), twop)
+)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

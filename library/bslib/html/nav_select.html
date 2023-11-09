@@ -1,0 +1,143 @@
+<!DOCTYPE html><html><head><title>R: Dynamically update nav containers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>nav_select {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='nav_select'>Dynamically update nav containers</h2>
+
+<h3>Description</h3>
+
+<p>Functions for dynamically updating nav containers (e.g., select, insert, and
+remove nav items). These functions require an <code>id</code> on the nav container to be
+specified and must be called within an active Shiny session.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>nav_select(id, selected = NULL, session = get_current_session())
+
+nav_insert(
+  id,
+  nav,
+  target = NULL,
+  position = c("after", "before"),
+  select = FALSE,
+  session = get_current_session()
+)
+
+nav_remove(id, target, session = get_current_session())
+
+nav_show(id, target, select = FALSE, session = get_current_session())
+
+nav_hide(id, target, session = get_current_session())
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="nav_select_:_id">id</code></td>
+<td>
+<p>a character string used to identify the nav container.</p>
+</td></tr>
+<tr><td><code id="nav_select_:_selected">selected</code></td>
+<td>
+<p>a character string used to identify a particular
+<code><a href="../../bslib/help/nav_panel.html">nav_panel()</a></code> item.</p>
+</td></tr>
+<tr><td><code id="nav_select_:_session">session</code></td>
+<td>
+<p>a shiny session object (the default should almost always be used).</p>
+</td></tr>
+<tr><td><code id="nav_select_:_nav">nav</code></td>
+<td>
+<p>a <code><a href="../../bslib/help/nav_panel.html">nav_panel()</a></code> item.</p>
+</td></tr>
+<tr><td><code id="nav_select_:_target">target</code></td>
+<td>
+<p>The <code>value</code> of an existing <code>nav_panel()</code> item, next to which tab will be added. If removing: the <code>value</code> of the <code>nav_panel()</code> item that you want to remove.</p>
+</td></tr>
+<tr><td><code id="nav_select_:_position">position</code></td>
+<td>
+<p>Should <code>nav</code> be added before or after the target?</p>
+</td></tr>
+<tr><td><code id="nav_select_:_select">select</code></td>
+<td>
+<p>Should <code>nav</code> be selected upon being inserted?</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../bslib/help/nav_panel.html">nav_panel()</a></code>, <code><a href="../../bslib/help/navset_tab.html">navset_tab()</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+can_browse &lt;- function() interactive() &amp;&amp; require("shiny")
+
+# Selecting a tab
+if (can_browse()) {
+  shinyApp(
+    page_fluid(
+      radioButtons("item", "Choose", c("A", "B")),
+      navset_hidden(
+        id = "container",
+        nav_panel_hidden("A", "a"),
+        nav_panel_hidden("B", "b")
+      )
+    ),
+    function(input, output) {
+      observe(nav_select("container", input$item))
+    }
+  )
+}
+
+# Inserting and removing
+if (can_browse()) {
+  ui &lt;- page_fluid(
+    actionButton("add", "Add 'Dynamic' tab"),
+    actionButton("remove", "Remove 'Foo' tab"),
+    navset_tab(
+      id = "tabs",
+      nav_panel("Hello", "hello"),
+      nav_panel("Foo", "foo"),
+      nav_panel("Bar", "bar tab")
+    )
+  )
+  server &lt;- function(input, output) {
+    observeEvent(input$add, {
+      nav_insert(
+        "tabs", target = "Bar", select = TRUE,
+        nav_panel("Dynamic", "Dynamically added content")
+      )
+    })
+    observeEvent(input$remove, {
+      nav_remove("tabs", target = "Foo")
+    })
+  }
+  shinyApp(ui, server)
+}
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.5.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

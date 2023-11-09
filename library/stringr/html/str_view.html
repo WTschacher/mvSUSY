@@ -1,0 +1,134 @@
+<!DOCTYPE html><html><head><title>R: View strings and matches</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_view {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_view'>View strings and matches</h2>
+
+<h3>Description</h3>
+
+<p><code>str_view()</code> is used to print the underlying representation of a string and
+to see how a <code>pattern</code> matches.
+</p>
+<p>Matches are surrounded by <code style="white-space: pre;">&#8288;&lt;&gt;&#8288;</code> and unusual whitespace (i.e. all whitespace
+apart from <code>" "</code> and <code>"\n"</code>) are surrounded by <code>{}</code> and escaped. Where
+possible, matches and unusual whitespace are coloured blue and <code>NA</code>s red.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_view(
+  string,
+  pattern = NULL,
+  match = TRUE,
+  html = FALSE,
+  use_escapes = FALSE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_view_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_view_:_pattern">pattern</code></td>
+<td>
+<p>Pattern to look for.
+</p>
+<p>The default interpretation is a regular expression, as described in
+<code>vignette("regular-expressions")</code>. Use <code><a href="../../stringr/help/regex.html">regex()</a></code> for finer control of the
+matching behaviour.
+</p>
+<p>Match a fixed string (i.e. by comparing only bytes), using
+<code><a href="../../stringr/help/fixed.html">fixed()</a></code>. This is fast, but approximate. Generally,
+for matching human text, you'll want <code><a href="../../stringr/help/coll.html">coll()</a></code> which
+respects character matching rules for the specified locale.
+</p>
+<p>Match character, word, line and sentence boundaries with
+<code><a href="../../stringr/help/boundary.html">boundary()</a></code>. An empty pattern, &quot;&quot;, is equivalent to
+<code>boundary("character")</code>.</p>
+</td></tr>
+<tr><td><code id="str_view_:_match">match</code></td>
+<td>
+<p>If <code>pattern</code> is supplied, which elements should be shown?
+</p>
+
+<ul>
+<li> <p><code>TRUE</code>, the default, shows only elements that match the pattern.
+</p>
+</li>
+<li> <p><code>NA</code> shows all elements.
+</p>
+</li>
+<li> <p><code>FALSE</code> shows only elements that don't match the pattern.
+</p>
+</li></ul>
+
+<p>If <code>pattern</code> is not supplied, all elements are always shown.</p>
+</td></tr>
+<tr><td><code id="str_view_:_html">html</code></td>
+<td>
+<p>Use HTML output? If <code>TRUE</code> will create an HTML widget; if <code>FALSE</code>
+will style using ANSI escapes. The default prefers ANSI escapes if
+available in the current terminal; you can override by setting
+<code>options(stringr.html = TRUE)</code>.</p>
+</td></tr>
+<tr><td><code id="str_view_:_use_escapes">use_escapes</code></td>
+<td>
+<p>If <code>TRUE</code>, all non-ASCII characters will be rendered
+with unicode escapes. This is useful to see exactly what underlying
+values are stored in the string.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Show special characters
+str_view(c("\"\\", "\\\\\\", "fgh", NA, "NA"))
+
+# A non-breaking space looks like a regular space:
+nbsp &lt;- "Hi\u00A0you"
+nbsp
+# But it doesn't behave like one:
+str_detect(nbsp, " ")
+# So str_view() brings it to your attention with a blue background
+str_view(nbsp)
+
+# You can also use escapes to see all non-ASCII characters
+str_view(nbsp, use_escapes = TRUE)
+
+# Supply a pattern to see where it matches
+str_view(c("abc", "def", "fghi"), "[aeiou]")
+str_view(c("abc", "def", "fghi"), "^")
+str_view(c("abc", "def", "fghi"), "..")
+
+# By default, only matching strings will be shown
+str_view(c("abc", "def", "fghi"), "e")
+# but you can show all:
+str_view(c("abc", "def", "fghi"), "e", match = NA)
+# or just those that don't match:
+str_view(c("abc", "def", "fghi"), "e", match = FALSE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

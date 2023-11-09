@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><title>R: Change owner or group of a file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>file_chown {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='file_chown'>Change owner or group of a file</h2>
+
+<h3>Description</h3>
+
+<p>Change owner or group of a file
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>file_chown(path, user_id = NULL, group_id = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="file_chown_:_path">path</code></td>
+<td>
+<p>A character vector of one or more paths.</p>
+</td></tr>
+<tr><td><code id="file_chown_:_user_id">user_id</code></td>
+<td>
+<p>The user id of the new owner, specified as a numeric ID or
+name. The R process must be privileged to change this.</p>
+</td></tr>
+<tr><td><code id="file_chown_:_group_id">group_id</code></td>
+<td>
+<p>The group id of the new owner, specified as a numeric ID or
+name.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

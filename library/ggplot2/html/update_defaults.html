@@ -1,0 +1,81 @@
+<!DOCTYPE html><html><head><title>R: Modify geom/stat aesthetic defaults for future plots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>update_geom_defaults {ggplot2}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='update_geom_defaults'>Modify geom/stat aesthetic defaults for future plots</h2>
+
+<h3>Description</h3>
+
+<p>Modify geom/stat aesthetic defaults for future plots
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>update_geom_defaults(geom, new)
+
+update_stat_defaults(stat, new)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="update_geom_defaults_:_new">new</code></td>
+<td>
+<p>Named list of aesthetics.</p>
+</td></tr>
+<tr><td><code id="update_geom_defaults_:_stat">stat</code>, <code id="update_geom_defaults_:_geom">geom</code></td>
+<td>
+<p>Name of geom/stat to modify (like <code>"point"</code> or
+<code>"bin"</code>), or a Geom/Stat object (like <code>GeomPoint</code> or
+<code>StatBin</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+# updating a geom's default aesthetic settings
+# example: change geom_point()'s default color
+GeomPoint$default_aes
+update_geom_defaults("point", aes(color = "red"))
+GeomPoint$default_aes
+ggplot(mtcars, aes(mpg, wt)) + geom_point()
+
+# reset default
+update_geom_defaults("point", aes(color = "black"))
+
+
+# updating a stat's default aesthetic settings
+# example: change stat_bin()'s default y-axis to the density scale
+StatBin$default_aes
+update_stat_defaults("bin", aes(y = after_stat(density)))
+StatBin$default_aes
+ggplot(data.frame(x = rnorm(1e3)), aes(x)) +
+  geom_histogram() +
+  geom_function(fun = dnorm, color = "red")
+
+# reset default
+update_stat_defaults("bin", aes(y = after_stat(count)))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggplot2</em> version 3.4.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><title>R: Lookup Users and Groups on a system</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>id {fs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='id'>Lookup Users and Groups on a system</h2>
+
+<h3>Description</h3>
+
+<p>These functions use the GETPWENT(3) and GETGRENT(3) system calls to query
+users and groups respectively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>group_ids()
+
+user_ids()
+</code></pre>
+
+
+<h3>Value</h3>
+
+<p>They return their results in a <code>data.frame</code>. On windows both
+functions return an empty <code>data.frame</code> because windows does not have user
+or group ids.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># list first 6 groups
+head(group_ids())
+
+# list first 6 users
+head(user_ids())
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>fs</em> version 1.6.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

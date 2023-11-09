@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><title>R: Explain details of a tbl</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>explain {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='explain'>Explain details of a tbl</h2>
+
+<h3>Description</h3>
+
+<p>This is a generic function which gives more details about an object than
+<code><a href="../../base/html/print.html">print()</a></code>, and is more focused on human readable output than
+<code><a href="../../utils/html/str.html">str()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>explain(x, ...)
+
+show_query(x, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="explain_:_x">x</code></td>
+<td>
+<p>An object to explain</p>
+</td></tr>
+<tr><td><code id="explain_:_...">...</code></td>
+<td>
+<p>Other parameters possibly used by generic</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The first argument, invisibly.
+</p>
+
+
+<h3>Databases</h3>
+
+<p>Explaining a <code>tbl_sql</code> will run the SQL <code>EXPLAIN</code> command which
+will describe the query plan. This requires a little bit of knowledge about
+how <code>EXPLAIN</code> works for your database, but is very useful for
+diagnosing performance problems.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+lahman_s &lt;- dbplyr::lahman_sqlite()
+batting &lt;- tbl(lahman_s, "Batting")
+batting %&gt;% show_query()
+batting %&gt;% explain()
+
+# The batting database has indices on all ID variables:
+# SQLite automatically picks the most restrictive index
+batting %&gt;% filter(lgID == "NL" &amp; yearID == 2000L) %&gt;% explain()
+
+# OR's will use multiple indexes
+batting %&gt;% filter(lgID == "NL" | yearID == 2000) %&gt;% explain()
+
+# Joins will use indexes in both tables
+teams &lt;- tbl(lahman_s, "Teams")
+batting %&gt;% left_join(teams, c("yearID", "teamID")) %&gt;% explain()
+
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

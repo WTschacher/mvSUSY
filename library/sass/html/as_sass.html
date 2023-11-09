@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><title>R: Convert an R object into Sass code</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>as_sass {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='as_sass'>Convert an R object into Sass code</h2>
+
+<h3>Description</h3>
+
+<p>Converts multiple types of inputs to a single Sass input string for
+<code><a href="../../sass/help/sass.html">sass()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>as_sass(input)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="as_sass_:_input">input</code></td>
+<td>
+<p>Any of the following:
+</p>
+
+<ul>
+<li><p> A character vector containing Sass code.
+</p>
+</li>
+<li><p> A named list containing variable names and values.
+</p>
+</li>
+<li><p> A <code><a href="../../sass/help/sass_file.html">sass_file()</a></code>, <code><a href="../../sass/help/sass_layer.html">sass_layer()</a></code>, and/or <code><a href="../../sass/help/sass_bundle.html">sass_bundle()</a></code>.
+</p>
+</li>
+<li><p> A <code><a href="../../base/html/list.html">list()</a></code> containing any of the above.
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a single character value to be supplied to <code><a href="../../sass/help/sass.html">sass()</a></code>.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://sass-lang.com/documentation/at-rules/import">https://sass-lang.com/documentation/at-rules/import</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'># Example of regular Sass input
+as_sass("body { color: \"blue\"; }")
+
+# There is support for adding variables
+as_sass(
+  list(
+    list(color = "blue"),
+   "body { color: $color; }"
+   )
+)
+
+
+# Add a file name
+someFile &lt;- tempfile("variables")
+
+# Overwrite color to red
+write("$color: \"red\";", someFile)
+
+input &lt;-
+  as_sass(
+    list(
+      list(color = "blue"),
+      sass_file(someFile),
+      "body { color: $color; }"
+      )
+   )
+
+input
+
+# The final body color is red
+sass(input)
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.4.7 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

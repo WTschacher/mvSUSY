@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><title>R: Download a file from a URL and cache it on disk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>download_cache {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='download_cache'>Download a file from a URL and cache it on disk</h2>
+
+<h3>Description</h3>
+
+<p>This object provides methods to download files and cache them on disk.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>download_cache
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A list of methods:
+</p>
+
+<ul>
+<li> <p><code style="white-space: pre;">&#8288;$get(url, type, handler)&#8288;</code> downloads a URL, caches it, and returns the file
+content according to the value of <code>type</code> (possible values: <code>"text"</code> means
+the text content; <code>"base64"</code> means the base64 encoded data; <code>"raw"</code> means
+the raw binary content; <code>"auto"</code> is the default and means the type is
+determined by the content type in the URL headers). Optionally a <code>handler</code>
+function can be applied to the content.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;$list()&#8288;</code> gives the list of cache files.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;$summary()&#8288;</code> gives a summary of existing cache files.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;$remove(url, type)&#8288;</code> removes a single cache file.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;$purge()&#8288;</code> deletes all cache files.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+# the first time it may take a few seconds
+x1 = xfun::download_cache$get("https://www.r-project.org/")
+head(x1)
+
+# now you can get the cached content
+x2 = xfun::download_cache$get("https://www.r-project.org/")
+identical(x1, x2)  # TRUE
+
+# a binary file
+x3 = xfun::download_cache$get("https://yihui.org/images/logo.png", "raw")
+length(x3)
+
+# show a summary
+xfun::download_cache$summary()
+# remove a specific cache file
+xfun::download_cache$remove("https://yihui.org/images/logo.png", "raw")
+# remove all cache files
+xfun::download_cache$purge()
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

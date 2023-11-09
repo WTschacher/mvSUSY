@@ -1,0 +1,297 @@
+<!DOCTYPE html><html><head><title>R: Convert to a slidy presentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>slidy_presentation {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='slidy_presentation'>Convert to a slidy presentation</h2>
+
+<h3>Description</h3>
+
+<p>Format for converting from R Markdown to a slidy presentation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>slidy_presentation(
+  number_sections = FALSE,
+  incremental = FALSE,
+  slide_level = NULL,
+  duration = NULL,
+  footer = NULL,
+  font_adjustment = 0,
+  fig_width = 8,
+  fig_height = 6,
+  fig_retina = 2,
+  fig_caption = TRUE,
+  dev = "png",
+  df_print = "default",
+  self_contained = TRUE,
+  highlight = "default",
+  math_method = "default",
+  mathjax = "default",
+  template = "default",
+  css = NULL,
+  includes = NULL,
+  keep_md = FALSE,
+  lib_dir = NULL,
+  md_extensions = NULL,
+  pandoc_args = NULL,
+  extra_dependencies = NULL,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="slidy_presentation_:_number_sections">number_sections</code></td>
+<td>
+<p><code>TRUE</code> to number section headings</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_incremental">incremental</code></td>
+<td>
+<p><code>TRUE</code> to render slide bullets incrementally. Note
+that if you want to reverse the default incremental behavior for an
+individual bullet you can precede it with <code>&gt;</code>. For example:
+<em><code style="white-space: pre;">&#8288;&gt; - Bullet Text&#8288;</code></em>. See more in
+<a href="https://pandoc.org/MANUAL.html#incremental-lists">Pandoc's Manual</a></p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_slide_level">slide_level</code></td>
+<td>
+<p>The heading level which defines individual slides. By
+default this is the highest header level in the hierarchy that is followed
+immediately by content, and not another header, somewhere in the document.
+This default can be overridden by specifying an explicit
+<code>slide_level</code>.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_duration">duration</code></td>
+<td>
+<p>Duration (in minutes) of the slide deck. This value is used
+to add a countdown timer to the slide footer.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_footer">footer</code></td>
+<td>
+<p>Footer text (e.g. organization name and/or copyright)</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_font_adjustment">font_adjustment</code></td>
+<td>
+<p>Increase or decrease the default font size (e.g. -1 or
++1). You can also manually adjust the font size during the presentation
+using the 'S' (smaller) and 'B' (bigger) keys.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_fig_width">fig_width</code></td>
+<td>
+<p>Default width (in inches) for figures</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_fig_height">fig_height</code></td>
+<td>
+<p>Default height (in inches) for figures</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_fig_retina">fig_retina</code></td>
+<td>
+<p>Scaling to perform for retina displays (defaults to 2, which
+currently works for all widely used retina displays). Set to <code>NULL</code> to
+prevent retina scaling. Note that this will always be <code>NULL</code> when
+<code>keep_md</code> is specified (this is because <code>fig_retina</code> relies on
+outputting HTML directly into the markdown document).</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_fig_caption">fig_caption</code></td>
+<td>
+<p><code>TRUE</code> to render figures with captions</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_dev">dev</code></td>
+<td>
+<p>Graphics device to use for figure output (defaults to pdf)</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_df_print">df_print</code></td>
+<td>
+<p>Method to be used for printing data frames. Valid values
+include &quot;default&quot;, &quot;kable&quot;, &quot;tibble&quot;, and &quot;paged&quot;. The &quot;default&quot; method
+uses a corresponding S3 method of <code>print</code>, typically
+<code>print.data.frame</code>. The &quot;kable&quot; method uses the
+<code><a href="../../knitr/help/kable.html">knitr::kable</a></code> function. The &quot;tibble&quot; method uses
+the <span class="pkg">tibble</span> package to print a summary of the data frame. The &quot;paged&quot;
+method creates a paginated HTML table (note that this method is only valid
+for formats that produce HTML). In addition to the named methods you can
+also pass an arbitrary function to be used for printing data frames. You
+can disable the <code>df_print</code> behavior entirely by setting the option
+<code>rmarkdown.df_print</code> to <code>FALSE</code>. See
+<a href="https://bookdown.org/yihui/rmarkdown/html-document.html#data-frame-printing">Data
+frame printing section</a> in bookdown book for examples.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_self_contained">self_contained</code></td>
+<td>
+<p>Produce a standalone HTML file with no external
+dependencies, using data: URIs to incorporate the contents of linked
+scripts, stylesheets, images, and videos. Note that even for self contained
+documents MathJax is still loaded externally (this is necessary because of
+its size).</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_highlight">highlight</code></td>
+<td>
+<p>Syntax highlighting style passed to Pandoc.
+</p>
+<p>Supported built-in styles include &quot;default&quot;, &quot;tango&quot;, &quot;pygments&quot;, &quot;kate&quot;,
+&quot;monochrome&quot;, &quot;espresso&quot;, &quot;zenburn&quot;, &quot;haddock&quot;, and &quot;breezedark&quot;.
+</p>
+<p>Two custom styles are also included, &quot;arrow&quot;, an accessible color scheme,
+and &quot;rstudio&quot;, which mimics the default IDE theme. Alternatively, supply a
+path to a &lsquo;<span class="samp">&#8288;.theme&#8288;</span>&rsquo; file to use
+<a href="https://pandoc.org/MANUAL.html#syntax-highlighting">a custom Pandoc
+style</a>. Note that custom theme requires Pandoc 2.0+.
+</p>
+<p>Pass <code>NULL</code> to prevent syntax highlighting.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_math_method">math_method</code></td>
+<td>
+<p>Math rendering engine to use. This will define the math method to use with Pandoc.
+</p>
+
+<ul>
+<li><p> It can be a string for the engine, one of &quot;mathjax&quot;, &quot;mathml&quot;, &quot;webtex&quot;, &quot;katex&quot;, &quot;gladtex&quot;, or &quot;r-katex&quot;
+or &quot;default&quot; for <code>mathjax</code>.
+</p>
+</li>
+<li><p> It can be a list of
+</p>
+
+<ul>
+<li> <p><code>engine</code>:  one of
+&quot;mathjax&quot;, &quot;mathml&quot;, &quot;webtex&quot;, &quot;katex&quot;, or &quot;gladtex&quot;.
+</p>
+</li>
+<li> <p><code>url</code>: A specific url to use with <code>mathjax</code>, <code>katex</code> or <code>webtex</code>.
+Note that for <code>engine = "mathjax"</code>, <code>url = "local"</code> will use a local version of MathJax (which is
+copied into the output directory).
+</p>
+</li></ul>
+
+</li></ul>
+
+<p>For example,
+</p>
+<div class="sourceCode yaml"><pre>output:
+  html_document:
+    math_method:
+      engine: katex
+      url: https://cdn.jsdelivr.net/npm/katex@0.11.1/dist
+</pre></div>
+<p>See <a href="https://pandoc.org/MANUAL.html#math-rendering-in-html">Pandoc's Manual about Math in HTML</a> for the details
+about Pandoc supported methods.
+</p>
+<p>Using <code>math_method = "r-katex"</code> will opt-in server side rendering using
+KaTeX thanks to <a href="https://docs.ropensci.org/katex/">katex</a> R package. This is
+useful compared to <code>math_method = "katex"</code> to have no JS dependency, only a
+CSS dependency for styling equation.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_mathjax">mathjax</code></td>
+<td>
+<p>Include mathjax. The &quot;default&quot; option uses an https URL from a
+MathJax CDN. The &quot;local&quot; option uses a local version of MathJax (which is
+copied into the output directory). You can pass an alternate URL or pass
+<code>NULL</code> to exclude MathJax entirely.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_template">template</code></td>
+<td>
+<p>Pandoc template to use for rendering. Pass &quot;default&quot; to use
+the rmarkdown package default template; pass <code>NULL</code> to use pandoc's
+built-in template; pass a path to use a custom template that you've
+created.  See the documentation on
+<a href="https://pandoc.org/MANUAL.html">pandoc online documentation</a> for
+details on creating custom templates.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_css">css</code></td>
+<td>
+<p>One or more css files to include.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_includes">includes</code></td>
+<td>
+<p>Named list of additional content to include within the
+document (typically created using the <code><a href="../../rmarkdown/help/includes.html">includes</a></code> function).</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_keep_md">keep_md</code></td>
+<td>
+<p>Keep the markdown file generated by knitting.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_lib_dir">lib_dir</code></td>
+<td>
+<p>Directory to copy dependent HTML libraries (e.g. jquery,
+bootstrap, etc.) into. By default this will be the name of the document with
+<code>_files</code> appended to it.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_md_extensions">md_extensions</code></td>
+<td>
+<p>Markdown extensions to be added or removed from the
+default definition of R Markdown. See the <code><a href="../../rmarkdown/help/rmarkdown_format.html">rmarkdown_format</a></code> for
+additional details.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_pandoc_args">pandoc_args</code></td>
+<td>
+<p>Additional command line options to pass to pandoc</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_extra_dependencies">extra_dependencies</code></td>
+<td>
+<p>A LaTeX dependency <code>latex_dependency()</code>, a
+list of LaTeX dependencies, a character vector of LaTeX package names (e.g.
+<code>c("framed", "hyperref")</code>), or a named list of LaTeX package options
+with the names being package names (e.g. <code>list(hyperef =
+c("unicode=true", "breaklinks=true"), lmodern = NULL)</code>). It can be used to
+add custom LaTeX packages to the .tex header.</p>
+</td></tr>
+<tr><td><code id="slidy_presentation_:_...">...</code></td>
+<td>
+<p>Additional function arguments to pass to the base R Markdown HTML
+output formatter <code><a href="../../rmarkdown/help/html_document_base.html">html_document_base</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See the <a href="https://bookdown.org/yihui/rmarkdown/slidy-presentation.html">online
+documentation</a> for additional details on using the <code>slidy_presentation</code>
+format.
+</p>
+<p>For more information on markdown syntax for presentations see the
+<a href="https://pandoc.org/README.html">pandoc online documentation</a>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>R Markdown output format to pass to <code><a href="../../rmarkdown/help/render.html">render</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+library(rmarkdown)
+
+# simple invocation
+render("pres.Rmd", slidy_presentation())
+
+# specify an option for incremental rendering
+render("pres.Rmd", slidy_presentation(incremental = TRUE))
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

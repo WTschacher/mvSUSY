@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><title>R: Type a character vector into the RStudio source editor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>rstudio_type {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='rstudio_type'>Type a character vector into the RStudio source editor</h2>
+
+<h3>Description</h3>
+
+<p>Use the <span class="pkg">rstudioapi</span> package to insert characters one by one into the
+RStudio source editor, as if they were typed by a human.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>rstudio_type(x, pause = function() 0.1, mistake = 0, save = 0)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="rstudio_type_:_x">x</code></td>
+<td>
+<p>A character vector.</p>
+</td></tr>
+<tr><td><code id="rstudio_type_:_pause">pause</code></td>
+<td>
+<p>A function to return a number in seconds to pause after typing
+each character.</p>
+</td></tr>
+<tr><td><code id="rstudio_type_:_mistake">mistake</code></td>
+<td>
+<p>The probability of making random mistakes when typing the next
+character. A random mistake is a random string typed into the editor and
+deleted immediately.</p>
+</td></tr>
+<tr><td><code id="rstudio_type_:_save">save</code></td>
+<td>
+<p>The probability of saving the document after typing each
+character. Note that If a document is not opened from a file, it will never
+be saved.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(xfun)
+if (loadable("rstudioapi") &amp;&amp; rstudioapi::isAvailable()) {
+    rstudio_type("Hello, RStudio! xfun::rstudio_type() looks pretty cool!",
+        pause = function() runif(1, 0, 0.5), mistake = 0.1)
+}
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.40 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

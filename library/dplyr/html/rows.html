@@ -1,0 +1,280 @@
+<!DOCTYPE html><html><head><title>R: Manipulate individual rows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>rows {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='rows'>Manipulate individual rows</h2>
+
+<h3>Description</h3>
+
+<p>These functions provide a framework for modifying rows in a table using a
+second table of data. The two tables are matched <code>by</code> a set of key variables
+whose values typically uniquely identify each row. The functions are inspired
+by SQL's <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code>, and can optionally modify
+<code>in_place</code> for selected backends.
+</p>
+
+<ul>
+<li> <p><code>rows_insert()</code> adds new rows (like <code>INSERT</code>). By default, key values in
+<code>y</code> must not exist in <code>x</code>.
+</p>
+</li>
+<li> <p><code>rows_append()</code> works like <code>rows_insert()</code> but ignores keys.
+</p>
+</li>
+<li> <p><code>rows_update()</code> modifies existing rows (like <code>UPDATE</code>). Key values in <code>y</code>
+must be unique, and, by default, key values in <code>y</code> must exist in <code>x</code>.
+</p>
+</li>
+<li> <p><code>rows_patch()</code> works like <code>rows_update()</code> but only overwrites <code>NA</code> values.
+</p>
+</li>
+<li> <p><code>rows_upsert()</code> inserts or updates depending on whether or not the
+key value in <code>y</code> already exists in <code>x</code>. Key values in <code>y</code> must be unique.
+</p>
+</li>
+<li> <p><code>rows_delete()</code> deletes rows (like <code>DELETE</code>). By default, key values in <code>y</code>
+must exist in <code>x</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>rows_insert(
+  x,
+  y,
+  by = NULL,
+  ...,
+  conflict = c("error", "ignore"),
+  copy = FALSE,
+  in_place = FALSE
+)
+
+rows_append(x, y, ..., copy = FALSE, in_place = FALSE)
+
+rows_update(
+  x,
+  y,
+  by = NULL,
+  ...,
+  unmatched = c("error", "ignore"),
+  copy = FALSE,
+  in_place = FALSE
+)
+
+rows_patch(
+  x,
+  y,
+  by = NULL,
+  ...,
+  unmatched = c("error", "ignore"),
+  copy = FALSE,
+  in_place = FALSE
+)
+
+rows_upsert(x, y, by = NULL, ..., copy = FALSE, in_place = FALSE)
+
+rows_delete(
+  x,
+  y,
+  by = NULL,
+  ...,
+  unmatched = c("error", "ignore"),
+  copy = FALSE,
+  in_place = FALSE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="rows_:_x">x</code>, <code id="rows_:_y">y</code></td>
+<td>
+<p>A pair of data frames or data frame extensions (e.g. a tibble).
+<code>y</code> must have the same columns of <code>x</code> or a subset.</p>
+</td></tr>
+<tr><td><code id="rows_:_by">by</code></td>
+<td>
+<p>An unnamed character vector giving the key columns. The key columns
+must exist in both <code>x</code> and <code>y</code>. Keys typically uniquely identify each row,
+but this is only enforced for the key values of <code>y</code> when <code>rows_update()</code>,
+<code>rows_patch()</code>, or <code>rows_upsert()</code> are used.
+</p>
+<p>By default, we use the first column in <code>y</code>, since the first column is
+a reasonable place to put an identifier variable.</p>
+</td></tr>
+<tr><td><code id="rows_:_...">...</code></td>
+<td>
+<p>Other parameters passed onto methods.</p>
+</td></tr>
+<tr><td><code id="rows_:_conflict">conflict</code></td>
+<td>
+<p>For <code>rows_insert()</code>, how should keys in <code>y</code> that conflict
+with keys in <code>x</code> be handled? A conflict arises if there is a key in <code>y</code>
+that already exists in <code>x</code>.
+</p>
+<p>One of:
+</p>
+
+<ul>
+<li> <p><code>"error"</code>, the default, will error if there are any keys in <code>y</code> that
+conflict with keys in <code>x</code>.
+</p>
+</li>
+<li> <p><code>"ignore"</code> will ignore rows in <code>y</code> with keys that conflict with keys in
+<code>x</code>.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="rows_:_copy">copy</code></td>
+<td>
+<p>If <code>x</code> and <code>y</code> are not from the same data source,
+and <code>copy</code> is <code>TRUE</code>, then <code>y</code> will be copied into the
+same src as <code>x</code>.  This allows you to join tables across srcs, but
+it is a potentially expensive operation so you must opt into it.</p>
+</td></tr>
+<tr><td><code id="rows_:_in_place">in_place</code></td>
+<td>
+<p>Should <code>x</code> be modified in place? This argument is only
+relevant for mutable backends (e.g. databases, data.tables).
+</p>
+<p>When <code>TRUE</code>, a modified version of <code>x</code> is returned invisibly;
+when <code>FALSE</code>, a new object representing the resulting changes is returned.</p>
+</td></tr>
+<tr><td><code id="rows_:_unmatched">unmatched</code></td>
+<td>
+<p>For <code>rows_update()</code>, <code>rows_patch()</code>, and <code>rows_delete()</code>,
+how should keys in <code>y</code> that are unmatched by the keys in <code>x</code> be handled?
+</p>
+<p>One of:
+</p>
+
+<ul>
+<li> <p><code>"error"</code>, the default, will error if there are any keys in <code>y</code> that
+are unmatched by the keys in <code>x</code>.
+</p>
+</li>
+<li> <p><code>"ignore"</code> will ignore rows in <code>y</code> with keys that are unmatched by the
+keys in <code>x</code>.
+</p>
+</li></ul>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the same type as <code>x</code>. The order of the rows and columns of <code>x</code>
+is preserved as much as possible. The output has the following properties:
+</p>
+
+<ul>
+<li> <p><code>rows_update()</code> and <code>rows_patch()</code> preserve the number of rows;
+<code>rows_insert()</code>, <code>rows_append()</code>, and <code>rows_upsert()</code> return all existing
+rows and potentially new rows; <code>rows_delete()</code> returns a subset of the
+rows.
+</p>
+</li>
+<li><p> Columns are not added, removed, or relocated, though the data may be
+updated.
+</p>
+</li>
+<li><p> Groups are taken from <code>x</code>.
+</p>
+</li>
+<li><p> Data frame attributes are taken from <code>x</code>.
+</p>
+</li></ul>
+
+<p>If <code>in_place = TRUE</code>, the result will be returned invisibly.
+</p>
+
+
+<h3>Methods</h3>
+
+<p>These function are <strong>generic</strong>s, which means that packages can provide
+implementations (methods) for other classes. See the documentation of
+individual methods for extra arguments and differences in behaviour.
+</p>
+<p>Methods available in currently loaded packages:
+</p>
+
+<ul>
+<li> <p><code>rows_insert()</code>: no methods found.
+</p>
+</li>
+<li> <p><code>rows_append()</code>: no methods found.
+</p>
+</li>
+<li> <p><code>rows_update()</code>: no methods found.
+</p>
+</li>
+<li> <p><code>rows_patch()</code>: no methods found.
+</p>
+</li>
+<li> <p><code>rows_upsert()</code>: no methods found.
+</p>
+</li>
+<li> <p><code>rows_delete()</code>: no methods found.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>data &lt;- tibble(a = 1:3, b = letters[c(1:2, NA)], c = 0.5 + 0:2)
+data
+
+# Insert
+rows_insert(data, tibble(a = 4, b = "z"))
+
+# By default, if a key in `y` matches a key in `x`, then it can't be inserted
+# and will throw an error. Alternatively, you can ignore rows in `y`
+# containing keys that conflict with keys in `x` with `conflict = "ignore"`,
+# or you can use `rows_append()` to ignore keys entirely.
+try(rows_insert(data, tibble(a = 3, b = "z")))
+rows_insert(data, tibble(a = 3, b = "z"), conflict = "ignore")
+rows_append(data, tibble(a = 3, b = "z"))
+
+# Update
+rows_update(data, tibble(a = 2:3, b = "z"))
+rows_update(data, tibble(b = "z", a = 2:3), by = "a")
+
+# Variants: patch and upsert
+rows_patch(data, tibble(a = 2:3, b = "z"))
+rows_upsert(data, tibble(a = 2:4, b = "z"))
+
+# Delete and truncate
+rows_delete(data, tibble(a = 2:3))
+rows_delete(data, tibble(a = 2:3, b = "b"))
+
+# By default, for update, patch, and delete it is an error if a key in `y`
+# doesn't exist in `x`. You can ignore rows in `y` that have unmatched keys
+# with `unmatched = "ignore"`.
+y &lt;- tibble(a = 3:4, b = "z")
+try(rows_update(data, y, by = "a"))
+rows_update(data, y, by = "a", unmatched = "ignore")
+rows_patch(data, y, by = "a", unmatched = "ignore")
+rows_delete(data, y, by = "a", unmatched = "ignore")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

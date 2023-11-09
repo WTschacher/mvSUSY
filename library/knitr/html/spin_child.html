@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><title>R: Spin a child R script</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>spin_child {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='spin_child'>Spin a child R script</h2>
+
+<h3>Description</h3>
+
+<p>This function is similar to <code><a href="../../knitr/help/knit_child.html">knit_child</a>()</code> but is used in R
+scripts instead. When the main R script is not called via
+<code><a href="../../knitr/help/spin.html">spin</a>()</code>, this function simply executes the child script via
+<code><a href="../../base/html/sys.source.html">sys.source</a>()</code>, otherwise it calls <code><a href="../../knitr/help/spin.html">spin</a>()</code> to spin
+the child script into a source document, and uses <code><a href="../../knitr/help/knit_child.html">knit_child</a>()</code>
+to compile it. You can call this function in R code, or using the syntax of
+inline R expressions in <code><a href="../../knitr/help/spin.html">spin</a>()</code> (e.g.
+<code>{{knitr::spin_child('script.R')}}</code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>spin_child(input, format)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="spin_child_:_input">input</code></td>
+<td>
+<p>Filename of the input R script.</p>
+</td></tr>
+<tr><td><code id="spin_child_:_format">format</code></td>
+<td>
+<p>Passed to <code>format</code> in <code>spin()</code>. If not
+provided, it will be guessed from the current knitting process.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character string of the knitted R script.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

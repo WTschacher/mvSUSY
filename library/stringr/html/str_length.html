@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Compute the length/width</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_length {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_length'>Compute the length/width</h2>
+
+<h3>Description</h3>
+
+<p><code>str_length()</code> returns the number of codepoints in a string. These are
+the individual elements (which are often, but not always letters) that
+can be extracted with <code><a href="../../stringr/help/str_sub.html">str_sub()</a></code>.
+</p>
+<p><code>str_width()</code> returns how much space the string will occupy when printed
+in a fixed width font (i.e. when printed in the console).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_length(string)
+
+str_width(string)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_length_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A numeric vector the same length as <code>string</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringi/help/stri_length.html">stringi::stri_length()</a></code> which this function wraps.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>str_length(letters)
+str_length(NA)
+str_length(factor("abc"))
+str_length(c("i", "like", "programming", NA))
+
+# Some characters, like emoji and Chinese characters (hanzi), are square
+# which means they take up the width of two Latin characters
+x &lt;- c("\u6c49\u5b57", "\U0001f60a")
+str_view(x)
+str_width(x)
+str_length(x)
+
+# There are two ways of representing a u with an umlaut
+u &lt;- c("\u00fc", "u\u0308")
+# They have the same width
+str_width(u)
+# But a different length
+str_length(u)
+# Because the second element is made up of a u + an accent
+str_sub(u, 1, 1)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

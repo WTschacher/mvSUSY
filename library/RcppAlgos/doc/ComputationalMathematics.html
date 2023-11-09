@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>Computational Mathematics Overview</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Computational Mathematics Overview</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#primesieve" id="toc-primesieve"><code>primeSieve</code></a>
+<ul>
+<li><a href="#larger-primes" id="toc-larger-primes">Larger
+primes</a></li>
+</ul></li>
+<li><a href="#primecount" id="toc-primecount"><code>primeCount</code></a></li>
+<li><a href="#other-sieving-functions" id="toc-other-sieving-functions">Other Sieving Functions</a></li>
+<li><a href="#vectorized-functions" id="toc-vectorized-functions">Vectorized Functions</a></li>
+</ul>
+</div>
+
+<p>This document serves as an overview for solving problems common in <a href="https://en.wikipedia.org/wiki/Computational_mathematics">Computational
+Mathematics</a>. Of note, <code>primeSieve</code> and
+<code>primeCount</code> are based on the excellent work by <a href="https://github.com/kimwalisch">Kim Walisch</a>.</p>
+<hr />
+<div id="primesieve" class="section level2">
+<h2><code>primeSieve</code></h2>
+<p>The primeSieve function is based on the <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Segmented_sieve">Segmented
+Sieve of Eratosthenes</a>. As stated in the linked article, the sieve
+itself is already very efficient. The problem from an efficiency
+standpoint, is due to the memory requirements. The segmented version
+overcomes this by only sieving small sections at a time, which greatly
+facilitates use of the cache.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">90</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">primeSieve</span>(<span class="fl">1e6</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; Warning in microbenchmark(primeSieve(1000000)): less accurate nanosecond times to avoid</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; potential integer overflows</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;               expr     min      lq    mean   median     uq      max neval</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  primeSieve(1e+06) 825.986 829.594 853.864 835.6825 851.16 1988.336   100</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="do">## Single threaded primes under a billion!!!</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">primeSieve</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">9</span>))</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt;   0.964   0.040   1.010</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="do">## Using 8 threads we can get under 0.5 seconds!!!</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">primeSieve</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">9</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt;   1.319   0.038   0.219</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="do">## Quickly generate large primes over small interval. N.B. The</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="do">## order for the bounds does not matter.</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">50</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="fu">system.time</span>(myPs <span class="ot">&lt;-</span> <span class="fu">primeSieve</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">13</span> <span class="sc">+</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>, <span class="dv">10</span><span class="sc">^</span><span class="dv">13</span>))</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt;   0.005   0.000   0.005</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>myPs</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="co">#&gt;  [1] 10000000000037 10000000000051 10000000000099 10000000000129 10000000000183</span></span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="co">#&gt;  [6] 10000000000259 10000000000267 10000000000273 10000000000279 10000000000283</span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co">#&gt; [11] 10000000000313 10000000000343 10000000000391 10000000000411 10000000000433</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="co">#&gt; [16] 10000000000453 10000000000591 10000000000609 10000000000643 10000000000649</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="co">#&gt; [21] 10000000000657 10000000000687 10000000000691 10000000000717 10000000000729</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a><span class="co">#&gt; [26] 10000000000751 10000000000759 10000000000777 10000000000853 10000000000883</span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="co">#&gt; [31] 10000000000943 10000000000957 10000000000987 10000000000993</span></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="do">## Object created is small</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a><span class="fu">object.size</span>(myPs)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co">#&gt; 320 bytes</span></span></code></pre></div>
+<div id="larger-primes" class="section level3">
+<h3>Larger primes</h3>
+<p>Since version <code>2.3.0</code>, we are implementing the
+cache-friendly improvements for larger primes originally developed by <a href="https://sweet.ua.pt/tos/software/prime_sieve.html">Tomás
+Oliveira</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="do">## Version &lt;= 2.2.0.. i.e. older versions</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">system.time</span>(old <span class="ot">&lt;-</span> RcppAlgos220<span class="sc">::</span><span class="fu">primeSieve</span>(<span class="fl">1e15</span>, <span class="fl">1e15</span> <span class="sc">+</span> <span class="fl">1e9</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;   2.441   0.052   2.497</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="do">## v2.3.0+ is faster</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">system.time</span>(a <span class="ot">&lt;-</span> <span class="fu">primeSieve</span>(<span class="fl">1e15</span>, <span class="fl">1e15</span> <span class="sc">+</span> <span class="fl">1e9</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;   1.221   0.039   1.262</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">gc</span>())</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="do">## And using nThreads is much much faster</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="fu">system.time</span>(b <span class="ot">&lt;-</span> <span class="fu">primeSieve</span>(<span class="fl">1e15</span>, <span class="fl">1e15</span> <span class="sc">+</span> <span class="fl">1e9</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt;   2.163   0.084   0.411</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="fu">identical</span>(old, a)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="fu">identical</span>(a, b)</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+</div>
+<div id="primecount" class="section level2">
+<h2><code>primeCount</code></h2>
+<p>The library by Kim Walisch relies on <a href="https://en.wikipedia.org/wiki/OpenMP">OpenMP</a> for parallel
+computation with <a href="https://mathworld.wolfram.com/LegendresFormula.html">Legendre’s
+Formula</a>. Currently, the default compiler on <code>macOS</code> is
+<code>clang</code>, which does not support <code>OpenMP</code>. James
+Balamuta (a.k.a. TheCoatlessProfessor… well at least <a href="https://thecoatlessprofessor.com/about/">we think so</a>) has
+written a great article on this topic, which you can find here: <a href="https://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/" class="uri">https://thecoatlessprofessor.com/programming/openmp-in-r-on-os-x/</a>.
+One of the goals of <code>RcppAlgos</code> is to be accessible by all
+users. With this in mind, we set out to count primes in parallel
+<em>without</em> <code>OpenMP</code>.</p>
+<p>At first glance, this seems trivial as we have a function in
+<code>Primes.cpp</code> called <code>phiWorker</code> that counts the
+primes up to <code>x</code>. If you look in <a href="https://github.com/kimwalisch/primecount/blob/master/src/phi.cpp">phi.cpp</a>
+in the <code>primecount</code> library by Kim Walisch, we see that
+<code>OpenMP</code> does its magic on a for loop that makes repeated
+calls to <code>phi</code> (which is what <code>phiWorker</code> is based
+on). All we need to do is break this loop into <em>n</em> intervals
+where <em>n</em> is the number of threads. Simple, right?</p>
+<p>We can certainly do this, but what you will find is that <em>n -
+1</em> threads will complete very quickly and the
+<em>n<sup>th</sup></em> thread will be left with a heavy computation. In
+order to alleviate this unbalanced load, we divide the loop mentioned
+above into smaller intervals. The idea is to completely calculate
+<code>phi</code> up to a limit <em>m</em> using all <em>n</em> threads
+and then gradually increase <em>m</em>. The advantage here is that we
+are benefiting greatly from the caching done by the work of the previous
+<em>n</em> threads.</p>
+<p>With this is mind, here are some results:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="do">## Enumerate the number of primes below trillion</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">system.time</span>(underOneTrillion <span class="ot">&lt;-</span> <span class="fu">primeCount</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">12</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;   0.121   0.002   0.122</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>underOneTrillion</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; [1] 37607912018</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="do">## Enumerate the number of primes below ten billion in 2 milliseconds</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">primeCount</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">10</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; Unit: milliseconds</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;               expr      min       lq     mean   median       uq      max neval</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;  primeCount(10^10) 1.718679 1.729893 1.780771 1.757342 1.800085 2.579228   100</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="fu">system.time</span>(underOneHundredTrillion <span class="ot">&lt;-</span> <span class="fu">primeCount</span>(<span class="fl">1e14</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt;   6.792   0.464   1.242</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>underOneHundredTrillion</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; [1] 3204941750802</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="do">## Still not as fast as Kim Walisch&#39;s primecount library:</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>    <span class="fu">system</span>(<span class="st">&quot;primecount 1e14 --legendre --time&quot;</span>, <span class="at">intern =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>    <span class="at">collapse =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>))</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; 3204941750802</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; Seconds: 0.405</span></span></code></pre></div>
+</div>
+<div id="other-sieving-functions" class="section level2">
+<h2>Other Sieving Functions</h2>
+<p><code>RcppAlgos</code> comes equipped with several functions for
+quickly generating essential components for problems common in
+computational mathematics. All functions below can be executed in
+parallel by using the argument <code>nThreads</code>.</p>
+<p>The following sieving functions (<code>primeFactorizeSieve</code>,
+<code>divisorsSieve</code>, <code>numDivisorSieve</code>, &amp;
+<code>eulerPhiSieve</code>) are very useful and flexible. Generate
+components up to a number or between two bounds.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="do">## get the number of divisors for every number from 1 to n</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">numDivisorSieve</span>(<span class="dv">20</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt;  [1] 1 2 2 3 2 4 2 4 3 4 2 6 2 4 4 5 2 6 2 6</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="do">## If you want the complete factorization from 1 to n, use divisorsList</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">system.time</span>(allFacs <span class="ot">&lt;-</span> <span class="fu">divisorsSieve</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">5</span>, <span class="at">namedList =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;   0.024   0.005   0.029</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>allFacs[<span class="fu">c</span>(<span class="dv">4339</span>, <span class="dv">15613</span>, <span class="dv">22080</span>)]</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; $`4339`</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; [1]    1 4339</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; $`15613`</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [1]     1    13  1201 15613</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; $`22080`</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt;  [1]     1     2     3     4     5     6     8    10    12    15    16    20    23    24</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; [15]    30    32    40    46    48    60    64    69    80    92    96   115   120   138</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; [29]   160   184   192   230   240   276   320   345   368   460   480   552   690   736</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [43]   920   960  1104  1380  1472  1840  2208  2760  3680  4416  5520  7360 11040 22080</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="do">## Between two bounds</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="fu">primeFactorizeSieve</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">12</span>, <span class="dv">10</span><span class="sc">^</span><span class="dv">12</span> <span class="sc">+</span> <span class="dv">5</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt;  [1] 2 2 2 2 2 2 2 2 2 2 2 2 5 5 5 5 5 5 5 5 5 5 5 5</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; [1]       73      137 99990001</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; [1]            2            3 166666666667</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; [[4]]</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; [1]      61   14221 1152763</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; [[5]]</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; [1]      2      2     17    149    197 501001</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; [[6]]</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; [1]           3           5 66666666667</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="do">## Creating a named object</span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="fu">eulerPhiSieve</span>(<span class="dv">20</span>, <span class="at">namedVector =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 </span></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt;  1  1  2  2  4  2  6  4  6  4 10  4 12  6  8  8 16  6 18  8</span></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a><span class="fu">system.time</span>(a <span class="ot">&lt;-</span> <span class="fu">eulerPhiSieve</span>(<span class="fl">1e12</span>, <span class="fl">1e12</span> <span class="sc">+</span> <span class="fl">1e7</span>))</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a><span class="co">#&gt;   0.320   0.015   0.335</span></span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a><span class="do">## Using nThreads for greater efficiency</span></span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a><span class="fu">system.time</span>(b <span class="ot">&lt;-</span> <span class="fu">eulerPhiSieve</span>(<span class="fl">1e12</span>, <span class="fl">1e12</span> <span class="sc">+</span> <span class="fl">1e7</span>, <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a><span class="co">#&gt;   1.006   0.031   0.154</span></span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a><span class="fu">identical</span>(a, b)</span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+<div id="vectorized-functions" class="section level2">
+<h2>Vectorized Functions</h2>
+<p>There are three very fast vectorized functions for general factoring
+(e.g. all divisors of number), primality testing, as well as prime
+factoring (<code>divisorsRcpp</code>, <code>isPrimeRcpp</code>,
+<code>primeFactorize</code>).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## get result for individual numbers</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">primeFactorize</span>(<span class="dv">123456789</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; [1]    3    3 3607 3803</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="do">## or for an entire vector</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="do">## N.B. The R Version you are using... random sampling</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="do">## has changed throughout the years</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>R.version[[<span class="st">&quot;version.string&quot;</span>]]</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;R version 4.3.1 (2023-06-16)&quot;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>myVec <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="sc">-</span><span class="dv">100000000</span><span class="sc">:</span><span class="dv">100000000</span>, <span class="dv">5</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="fu">divisorsRcpp</span>(myVec, <span class="at">namedList =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; $`33331928`</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt;  [1]        1        2        4        7        8       14       19       28       38</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; [10]       56       76      133      152      266      532     1064    31327    62654</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; [19]   125308   219289   250616   438578   595213   877156  1190426  1754312  2380852</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; [28]  4166491  4761704  8332982 16665964 33331928</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; $`99961494`</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt;  [1]        1        2        3        6       37       74      111      222   450277</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; [10]   900554  1350831  2701662 16660249 33320498 49980747 99961494</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; $`30377219`</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; [1]        1       19  1598801 30377219</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; $`-46085563`</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt; [1] -46085563   -201247      -229        -1         1       229    201247  46085563</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; $`-26510714`</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt;  [1] -26510714 -13255357    -73846    -36923      -718      -359        -2        -1</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt;  [9]         1         2       359       718     36923     73846  13255357  26510714</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="do">## Creating a named object</span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="fu">isPrimeRcpp</span>(<span class="dv">995</span><span class="sc">:</span><span class="dv">1000</span>, <span class="at">namedVector =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt;   995   996   997   998   999  1000 </span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt; FALSE FALSE  TRUE FALSE FALSE FALSE</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="fu">system.time</span>(a <span class="ot">&lt;-</span> <span class="fu">primeFactorize</span>(<span class="fl">1e12</span><span class="sc">:</span>(<span class="fl">1e12</span> <span class="sc">+</span> <span class="fl">1e5</span>)))</span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt;   0.656   0.009   0.664</span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="do">## Using nThreads for greater efficiency</span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a><span class="fu">system.time</span>(b <span class="ot">&lt;-</span> <span class="fu">primeFactorize</span>(<span class="fl">1e12</span><span class="sc">:</span>(<span class="fl">1e12</span> <span class="sc">+</span> <span class="fl">1e5</span>), <span class="at">nThreads =</span> <span class="dv">8</span>))</span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a><span class="co">#&gt;   0.924   0.008   0.156</span></span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a><span class="fu">identical</span>(a, b)</span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><title>R: Process an HTML template</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>htmlTemplate {htmltools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='htmlTemplate'>Process an HTML template</h2>
+
+<h3>Description</h3>
+
+<p>Process an HTML template and return a tagList object. If the template is a
+complete HTML document, then the returned object will also have class
+<code>html_document</code>, and can be passed to the function
+<code><a href="../../htmltools/help/renderDocument.html">renderDocument()</a></code> to get the final HTML text.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>htmlTemplate(filename = NULL, ..., text_ = NULL, document_ = "auto")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="htmlTemplate_:_filename">filename</code></td>
+<td>
+<p>Path to an HTML template file. Incompatible with
+<code>text_</code>.</p>
+</td></tr>
+<tr><td><code id="htmlTemplate_:_...">...</code></td>
+<td>
+<p>Variable values to use when processing the template.</p>
+</td></tr>
+<tr><td><code id="htmlTemplate_:_text_">text_</code></td>
+<td>
+<p>A string to use as the template, instead of a file. Incompatible
+with <code>filename</code>.</p>
+</td></tr>
+<tr><td><code id="htmlTemplate_:_document_">document_</code></td>
+<td>
+<p>Is this template a complete HTML document (<code>TRUE</code>), or
+a fragment of HTML that is to be inserted into an HTML document
+(<code>FALSE</code>)? With <code>"auto"</code> (the default), auto-detect by searching
+for the string <code>"&lt;HTML&gt;"</code> within the template.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../htmltools/help/renderDocument.html">renderDocument()</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>htmltools</em> version 0.5.6.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

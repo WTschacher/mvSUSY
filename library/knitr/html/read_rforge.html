@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><title>R: Read source code from R-Forge</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>read_rforge {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='read_rforge'>Read source code from R-Forge</h2>
+
+<h3>Description</h3>
+
+<p>This function reads source code from the SVN repositories on R-Forge.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>read_rforge(path, project, extra = "")
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="read_rforge_:_path">path</code></td>
+<td>
+<p>Relative path to the source script on R-Forge.</p>
+</td></tr>
+<tr><td><code id="read_rforge_:_project">project</code></td>
+<td>
+<p>Name of the R-Forge project.</p>
+</td></tr>
+<tr><td><code id="read_rforge_:_extra">extra</code></td>
+<td>
+<p>Extra parameters to be passed to the URL (e.g. <code>extra =
+'&amp;revision=48'</code> to check out the source of revision 48).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of the source code.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yihui Xie and Peter Ruckdeschel
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+library(knitr)
+# relies on r-forge.r-project.org being accessible
+read_rforge("rgl/R/axes.R", project = "rgl")
+read_rforge("rgl/R/axes.R", project = "rgl", extra = "&amp;revision=519")
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

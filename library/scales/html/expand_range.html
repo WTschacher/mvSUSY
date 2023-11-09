@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><title>R: Expand a range with a multiplicative or additive constant</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>expand_range {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='expand_range'>Expand a range with a multiplicative or additive constant</h2>
+
+<h3>Description</h3>
+
+<p>Expand a range with a multiplicative or additive constant
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>expand_range(range, mul = 0, add = 0, zero_width = 1)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="expand_range_:_range">range</code></td>
+<td>
+<p>range of data, numeric vector of length 2</p>
+</td></tr>
+<tr><td><code id="expand_range_:_mul">mul</code></td>
+<td>
+<p>multiplicative constant</p>
+</td></tr>
+<tr><td><code id="expand_range_:_add">add</code></td>
+<td>
+<p>additive constant</p>
+</td></tr>
+<tr><td><code id="expand_range_:_zero_width">zero_width</code></td>
+<td>
+<p>distance to use if range has zero width</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.2.1 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

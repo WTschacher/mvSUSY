@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>R: Make a call with 'lazy_dots' as arguments.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>make_call {lazyeval}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='make_call'>Make a call with <code>lazy_dots</code> as arguments.</h2>
+
+<h3>Description</h3>
+
+<p>In order to exactly replay the original call, the environment must be the
+same for all of the dots. This function circumvents that a little,
+falling back to the <code><a href="../../base/html/environment.html">baseenv</a>()</code> if all environments aren't
+the same.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>make_call(fun, args)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="make_call_:_fun">fun</code></td>
+<td>
+<p>Function as symbol or quoted call.</p>
+</td></tr>
+<tr><td><code id="make_call_:_args">args</code></td>
+<td>
+<p>Arguments to function; must be a <code>lazy_dots</code> object,
+or something <code><a href="../../lazyeval/help/as.lazy_dots.html">as.lazy_dots</a>()</code> can coerce..</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list:
+</p>
+<table>
+<tr><td><code>env</code></td>
+<td>
+<p>The common environment for all elements</p>
+</td></tr>
+<tr><td><code>expr</code></td>
+<td>
+<p>The expression</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>make_call(quote(f), lazy_dots(x = 1, 2))
+make_call(quote(f), list(x = 1, y = ~x))
+make_call(quote(f), ~x)
+
+# If no known or no common environment, fails back to baseenv()
+make_call(quote(f), quote(x))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>lazyeval</em> version 0.2.2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

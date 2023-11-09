@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><title>R: Pandoc options for an output format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>pandoc_options {rmarkdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='pandoc_options'>Pandoc options for an output format</h2>
+
+<h3>Description</h3>
+
+<p>Define the pandoc options for an R Markdown output format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>pandoc_options(
+  to,
+  from = rmarkdown_format(),
+  args = NULL,
+  keep_tex = FALSE,
+  latex_engine = c("pdflatex", "lualatex", "xelatex", "tectonic"),
+  ext = NULL,
+  lua_filters = NULL,
+  convert_fun = NULL
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="pandoc_options_:_to">to</code></td>
+<td>
+<p>Pandoc format to convert to</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_from">from</code></td>
+<td>
+<p>Pandoc format to convert from</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_args">args</code></td>
+<td>
+<p>Character vector of command line arguments to pass to pandoc</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_keep_tex">keep_tex</code></td>
+<td>
+<p>Keep the intermediate tex file used in the conversion to PDF
+(applies only to 'latex' and 'beamer' target formats)</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_latex_engine">latex_engine</code></td>
+<td>
+<p>LaTeX engine to producing PDF output (applies only to
+'latex' and 'beamer' target formats)</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_ext">ext</code></td>
+<td>
+<p>File extension (e.g. &quot;.tex&quot;) for output file (if <code>NULL</code>
+chooses default based on <code>to</code>). This is typically used to force the
+final output of a latex or beamer conversion to be <code>.tex</code> rather than
+<code>.pdf</code>.</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_lua_filters">lua_filters</code></td>
+<td>
+<p>Character vector of file paths to Lua filters to use with
+this format. They will be added to pandoc command line call using
+<code>--lua-filter</code> argument. See <code>vignette("lua-filters", package =
+"rmarkdown")</code> to know more about Lua filters.</p>
+</td></tr>
+<tr><td><code id="pandoc_options_:_convert_fun">convert_fun</code></td>
+<td>
+<p>A function to convert the input file to the desired output
+format in <code><a href="../../rmarkdown/help/render.html">render</a>()</code>. If not provided,
+<code><a href="../../rmarkdown/help/pandoc_convert.html">pandoc_convert</a>()</code> will be used. If a custom function is
+provided, its arguments and returned value should match the
+<code>pandoc_convert()</code> function. Note that this function does not have to
+use Pandoc but can also use other tools such as <span class="pkg">commonmark</span>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>from</code> argument should be used very cautiously as it's important for
+users to be able to rely on a stable definition of supported markdown
+extensions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An list that can be passed as the <code>pandoc</code> argument of the
+<code><a href="../../rmarkdown/help/output_format.html">output_format</a></code> function.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../rmarkdown/help/output_format.html">output_format</a>, <a href="../../rmarkdown/help/rmarkdown_format.html">rmarkdown_format</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 2.25 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

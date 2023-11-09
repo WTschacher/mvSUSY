@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><title>R: Integer ranking functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>row_number {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='row_number'>Integer ranking functions</h2>
+
+<h3>Description</h3>
+
+<p>Three ranking functions inspired by SQL2003. They differ primarily in how
+they handle ties:
+</p>
+
+<ul>
+<li> <p><code>row_number()</code> gives every input a unique rank, so that <code>c(10, 20, 20, 30)</code>
+would get ranks <code>c(1, 2, 3, 4)</code>. It's equivalent to
+<code>rank(ties.method = "first")</code>.
+</p>
+</li>
+<li> <p><code>min_rank()</code> gives every tie the same (smallest) value so that
+<code>c(10, 20, 20, 30)</code> gets ranks <code>c(1, 2, 2, 4)</code>. It's the way that ranks
+are usually computed in sports and is equivalent to
+<code>rank(ties.method = "min")</code>.
+</p>
+</li>
+<li> <p><code>dense_rank()</code> works like <code>min_rank()</code>, but doesn't leave any gaps,
+so that <code>c(10, 20, 20, 30)</code> gets ranks <code>c(1, 2, 2, 3)</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>row_number(x)
+
+min_rank(x)
+
+dense_rank(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="row_number_:_x">x</code></td>
+<td>
+<p>A vector to rank
+</p>
+<p>By default, the smallest values will get the smallest ranks. Use <code><a href="../../dplyr/help/desc.html">desc()</a></code>
+to reverse the direction so the largest values get the smallest ranks.
+</p>
+<p>Missing values will be given rank <code>NA</code>. Use <code>coalesce(x, Inf)</code> or
+<code>coalesce(x, -Inf)</code> if you want to treat them as the largest or smallest
+values respectively.
+</p>
+<p>To rank by multiple columns at once, supply a data frame.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An integer vector.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other ranking functions: 
+<code><a href="../../dplyr/help/ntile.html">ntile</a>()</code>,
+<code><a href="../../dplyr/help/percent_rank.html">percent_rank</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c(5, 1, 3, 2, 2, NA)
+row_number(x)
+min_rank(x)
+dense_rank(x)
+
+# Ranking functions can be used in `filter()` to select top/bottom rows
+df &lt;- data.frame(
+  grp = c(1, 1, 1, 2, 2, 2, 3, 3, 3),
+  x = c(3, 2, 1, 1, 2, 2, 1, 1, 1),
+  y = c(1, 3, 2, 3, 2, 2, 4, 1, 2),
+  id = 1:9
+)
+# Always gives exactly 1 row per group
+df %&gt;% group_by(grp) %&gt;% filter(row_number(x) == 1)
+# May give more than 1 row if ties
+df %&gt;% group_by(grp) %&gt;% filter(min_rank(x) == 1)
+# Rank by multiple columns (to break ties) by selecting them with `pick()`
+df %&gt;% group_by(grp) %&gt;% filter(min_rank(pick(x, y)) == 1)
+# See slice_min() and slice_max() for another way to tackle the same problem
+
+# You can use row_number() without an argument to refer to the "current"
+# row number.
+df %&gt;% group_by(grp) %&gt;% filter(row_number() == 1)
+
+# It's easiest to see what this does with mutate():
+df %&gt;% group_by(grp) %&gt;% mutate(grp_id = row_number())
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

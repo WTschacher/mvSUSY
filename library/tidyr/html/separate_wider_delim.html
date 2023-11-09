@@ -1,0 +1,318 @@
+<!DOCTYPE html><html><head><title>R: Split a string into columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>separate_wider_delim {tidyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='separate_wider_delim'>Split a string into columns</h2>
+
+<h3>Description</h3>
+
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="../help/figures/lifecycle-experimental.svg" alt='[Experimental]' /></a>
+</p>
+<p>Each of these functions takes a string column and splits it into multiple
+new columns:
+</p>
+
+<ul>
+<li> <p><code>separate_wider_delim()</code> splits by delimiter.
+</p>
+</li>
+<li> <p><code>separate_wider_position()</code> splits at fixed widths.
+</p>
+</li>
+<li> <p><code>separate_wider_regex()</code> splits with regular expression matches.
+</p>
+</li></ul>
+
+<p>These functions are equivalent to <code><a href="../../tidyr/help/separate.html">separate()</a></code> and <code><a href="../../tidyr/help/extract.html">extract()</a></code>, but use
+<a href="https://stringr.tidyverse.org/">stringr</a> as the underlying string
+manipulation engine, and their interfaces reflect what we've learned from
+<code><a href="../../tidyr/help/unnest_wider.html">unnest_wider()</a></code> and <code><a href="../../tidyr/help/unnest_longer.html">unnest_longer()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>separate_wider_delim(
+  data,
+  cols,
+  delim,
+  ...,
+  names = NULL,
+  names_sep = NULL,
+  names_repair = "check_unique",
+  too_few = c("error", "debug", "align_start", "align_end"),
+  too_many = c("error", "debug", "drop", "merge"),
+  cols_remove = TRUE
+)
+
+separate_wider_position(
+  data,
+  cols,
+  widths,
+  ...,
+  names_sep = NULL,
+  names_repair = "check_unique",
+  too_few = c("error", "debug", "align_start"),
+  too_many = c("error", "debug", "drop"),
+  cols_remove = TRUE
+)
+
+separate_wider_regex(
+  data,
+  cols,
+  patterns,
+  ...,
+  names_sep = NULL,
+  names_repair = "check_unique",
+  too_few = c("error", "debug", "align_start"),
+  cols_remove = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="separate_wider_delim_:_data">data</code></td>
+<td>
+<p>A data frame.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_cols">cols</code></td>
+<td>
+<p>&lt;<code><a href="../../tidyr/help/tidyr_tidy_select.html">tidy-select</a></code>&gt; Columns to separate.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_delim">delim</code></td>
+<td>
+<p>For <code>separate_wider_delim()</code>, a string giving the delimiter
+between values. By default, it is interpreted as a fixed string; use
+<code><a href="../../stringr/help/modifiers.html">stringr::regex()</a></code> and friends to split in other ways.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_...">...</code></td>
+<td>
+<p>These dots are for future extensions and must be empty.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_names">names</code></td>
+<td>
+<p>For <code>separate_wider_delim()</code>, a character vector of output
+column names. Use <code>NA</code> if there are components that you don't want
+to appear in the output; the number of non-<code>NA</code> elements determines the
+number of new columns in the result.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_names_sep">names_sep</code></td>
+<td>
+<p>If supplied, output names will be composed
+of the input column name followed by the separator followed by the
+new column name. Required when <code>cols</code> selects multiple columns.
+</p>
+<p>For <code>separate_wider_delim()</code> you can specify instead of <code>names</code>, in which
+case the names will be generated from the source column name, <code>names_sep</code>,
+and a numeric suffix.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_names_repair">names_repair</code></td>
+<td>
+<p>Used to check that output data frame has valid
+names. Must be one of the following options:
+</p>
+
+<ul>
+<li> <p><code style="white-space: pre;">&#8288;"minimal&#8288;</code>&quot;: no name repair or checks, beyond basic existence,
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;"unique&#8288;</code>&quot;: make sure names are unique and not empty,
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;"check_unique&#8288;</code>&quot;: (the default), no name repair, but check they are unique,
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;"universal&#8288;</code>&quot;: make the names unique and syntactic
+</p>
+</li>
+<li><p> a function: apply custom name repair.
+</p>
+</li>
+<li> <p><a href="../../tidyr/help/tidyr_legacy.html">tidyr_legacy</a>: use the name repair from tidyr 0.8.
+</p>
+</li>
+<li><p> a formula: a purrr-style anonymous function (see <code><a href="../../rlang/help/as_function.html">rlang::as_function()</a></code>)
+</p>
+</li></ul>
+
+<p>See <code><a href="../../vctrs/help/vec_as_names.html">vctrs::vec_as_names()</a></code> for more details on these terms and the
+strategies used to enforce them.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_too_few">too_few</code></td>
+<td>
+<p>What should happen if a value separates into too few
+pieces?
+</p>
+
+<ul>
+<li> <p><code>"error"</code>, the default, will throw an error.
+</p>
+</li>
+<li> <p><code>"debug"</code> adds additional columns to the output to help you
+locate and resolve the underlying problem. This option is intended to
+help you debug the issue and address and should not generally remain in
+your final code.
+</p>
+</li>
+<li> <p><code>"align_start"</code> aligns starts of short matches, adding <code>NA</code> on the end
+to pad to the correct length.
+</p>
+</li>
+<li> <p><code>"align_end"</code> (<code>separate_wider_delim()</code> only) aligns the ends of short
+matches, adding <code>NA</code> at the start to pad to the correct length.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_too_many">too_many</code></td>
+<td>
+<p>What should happen if a value separates into too many
+pieces?
+</p>
+
+<ul>
+<li> <p><code>"error"</code>, the default, will throw an error.
+</p>
+</li>
+<li> <p><code>"debug"</code> will add additional columns to the output to help you
+locate and resolve the underlying problem.
+</p>
+</li>
+<li> <p><code>"drop"</code> will silently drop any extra pieces.
+</p>
+</li>
+<li> <p><code>"merge"</code> (<code>separate_wider_delim()</code> only) will merge together any
+additional pieces.
+</p>
+</li></ul>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_cols_remove">cols_remove</code></td>
+<td>
+<p>Should the input <code>cols</code> be removed from the output?
+Always <code>FALSE</code> if <code>too_few</code> or <code>too_many</code> are set to <code>"debug"</code>.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_widths">widths</code></td>
+<td>
+<p>A named numeric vector where the names become column names,
+and the values specify the column width. Unnamed components will match,
+but not be included in the output.</p>
+</td></tr>
+<tr><td><code id="separate_wider_delim_:_patterns">patterns</code></td>
+<td>
+<p>A named character vector where the names become column names
+and the values are regular expressions that match the contents of the
+vector. Unnamed components will match, but not be included in the output.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data frame based on <code>data</code>. It has the same rows, but different
+columns:
+</p>
+
+<ul>
+<li><p> The primary purpose of the functions are to create new columns from
+components of the string.
+For <code>separate_wider_delim()</code> the names of new columns come from <code>names</code>.
+For <code>separate_wider_position()</code> the names come from the names of <code>widths</code>.
+For <code>separate_wider_regex()</code> the names come from the names of
+<code>patterns</code>.
+</p>
+</li>
+<li><p> If <code>too_few</code> or <code>too_many</code> is <code>"debug"</code>, the output will contain additional
+columns useful for debugging:
+</p>
+
+<ul>
+<li> <p><code style="white-space: pre;">&#8288;{col}_ok&#8288;</code>: a logical vector which tells you if the input was ok or
+not. Use to quickly find the problematic rows.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;{col}_remainder&#8288;</code>: any text remaining after separation.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;{col}_pieces&#8288;</code>, <code style="white-space: pre;">&#8288;{col}_width&#8288;</code>, <code style="white-space: pre;">&#8288;{col}_matches&#8288;</code>: number of pieces,
+number of characters, and number of matches for <code>separate_wider_delim()</code>,
+<code>separate_wider_position()</code> and <code>separate_regexp_wider()</code> respectively.
+</p>
+</li></ul>
+
+</li>
+<li><p> If <code>cols_remove = TRUE</code> (the default), the input <code>cols</code> will be removed
+from the output.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(id = 1:3, x = c("m-123", "f-455", "f-123"))
+# There are three basic ways to split up a string into pieces:
+# 1. with a delimiter
+df %&gt;% separate_wider_delim(x, delim = "-", names = c("gender", "unit"))
+# 2. by length
+df %&gt;% separate_wider_position(x, c(gender = 1, 1, unit = 3))
+# 3. defining each component with a regular expression
+df %&gt;% separate_wider_regex(x, c(gender = ".", ".", unit = "\\d+"))
+
+# Sometimes you split on the "last" delimiter
+df &lt;- tibble(var = c("race_1", "race_2", "age_bucket_1", "age_bucket_2"))
+# _delim won't help because it always splits on the first delimiter
+try(df %&gt;% separate_wider_delim(var, "_", names = c("var1", "var2")))
+df %&gt;% separate_wider_delim(var, "_", names = c("var1", "var2"), too_many = "merge")
+# Instead, you can use _regex
+df %&gt;% separate_wider_regex(var, c(var1 = ".*", "_", var2 = ".*"))
+# this works because * is greedy; you can mimic the _delim behaviour with .*?
+df %&gt;% separate_wider_regex(var, c(var1 = ".*?", "_", var2 = ".*"))
+
+# If the number of components varies, it's most natural to split into rows
+df &lt;- tibble(id = 1:4, x = c("x", "x y", "x y z", NA))
+df %&gt;% separate_longer_delim(x, delim = " ")
+# But separate_wider_delim() provides some tools to deal with the problem
+# The default behaviour tells you that there's a problem
+try(df %&gt;% separate_wider_delim(x, delim = " ", names = c("a", "b")))
+# You can get additional insight by using the debug options
+df %&gt;%
+  separate_wider_delim(
+    x,
+    delim = " ",
+    names = c("a", "b"),
+    too_few = "debug",
+    too_many = "debug"
+  )
+
+# But you can suppress the warnings
+df %&gt;%
+  separate_wider_delim(
+    x,
+    delim = " ",
+    names = c("a", "b"),
+    too_few = "align_start",
+    too_many = "merge"
+  )
+
+# Or choose to automatically name the columns, producing as many as needed
+df %&gt;% separate_wider_delim(x, delim = " ", names_sep = "", too_few = "align_start")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidyr</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

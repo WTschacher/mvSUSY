@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><title>R: Combine values from multiple columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>c_across {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='c_across'>Combine values from multiple columns</h2>
+
+<h3>Description</h3>
+
+<p><code>c_across()</code> is designed to work with <code><a href="../../dplyr/help/rowwise.html">rowwise()</a></code> to make it easy to
+perform row-wise aggregations. It has two differences from <code>c()</code>:
+</p>
+
+<ul>
+<li><p> It uses tidy select semantics so you can easily select multiple variables.
+See <code>vignette("rowwise")</code> for more details.
+</p>
+</li>
+<li><p> It uses <code><a href="../../vctrs/help/vec_c.html">vctrs::vec_c()</a></code> in order to give safer outputs.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>c_across(cols)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="c_across_:_cols">cols</code></td>
+<td>
+<p>&lt;<code><a href="../../dplyr/help/dplyr_tidy_select.html">tidy-select</a></code>&gt; Columns to transform.
+You can't select grouping columns because they are already automatically
+handled by the verb (i.e. <code><a href="../../dplyr/help/summarise.html">summarise()</a></code> or <code><a href="../../dplyr/help/mutate.html">mutate()</a></code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../dplyr/help/across.html">across()</a></code> for a function that returns a tibble.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>df &lt;- tibble(id = 1:4, w = runif(4), x = runif(4), y = runif(4), z = runif(4))
+df %&gt;%
+  rowwise() %&gt;%
+  mutate(
+    sum = sum(c_across(w:z)),
+    sd = sd(c_across(w:z))
+  )
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.1.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><title>R: Encode a raster object as a data URI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>raster2uri {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='raster2uri'>Encode a raster object as a data URI</h2>
+
+<h3>Description</h3>
+
+<p>Encode a raster object as a data URI, which is suitable for
+use with <code>layout()</code> <a href="https://plotly.com/r/reference/#layout-images">images</a>.
+This is especially convenient for embedding raster images on a plot in
+a self-contained fashion (i.e., so they don't depend on external URL links).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>raster2uri(r, ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="raster2uri_:_r">r</code></td>
+<td>
+<p>an object coercable to a raster object via <code><a href="../../grDevices/html/as.raster.html">as.raster()</a></code></p>
+</td></tr>
+<tr><td><code id="raster2uri_:_...">...</code></td>
+<td>
+<p>arguments passed onto <code><a href="../../grDevices/html/as.raster.html">as.raster()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Carson Sievert
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://plotly-r.com/embedding-images.html">https://plotly-r.com/embedding-images.html</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+
+# a red gradient (from ?as.raster)
+r &lt;- as.raster(matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5))
+plot(r)
+
+# embed the raster as an image
+plot_ly(x = 1, y = 1) %&gt;% 
+  layout(
+    images = list(list(
+     source = raster2uri(r),
+     xref = "paper", 
+     yref = "paper", 
+     x = 0, y = 0, 
+     sizex = 0.5, sizey = 0.5, 
+     xanchor = "left", yanchor = "bottom"
+  ))
+ ) 
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

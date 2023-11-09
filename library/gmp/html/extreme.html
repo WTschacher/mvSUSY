@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><title>R: Extrema (Maxima and Minima)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>Extremes {gmp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='Extremes'>Extrema (Maxima and Minima)</h2>
+
+<h3>Description</h3>
+
+<p>We provide S3 <code><a href="../../utils/html/methods.html">methods</a></code> for <code><a href="../../base/html/Extremes.html">min</a></code> and
+<code><a href="../../base/html/Extremes.html">max</a></code> for big rationals (<code>bigq</code>) and big integers
+(<code>biqz</code>);  consequently, <code><a href="../../base/html/range.html">range</a>()</code> works as well.
+</p>
+<p>Similarly, S4 methods are provided for <code><a href="../../base/html/which.min.html">which.min</a>()</code> and
+<code><a href="../../base/html/which.min.html">which.max</a>()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>## S3 method for class 'bigz'
+max(..., na.rm=FALSE)
+## S3 method for class 'bigq'
+max(..., na.rm=FALSE)
+## S3 method for class 'bigz'
+min(..., na.rm=FALSE)
+## S3 method for class 'bigq'
+min(..., na.rm=FALSE)
+
+## S4 method for signature 'bigz'
+which.min(x)
+
+
+## S4 method for signature 'bigq'
+which.max(x)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="Extremes_:_x">x</code></td>
+<td>
+<p>a &ldquo;big integer&rdquo; (<code>bigz</code>) or &ldquo;big rational&rdquo;
+(<code>bigq</code>) vector.</p>
+</td></tr>
+<tr><td><code id="Extremes_:_...">...</code></td>
+<td>
+<p>numeric arguments</p>
+</td></tr>
+<tr><td><code id="Extremes_:_na.rm">na.rm</code></td>
+<td>
+<p>a logical indicating whether missing values should be removed.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>an object of class <code>"<a href="../../gmp/help/bigz.html">bigz</a>"</code> or <code>"<a href="../../gmp/help/bigq.html">bigq</a>"</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Antoine Lucas</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Extremes.html">max</a></code> etc in <span class="pkg">base</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'> x &lt;- as.bigz(1:10)
+ max(x)
+ min(x)
+ range(x) # works correctly via default method
+ x &lt;- x[c(7:10,6:3,1:2)]
+ which.min(x) ## 9
+ which.max(x) ## 4
+
+ Q &lt;- as.bigq(1:10, 3)
+ max(Q)
+ min(Q)
+ (Q &lt;- Q[c(6:3, 7:10,1:2)])
+ stopifnot(which.min(Q) == which.min(asNumeric(Q)),
+           which.max(Q) == which.max(asNumeric(Q)))
+
+stopifnot(range(x) == c(1,10), 3*range(Q) == c(1,10))
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gmp</em> version 0.7-2 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

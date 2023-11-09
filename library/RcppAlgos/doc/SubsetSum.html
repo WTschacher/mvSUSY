@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Joseph Wood" />
+
+<meta name="date" content="2023-10-02" />
+
+<title>Attacking Problems Related to the Subset Sum Problem</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Attacking Problems Related to the Subset
+Sum Problem</h1>
+<h4 class="author">Joseph Wood</h4>
+<h4 class="date">10/02/2023</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#building-on-integer-partitions" id="toc-building-on-integer-partitions">Building on Integer
+Partitions</a>
+<ul>
+<li><a href="#working-with-negative-numbers" id="toc-working-with-negative-numbers">Working with Negative
+Numbers</a></li>
+</ul></li>
+<li><a href="#partitions-with-no-restrictions" id="toc-partitions-with-no-restrictions">Partitions with no
+Restrictions</a></li>
+<li><a href="#taming-floating-point-numbers" id="toc-taming-floating-point-numbers">Taming Floating Point
+Numbers</a></li>
+<li><a href="#prod-and-mean" id="toc-prod-and-mean"><code>prod</code>
+and <code>mean</code></a></li>
+<li><a href="#using-iterators" id="toc-using-iterators">Using
+Iterators</a></li>
+</ul>
+</div>
+
+<p>This document covers the topic of solving problems related to the <a href="https://en.wikipedia.org/wiki/Subset_sum_problem">subset sum
+problem</a> with <code>RcppAlgos</code>. We have already covered integer
+partitions, which is a special case of the subset sum problem, in <a href="https://jwood000.github.io/RcppAlgos/articles/CombPermConstraints.html#integer-partitions">Constraints
+and Integer Partitions</a> and it is highly encouraged to read that
+vignette first.</p>
+<hr />
+<div id="building-on-integer-partitions" class="section level2">
+<h2>Building on Integer Partitions</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Partition_(number_theory)">integer
+partition problem</a> presents the question <em>“how can we write n as a
+sum of positive integers?”</em> There are well-known algorithms for
+enumerating <em>all</em> partitions of an integer <em>n</em>. We even
+have algorithms for generating partitions of a specific length or with
+distinct parts only. But how do we enumerate partitions of <em>n</em>
+with a specific set of numbers? What about enumerating partitions of a
+specific length <em>m</em> of <em>n</em> given a specific set of
+numbers?</p>
+<p>For example, using only the numbers <code>3:18</code>, find all
+partitions of <code>50</code> of length <code>5</code>.</p>
+<p>With <code>RcppAlgos</code>, this is easily achieved. We simply use
+the same template as we did in <a href="https://jwood000.github.io/RcppAlgos/articles/CombPermConstraints.html#integer-partitions">Constraints
+and Integer Partitions</a>. Observe (We continue to use the
+<code>ht</code> function defined in the <a href="https://jwood000.github.io/RcppAlgos/articles/GeneralCombinatorics.html">Combination
+and Permutation Basics</a> vignette):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(RcppAlgos)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">90</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>ht <span class="ot">&lt;-</span> <span class="cf">function</span>(d, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">n =</span> m) {</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="do">## print the head and tail together</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;head --&gt;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">head</span>(d, m))</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;--------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;tail --&gt;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">tail</span>(d, n))</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="do">## Each element can only occur once</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="fu">ht</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">18</span>, <span class="dv">5</span>, <span class="at">target =</span> <span class="dv">50</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt; [1,]    3    4    8   17   18</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt; [2,]    3    4    9   16   18</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; [3,]    3    4   10   15   18</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; [4,]    3    4   10   16   17</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; [5,]    3    4   11   14   18</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; [180,]    7    8    9   12   14</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#&gt; [181,]    7    8   10   11   14</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; [182,]    7    8   10   12   13</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; [183,]    7    9   10   11   13</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; [184,]    8    9   10   11   12</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="do">## What about allowing repetition?</span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="fu">ht</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">18</span>, <span class="dv">5</span>, <span class="cn">TRUE</span>, <span class="at">target =</span> <span class="dv">50</span>))</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a><span class="co">#&gt; [1,]    3    3    8   18   18</span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="co">#&gt; [2,]    3    3    9   17   18</span></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="co">#&gt; [3,]    3    3   10   16   18</span></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="co">#&gt; [4,]    3    3   10   17   17</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a><span class="co">#&gt; [5,]    3    3   11   15   18</span></span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="co">#&gt; [507,]    9    9    9   11   12</span></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co">#&gt; [508,]    9    9   10   10   12</span></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="co">#&gt; [509,]    9    9   10   11   11</span></span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a><span class="co">#&gt; [510,]    9   10   10   10   11</span></span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a><span class="co">#&gt; [511,]   10   10   10   10   10</span></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a><span class="do">## Even works on multisets</span></span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="fu">ht</span>(<span class="fu">partitionsGeneral</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">18</span>, <span class="dv">5</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="at">target =</span> <span class="dv">50</span>))</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a><span class="co">#&gt; [1,]    3    4    7   18   18</span></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a><span class="co">#&gt; [2,]    3    4    8   17   18</span></span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a><span class="co">#&gt; [3,]    3    4    9   16   18</span></span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a><span class="co">#&gt; [4,]    3    4    9   17   17</span></span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a><span class="co">#&gt; [5,]    3    4   10   15   18</span></span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a><span class="co">#&gt;        [,1] [,2] [,3] [,4] [,5]</span></span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a><span class="co">#&gt; [401,]    8   10   10   10   12</span></span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a><span class="co">#&gt; [402,]    9    9    9   10   13</span></span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a><span class="co">#&gt; [403,]    9    9    9   11   12</span></span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a><span class="co">#&gt; [404,]    9    9   10   10   12</span></span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a><span class="co">#&gt; [405,]    9   10   10   10   11</span></span></code></pre></div>
+<p>In fact, these optimized algorithms can be applied when the vector
+passed has the quality that if you were to sort them, the difference of
+each element with it’s neighbor is constant (E.g.
+<code>c(121, 126, 131, 136, ..., 221)</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>even_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    genParts <span class="ot">&lt;-</span> <span class="fu">partitionsGeneral</span>(<span class="fu">seq</span>(<span class="dv">121</span>, <span class="dv">221</span>, <span class="dv">5</span>), <span class="dv">13</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>                                  <span class="cn">TRUE</span>, <span class="at">target =</span> <span class="dv">2613</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>})</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>even_time</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;   0.002   0.000   0.003</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">ht</span>(genParts)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; [1,]  121  121  161  221  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; [2,]  121  121  166  216  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; [3,]  121  121  171  211  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; [4,]  121  121  171  216  216  221  221  221  221   221   221   221   221</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; [5,]  121  121  176  206  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt;           [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; [119542,]  196  196  196  201  201  201  201  201  201   201   206   206   206</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; [119543,]  196  196  201  201  201  201  201  201  201   201   201   201   211</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; [119544,]  196  196  201  201  201  201  201  201  201   201   201   206   206</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; [119545,]  196  201  201  201  201  201  201  201  201   201   201   201   206</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; [119546,]  201  201  201  201  201  201  201  201  201   201   201   201   201</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="fu">prettyNum</span>(<span class="fu">comboCount</span>(<span class="fu">seq</span>(<span class="dv">121</span>, <span class="dv">221</span>, <span class="dv">5</span>), <span class="dv">13</span>, <span class="cn">TRUE</span>), <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; [1] &quot;573,166,440&quot;</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="fu">system.time</span>(genMultiParts <span class="ot">&lt;-</span> <span class="fu">partitionsGeneral</span>(<span class="fu">seq</span>(<span class="dv">121</span>, <span class="dv">221</span>, <span class="dv">5</span>), <span class="dv">13</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>                                               <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="dv">3</span>),</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>                                               <span class="at">targe =</span> <span class="dv">2613</span>))</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt;   0.003   0.001   0.005</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="fu">ht</span>(genMultiParts)</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; [1,]  121  126  171  216  216  216  221  221  221   221   221   221   221</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; [2,]  121  126  176  211  216  216  221  221  221   221   221   221   221</span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; [3,]  121  126  176  216  216  216  216  221  221   221   221   221   221</span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; [4,]  121  126  181  206  216  216  221  221  221   221   221   221   221</span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; [5,]  121  126  181  211  211  216  221  221  221   221   221   221   221</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#&gt;          [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#&gt; [70291,]  186  186  191  196  196  201  201  206  206   211   211   211   211</span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="co">#&gt; [70292,]  186  186  191  196  196  201  206  206  206   206   211   211   211</span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; [70293,]  186  186  191  196  201  201  201  206  206   206   206   211   216</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; [70294,]  186  186  191  196  201  201  201  206  206   206   211   211   211</span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; [70295,]  186  186  196  196  201  201  201  206  206   206   206   211   211</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="fu">prettyNum</span>(<span class="fu">comboCount</span>(<span class="fu">seq</span>(<span class="dv">121</span>, <span class="dv">221</span>, <span class="dv">5</span>), <span class="dv">13</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="dv">3</span>)), <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; [1] &quot;256,047,675&quot;</span></span></code></pre></div>
+<div id="working-with-negative-numbers" class="section level3">
+<h3>Working with Negative Numbers</h3>
+<p>Generally, integer partition algorithms are restricted to positive
+integers. However, with the generalized partition algorithms in
+<code>RcppAlgos</code>, we can make light work of vectors with negative
+numbers (again, the sorted vector has to have the property that the
+difference of each element with it’s neighbor is constant).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    genDistParts <span class="ot">&lt;-</span> <span class="fu">partitionsGeneral</span>(<span class="fu">seq</span>(<span class="sc">-</span>173L, 204L, 13L),</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                                      <span class="dv">11</span>, <span class="at">target =</span> <span class="sc">-</span><span class="dv">460</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>})</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;   0.002   0.000   0.002</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">rowSums</span>(genDistParts) <span class="sc">==</span> <span class="sc">-</span>460L)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">ht</span>(genDistParts)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11]</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; [1,] -173 -160 -147 -134 -121 -108  -95  -82  165   191   204</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [2,] -173 -160 -147 -134 -121 -108  -95  -69  152   191   204</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; [3,] -173 -160 -147 -134 -121 -108  -95  -69  165   178   204</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; [4,] -173 -160 -147 -134 -121 -108  -95  -56  139   191   204</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; [5,] -173 -160 -147 -134 -121 -108  -95  -56  152   178   204</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt;           [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11]</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; [108940,] -121 -108  -82  -69  -56  -43  -30  -17   -4    22    48</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; [108941,] -121 -108  -82  -69  -56  -43  -30  -17    9    22    35</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; [108942,] -121  -95  -82  -69  -56  -43  -30  -17   -4     9    48</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; [108943,] -121  -95  -82  -69  -56  -43  -30  -17   -4    22    35</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; [108944,] -108  -95  -82  -69  -56  -43  -30  -17   -4     9    35</span></span></code></pre></div>
+</div>
+</div>
+<div id="partitions-with-no-restrictions" class="section level2">
+<h2>Partitions with no Restrictions</h2>
+<p>With the examples illustrated above, we had the restriction that the
+sorted input vector had to have the property that the difference of each
+element with it’s neighbor is constant. If this requirement is broken,
+it only means that we cannot use a particular algorithm and we must fall
+back to a more general algorithm. <em>Fret not!!</em> These general
+algorithms are extremely efficient and very flexible. We can use them
+with random input vectors, random targets, as well as over ranges.</p>
+<p>Let us revisit the example above but with a slight variation that
+breaks the requirement.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>inpVec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">116</span>, <span class="fu">seq</span>(<span class="dv">126</span>, <span class="dv">221</span>, <span class="dv">5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="do">## Non-constant difference... The specialized algo can&#39;t be used</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">diff</span>(inpVec)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;  [1] 10  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>uneven_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    genParts2 <span class="ot">&lt;-</span> <span class="fu">partitionsGeneral</span>(inpVec, <span class="dv">13</span>, <span class="cn">TRUE</span>, <span class="at">target =</span> <span class="dv">2613</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>})</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>uneven_time    <span class="do">## out of a possible 573 million in under a second</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;   0.050   0.003   0.053</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="fu">ht</span>(genParts2)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; [1,]  116  116  171  221  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; [2,]  116  116  176  216  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; [3,]  116  116  181  211  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; [4,]  116  116  181  216  216  221  221  221  221   221   221   221   221</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [5,]  116  116  186  206  221  221  221  221  221   221   221   221   221</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt;           [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; [118556,]  196  196  196  201  201  201  201  201  201   201   206   206   206</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; [118557,]  196  196  201  201  201  201  201  201  201   201   201   201   211</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; [118558,]  196  196  201  201  201  201  201  201  201   201   201   206   206</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; [118559,]  196  201  201  201  201  201  201  201  201   201   201   201   206</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; [118560,]  201  201  201  201  201  201  201  201  201   201   201   201   201</span></span></code></pre></div>
+<p>Although the above was about 18 times slower than the first example
+dealing with 573 million combinations (0.053 milliseconds vs. 0.003
+milliseconds), we are still dealing in milliseconds!!! For reference,
+version <code>2.3.4</code> takes about 18 seconds to find all 118,560
+solutions.</p>
+<p>Here are some more exotic examples demonstrating the power of these
+algorithms.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>mySamp <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="sc">-</span><span class="dv">100</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">50</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">sort</span>(mySamp)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt;  [1] -98 -97 -96 -95 -81 -77 -74 -65 -60 -59 -58 -54 -52 -43 -36 -33 -30 -27 -12  -9  -2</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; [22]  -1   3   8   9  10  13  21  27  30  33  35  42  45  49  52  53  57  61  63  64  70</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; [43]  73  76  83  84  88  91  96 100</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">system.time</span>(exotic <span class="ot">&lt;-</span> <span class="fu">partitionsGeneral</span>(mySamp, <span class="dv">8</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>                                        <span class="at">target =</span> <span class="dv">496</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;   0.132   0.002   0.134</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="fu">dim</span>(exotic)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; [1] 102241      8</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="do">## Over 1 billion total combinations</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="fu">prettyNum</span>(<span class="fu">comboCount</span>(mySamp, <span class="dv">8</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>)), <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1,343,133,680&quot;</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="do">## Only getting a few (a thousand in this case) is much faster</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">partitionsGeneral</span>(mySamp, <span class="dv">8</span>, <span class="at">freqs =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">10</span>),</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>                              <span class="at">target =</span> <span class="dv">496</span>, <span class="at">upper =</span> <span class="fl">1e3</span>))</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt;   0.002   0.000   0.002</span></span></code></pre></div>
+<p>The function <code>permuteGeneral</code> benefits from these
+optimized algorithms as well. However, just as we discussed in <a href="https://jwood000.github.io/RcppAlgos/articles/CombPermConstraints.html#output-order-with-permutegeneral">Output
+Order with <code>permuteGeneral</code></a>, the output will not be in
+lexicographical order.</p>
+</div>
+<div id="taming-floating-point-numbers" class="section level2">
+<h2>Taming Floating Point Numbers</h2>
+<p>Oftentimes when working with numerical vectors, it can be hard to
+find combinations that sum to a particular number because of floating
+point errors (See <a href="https://jwood000.github.io/RcppAlgos/articles/CombPermConstraints.html#using-tolerance">Using
+<code>tolerance</code></a>). In practice, we may not need an exact match
+and a close approximation will suffice. For example, let’s say we have a
+football team of 100 players (including practice squad) and we are
+interested in a trade involving 6 players and a total salary of 20
+million dollars. We may not be able to find 6 players whose sum of
+salaries is exactly 20 million, but we can find many 6 player
+combinations whose sum of salaries is within a tolerance of 20
+million.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">22213</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>football_player_salaries <span class="ot">&lt;-</span> <span class="fl">2e7</span> <span class="sc">*</span> <span class="fu">rbeta</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">25</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">summary</span>(football_player_salaries)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;   115308   768338  1261683  1612271  1950565 10895883</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="do">## Over 1 billion combinations...</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="do">## An exhaustive search will not be feasible</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="fu">prettyNum</span>(<span class="fu">comboCount</span>(football_player_salaries, <span class="dv">6</span>), <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1,192,052,400&quot;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="fu">system.time</span>(exactly20 <span class="ot">&lt;-</span> <span class="fu">partitionsGeneral</span>(football_player_salaries, <span class="dv">6</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>                                           <span class="at">target =</span> <span class="fl">2e7</span>, <span class="at">tolerance =</span> <span class="dv">0</span>))</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt;   1.411   0.008   1.419</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="do">## No results that equal exactly 2e7</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="fu">dim</span>(exactly20)</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; [1] 0 6</span></span></code></pre></div>
+<p>What if we increase the tolerance to <code>$</code>1000 (Honestly…
+what’s <code>$</code>1000 when we are talking about 20 million dollars)?
+Our intent is to explore these options, so we take advantage of the
+<code>upper</code> argument in anticipation that we obtain many results
+that meet the criteria. If we obtain the upper bound, we decrease the
+tolerance (if needed) and repeat.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## N.B. This is much more efficient. Also, we set keepResults</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="do">## to TRUE so we can see the total sum of salaries.</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">system.time</span>(almost20 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(football_player_salaries, <span class="dv">6</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>                                     <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>                                     <span class="at">limitConstraints =</span> <span class="fl">2e7</span>, <span class="at">tolerance =</span> <span class="dv">1000</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>                                     <span class="at">upper =</span> <span class="dv">1000</span>, <span class="at">keepResults =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;   0.062   0.000   0.063</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="fu">dim</span>(almost20)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; [1] 1000    7</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="fu">ht</span>(almost20)</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;          [,1]     [,2]      [,3]    [,4]    [,5]     [,6]     [,7]</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; [1,] 115307.7 152563.4  809407.9 3163109 4863446 10895883 19999717</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; [2,] 115307.7 152563.4 1590746.9 2381655 4863446 10895883 19999602</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; [3,] 115307.7 152563.4 1669898.9 2302265 4863446 10895883 19999365</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; [4,] 115307.7 152563.4 1746659.2 2225285 4863446 10895883 19999145</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; [5,] 115307.7 152563.4 1853727.8 2850338 4132545 10895883 20000364</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt;             [,1]     [,2]    [,3]    [,4]    [,5]     [,6]     [,7]</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt;  [996,] 200278.8 550414.4 1751652 2984500 3618110 10895883 20000838</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt;  [997,] 200278.8 550414.4 1855829 3163109 3334046 10895883 19999560</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt;  [998,] 200278.8 550414.4 1884764 2850338 3618110 10895883 19999788</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt;  [999,] 200278.8 550414.4 2013884 2850338 3489156 10895883 19999953</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; [1000,] 200278.8 550414.4 2051845 2984500 3316996 10895883 19999917</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="do">## decreasing the tolerance to $10 further we obtain 158 results</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="fu">system.time</span>(superClose20 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(football_player_salaries, <span class="dv">6</span>,</span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a>                                         <span class="at">constraintFun =</span> <span class="st">&quot;sum&quot;</span>, <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>                                         <span class="at">limitConstraints =</span> <span class="fl">2e7</span>, <span class="at">tolerance =</span> <span class="dv">10</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>                                         <span class="at">upper =</span> <span class="dv">1000</span>, <span class="at">keepResults =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="co">#&gt;   1.409   0.008   1.417</span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a><span class="fu">ht</span>(superClose20)</span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a><span class="co">#&gt;          [,1]      [,2]      [,3]    [,4]    [,5]     [,6]     [,7]</span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co">#&gt; [1,] 115307.7  266606.5  695657.2 3163109 4863446 10895883 20000009</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="co">#&gt; [2,] 115307.7 1117835.0 1318811.6 1688714 4863446 10895883 19999998</span></span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a><span class="co">#&gt; [3,] 152563.4  628078.8 1117835.0 3334046 3871591 10895883 19999997</span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a><span class="co">#&gt; [4,] 152563.4  695657.2 1635144.3 2984500 3636247 10895883 19999995</span></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a><span class="co">#&gt; [5,] 200278.8  765448.4 1174496.9 1923219 5040664 10895883 19999990</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a><span class="co">#&gt;           [,1]    [,2]    [,3]    [,4]    [,5]     [,6]     [,7]</span></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a><span class="co">#&gt; [154,] 1318812 1359188 1512157 1929459 2984500 10895883 19999997</span></span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a><span class="co">#&gt; [155,] 1318812 1371670 1771874 2225285 2416482 10895883 20000006</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a><span class="co">#&gt; [156,] 1338303 1706514 1823915 1853728 2381655 10895883 19999998</span></span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a><span class="co">#&gt; [157,] 1371670 1512157 1516215 1853728 2850338 10895883 19999990</span></span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a><span class="co">#&gt; [158,] 1371670 1516215 1635144 2189663 2391419 10895883 19999994</span></span></code></pre></div>
+</div>
+<div id="prod-and-mean" class="section level2">
+<h2><code>prod</code> and <code>mean</code></h2>
+<p>These optimized algorithms are also employed when
+<code>constraintFun</code> is <code>&quot;prod&quot;</code> or
+<code>&quot;mean&quot;</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>getAllThenFilter <span class="ot">&lt;-</span> <span class="cf">function</span>(n, m, lim) {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    t <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(n, m, <span class="at">constraintFun =</span> <span class="st">&quot;prod&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    t[t[, m <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">==</span> lim, <span class="sc">-</span>(m<span class="sc">+</span><span class="dv">1</span>)]</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>}</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">optimized =</span> <span class="fu">comboGeneral</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="at">constraintFun =</span> <span class="st">&quot;prod&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>                                        <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>                                        <span class="at">limitConstraints =</span> <span class="dv">1037836800</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>               <span class="at">brute =</span> <span class="fu">getAllThenFilter</span>(<span class="dv">25</span>, <span class="dv">10</span>, <span class="dv">1037836800</span>), <span class="at">times =</span> <span class="dv">20</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>               <span class="at">unit =</span> <span class="st">&quot;relative&quot;</span>, <span class="at">check =</span> <span class="st">&quot;equal&quot;</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; Warning in microbenchmark(optimized = comboGeneral(25, 10, constraintFun = &quot;prod&quot;, : less</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; accurate nanosecond times to avoid potential integer overflows</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; Unit: relative</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;       expr      min       lq     mean   median       uq     max neval cld</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;  optimized  1.00000  1.00000  1.00000  1.00000  1.00000  1.0000    20  a </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt;      brute 21.73973 21.67611 22.26314 21.66069 21.50242 27.7738    20   b</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="do">## What about cases when brute force isn&#39;t feasible</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="fu">prettyNum</span>(<span class="fu">comboCount</span>(v, <span class="dv">100</span>), <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; [1] &quot;63,850,511,926,305,130,236,698,511,142,022,274,281,262,900,693,853,331,776,286,816,221,524,376,994,750,901,948,920,974,351,797,699,894,319,420,811,933,446,197,797,592,213,357,065,053,890&quot;</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="fu">system.time</span>(prodAlmost100 <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(v, <span class="dv">100</span>, <span class="at">constraintFun =</span> <span class="st">&quot;prod&quot;</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>                                          <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>                                          <span class="at">limitConstraints =</span> <span class="dv">100</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>                                          <span class="at">tolerance =</span> <span class="fl">0.0001</span>, <span class="at">upper =</span> <span class="dv">20</span>))</span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt;   0.016   0.000   0.016</span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="fu">dim</span>(prodAlmost100)</span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt; [1]  20 100</span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="fu">apply</span>(prodAlmost100, <span class="dv">1</span>, prod)</span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt;  [1] 100.00008 100.00003 100.00003 100.00006 100.00010 100.00000  99.99993  99.99995</span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt;  [9] 100.00002  99.99992 100.00004  99.99994 100.00002 100.00005  99.99992  99.99996</span></span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt; [17] 100.00006 100.00003 100.00006 100.00002</span></span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="do">## Showcasing mean</span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="fu">system.time</span>(meanAlmost1<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">comboGeneral</span>(v, <span class="dv">100</span>, <span class="at">constraintFun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a>                                          <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>                                          <span class="at">limitConstraints =</span> <span class="fl">1.5</span>,</span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>                                          <span class="at">tolerance =</span> <span class="fl">0.0001</span>, <span class="at">upper =</span> <span class="dv">20</span>))</span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a><span class="co">#&gt;       0       0       0</span></span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="fu">dim</span>(meanAlmost1<span class="fl">.5</span>)</span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a><span class="co">#&gt; [1]  20 100</span></span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="fu">rowMeans</span>(meanAlmost1<span class="fl">.5</span>)</span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a><span class="co">#&gt;  [1] 1.500000 1.499999 1.500001 1.500000 1.500000 1.500001 1.500000 1.500000 1.500000</span></span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a><span class="co">#&gt; [10] 1.500000 1.499999 1.500000 1.500001 1.500001 1.499999 1.499999 1.500001 1.500000</span></span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="co">#&gt; [19] 1.500001 1.500000</span></span></code></pre></div>
+</div>
+<div id="using-iterators" class="section level2">
+<h2>Using Iterators</h2>
+<p>As of version <code>2.5.0</code> all of the above cases can be
+attacked with iterators (See <a href="https://jwood000.github.io/RcppAlgos/articles/CombinatoricsIterators.html#iterating-over-constrained-combinations/permutations">Combinatorial
+Iterators in RcppAlgos</a>). As mentioned in the suggested reading,
+iterators are very flexible and just as efficient as their “general”
+counterparts. They have the added benefit of allowing one to save the
+current state, allowing one to generate <em>n</em> results at a
+time.</p>
+<p>Below are a few demonstrations using some of the examples in earlier
+sections.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="do">## The football salary example</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>salary <span class="ot">&lt;-</span> <span class="fu">partitionsIter</span>(football_player_salaries, <span class="dv">6</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                         <span class="at">target =</span> <span class="fl">2e7</span>, <span class="at">tolerance =</span> <span class="dv">1000</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="do">## Or use comboIter:</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="do">## comboIter(football_player_salaries, 6, constraintFun = &quot;sum&quot;,</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="do">##           comparisonFun = &quot;==&quot;, limitConstraints = 2e7,</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="do">##           tolerance = 1000, upper = 1000, keepResults = TRUE))</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="fu">system.time</span>(almost20withIter <span class="ot">&lt;-</span> salary<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="fl">1e3</span>))</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;   0.062   0.001   0.062</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="do">## almost20 was generated above with comboGeneral</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="fu">all.equal</span>(almost20[, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>], almost20withIter)</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="do">## With iterators we can easily continue iterating. With the general</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="do">## functions if we wanted the next 1000 results, we would have to</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="do">## generate the first 1000 along with the next 1000</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="fu">system.time</span>(nextAlmost20withIter <span class="ot">&lt;-</span> salary<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="fl">1e3</span>))</span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt;    0.06    0.00    0.06</span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="fu">ht</span>(nextAlmost20withIter)</span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#&gt; head --&gt;</span></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co">#&gt;          [,1]     [,2]      [,3]    [,4]    [,5]     [,6]</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co">#&gt; [1,] 200278.8 550414.4 2189662.6 2829267 3334046 10895883</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#&gt; [2,] 200278.8 628078.8  653771.4 3489156 4132545 10895883</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; [3,] 200278.8 628078.8  809407.9 3334046 4132545 10895883</span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; [4,] 200278.8 628078.8  852693.7 2381655 5040664 10895883</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; [5,] 200278.8 628078.8 1165478.3 3239395 3871591 10895883</span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; --------</span></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; tail --&gt;</span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt;             [,1]   [,2]    [,3]    [,4]    [,5]     [,6]</span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="co">#&gt;  [996,] 264972.3 663453 1318812 3239395 3618110 10895883</span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co">#&gt;  [997,] 264972.3 663453 1376878 3163109 3636247 10895883</span></span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="co">#&gt;  [998,] 264972.3 663453 1688714 2850338 3636247 10895883</span></span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a><span class="co">#&gt;  [999,] 264972.3 663453 1706514 2850338 3618110 10895883</span></span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a><span class="co">#&gt; [1000,] 264972.3 663453 1853728 2189663 4132545 10895883</span></span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a>salary<span class="sc">@</span><span class="fu">summary</span>()</span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 100 choose 6 where the sum is between 19999000 and 20001000&quot;</span></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a><span class="co">#&gt; [1] 2000</span></span>
+<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb9-52"><a href="#cb9-52" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-53"><a href="#cb9-53" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb9-54"><a href="#cb9-54" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb9-55"><a href="#cb9-55" tabindex="-1"></a></span>
+<span id="cb9-56"><a href="#cb9-56" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" tabindex="-1"></a><span class="do">## The prodAlmost100 example</span></span>
+<span id="cb9-58"><a href="#cb9-58" tabindex="-1"></a>prodIter <span class="ot">&lt;-</span> <span class="fu">comboIter</span>(v, <span class="dv">100</span>,</span>
+<span id="cb9-59"><a href="#cb9-59" tabindex="-1"></a>                      <span class="at">constraintFun =</span> <span class="st">&quot;prod&quot;</span>, <span class="at">comparisonFun =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb9-60"><a href="#cb9-60" tabindex="-1"></a>                      <span class="at">limitConstraints =</span> <span class="dv">100</span>, <span class="at">tolerance =</span> <span class="fl">0.0001</span>)</span>
+<span id="cb9-61"><a href="#cb9-61" tabindex="-1"></a></span>
+<span id="cb9-62"><a href="#cb9-62" tabindex="-1"></a><span class="fu">system.time</span>(prodAlmost100WithIter <span class="ot">&lt;-</span> prodIter<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="dv">20</span>))</span>
+<span id="cb9-63"><a href="#cb9-63" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-64"><a href="#cb9-64" tabindex="-1"></a><span class="co">#&gt;   0.016   0.000   0.016</span></span>
+<span id="cb9-65"><a href="#cb9-65" tabindex="-1"></a></span>
+<span id="cb9-66"><a href="#cb9-66" tabindex="-1"></a><span class="fu">all.equal</span>(prodAlmost100, prodAlmost100WithIter)</span>
+<span id="cb9-67"><a href="#cb9-67" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb9-68"><a href="#cb9-68" tabindex="-1"></a></span>
+<span id="cb9-69"><a href="#cb9-69" tabindex="-1"></a><span class="do">## Again, with iterators, we can continue iterating from</span></span>
+<span id="cb9-70"><a href="#cb9-70" tabindex="-1"></a><span class="do">## where we left off</span></span>
+<span id="cb9-71"><a href="#cb9-71" tabindex="-1"></a><span class="fu">system.time</span>(nextAlmost100WithIter <span class="ot">&lt;-</span> prodIter<span class="sc">@</span><span class="fu">nextNIter</span>(<span class="dv">20</span>))</span>
+<span id="cb9-72"><a href="#cb9-72" tabindex="-1"></a><span class="co">#&gt;    user  system elapsed </span></span>
+<span id="cb9-73"><a href="#cb9-73" tabindex="-1"></a><span class="co">#&gt;   0.011   0.000   0.012</span></span>
+<span id="cb9-74"><a href="#cb9-74" tabindex="-1"></a></span>
+<span id="cb9-75"><a href="#cb9-75" tabindex="-1"></a><span class="fu">dim</span>(nextAlmost100WithIter)</span>
+<span id="cb9-76"><a href="#cb9-76" tabindex="-1"></a><span class="co">#&gt; [1]  20 100</span></span>
+<span id="cb9-77"><a href="#cb9-77" tabindex="-1"></a></span>
+<span id="cb9-78"><a href="#cb9-78" tabindex="-1"></a><span class="do">## Use @ or $ to access methods. If one needs to access these methods</span></span>
+<span id="cb9-79"><a href="#cb9-79" tabindex="-1"></a><span class="do">## often (e.g. nextIter inside a loop), it is recommended to use the</span></span>
+<span id="cb9-80"><a href="#cb9-80" tabindex="-1"></a><span class="do">## @ accessor as it is much more efficient.</span></span>
+<span id="cb9-81"><a href="#cb9-81" tabindex="-1"></a>prodIter<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb9-82"><a href="#cb9-82" tabindex="-1"></a><span class="co">#&gt; $description</span></span>
+<span id="cb9-83"><a href="#cb9-83" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Combinations of 1000 choose 100 where the prod is between 99.999899999999997 and 100.0001&quot;</span></span>
+<span id="cb9-84"><a href="#cb9-84" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-85"><a href="#cb9-85" tabindex="-1"></a><span class="co">#&gt; $currentIndex</span></span>
+<span id="cb9-86"><a href="#cb9-86" tabindex="-1"></a><span class="co">#&gt; [1] 40</span></span>
+<span id="cb9-87"><a href="#cb9-87" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-88"><a href="#cb9-88" tabindex="-1"></a><span class="co">#&gt; $totalResults</span></span>
+<span id="cb9-89"><a href="#cb9-89" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
+<span id="cb9-90"><a href="#cb9-90" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-91"><a href="#cb9-91" tabindex="-1"></a><span class="co">#&gt; $totalRemaining</span></span>
+<span id="cb9-92"><a href="#cb9-92" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><title>R: Upload an image to imgur.com</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>imgur_upload {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='imgur_upload'>Upload an image to imgur.com</h2>
+
+<h3>Description</h3>
+
+<p>This function uses the <span class="pkg">curl</span> package to upload a image to
+<a href="https://imgur.com">https://imgur.com</a>, and parses the XML response to a list with
+<span class="pkg">xml2</span>, which contains information about the image on Imgur.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>imgur_upload(
+  file,
+  key = xfun::env_option("knitr.imgur.key", "9f3460e67f308f6")
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="imgur_upload_:_file">file</code></td>
+<td>
+<p>Path to the image file to be uploaded.</p>
+</td></tr>
+<tr><td><code id="imgur_upload_:_key">key</code></td>
+<td>
+<p>Client ID for Imgur. It can be set via either the global option
+<code>knitr.imgur.key</code> or the environment variable <code>R_KNITR_IMGUR_KEY</code>
+(see [xfun::env_option()]). If neither is set, this uses a client ID
+registered by Yihui Xie.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When the output format from <code><a href="../../knitr/help/knit.html">knit</a>()</code> is HTML or Markdown, this
+function can be used to upload local image files to Imgur, e.g. set the
+package option <code>opts_knit$set(upload.fun = imgur_upload)</code>, so the output
+document is completely self-contained, i.e. it does not need external image
+files any more, and it is ready to be published online.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character string of the link to the image; this string carries an
+attribute named <code>XML</code> which is a list converted from the response XML
+file; see Imgur API in the references.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Please register your own Imgur application to get your client ID; you
+can certainly use mine, but this ID is in the public domain so everyone has
+access to all images associated to it.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yihui Xie, adapted from the <span class="pkg">imguR</span> package by Aaron Statham
+</p>
+
+
+<h3>References</h3>
+
+<p>A demo: <a href="https://yihui.org/knitr/demo/upload/">https://yihui.org/knitr/demo/upload/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: 
+f = tempfile(fileext = ".png")
+png(f)
+plot(rnorm(100), main = R.version.string)
+dev.off()
+
+res = imgur_upload(f)
+res  # link to original URL of the image
+attr(res, "XML")  # all information
+if (interactive())
+    browseURL(res)
+
+# to use your own key
+options(knitr.imgur.key = "your imgur key")
+
+## End(Not run)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

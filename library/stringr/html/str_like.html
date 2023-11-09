@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><title>R: Detect a pattern in the same way as 'SQL&quot;s 'LIKE' operator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_like {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_like'>Detect a pattern in the same way as <code>SQL</code>'s <code>LIKE</code> operator</h2>
+
+<h3>Description</h3>
+
+<p><code>str_like()</code> follows the conventions of the SQL <code>LIKE</code> operator:
+</p>
+
+<ul>
+<li><p> Must match the entire string.
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;_&#8288;</code> matches a single character (like <code>.</code>).
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;%&#8288;</code> matches any number of characters (like <code style="white-space: pre;">&#8288;.*&#8288;</code>).
+</p>
+</li>
+<li> <p><code style="white-space: pre;">&#8288;\%&#8288;</code> and <code style="white-space: pre;">&#8288;\_&#8288;</code> match literal <code style="white-space: pre;">&#8288;%&#8288;</code> and <code style="white-space: pre;">&#8288;_&#8288;</code>.
+</p>
+</li>
+<li><p> The match is case insensitive by default.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_like(string, pattern, ignore_case = TRUE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_like_:_string">string</code></td>
+<td>
+<p>Input vector. Either a character vector, or something
+coercible to one.</p>
+</td></tr>
+<tr><td><code id="str_like_:_pattern">pattern</code></td>
+<td>
+<p>A character vector containing a SQL &quot;like&quot; pattern.
+See above for details.</p>
+</td></tr>
+<tr><td><code id="str_like_:_ignore_case">ignore_case</code></td>
+<td>
+<p>Ignore case of matches? Defaults to <code>TRUE</code> to match
+the SQL <code>LIKE</code> operator.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector the same length as <code>string</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>fruit &lt;- c("apple", "banana", "pear", "pineapple")
+str_like(fruit, "app")
+str_like(fruit, "app%")
+str_like(fruit, "ba_ana")
+str_like(fruit, "%APPLE")
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

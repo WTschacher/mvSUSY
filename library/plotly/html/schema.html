@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><title>R: Acquire (and optionally display) plotly's plot schema</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>schema {plotly}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='schema'>Acquire (and optionally display) plotly's plot schema</h2>
+
+<h3>Description</h3>
+
+<p>The schema contains valid attributes names, their value type,
+default values (if any), and min/max values (if applicable).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>schema(jsonedit = interactive(), ...)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="schema_:_jsonedit">jsonedit</code></td>
+<td>
+<p>use <code>listviewer::jsonedit</code> to view the JSON?</p>
+</td></tr>
+<tr><td><code id="schema_:_...">...</code></td>
+<td>
+<p>other options passed onto <code>listviewer::jsonedit</code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+s &lt;- schema()
+
+# retrieve acceptable `layout.mapbox.style` values
+if (!is.na(Sys.getenv('MAPBOX_TOKEN', NA))) {
+  styles &lt;- s$layout$layoutAttributes$mapbox$style$values
+  subplot(
+    plot_mapbox() %&gt;% layout(mapbox = list(style = styles[3])),
+    plot_mapbox() %&gt;% layout(mapbox = list(style = styles[5]))
+  )
+}
+
+
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>plotly</em> version 4.10.3 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

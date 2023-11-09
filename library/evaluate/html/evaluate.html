@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><title>R: Evaluate input and return all details of evaluation.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>evaluate {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='evaluate'>Evaluate input and return all details of evaluation.</h2>
+
+<h3>Description</h3>
+
+<p>Compare to <code><a href="../../base/html/eval.html">eval()</a></code>, <code>evaluate</code> captures all of the
+information necessary to recreate the output as if you had copied and pasted
+the code into a R terminal. It captures messages, warnings, errors and
+output, all correctly interleaved in the order in which they occured. It
+stores the final result, whether or not it should be visible, and the
+contents of the current graphics device.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>evaluate(
+  input,
+  envir = parent.frame(),
+  enclos = NULL,
+  debug = FALSE,
+  stop_on_error = 0L,
+  keep_warning = TRUE,
+  keep_message = TRUE,
+  log_echo = FALSE,
+  log_warning = FALSE,
+  new_device = TRUE,
+  output_handler = default_output_handler,
+  filename = NULL,
+  include_timing = FALSE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="evaluate_:_input">input</code></td>
+<td>
+<p>input object to be parsed and evaluated.  May be a string, file
+connection or function.  Passed on to <code><a href="../../evaluate/help/parse_all.html">parse_all()</a></code>.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_envir">envir</code></td>
+<td>
+<p>environment in which to evaluate expressions.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_enclos">enclos</code></td>
+<td>
+<p>when <code>envir</code> is a list or data frame, this is treated as
+the parent environment to <code>envir</code>.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_debug">debug</code></td>
+<td>
+<p>if <code>TRUE</code>, displays information useful for debugging,
+including all output that evaluate captures.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_stop_on_error">stop_on_error</code></td>
+<td>
+<p>if <code>2</code>, evaluation will halt on first error and you
+will get no results back. If <code>1</code>, evaluation will stop on first error
+without signaling the error, and you will get back all results up to that
+point. If <code>0</code> will continue running all code, just as if you'd pasted
+the code into the command line.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_keep_warning">keep_warning</code>, <code id="evaluate_:_keep_message">keep_message</code></td>
+<td>
+<p>whether to record warnings and messages; if
+<code>FALSE</code>, messages will be suppressed; if <code>NA</code>, they will not be captured
+(normally they will be sent to the console).</p>
+</td></tr>
+<tr><td><code id="evaluate_:_log_echo">log_echo</code>, <code id="evaluate_:_log_warning">log_warning</code></td>
+<td>
+<p>If <code>TRUE</code>, will immediately log code and
+warnings (respectively) to <code>stderr</code>.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_new_device">new_device</code></td>
+<td>
+<p>if <code>TRUE</code>, will open a new graphics device and
+automatically close it after completion. This prevents evaluation from
+interfering with your existing graphics environment.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_output_handler">output_handler</code></td>
+<td>
+<p>an instance of <code><a href="../../evaluate/help/output_handler.html">output_handler()</a></code> that
+processes the output from the evaluation. The default simply prints the
+visible return values.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_filename">filename</code></td>
+<td>
+<p>string overrriding the <code><a href="../../base/help/srcfile.html">base::srcfile()</a></code> filename.</p>
+</td></tr>
+<tr><td><code id="evaluate_:_include_timing">include_timing</code></td>
+<td>
+<p>if <code>TRUE</code>, evaluate will wrap each input
+expression in <code>system.time()</code>, which will be accessed by following
+<code>replay()</code> call to produce timing information for each evaluated
+command.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.22 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

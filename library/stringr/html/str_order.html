@@ -1,0 +1,134 @@
+<!DOCTYPE html><html><head><title>R: Order, rank, or sort a character vector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>str_order {stringr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='str_order'>Order, rank, or sort a character vector</h2>
+
+<h3>Description</h3>
+
+
+<ul>
+<li> <p><code>str_sort()</code> returns the sorted vector.
+</p>
+</li>
+<li> <p><code>str_order()</code> returns an integer vector that returns the desired
+order when used for subsetting, i.e. <code>x[str_order(x)]</code> is the same
+as <code>str_sort()</code>
+</p>
+</li>
+<li> <p><code>str_rank()</code> returns the ranks of the values, i.e.
+<code>arrange(df, str_rank(x))</code> is the same as <code>str_sort(df$x)</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>str_order(
+  x,
+  decreasing = FALSE,
+  na_last = TRUE,
+  locale = "en",
+  numeric = FALSE,
+  ...
+)
+
+str_rank(x, locale = "en", numeric = FALSE, ...)
+
+str_sort(
+  x,
+  decreasing = FALSE,
+  na_last = TRUE,
+  locale = "en",
+  numeric = FALSE,
+  ...
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="str_order_:_x">x</code></td>
+<td>
+<p>A character vector to sort.</p>
+</td></tr>
+<tr><td><code id="str_order_:_decreasing">decreasing</code></td>
+<td>
+<p>A boolean. If <code>FALSE</code>, the default, sorts from
+lowest to highest; if <code>TRUE</code> sorts from highest to lowest.</p>
+</td></tr>
+<tr><td><code id="str_order_:_na_last">na_last</code></td>
+<td>
+<p>Where should <code>NA</code> go? <code>TRUE</code> at the end,
+<code>FALSE</code> at the beginning, <code>NA</code> dropped.</p>
+</td></tr>
+<tr><td><code id="str_order_:_locale">locale</code></td>
+<td>
+<p>Locale to use for comparisons. See
+<code><a href="../../stringi/help/stri_locale_list.html">stringi::stri_locale_list()</a></code> for all possible options.
+Defaults to &quot;en&quot; (English) to ensure that default behaviour is
+consistent across platforms.</p>
+</td></tr>
+<tr><td><code id="str_order_:_numeric">numeric</code></td>
+<td>
+<p>If <code>TRUE</code>, will sort digits numerically, instead
+of as strings.</p>
+</td></tr>
+<tr><td><code id="str_order_:_...">...</code></td>
+<td>
+<p>Other options used to control collation. Passed on to
+<code><a href="../../stringi/help/stri_opts_collator.html">stringi::stri_opts_collator()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector the same length as <code>string</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stringi/help/stri_order.html">stringi::stri_order()</a></code> for the underlying implementation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>x &lt;- c("apple", "car", "happy", "char")
+str_sort(x)
+
+str_order(x)
+x[str_order(x)]
+
+str_rank(x)
+
+# In Czech, ch is a digraph that sorts after h
+str_sort(x, locale = "cs")
+
+# Use numeric = TRUE to sort numbers in strings
+x &lt;- c("100a10", "100a5", "2b", "2a")
+str_sort(x)
+str_sort(x, numeric = TRUE)
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringr</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

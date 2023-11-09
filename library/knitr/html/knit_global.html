@@ -1,0 +1,44 @@
+<!DOCTYPE html><html><head><title>R: The global environment in which code chunks are evaluated</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>knit_global {knitr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='knit_global'>The global environment in which code chunks are evaluated</h2>
+
+<h3>Description</h3>
+
+<p>This function makes the environment of a code chunk accessible inside a
+chunk.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>knit_global()
+</code></pre>
+
+
+<h3>Details</h3>
+
+<p>It returns the <code>envir</code> argument of <code><a href="../../knitr/help/knit.html">knit</a></code>, e.g. if we call
+<code><a href="../../knitr/help/knit.html">knit</a>()</code> in the global environment, <code>knit_global()</code> returns
+R's global environment by default. You can call functions like
+<code><a href="../../base/html/ls.html">ls</a>()</code> on this environment.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>knitr</em> version 1.44 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>

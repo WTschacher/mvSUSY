@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><title>R: Filter cells by name</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script type="text/javascript">
+const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table style="width: 100%;"><tr><td>gtable_filter {gtable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2 id='gtable_filter'>Filter cells by name</h2>
+
+<h3>Description</h3>
+
+<p>Normally a gtable is considered a matrix when indexing so that indexing is
+working on the cell layout and not on the grobs it contains. <code>gtable_filter</code>
+allows you to subset the grobs by name and optionally remove rows or columns
+if left empty after the subsetting
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>gtable_filter(x, pattern, fixed = FALSE, trim = TRUE, invert = FALSE)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table>
+<tr><td><code id="gtable_filter_:_x">x</code></td>
+<td>
+<p>a gtable object</p>
+</td></tr>
+<tr><td><code id="gtable_filter_:_pattern">pattern</code></td>
+<td>
+<p>character string containing a <a href="../../base/help/regular+20expression.html">regular expression</a>
+(or character string for <code>fixed = TRUE</code>) to be matched
+in the given character vector.  Coerced by
+<code><a href="../../base/help/as.character.html">as.character</a></code> to a character string if possible.  If a
+character vector of length 2 or more is supplied, the first element
+is used with a warning.  Missing values are allowed except for
+<code>regexpr</code>, <code>gregexpr</code> and <code>regexec</code>.</p>
+</td></tr>
+<tr><td><code id="gtable_filter_:_fixed">fixed</code></td>
+<td>
+<p>logical.  If <code>TRUE</code>, <code>pattern</code> is a string to be
+matched as is.  Overrides all conflicting arguments.</p>
+</td></tr>
+<tr><td><code id="gtable_filter_:_trim">trim</code></td>
+<td>
+<p>if <code>TRUE</code>, <code><a href="../../gtable/help/gtable_trim.html">gtable_trim()</a></code> will be used to trim
+off any empty cells.</p>
+</td></tr>
+<tr><td><code id="gtable_filter_:_invert">invert</code></td>
+<td>
+<p>Should the filtering be inverted so that cells matching
+<code>pattern</code> is removed instead of kept.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A gtable only containing the matching grobs, potentially stripped of
+empty columns and rows
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other gtable manipulation: 
+<code><a href="../../gtable/help/gtable_add_cols.html">gtable_add_cols</a>()</code>,
+<code><a href="../../gtable/help/gtable_add_grob.html">gtable_add_grob</a>()</code>,
+<code><a href="../../gtable/help/gtable_add_padding.html">gtable_add_padding</a>()</code>,
+<code><a href="../../gtable/help/gtable_add_rows.html">gtable_add_rows</a>()</code>,
+<code><a href="../../gtable/help/gtable_add_space.html">gtable_add_space</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>library(grid)
+gt &lt;- gtable(unit(rep(5, 3), c("cm")), unit(5, "cm"))
+rect &lt;- rectGrob(gp = gpar(fill = "black"))
+circ &lt;- circleGrob(gp = gpar(fill = "red"))
+
+gt &lt;- gtable_add_grob(gt, rect, 1, 1, name = "rect")
+gt &lt;- gtable_add_grob(gt, circ, 1, 3, name = "circ")
+
+plot(gtable_filter(gt, "rect"))
+plot(gtable_filter(gt, "rect", trim = FALSE))
+plot(gtable_filter(gt, "circ"))
+plot(gtable_filter(gt, "circ", trim = FALSE))
+
+</code></pre>
+
+<hr /><div style="text-align: center;">[Package <em>gtable</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</div>
+</body></html>
