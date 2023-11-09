@@ -30,7 +30,8 @@ as.mvsusy = function(x) {
 mvsusy = function(x, segment, Hz,
                   method = c("lambda_max","omega"),
                   max_pseudo = 1000,
-                  seed = 1) {
+                  seed = 1,
+                  data_name = NA_character_) {
   ## 2.1 Warnings - check parameter settings
   if (!is.data.frame(x))
     stop("'x' must be a data.frame")
@@ -42,6 +43,8 @@ mvsusy = function(x, segment, Hz,
     stop("'segment' must be scalar non-NA numeric")
   if (!is.numeric(Hz) || length(Hz)!=1L || is.na(Hz))
     stop("'Hz' must be scalar non-NA numeric")
+  if (!is.character(data_name) || length(data_name)!=1L)
+    stop("'data_name' must be scalar character")
   cols = names(x)
   N = length(cols)
   x = na.omit(x)
@@ -128,10 +131,11 @@ mvsusy = function(x, segment, Hz,
     method=method, n_col=nx, n_row=nrow(x), seed=seed, n_pseudo=length(comb_pseudo),
     segment_size_s = segment, data_per_segment = segmentHz*nx,
     real_mean=real_mean, real_sd=real_sd, pseudo_mean=pseudo_mean, pseudo_sd=pseudo_sd, ES_synchrony=ES_synchrony, EV=ev,
-    t_tests = t_tests * -1, ## we want t-statistic to be positive unlike when surrogates set is bigger than real dataset
+    t_tests = t_tests,
     wilcox_tests = wilcox_tests,
     nsegment = nsegment, max_pseudo = max_pseudo,
-    synchrony = synchrony, data = data, segmentHz = segmentHz
+    synchrony = synchrony, data = data, segmentHz = segmentHz,
+    data_name = data_name
   )
   as.mvsusy(ans)
 }
@@ -140,13 +144,14 @@ as.data.frame.mvsusy = function(x, row.names=NULL, optional=FALSE, ...) {
   if (!inherits(x, "mvsusy"))
     stop("'x' must be an object of class 'mvsusy'")
   ans = data.frame(
-    x$method, x$n_col, x$n_row, x$seed, x$n_pseudo, x$segment_size_s, x$data_per_segment,
+    x$data_name, x$method, x$n_col, x$n_row, x$seed, x$n_pseudo, x$segment_size_s, x$data_per_segment,
     x$real_mean, x$real_sd, x$pseudo_mean, x$pseudo_sd, x$ES_synchrony,
-    x$t_tests$statistic, x$t_tests$p.value,
+    x$t_tests$statistic * -1, ## we want t-statistic to be positive unlike when surrogates set is bigger than real dataset
+    x$t_tests$p.value,
     x$wilcox_tests$statistic, x$wilcox_tests$p.value
   )
   colnames(ans) = c(
-    "method", "ncol", "nrow", "seed", "npseudo", "segment_size_s", "data_per_segment",
+    "data_name", "method", "ncol", "nrow", "seed", "npseudo", "segment_size_s", "data_per_segment",
     "real_mean", "real_sd", "pseudo_mean", "pseudo_sd", "ES",
     "t_statistic", "p_value", "statistic_nonpar", "p_value_nonpar"
   )
@@ -169,7 +174,7 @@ print.mvsusy = function(x, ...) {
   df$statistic_nonpar = format(df$statistic_nonpar, scientific=FALSE)
   df$p_value_nonpar = format(df$p_value_nonpar, scientific=FALSE)
   colnames(df) = c(
-    "method", "n(col)", "n(row)", "seed", "n(pseudo)", "segment size (s)", "data per segment",
+    "dataset", "method", "n(col)", "n(row)", "seed", "n(pseudo)", "segment size (s)", "data per segment",
     "mean(synchrony real)", "sd(synchrony real)", "mean(synchrony pseudo)", "sd(synchrony pseudo)", "ES",
     "t statistic", "p-value", "statistic nonpar", "p-value nonpar"
   )

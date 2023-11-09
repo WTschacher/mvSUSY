@@ -15,6 +15,7 @@ mvsusy(x, segment, Hz, method=c("lambda_max","omega"), max_pseudo=1000, seed=1)
   \item{method}{ Character, either \code{"lambda_max"} or \code{"omega"}. }
   \item{max_pseudo}{ Numeric, maximum number of surrogate ("psuedo") data, default 1000. }
   \item{seed}{ Numeric, same seed generates the same random surrogate data. }
+  \item{data_name}{ Character, optionally provided name of a dataset used. }
 }
 \details{
   Data are entered as a file where multiple time series are in columns. First row with column names. For example, if the data represent the interaction of a group of five people with one time series from each group member, the file has five columns, and its first row contains the member names. The time series are divided in segments of appropriate length (parameter \code{segment}). Synchrony computation is done separately in each segment, then all segment synchronies are aggregated to yield the "real synchrony" of the multiple time series. Segments are non-overlapping, and the number of segments that fit into the time series may have a remainder (usually a few seconds at the end of the time series), which is not considered. Rows having missing values are removed.
@@ -41,7 +42,7 @@ res
 plot(res, type="eigenvalue")
 
 ## omega method
-res = mvsusy(data, segment=10, Hz=10, method="omega")
+res = mvsusy(data, segment=10, Hz=10, method="omega", data_name="random")
 res
 plot(res, type="density")
 
